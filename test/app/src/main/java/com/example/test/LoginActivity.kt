@@ -1,38 +1,66 @@
 package com.example.test
 
-import android.content.res.ColorStateList
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.test.model.LoginRequest
+import com.example.test.model.LoginResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val loginButton = findViewById<Button>(R.id.btnLogin)
         val loginId = findViewById<EditText>(R.id.etLoginId)
         val loginPassword = findViewById<EditText>(R.id.etLoginPassword)
-        val loginButton = findViewById<Button>(R.id.btnLogin)
+        val tvSignUp = findViewById<TextView>(R.id.tvSignUp)
+        loginButton.setOnClickListener {
+            val username = loginId.text.toString()
+            val password = loginPassword.text.toString()
 
-        // TextWatcher 객체를 생성
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                loginButton.isEnabled = loginId.text.isNotEmpty() && loginPassword.text.isNotEmpty()
-                loginButton.backgroundTintList = ColorStateList.valueOf(
-                    if (loginButton.isEnabled) Color.parseColor("#35A825") else Color.LTGRAY
-                )
-            }
+            val loginRequest = LoginRequest(username, password)
 
-            override fun afterTextChanged(s: Editable?) {}
+            RetrofitInstance.apiService.login(loginRequest).enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    if (response.isSuccessful) {
+                        val loginResponse = response.body()
+                        if (loginResponse != null && loginResponse.message == "Login successful") {
+                            Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
+
+                            // LoginActivity 종료
+                            finish()
+                        } else {
+                            Toast.makeText(this@LoginActivity, "로그인 실패: ${loginResponse?.message}", Toast.LENGTH_SHORT).show()
+                        }
+
+                    } else {
+                        Toast.makeText(this@LoginActivity, "로그인 실패: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(this@LoginActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                    // 로그캣에 오류 메시지 출력
+                    Log.e("LoginActivity", "네트워크 오류: ${t.message}", t)
+                }
+            })
         }
-
-        // TextWatcher 객체 추가
-        loginId.addTextChangedListener(textWatcher)
-        loginPassword.addTextChangedListener(textWatcher)
+        tvSignUp.setOnClickListener {
+            val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

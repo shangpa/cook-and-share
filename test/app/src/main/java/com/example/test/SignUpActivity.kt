@@ -1,13 +1,19 @@
 package com.example.test
 
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.test.model.ApiResponse
+import com.example.test.model.SignUpRequest
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -15,57 +21,53 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        // 뷰 바인딩
+        val continueButton = findViewById<Button>(R.id.continueButton)
         val nameEditText = findViewById<EditText>(R.id.nameEditText)
         val idEditText = findViewById<EditText>(R.id.idEditText)
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
-        val confirmPasswordEditText = findViewById<EditText>(R.id.confirmPasswordEditText)
-        val continueButton = findViewById<Button>(R.id.continueButton)
-        val passwordMismatchMessage = findViewById<TextView>(R.id.passwordMismatchMessage)
+        val backButton = findViewById<ImageView>(R.id.backButton)
 
-        // 모든 입력 필드가 채워졌는지 확인하는 함수
-        val checkFields = {
-            val isNameFilled = nameEditText.text.toString().isNotEmpty()
-            val isIdFilled = idEditText.text.toString().isNotEmpty()
-            val isPasswordFilled = passwordEditText.text.toString().isNotEmpty()
-            val isConfirmPasswordFilled = confirmPasswordEditText.text.toString().isNotEmpty()
-            val isPasswordsMatch =
-                passwordEditText.text.toString() == confirmPasswordEditText.text.toString()
+        // 뒤로가기 버튼 클릭 리스너
+        backButton.setOnClickListener {
+            finish() // SignUpActivity 종료하고 이전 액티비티로 돌아가기
+        }
 
-            if (isNameFilled && isIdFilled && isPasswordFilled && isConfirmPasswordFilled) {
-                if (isPasswordsMatch) {
-                    continueButton.isEnabled = true
-                    continueButton.setBackgroundColor(Color.parseColor("#4CAF50")) // 초록색
-                    continueButton.setTextColor(Color.WHITE) // 버튼 텍스트 색상
-                    passwordMismatchMessage.visibility = TextView.GONE
-                } else {
-                    continueButton.isEnabled = false
-                    continueButton.setBackgroundColor(Color.parseColor("#BDBDBD")) // 회색
-                    continueButton.setTextColor(Color.GRAY) // 버튼 텍스트 색상
-                    passwordMismatchMessage.visibility = TextView.VISIBLE
+        continueButton.setOnClickListener {
+            val name = nameEditText.text.toString()
+            val username = idEditText.text.toString()
+            val password = passwordEditText.text.toString()
+
+            val signUpRequest = SignUpRequest(name, username, password)
+
+            // Retrofit 호출
+            RetrofitInstance.apiService.signUp(signUpRequest).enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        if (apiResponse != null && apiResponse.success) {
+                            // 회원가입 성공 후 로그인 화면으로 이동
+                            Toast.makeText(this@SignUpActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish() // 현재 액티비티 종료
+                        } else {
+                            // 실패한 경우 메시지 출력
+                            Log.e("SignUpActivity", "회원가입 실패: ${apiResponse?.message}")
+                            Toast.makeText(this@SignUpActivity, "회원가입 실패: ${apiResponse?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        // 서버 응답 실패 처리
+                        Log.e("SignUpActivity", "회원가입 실패: ${response.message()}")
+                        Toast.makeText(this@SignUpActivity, "회원가입 실패: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } else {
-                continueButton.isEnabled = false
-                continueButton.setBackgroundColor(Color.parseColor("#BDBDBD")) // 회색
-                continueButton.setTextColor(Color.GRAY) // 버튼 텍스트 색상
-                passwordMismatchMessage.visibility = TextView.GONE
-            }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    // 네트워크 오류 처리
+                    Toast.makeText(this@SignUpActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("SignUpActivity", "네트워크 오류: ${t.message}", t)
+                }
+            })
         }
-
-        // TextWatcher를 설정
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkFields()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        }
-
-        // 입력 필드에 TextWatcher 추가
-        nameEditText.addTextChangedListener(textWatcher)
-        idEditText.addTextChangedListener(textWatcher)
-        passwordEditText.addTextChangedListener(textWatcher)
-        confirmPasswordEditText.addTextChangedListener(textWatcher)
     }
 }
