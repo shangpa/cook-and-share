@@ -42,10 +42,6 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
-
-        System.out.println("Received username: " + username);
-        System.out.println("Received password: " + password);
-
         if (userService.authenticate(username, password)) {
             // 성공적인 로그인 시 JSON 객체 반환
             Map<String, String> response = new HashMap<>();

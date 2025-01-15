@@ -5,7 +5,6 @@ import com.example.test.model.ApiResponse
 import com.example.test.model.LoginRequest
 import com.example.test.model.LoginResponse
 import com.example.test.model.SignUpRequest
-import com.example.test.model.SignUpResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

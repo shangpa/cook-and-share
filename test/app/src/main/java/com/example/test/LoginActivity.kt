@@ -25,12 +25,12 @@ class LoginActivity : AppCompatActivity() {
         val loginId = findViewById<EditText>(R.id.etLoginId)
         val loginPassword = findViewById<EditText>(R.id.etLoginPassword)
         val tvSignUp = findViewById<TextView>(R.id.tvSignUp)
+        //로그인 기능
         loginButton.setOnClickListener {
             val username = loginId.text.toString()
             val password = loginPassword.text.toString()
-
             val loginRequest = LoginRequest(username, password)
-
+            
             RetrofitInstance.apiService.login(loginRequest).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful) {
@@ -38,14 +38,12 @@ class LoginActivity : AppCompatActivity() {
                         if (loginResponse != null && loginResponse.message == "Login successful") {
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            //로그인 성공시 액티비티 종료
                             startActivity(intent)
-
-                            // LoginActivity 종료
                             finish()
                         } else {
                             Toast.makeText(this@LoginActivity, "로그인 실패: ${loginResponse?.message}", Toast.LENGTH_SHORT).show()
                         }
-
                     } else {
                         Toast.makeText(this@LoginActivity, "로그인 실패: ${response.message()}", Toast.LENGTH_SHORT).show()
                     }
