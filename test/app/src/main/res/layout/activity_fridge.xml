@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp">
+
+            <!-- 냉장고 재료 관리 텍스트 -->
+            <TextView
+                android:id="@+id/fridgeMainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="냉장고 재료 관리"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <!-- 구분선 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#F5F6F7"
+        android:layout_marginBottom="15dp"/>
+
+    <!-- 상단바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="15dp">
+
+        <!-- 오늘의 날짜 텍스트 -->
+        <TextView
+            android:id="@+id/dayTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘의 날짜"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="2dp"
+            android:layout_height="15dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- 날짜 입력 텍스트 -->
+        <TextView
+            android:id="@+id/dayInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025.01.22"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <!-- 검색바 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bar_fridge_search"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="20dp">
+
+        <!-- Input 텍스트 -->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:backgroundTint="#9B9B9B"
+            android:hint="냉장고 속 재료를 요리해볼까요?"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#8A8F9C"
+            android:layout_marginStart="30dp" />
+
+        <!-- 검색 아이콘 -->
+        <ImageView
+            android:id="@+id/fridgeSearchIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_fridge"
+            android:contentDescription="검색 아이콘"
+            android:layout_marginStart="105dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="25dp"> <!-- 나란히 배치하기 위해 간격 추가 -->
+
+        <!-- 카테고리 컨테이너 (전체) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_fridge_ct_ck"
+            android:gravity="center"
+            android:layout_marginRight="7dp">
+
+            <!-- 전체 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!-- 카테고리 컨테이너 (냉장) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_fridge_ct"
+            android:gravity="center"
+            android:layout_marginRight="7dp">
+
+            <!-- 냉장 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="냉장"
+                android:textSize="12sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <!-- 카테고리 컨테이너 (냉동) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_fridge_ct"
+            android:gravity="center"
+            android:layout_marginRight="7dp">
+
+            <!-- 냉동 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="냉동"
+                android:textSize="12sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <!-- 카테고리 컨테이너 (실외) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_fridge_ct"
+            android:gravity="center"
+            android:layout_marginRight="40dp">
+
+            <!-- 실외 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="실외"
+                android:textSize="12sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <!-- 카테고리 컨테이너 (재료추가 +) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_fridge_add"
+            android:gravity="center">
+
+            <!-- 실외 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="재료추가"
+                android:textSize="12sp"
+                android:textColor="#A2A2A2"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="2dp"/>
+
+            <!-- 플러스(+) 아이콘 -->
+            <ImageView
+                android:id="@+id/fridgeAddIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_fridge_add_plus"
+                android:contentDescription="추가 아이콘" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 선택 바 + 수정, 삭제 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- 전체선택 아이콘 -->
+        <ImageView
+            android:id="@+id/fridgeAllCheckIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_fridge_check"
+            android:contentDescription="전체선택 아이콘" />
+
+        <!-- 전체선택 텍스트 -->
+        <TextView
+            android:id="@+id/fridgeAllCheckText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전체선택"
+            android:textSize="13sp"
+            android:textColor="#454A52"
+            android:layout_marginEnd="215dp"/>
+
+        <!-- 수정 텍스트 -->
+        <TextView
+            android:id="@+id/fridgeEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수정"
+            android:textSize="13sp"/>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="2dp"
+            android:layout_height="15dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- 삭제 텍스트 -->
+        <TextView
+            android:id="@+id/fridgeDeleteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- 재료 1 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_rectangle_fridge"
+        android:padding="15dp"
+        android:gravity="center_vertical"
+        android:strokeColor="#D9D9D9"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:id="@+id/item1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp">
+
+            <!-- 재료 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="계란"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/green" />
+
+            <!-- 구매일자/유통기한 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구매일자 : 2025.01.02"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <!-- 재료 갯수 텍스트 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16 개"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="155dp"/>
+
+    </LinearLayout>
+
+    <!-- 재료 2 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_rectangle_fridge"
+        android:padding="15dp"
+        android:gravity="center_vertical"
+        android:strokeColor="#D9D9D9"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:id="@+id/item2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp">
+
+            <!-- 재료 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="우유"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/green" />
+
+            <!-- 구매일자/유통기한 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="유통기한 : 2025.01.11"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <!-- 재료 갯수 텍스트 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 개"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="167dp"/>
+
+    </LinearLayout>
+
+    <!-- 재료 3 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_rectangle_fridge"
+        android:padding="15dp"
+        android:gravity="center_vertical"
+        android:strokeColor="#D9D9D9"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:id="@+id/item3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp">
+
+            <!-- 재료 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="토마토"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/green" />
+
+            <!-- 구매일자/유통기한 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구매일자 : 2024.12.28"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <!-- 재료 갯수 텍스트 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 개"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="155dp"/>
+
+    </LinearLayout>
+
+    <!-- 재료 4 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_rectangle_fridge"
+        android:padding="15dp"
+        android:gravity="center_vertical"
+        android:strokeColor="#D9D9D9"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:id="@+id/item4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp">
+
+            <!-- 재료 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오이"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/green" />
+
+            <!-- 구매일자/유통기한 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구매일자 : 2024.12.26"
+                android:textSize="11sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <!-- 재료 갯수 텍스트 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 개"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="167dp"/>
+
+    </LinearLayout>
+
+    <!-- 레시피 추천받기 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="60dp">
+
+        <!-- 버튼 배경 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_fridge_recipe_green"
+            android:gravity="center">
+
+            <!-- 레시피 추천받기 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="레시피 추천받기"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
