@@ -70,6 +70,28 @@
             </intent-filter>
         </activity>
 
+        <!-- FridgeActivity -->
+        <activity
+            android:name=".FridgeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- FridgeMaterialActivity -->
+        <activity
+            android:name=".FridgeMaterialActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
