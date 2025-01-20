@@ -1,0 +1,491 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 사진 -->
+        <ImageView
+            android:id="@+id/itemImage"
+            android:layout_width="370dp"
+            android:layout_height="280dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="아이템 사진"
+            android:src="@drawable/img_material_detail" />
+
+        <!-- 설명 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 제목 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/itemTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="묵은쌀 나눔합니다!"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="220dp"/>
+
+                <ImageView
+                    android:id="@+id/itemMore"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_more"
+                    android:contentDescription="더보기 아이콘"
+                    android:layout_marginEnd="4dp" />
+            </LinearLayout>
+
+            <!-- 지도 및 거리 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/mapIcon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:contentDescription="지도 아이콘"
+                    android:src="@drawable/ic_location" />
+
+                <TextView
+                    android:id="@+id/distanceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="500m | 01.16"
+                    android:textColor="#8A8A8A"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="#E0E0E0" />
+
+            <!-- 카테고리, 수량, 구매날짜 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/category1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="카테고리"
+                        android:textColor="#8A8A8A"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/quantity1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="곡류"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/category2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="수량"
+                        android:textColor="#8A8A8A"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/quantity2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1개"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/category3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="구매날짜"
+                        android:textColor="#8A8A8A"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/quantity3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2024.11.11"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/itemSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="묵은쌀이 너무 많아서 나눔합니다.\n무거운 점 참고해주세요.\n필요하신분 채팅주세요."
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <!-- 거래희망장소, 지도 및 상세보기 그룹 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/transactionPlace1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="거래희망장소"
+                    android:textSize="11sp"
+                    android:textColor="#8A8A8A"/>
+
+                <TextView
+                    android:id="@+id/transactionPlace2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="성리초등학교 앞"
+                    android:textSize="11sp"
+                    android:layout_marginLeft="200dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_m"
+                android:layout_width="370dp"
+                android:layout_height="100dp"
+                android:src="@drawable/img_material_map"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- 채팅, 조회 그룹 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:id="@+id/chatCount1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="채팅"
+                    android:textColor="#8A8A8A"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/chatCount2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2   "
+                    android:textColor="#8A8A8A"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/viewCount1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|   조회"
+                    android:textColor="#8A8A8A"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/viewCount2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6"
+                    android:textColor="#8A8A8A"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <!-- 사용자 정보 및 상품 판매 정보 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/userIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="사용자 아이콘"
+                    android:src="@drawable/ic_user" />
+
+                <LinearLayout
+                    android:layout_width="380dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="소금시러설탕시러"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="380dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/starIcon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="별 아이콘"
+                            android:src="@drawable/ic_star" />
+
+                        <TextView
+                            android:id="@+id/reviewCount1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="5.0  |"
+                            android:textColor="#8A8A8A"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/reviewCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="후기 3  |"
+                            android:textColor="#8A8A8A"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/transactionHistory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래내역 3"
+                            android:textColor="#8A8A8A"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/detailViewIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="36dp"
+                    android:contentDescription="자세히보기 아이콘"
+                    android:src="@drawable/ic_expand_right_light" />
+
+            </LinearLayout>
+
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="#E0E0E0" />
+
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/otherItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="소금시러설탕시러님이 판매하시는 다른 상품"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="20dp"/>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="115dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/img1"
+                            android:layout_width="115dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/img_material" />
+
+                        <TextView
+                            android:id="@+id/otherItemText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="떡볶이를 만들 수 있는 떡"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:id="@+id/otherItemPrice1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2,000원"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="3dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="115dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:layout_width="115dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/img_material" />
+
+                        <TextView
+                            android:id="@+id/otherItemText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="유기농 쌀"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:id="@+id/otherItemPrice2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3,000원"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="3dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="115dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/img3"
+                            android:layout_width="115dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/img_material" />
+
+                        <TextView
+                            android:id="@+id/otherItemText3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="당근"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:id="@+id/otherItemPrice3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1,500원"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="3dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- 찜, 가격, 채팅 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="40dp"
+                    android:paddingBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/heartIcon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="하트 아이콘"
+                        android:src="@drawable/ic_heart" />
+
+                    <TextView
+                        android:id="@+id/itemPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2000원"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="20dp"/>
+
+                    <Button
+                        android:id="@+id/chatButton"
+                        android:layout_width="110dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@color/green"
+                        android:text="채팅하기"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rounded_button"
+                        android:layout_marginLeft="135dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

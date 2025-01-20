@@ -17,7 +17,7 @@
 
         <!-- MainActivity 추가 -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".MaterialActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +40,28 @@
         <!-- SignUpActivity 추가 -->
         <activity
             android:name=".SignUpActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MaterialActivity 추가 -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MaterialDetailActivity 추가 -->
+        <activity
+            android:name=".MaterialDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
