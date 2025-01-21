@@ -1,6 +1,0 @@
-package com.example.test.model
-
-data class LoginRequest(
-    val username: String,
-    val password: String
-)

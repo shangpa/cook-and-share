@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 로고 -->
+    <ImageButton
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/image_activity_main_logo"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 검색 버튼 -->
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:src="@drawable/ic_search"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintTop_toTopOf="@id/logo"
+        app:layout_constraintBottom_toBottomOf="@id/logo" />
+
+    <!-- 알림 버튼 -->
+    <ImageButton
+        android:id="@+id/bellIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_bell"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintTop_toTopOf="@id/searchIcon"/>
+
+    <!-- 마이페이지 버튼 -->
+    <ImageButton
+        android:id="@+id/person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_person"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchIcon"/>
+
+    <ScrollView
+        android:id="@+id/activityMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="92dp"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 배너 이미지 추가 -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/bannerImg"
+                android:layout_width="411dp"
+                android:layout_height="180dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="15dp" />
+
+            <!-- 배너 이미지 하단에 33dp 간격을 두고 SVG 아이콘을 정렬 -->
+            <LinearLayout
+                android:id="@+id/categoryGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@id/bannerImg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- 동네에서 재료 거래하기 -->
+                <LinearLayout
+                    android:id="@+id/materialExchange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center">
+
+                    <FrameLayout
+                        android:id="@+id/rectBoxOne"
+                        android:layout_width="113dp"
+                        android:layout_height="149dp"
+                        android:background="@drawable/ic_activity_main_rect">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="동네에서\n재료 거래하기"
+                            android:textSize="13sp"
+                            android:textColor="#3D4551"
+                            android:layout_marginTop="5dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/image_activity_main_neighborhood"
+                            android:layout_gravity="bottom" />
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <!-- 두근두근 레시피 작성하기 -->
+                <LinearLayout
+                    android:id="@+id/recipeWrite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center">
+
+                    <FrameLayout
+                        android:id="@+id/rectBoxTwo"
+                        android:layout_width="113dp"
+                        android:layout_height="149dp"
+                        android:background="@drawable/ic_activity_main_rect">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="두근두근\n레시피 작성하기"
+                            android:textSize="13sp"
+                            android:textColor="#3D4551"
+                            android:layout_marginTop="5dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/image_activity_main_book"
+                            android:layout_gravity="bottom" />
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <!-- 냉장고의 재료 관리하기 -->
+                <LinearLayout
+                    android:id="@+id/recipeManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <FrameLayout
+                        android:id="@+id/rectBoxThree"
+                        android:layout_width="113dp"
+                        android:layout_height="149dp"
+                        android:background="@drawable/ic_activity_main_rect">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="냉장고의\n재료 관리하기"
+                            android:textSize="13sp"
+                            android:textColor="#3D4551"
+                            android:layout_marginTop="5dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/image_activity_main_refrigerator"
+                            android:layout_gravity="bottom" />
+
+                    </FrameLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 테마별 레세피 -->
+            <TextView
+                android:id="@+id/themeRecipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:layout_marginStart="20dp"
+                android:text="테마별 레세피"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/categoryGroup"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 테마별 레세피 리스트 -->
+            <include
+                android:id="@+id/themeRecipeList"
+                layout="@layout/theme_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                app:layout_constraintTop_toBottomOf="@id/themeRecipe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 테마별 레시피 리스트 아래 구분바 -->
+            <View
+                android:id="@+id/divideRectangleBarOne"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@drawable/bar_rectangle"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="223dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/themeRecipeList"/>
+
+            <!-- 최근 저장한 재료 -->
+            <TextView
+                android:id="@+id/recentlyStoredMaterials"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="43dp"
+                android:layout_marginStart="20dp"
+                android:text="최근 저장한 재료"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 더보기 -->
+            <TextView
+                android:id="@+id/seeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="20dp"
+                android:text="더보기"
+                android:textSize="14sp"
+                android:textColor="#9B9B9B"
+                app:layout_constraintTop_toTopOf="@id/recentlyStoredMaterials"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 최근 저장한 냉장고 재료의 레시피를  추천해요! -->
+            <TextView
+                android:id="@+id/explanation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:text="최근 저장한 냉장고 재료의 레시피를  추천해요!"
+                android:textSize="13sp"
+                android:textColor="#9B9B9B"
+                app:layout_constraintTop_toBottomOf="@id/recentlyStoredMaterials"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 냉장고 재료 박스 -->
+            <View
+                android:id="@+id/materialBox"
+                android:layout_width="352dp"
+                android:layout_height="74dp"
+                android:background="@drawable/ic_activity_main_store_rect"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/explanation" />
+
+            <!-- 계란 -->
+            <TextView
+                android:id="@+id/egg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="25dp"
+                android:text="계란"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/materialBox"
+                app:layout_constraintStart_toStartOf="@id/materialBox" />
+
+            <!-- 개수 -->
+            <TextView
+                android:id="@+id/theNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="25dp"
+                android:text="16알"
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/egg"
+                app:layout_constraintEnd_toEndOf="@id/materialBox" />
+
+            <!-- 날짜 -->
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="25dp"
+                android:text="구매일자 : 2025.01.02"
+                android:textSize="11sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/egg"
+                app:layout_constraintStart_toStartOf="@id/materialBox" />
+
+            <!-- 박스 왼쪽 기둥 -->
+            <View
+                android:id="@+id/leftColumn"
+                android:layout_width="5dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_activity_main_store_rect"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="72dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/materialBox" />
+
+            <!-- 박스 오른쪽 기둥 -->
+            <View
+                android:id="@+id/rightColumn"
+                android:layout_width="5dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_activity_main_store_rect"
+                android:layout_marginEnd="70dp"
+                android:layout_marginTop="72dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/materialBox" />
+
+            <!-- 최근 저장한 재료 리스트 -->
+            <include
+                android:id="@+id/recently_stored_materials"
+                layout="@layout/recently_stored_materials"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                app:layout_constraintTop_toBottomOf="@id/materialBox"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 최근 저장한 재료 리스트 아래 구분바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwo"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@drawable/bar_rectangle"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="287dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/recently_stored_materials" />
+
+            <!-- 동네재료 HOT 거래글 -->
+            <TextView
+                android:id="@+id/localMaterialsHotTradePosts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="43dp"
+                android:layout_marginStart="20dp"
+                android:text="동네재료 HOT 거래글"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 더보기2 -->
+            <TextView
+                android:id="@+id/seeMoreTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="20dp"
+                android:text="더보기"
+                android:textSize="14sp"
+                android:textColor="#9B9B9B"
+                app:layout_constraintTop_toTopOf="@id/localMaterialsHotTradePosts"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 동네 주민과 요리 재료를 공유해보세요! -->
+            <TextView
+                android:id="@+id/explanationTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="20dp"
+                android:text="동네 주민과 요리 재료를 공유해보세요!"
+                android:textSize="13sp"
+                android:textColor="#9B9B9B"
+                app:layout_constraintTop_toBottomOf="@id/seeMoreTwo"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 동네재료 HOT 거래글 리스트 -->
+            <include
+                android:id="@+id/local_material_hot_trading_post"
+                layout="@layout/local_material_hot_trading_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                app:layout_constraintTop_toBottomOf="@id/explanationTwo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 동네재료 HOT 거래글 리스트 아래 구분바 -->
+            <View
+                android:id="@+id/divideRectangleBarThree"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@drawable/bar_rectangle"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="350dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/local_material_hot_trading_post" />
+
+            <!-- 최근 본 레시피-->
+            <TextView
+                android:id="@+id/theRecipeSawRecently"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="43dp"
+                android:layout_marginStart="20dp"
+                android:text="최근 본 레시피"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 동네재료 HOT 거래글 리스트 -->
+            <include
+                android:id="@+id/the_recipe_saw_recently"
+                layout="@layout/the_recipe_saw_recently"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                app:layout_constraintTop_toBottomOf="@id/theRecipeSawRecently"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 동네재료 HOT 거래글 리스트 아래에 33dp 간격을 두고 더 많은 레시피 보러가기 -->
+            <LinearLayout
+                android:id="@+id/theMoreSeeRecipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="900dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toTopOf="@id/the_recipe_saw_recently"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- 더 많은 레시피 보러가기 -->
+            <LinearLayout
+                android:id="@+id/moreSeeRecipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="20dp"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:id="@+id/moreSee"
+                    android:layout_width="210dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_activity_main_rect">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="더 많은 레시피 보러가기"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="19dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_rigth_arrow"
+                        android:layout_marginStart="68dp"
+                        android:layout_gravity="center" />
+
+                </FrameLayout>
+            </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
