@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 최근 저장한 재료 리스트 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <!-- 최근 저장한 재료를 위한 GridLayout -->
+    <GridLayout
+        android:id="@+id/categoryGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="150dp">
+
+        <!-- 알배추전골과 구운 두부 버섯 샐러드 -->
+        <LinearLayout
+            android:id="@+id/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- 이미지 one -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_the_recipe_saw_recently_one" />
+
+                <!-- 재생 버튼 (왼쪽 위에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_video_play"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="start|top" />
+
+                <!-- 찜 버튼 (오른쪽 아래에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_heart"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_gravity="end|bottom" />
+
+            </FrameLayout>
+
+            <!-- 알배추전골과 구운 두부 버섯 샐러드 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알배추전골과 구운 두부 버섯\n샐러드"
+                android:textSize="15sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"/>
+
+            <!-- 단계와 시간 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- step 이미지와 초급 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_step"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="초급"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <!-- time 이미지와 30분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="19dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_time"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30분"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 황태무조림 -->
+        <LinearLayout
+            android:id="@+id/two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- 이미지 two -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_the_recipe_saw_recently_two" />
+
+                <!-- 재생 버튼 (왼쪽 위에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_video_play"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="start|top" />
+
+                <!-- 찜 버튼 (오른쪽 아래에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_heart"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_gravity="end|bottom" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="황태무조림"
+                android:textSize="15sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"/>
+
+            <!-- 단계와 시간 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- step 이미지와 초급 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_step"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="초급"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <!-- time 이미지와 40분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="19dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_time"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="40분"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 굴버섯전골 -->
+        <LinearLayout
+            android:id="@+id/three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <!-- 이미지 three -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_the_recipe_saw_recently_three" />
+
+            <!-- 굴버섯전골 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="굴버섯전골"
+                android:textSize="15sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"/>
+
+            <!-- 단계와 시간 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- step 이미지와 중급 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_step"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="중급"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <!-- time 이미지와 20분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="19dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_time"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20분"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 크리스피 치킨과 뿌리채소구이 -->
+        <LinearLayout
+            android:id="@+id/four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- 이미지 four -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_the_recipe_saw_recently_four" />
+
+                <!-- 재생 버튼 (왼쪽 위에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_video_play"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="start|top" />
+
+                <!-- 찜 버튼 (오른쪽 아래에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_heart"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_gravity="end|bottom" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="크리스피 치킨과 뿌리채소구\n이"
+                android:textSize="15sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"/>
+
+            <!-- 단계와 시간 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- step 이미지와 초급 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_step"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="초급"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <!-- time 이미지와 30분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="19dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_time"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30분"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 당근 머핀 -->
+        <LinearLayout
+            android:id="@+id/five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <!-- 이미지 five -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_the_recipe_saw_recently_five" />
+
+            <!-- 당근 머핀 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="당근 머핀"
+                android:textSize="15sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"/>
+
+            <!-- 단계와 시간 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- step 이미지와 중급 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_step"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="중급"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <!-- time 이미지와 45분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="19dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_time"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="45분"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 홍합탕 -->
+        <LinearLayout
+            android:id="@+id/six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- 이미지 six -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_the_recipe_saw_recently_six" />
+
+                <!-- 재생 버튼 (왼쪽 위에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_video_play"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="start|top" />
+
+                <!-- 찜 버튼 (오른쪽 아래에 위치) -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_heart"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_gravity="end|bottom" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="홍합탕"
+                android:textSize="15sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start"/>
+
+            <!-- 단계와 시간 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- step 이미지와 초급 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_step"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="초급"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+                <!-- time 이미지와 25분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="19dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_recently_stored_materials_time"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="25분"
+                        android:textSize="13sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </GridLayout>
+</LinearLayout>
