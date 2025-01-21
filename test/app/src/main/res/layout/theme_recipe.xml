@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 테마별 리스트 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <!-- 카테고리 리스트를 위한 GridLayout -->
+    <GridLayout
+        android:id="@+id/categoryGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="5"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="150dp">
+
+        <!-- 전체 -->
+        <LinearLayout
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <!-- SVG 아이콘 파일 -->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_total" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 한식 -->
+        <LinearLayout
+            android:id="@+id/koreanFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:src="@drawable/image_theme_recipe_korean_food" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="한식"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 양식 -->
+        <LinearLayout
+            android:id="@+id/westernFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:src="@drawable/image_theme_recipe_western_food" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="양식"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 일식 -->
+        <LinearLayout
+            android:id="@+id/categoryItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:src="@drawable/image_theme_recipe_japanese_food" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일식"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 중식 -->
+        <LinearLayout
+            android:id="@+id/christmasSale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_chinese_food" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="중식"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 채식 -->
+        <LinearLayout
+            android:id="@+id/vegetarianDiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_vegetarian_diet" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="채식"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 간식 -->
+        <LinearLayout
+            android:id="@+id/snack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_snack" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="간식"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 안주 -->
+        <LinearLayout
+            android:id="@+id/relish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_relish" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="안주"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 밑반찬 -->
+        <LinearLayout
+            android:id="@+id/sideDish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_side_dish" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="밑반찬"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <!-- 기타 -->
+        <LinearLayout
+            android:id="@+id/etc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_theme_recipe_etc" /> <!-- SVG 아이콘 파일 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기타"
+                android:textSize="12sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+    </GridLayout>
+</LinearLayout>
