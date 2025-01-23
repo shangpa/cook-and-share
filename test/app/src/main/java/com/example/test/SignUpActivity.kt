@@ -38,7 +38,7 @@ class SignUpActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             val signUpRequest = SignUpRequest(name, username, password)
-
+            Log.e("SignUpActivity", "회원가입 요청 - name: $name, username: $username, password: $password")
             // Retrofit 호출
             RetrofitInstance.apiService.signUp(signUpRequest).enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
