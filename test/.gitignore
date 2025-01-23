@@ -1,4 +1,5 @@
 *.iml
+.idea/*
 .gradle
 /local.properties
 /.idea/caches
@@ -13,3 +14,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ignore RetrofitInstance IP address
+/app/src/main/java/com/example/test/network/RetrofitInstance.kt
+# Ignore network_security_config.xml
+/app/src/main/res/xml/network_security_config.xml
