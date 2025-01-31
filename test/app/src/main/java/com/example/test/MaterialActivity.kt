@@ -17,4 +17,5 @@ class MaterialActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }

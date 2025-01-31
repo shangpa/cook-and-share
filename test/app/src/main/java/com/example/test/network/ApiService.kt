@@ -18,4 +18,5 @@ interface ApiService {
     // 회원가입 요청
     @POST("api/auth/register")
     fun signUp(@Body signUpRequest: SignUpRequest): Call<ApiResponse>
+    abstract fun getUserInfo(s: String): Any
 }

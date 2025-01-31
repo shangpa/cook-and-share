@@ -1,0 +1,368 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 상단 바 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp">
+
+            <ImageView
+                android:id="@+id/senddReviewBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="뒤로가기 아이콘"
+                android:layout_marginRight="120dp"
+                android:layout_marginLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/fridgeMainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="새로운 거래글"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"/>
+
+    <!-- 사진 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp">
+
+        <ImageView
+            android:id="@+id/ic_camera"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_camera"
+            android:contentDescription="카메라 아이콘"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="0/10"
+            android:textSize="12sp"
+            android:textColor="#8A8A8A"/>
+    </LinearLayout>
+
+    <!-- 카테고리 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="25dp">
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카테고리"
+            android:textSize="13sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 입력 필드 -->
+            <EditText
+                android:id="@+id/categoryText"
+                android:layout_width="340dp"
+                android:layout_height="wrap_content"
+                android:hint="카테고리를 선택해주세요."
+                android:background="@null"
+                android:layout_gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/ic_arrow_down"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_down"
+                android:contentDescription="화살표 아이콘"
+                android:layout_marginRight="10dp"
+                app:tint="#8A8A8E"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="370dp"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+
+        <!-- 제목 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제목"
+                android:textSize="13sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- 입력 필드 -->
+            <EditText
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="글 제목"
+                android:background="@null"
+                android:layout_gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="370dp"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <!-- 수량 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수량"
+                android:textSize="13sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- 입력 필드 -->
+            <EditText
+                android:id="@+id/quantityText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="수량을 입력해주세요.(단위를 포함해서 적어주세요)"
+                android:background="@null"
+                android:layout_gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="370dp"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <!-- 거래 가격 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:id="@+id/transactionPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="거래 가격"
+                android:textSize="13sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- 입력 필드 -->
+            <EditText
+                android:id="@+id/transactionPriceText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="가격을 입력해주세요.(0을 입력 시 나눔으로 표시됩니다.)"
+                android:background="@null"
+                android:layout_gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="370dp"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <!-- 구매 날짜 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:id="@+id/purchaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구매 날짜"
+                android:textSize="13sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- 입력 필드 -->
+            <EditText
+                android:id="@+id/purchaseDateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="구매 날짜를 입력해주세요."
+                android:background="@null"
+                android:layout_gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="370dp"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <!-- 설명 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="설명"
+                android:textSize="13sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- 입력 필드 -->
+            <EditText
+                android:id="@+id/descriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="거래글의 내용을 작성해주세요.(판매 금지 물품은 게시가 제한될 수 있어\n요.)
+\n\n 욕설, 비방 등 불건전한 내용을 작성한 경우, 앱 사용에 제한이 있을 수 있습\n니다. "
+                android:background="@null"
+                android:layout_gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="370dp"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <!-- 거래 희망 장소 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:id="@+id/wishPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="거래 희망 장소"
+                android:textSize="13sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="390dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- 입력 필드 -->
+                <EditText
+                    android:id="@+id/wishPlaceText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="거래 희망 장소를 간단히 작성해주세요."
+                    android:background="@null"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/ic_rigth_arrow"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginRight="10dp"
+                    android:contentDescription="화살표 아이콘"
+                    android:src="@drawable/ic_rigth_arrow"
+                    app:tint="#8A8A8E"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="370dp"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/continueButton"
+            android:layout_width="370dp"
+            android:layout_height="55dp"
+            android:text="게시하기"
+            android:backgroundTint="#E7E7E7"
+            android:textColor="#A1A9AD"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="17dp"/>
+
+    </LinearLayout>
+</ScrollView>
