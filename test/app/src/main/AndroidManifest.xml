@@ -105,7 +105,11 @@
 
         <!-- MaterialOtherProfileActivity -->
         <activity
-            android:name=".MaterialOtherProfileActivity"
+            android:name=".MaterialOtherProfileActivity"/>
+
+        <!-- FridgeRecipeActivity -->
+        <activity
+            android:name=".FridgeRecipeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -116,7 +120,11 @@
 
         <!-- MaterialSearchActivity -->
         <activity
-            android:name=".MaterialSearchActivity"
+            android:name=".MaterialSearchActivity"/>
+
+        <!-- MypageActivity -->
+        <activity
+            android:name=".MypageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -237,7 +245,10 @@
 
         <!-- MaterialChatDetailActivity -->
         <activity
-            android:name=".MaterialChatDetailActivity"
+            android:name=".MaterialChatDetailActivity"/>
+        <!-- LikeFoodActivity -->
+        <activity
+            android:name=".LikeFoodActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
