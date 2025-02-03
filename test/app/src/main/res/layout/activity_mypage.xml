@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 마이페이지 메인 -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+
+        <!-- 상단 바 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity=""
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp" >
+
+            <!-- 마이페이지 텍스트 -->
+            <TextView
+                android:id="@+id/mypageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="마이페이지"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+
+            <!-- 알림 버튼 -->
+            <ImageButton
+                android:id="@+id/bellIcon"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:src="@drawable/ic_bell"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginStart="253dp" />
+
+
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#F5F6F7" />
+
+        <!-- 사용자 이름 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp" >
+
+            <!-- 사용자 이름 텍스트 -->
+            <TextView
+                android:id="@+id/mypageUserNameText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="홍길동"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="2dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="님"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="2dp"/>
+
+            <!-- 선호음식 바로가기 아이콘 -->
+            <ImageButton
+                android:id="@+id/likeFoodIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_like_food_arrow"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginStart="3dp"/>
+
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#F5F6F7"
+            android:layout_marginBottom="25dp"/>
+
+        <!-- 관리 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="관리"
+            android:textSize="11sp"
+            android:textColor="#A1A9AD"
+            android:layout_marginStart="30dp" />
+
+        <!-- 개인정보수정 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개인정보수정"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="17dp" />
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp" />
+
+        <!-- 레시피 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="레시피"
+            android:textSize="11sp"
+            android:textColor="#A1A9AD"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"/>
+
+        <!-- 찜한 레시피 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 레시피 아이콘 -->
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/ic_mypage_recipe"
+                android:contentDescription="레시피 아이콘" />
+
+            <!-- 찜한 레시피 텍스트 -->
+            <TextView
+                android:id="@+id/likeRecipeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="찜한 레시피"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+        <!-- 작성한 레시피 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 레시피 아이콘 -->
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/ic_mypage_recipe"
+                android:contentDescription="레시피 아이콘" />
+
+            <!-- 작성한 레시피 텍스트 -->
+            <TextView
+                android:id="@+id/writeRecipeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성한 레시피"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+        <!-- 레시피 리뷰 내역 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 레시피 아이콘 -->
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/ic_mypage_recipe"
+                android:contentDescription="레시피 아이콘" />
+
+            <!-- 작성한 레시피 텍스트 -->
+            <TextView
+                android:id="@+id/recipeReviewListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="레시피 리뷰 내역"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp" />
+
+        <!-- 냉장고 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="냉장고"
+            android:textSize="11sp"
+            android:textColor="#A1A9AD"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"/>
+
+        <!-- 냉장고 재료 관리 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 냉장고 아이콘 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mypage_fridge"
+                android:contentDescription="냉장고 아이콘" />
+
+            <!--  냉장고 재료 관리 텍스트 -->
+            <TextView
+                android:id="@+id/fridgeMaterialListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="냉장고 재료 관리"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp" />
+
+        <!-- 동네재료 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="동네재료"
+            android:textSize="11sp"
+            android:textColor="#A1A9AD"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"/>
+
+        <!-- 동네재료 내역 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 동네재료 아이콘 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mypage_material"
+                android:contentDescription="동네재료 아이콘" />
+
+            <!--  동네재료 내역 텍스트 -->
+            <TextView
+                android:id="@+id/MaterialListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="동네재료 내역"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp" />
+
+        <!-- 커뮤니티 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="커뮤니티"
+            android:textSize="11sp"
+            android:textColor="#A1A9AD"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"/>
+
+        <!-- 저장한 게시글 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 저장한 게시글 아이콘 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mypage_community_save"
+                android:contentDescription="저장한 게시글 아이콘"
+                android:layout_marginTop="1dp"
+                android:layout_marginStart="1dp"/>
+
+            <!--  저장한 게시글 텍스트 -->
+            <TextView
+                android:id="@+id/savePostText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장한 게시글"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="6dp"/>
+
+        </LinearLayout>
+
+        <!-- 작성한 게시글 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 작성한 게시글 아이콘 -->
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:src="@drawable/ic_mypage_community_write"
+                android:contentDescription="작성한 게시글 아이콘" />
+
+            <!-- 작성한 레시피 텍스트 -->
+            <TextView
+                android:id="@+id/writePostText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성한 게시글"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="1dp"/>
+
+        </LinearLayout>
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp" />
+
+        <!-- 로그아웃 텍스트 -->
+        <TextView
+            android:id="@+id/logoutText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"/>
+
+    </LinearLayout>
+</ScrollView>
