@@ -1,12 +1,12 @@
-/*냉장고 재료 관리 메인*/
+/*선호 요리 선택*/
 package com.example.test
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class FridgeActivity : AppCompatActivity() {
+class LikeFoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fridge)
+        setContentView(R.layout.activity_like_food)
     }
 }
