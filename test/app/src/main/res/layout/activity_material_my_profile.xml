@@ -278,7 +278,7 @@
             android:layout_marginRight="270dp"/>
 
         <ImageView
-            android:id="@+id/ic_rigth_arrow"
+            android:id="@+id/ic_rigth4"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:contentDescription="후기보기 아이콘"

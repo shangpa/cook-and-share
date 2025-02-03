@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/noticeBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="뒤로가기 아이콘"
+            android:layout_marginRight="90dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"/>
+
+        <!-- 상단 바 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알림"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="삭제"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="310dp"
+                android:textColor="#8A8F9C"/>
+        </LinearLayout>
+
+        <!-- 텍스트 레이아웃들 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 전체 텍스트 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:strokeColor="#D2D5D6"
+                android:layout_marginLeft="20dp"
+                android:backgroundTint="@color/black">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체"
+                    android:textSize="12sp"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+            <!-- 레시피 텍스트 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="4dp"
+                android:gravity="center"
+                android:strokeColor="#D2D5D6"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="레시피"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:layout_marginEnd="4dp" />
+            </LinearLayout>
+
+            <!-- 냉장고 텍스트 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="4dp"
+                android:gravity="center"
+                android:strokeColor="#D2D5D6"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="냉장고"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:layout_marginEnd="4dp" />
+            </LinearLayout>
+
+            <!-- 동네재료 텍스트 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="4dp"
+                android:gravity="center"
+                android:strokeColor="#D2D5D6"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="동네재료"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:layout_marginEnd="4dp" />
+            </LinearLayout>
+
+            <!-- 커뮤니티 텍스트 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="4dp"
+                android:gravity="center"
+                android:strokeColor="#D2D5D6"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="커뮤니티"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:layout_marginEnd="4dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 알림 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="772dp"
+            android:background="@color/noice_back_color"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <!-- 알림1 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/bellIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="알림 아이콘"
+                    android:src="@drawable/ic_bell" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="주문이 완료되었습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="12:34"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알림2 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/chat"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="채팅 아이콘"
+                    android:src="@drawable/ic_chatt" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="등록한 레시피에 리뷰가 등록되었습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="01.19 20:21"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알림3 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/chat2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="채팅 아이콘"
+                    android:src="@drawable/ic_chatt" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="작성한 게시글에 댓글이 등록되었습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="01.19 19:03"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알림4 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/recipe"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="레시피 아이콘"
+                    android:src="@drawable/ic_book" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="레시피가 등록되었습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="01.18 17:00"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알림5 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/ic_book"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="레시피 아이콘"
+                    android:src="@drawable/ic_book" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="레시피를 찜하였습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="01.18 10:53"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알림6 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/bell"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="알림 아이콘"
+                    android:src="@drawable/ic_bell" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="등록한 재료의 유통기한이 얼마 남지 않았습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="01.18 12:34"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알림7 텍스트 -->
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/chat3"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="채팅 아이콘"
+                    android:src="@drawable/ic_chatt" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="채팅이 도착하였습니다."
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="01.17 11:12"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

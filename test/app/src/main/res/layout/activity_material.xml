@@ -62,6 +62,7 @@
 
                 <!-- 내 위치 + 화살표 아이콘 -->
                 <LinearLayout
+                    android:id="@+id/myLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -69,7 +70,6 @@
 
                     <!-- 내 위치 텍스트 -->
                     <TextView
-                        android:id="@+id/myLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="내 위치"
