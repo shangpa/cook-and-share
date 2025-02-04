@@ -53,5 +53,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/searchIcon"/>
 
+    <!-- 요리를 완성하셨나요? -->
+    <TextView
+        android:id="@+id/recipeComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="23dp"
+        android:text="요리를 완성하셨나요?"
+        android:textColor="#2B2B2B"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo" />
+
+    <!-- 레시피 -->
+    <TextView
+        android:id="@+id/recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="23dp"
+        android:text="레시피"
+        android:textColor="#35A825"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeComplete" />
+
+    <!-- 가 어떠셨는지 리뷰를 작성해주세요! -->
+    <TextView
+        android:id="@+id/reviewWrite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="0dp"
+        android:text="가 어떠셨는지 리뷰를 작성해주세요!"
+        android:textColor="#2B2B2B"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/recipe"
+        app:layout_constraintTop_toBottomOf="@id/recipeComplete" />
+
+    <!-- 리뷰 작성하러 가기 버튼 -->
+    <Button
+        android:id="@+id/nextFixButton"
+        android:layout_width="352dp"
+        android:layout_height="50dp"
+        android:text="리뷰 작성하러 가기"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/btn_step_recipe_see_next"
+        app:layout_constraintTop_toTopOf="@id/reviewWrite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

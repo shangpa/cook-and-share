@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 자취하는 꼬맹이 -->
+    <TextView
+        android:id="@+id/userNameOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        android:text="자취하는 꼬맹이"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- | -->
+    <TextView
+        android:id="@+id/middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="0dp"
+        android:text="|"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/userNameOne"
+        app:layout_constraintTop_toTopOf="@id/userNameOne" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_star"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/middle"
+        app:layout_constraintTop_toTopOf="@id/middle"/>
+
+    <!-- 5.0 -->
+    <TextView
+        android:id="@+id/rievewScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:text="5.0"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/star"
+        app:layout_constraintTop_toTopOf="@id/userNameOne" />
+
+    <!-- 2024.12.25 -->
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:text="2024.12.25"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameOne" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/food"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_food"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintStart_toStartOf="@id/userNameOne"
+        app:layout_constraintTop_toBottomOf="@id/userNameOne"/>
+
+    <!-- 내용 -->
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="0dp"
+        android:text="재료도 간단하고 맛있어요! 크리스마스 파티 때\n먹으려고 했는데 다들 맛있게 먹어서 좋네요ㅎ\nㅎㅎ"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/food"
+        app:layout_constraintTop_toTopOf="@id/food" />
+
+    <!-- 리뷰1 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarOne"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bar_rectangle"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/food"/>
+
+    <!-- 요리사로데뷔 -->
+    <TextView
+        android:id="@+id/userNameTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="요리사로데뷔"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- | -->
+    <TextView
+        android:id="@+id/middleTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="0dp"
+        android:text="|"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/userNameTwo"
+        app:layout_constraintTop_toTopOf="@id/userNameTwo" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/starTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_star"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/middleTwo"
+        app:layout_constraintTop_toTopOf="@id/middleTwo"/>
+
+    <!-- 3.0 -->
+    <TextView
+        android:id="@+id/rievewScoreTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:text="3.0"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/starTwo"
+        app:layout_constraintTop_toTopOf="@id/userNameTwo" />
+
+    <!-- 2024.12.24 -->
+    <TextView
+        android:id="@+id/dateTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:text="2024.12.24"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameTwo" />
+
+    <!-- 내용2 -->
+    <TextView
+        android:id="@+id/contentTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:text="아... 너무 짜요...;;;;"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/userNameTwo"
+        app:layout_constraintTop_toBottomOf="@id/userNameTwo" />
+
+    <!-- 댓글1 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarTwo"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bar_rectangle"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentTwo"/>
+
+    <!-- 먀냥냥 -->
+    <TextView
+        android:id="@+id/userNameThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="먀냥냥"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
+
+    <!-- | -->
+    <TextView
+        android:id="@+id/middleThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="0dp"
+        android:text="|"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/userNameThree"
+        app:layout_constraintTop_toTopOf="@id/userNameThree" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/starThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_star"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/middleThree"
+        app:layout_constraintTop_toTopOf="@id/middleThree"/>
+
+    <!-- 5.0 -->
+    <TextView
+        android:id="@+id/rievewScoreThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:text="5.0"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/starThree"
+        app:layout_constraintTop_toTopOf="@id/userNameThree" />
+
+    <!-- 2024.11.18 -->
+    <TextView
+        android:id="@+id/dateThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:text="2024.11.18"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameThree" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/foodTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_food"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintStart_toStartOf="@id/userNameThree"
+        app:layout_constraintTop_toBottomOf="@id/userNameThree"/>
+
+    <!-- 내용 -->
+    <TextView
+        android:id="@+id/contentThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="0dp"
+        android:text="더 연습해서 주말에 손님께 대접하려고요..!"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/foodTwo"
+        app:layout_constraintTop_toTopOf="@id/foodTwo" />
+
+    <!-- 리뷰1 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarThree"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bar_rectangle"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/foodTwo"/>
+
+    <!-- 자취하는 꼬맹이 -->
+    <TextView
+        android:id="@+id/userNameFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="17dp"
+        android:text="자취하는 꼬맹이"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree" />
+
+    <!-- | -->
+    <TextView
+        android:id="@+id/middleFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="0dp"
+        android:text="|"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/userNameFour"
+        app:layout_constraintTop_toTopOf="@id/userNameFour" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/starFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_star"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/middleFour"
+        app:layout_constraintTop_toTopOf="@id/middleFour"/>
+
+    <!-- 5.0 -->
+    <TextView
+        android:id="@+id/rievewScoreFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:text="5.0"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/starFour"
+        app:layout_constraintTop_toTopOf="@id/userNameFour" />
+
+    <!-- 2024.12.25 -->
+    <TextView
+        android:id="@+id/dateFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:text="2024.12.25"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameFour" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/foodThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_food"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintStart_toStartOf="@id/userNameFour"
+        app:layout_constraintTop_toBottomOf="@id/userNameFour"/>
+
+    <!-- 내용 -->
+    <TextView
+        android:id="@+id/contentFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="0dp"
+        android:text="재료도 간단하고 맛있어요! 크리스마스 파티 때\n먹으려고 했는데 다들 맛있게 먹어서 좋네요ㅎ\nㅎㅎ"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/foodThree"
+        app:layout_constraintTop_toTopOf="@id/foodThree" />
+
+    <!-- 리뷰1 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarFour"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bar_rectangle"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/foodThree"/>
+
+    <!-- 요리사로데뷔 -->
+    <TextView
+        android:id="@+id/userNameFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="요리사로데뷔"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
+    <!-- | -->
+    <TextView
+        android:id="@+id/middleFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="0dp"
+        android:text="|"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/userNameFive"
+        app:layout_constraintTop_toTopOf="@id/userNameFive" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/starFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_star"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/middleFive"
+        app:layout_constraintTop_toTopOf="@id/middleFive"/>
+
+    <!-- 3.0 -->
+    <TextView
+        android:id="@+id/rievewScoreFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:text="3.0"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/starFive"
+        app:layout_constraintTop_toTopOf="@id/userNameFive" />
+
+    <!-- 2024.12.24 -->
+    <TextView
+        android:id="@+id/dateFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:text="2024.12.24"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameFive" />
+
+    <!-- 내용2 -->
+    <TextView
+        android:id="@+id/contentFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:text="아... 너무 짜요...;;;;"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/userNameFive"
+        app:layout_constraintTop_toBottomOf="@id/userNameFive" />
+
+    <!-- 댓글1 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarFive"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bar_rectangle"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentFive"/>
+
+    <!-- 먀냥냥 -->
+    <TextView
+        android:id="@+id/userNameSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="먀냥냥"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+    <!-- | -->
+    <TextView
+        android:id="@+id/middleSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="0dp"
+        android:text="|"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/userNameSix"
+        app:layout_constraintTop_toTopOf="@id/userNameSix" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/starSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_star"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/middleSix"
+        app:layout_constraintTop_toTopOf="@id/middleSix"/>
+
+    <!-- 5.0 -->
+    <TextView
+        android:id="@+id/rievewScoreSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:text="5.0"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/starSix"
+        app:layout_constraintTop_toTopOf="@id/userNameSix" />
+
+    <!-- 2024.11.18 -->
+    <TextView
+        android:id="@+id/dateSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:text="2024.11.18"
+        android:textColor="#D2D5D6"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameSix" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/foodFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_review_list_food"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintStart_toStartOf="@id/userNameSix"
+        app:layout_constraintTop_toBottomOf="@id/userNameSix"/>
+
+    <!-- 내용 -->
+    <TextView
+        android:id="@+id/contentSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="0dp"
+        android:text="더 연습해서 주말에 손님께 대접하려고요..!"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/foodFive"
+        app:layout_constraintTop_toTopOf="@id/foodFive" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

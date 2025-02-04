@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 뒤로가기 -->
+    <ImageButton
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_lelft_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchRect"
+        app:layout_constraintBottom_toBottomOf="@id/searchRect" />
+
+    <!-- 검색 박스 -->
+    <View
+        android:id="@+id/searchRect"
+        android:layout_width="286dp"
+        android:layout_height="35dp"
+        android:background="@drawable/ic_search_rect"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 검색어를 입력해주세요 -->
+    <TextView
+        android:id="@+id/writeReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:text="검색어를 입력해주세요"
+        android:textColor="#9B9B9B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/searchRect"
+        app:layout_constraintTop_toTopOf="@id/searchRect"
+        app:layout_constraintBottom_toBottomOf="@id/searchRect" />
+
+    <!-- 검색 버튼 -->
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_search"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow" />
+
+    <!-- 검색바 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarOne"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toTopOf="@id/searchRect" />
+
+    <!-- 총  -->
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:text="총 "
+        android:textColor="#2B2B2B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 0 -->
+    <TextView
+        android:id="@+id/zero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:text="0"
+        android:textColor="#35A825"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/total"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 개 검색결과 -->
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:text="개 검색결과"
+        android:textColor="#2B2B2B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/zero"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 조회수순 -->
+    <TextView
+        android:id="@+id/searchOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="0dp"
+        android:text="조회수순"
+        android:textColor="#2B2B2B"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/downArrow"
+        app:layout_constraintTop_toTopOf="@id/result" />
+
+    <!-- 드롭박스 -->
+    <ImageButton
+        android:id="@+id/downArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="1dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchOrder" />
+
+    <!-- 검색 이미지 -->
+    <ImageView
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_search_no_search"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    <!-- 해당되는 결과가 없습니다 -->
+    <TextView
+        android:id="@+id/foodNameOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:text="해당되는 결과가\n      없습니다"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/search"
+        app:layout_constraintEnd_toEndOf="@id/search"
+        app:layout_constraintTop_toBottomOf="@id/search" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

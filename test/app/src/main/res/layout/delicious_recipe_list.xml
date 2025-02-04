@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 최근 저장한 재료 리스트 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <!-- 최근 저장한 재료를 위한 GridLayout -->
+    <GridLayout
+        android:id="@+id/categoryGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="150dp">
+
+        <!-- 간도 적당하고 겨울에 따뜻하게 맛있게 먹었어요! -->
+        <LinearLayout
+            android:id="@+id/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="start">
+
+            <!-- 이미지와 텍스트 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginTop="7dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_delicious_recipe_list_one" />
+
+                <!-- 첫번째 텍스트와 두번째 텍스트 다른줄로 나누기 -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 첫 번째 텍스트 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="간도 적당하고 겨울에 따뜻하게 맛있게 먹었어요!"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginTop="11dp"/>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp">
+
+                        <!-- 두 번째 텍스트 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="추리게임중독자"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"/>
+
+                        <!-- 구분선 | -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="|"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="6dp"/>
+
+                        <!-- 날짜 및 시간 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12.28 20:00"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 와 먹어본 수프 중에 이게 제일 맛있어용..ㅜ -->
+        <LinearLayout
+            android:id="@+id/two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="21dp"
+            android:gravity="start">
+
+            <!-- 이미지와 텍스트 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginTop="7dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_delicious_recipe_list_two" />
+
+                <!-- 첫번째 텍스트와 두번째 텍스트 다른줄로 나누기 -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 첫 번째 텍스트 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="와 먹어본 수프 중에 이게 제일 맛있어용..ㅜ"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginTop="11dp"/>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp">
+
+                        <!-- 두 번째 텍스트 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="로봇조아김말이"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"/>
+
+                        <!-- 구분선 | -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="|"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="6dp"/>
+
+                        <!-- 날짜 및 시간 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12.26 10:02"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 숙취때문에 시들시들하던 저에게 한 줄기 빛... -->
+        <LinearLayout
+            android:id="@+id/three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="21dp"
+            android:gravity="start">
+
+            <!-- 이미지와 텍스트 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginTop="7dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_delicious_recipe_list_three" />
+
+                <!-- 첫번째 텍스트와 두번째 텍스트 다른줄로 나누기 -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 첫 번째 텍스트 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="숙취때문에 시들시들하던 저에게 한 줄기 빛..."
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginTop="11dp"/>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp">
+
+                        <!-- 두 번째 텍스트 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="파스타맛돌이"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"/>
+
+                        <!-- 구분선 | -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="|"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="6dp"/>
+
+                        <!-- 날짜 및 시간 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12.23 11:27"
+                            android:textSize="11sp"
+                            android:textColor="#8A8A8A"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+    </GridLayout>
+</LinearLayout>

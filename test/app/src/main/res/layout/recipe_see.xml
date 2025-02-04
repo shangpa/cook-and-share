@@ -1,0 +1,1338 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 최근 저장한 재료 리스트 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <!-- 최근 저장한 재료를 위한 GridLayout -->
+    <GridLayout
+        android:id="@+id/categoryGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="150dp">
+
+        <LinearLayout
+            android:id="@+id/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <!-- 요리 이름, 인분 한줄에 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 양배추 전골 재료, 4인분 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp">
+
+                    <!-- 알배추 전골 재료 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="알배추 전골 재료"
+                        android:textSize="15sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 4인분 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4인분"
+                        android:textSize="13sp"
+                        android:textColor="#5D5D5D"
+                        android:layout_marginStart="11dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알배추 전골 재료 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarOne"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bar_recipe_see" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 알배추, 1/2통 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 알배추 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="알배추"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1/2통 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/2통"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="149dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 알배추, 1/2통 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwo"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 다진 돼지고기, 400g -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 다진 돼지고기 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="다진 돼지고기"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 400g -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="400g"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="112dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 다진 돼지고기, 400g 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarThree"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 쪽파, 3대 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 쪽파 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="쪽파"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 3대 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3대"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 쪽파, 3대 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFour"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 통깨, 적당량 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 통깨 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="통깨"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 적당량 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="적당량"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 통깨, 적당량 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFive"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 고춧가루, 1큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 고춧가루 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="고춧가루"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="137dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 고춧가루, 1큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarSix"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 된장, 2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 된장 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="된장"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 된장, 2큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarSeven"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 멸치육수, 5큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 멸치육수 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="멸치육수"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 5큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="137dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 멸치육수, 5큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarEight"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 요리 이름 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 돼지고기 밑간 재료 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="33dp">
+
+                    <!-- 돼지고기 밑간 재료 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="돼지고기 밑간 재료"
+                        android:textSize="15sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 돼지고기 밑간 재료 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarNine"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bar_recipe_see" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 다진 대파, 1/2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 다진 대파 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="다진 대파"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1/2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="134dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 다진 대파, 1작은술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 다진 마늘, 1작은술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 다진 마늘 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="다진 마늘"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 5큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1작은술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="134dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 다진 마늘, 5큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarEleven"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 생강가루, 1/2작은술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 생강가루 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="생강가루"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1/2작은술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/2작은술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="137dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 생강가루, 1/2작은술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwelve"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 된장, 1큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 된장 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="된장"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 된장, 1큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBartThirteen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 맛술, 1큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 맛술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="맛술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 맛술, 1큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFourteen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 후춧가루, 약간 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 후춧가루 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="후춧가루"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 약간 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="약간"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="137dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 후춧가루, 약간 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFifteen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 요리 이름 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 구운 두부 버섯 샐러드 재료 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="33dp">
+
+                    <!-- 구운 두부 버섯 샐러드 재료 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="구운 두부 버섯 샐러드 재료"
+                        android:textSize="15sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 구운 두부 버섯 샐러드 재료 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarSixteen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bar_recipe_see" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 두부, 1모(550g)-->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 두부 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="두부"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1모(550g) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1모(550g)"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 두부, 1모(550g) 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarSeventeen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 버섯(느타리버섯, 만가닥버섯), 두 줌-->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 버섯(느타리버섯, 만가닥버섯) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="버섯(느타리버섯, 만가닥버섯)"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 두 줌) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="두 줌"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="35dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 버섯(느타리버섯, 만가닥버섯), 두 줌 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarEigthteen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 적양파, 1개 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 적양파 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="적양파"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1개 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1개"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="149dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 적양파, 1개 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarNineteen"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 올리브오일, 2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 올리브오일 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="올리브오일"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="126dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 올리브오일, 2큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwenty"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 소금, 1작은술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 소금 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="소금"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1작은술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1작은술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 소금, 1작은술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBartTwentyone"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 후춧가루, 약간 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 후춧가루 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="후춧가루"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 약간 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="약간"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="137dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 후춧가루, 약간 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentytwo"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 요리 이름 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 드레싱 재료 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="33dp">
+
+                    <!-- 드레싱 재료 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="드레싱 재료"
+                        android:textSize="15sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 드레싱 재료 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentythree"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bar_recipe_see" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 간장, 2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 간장 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="간장"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 간장, 2큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBartTwentyfour"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 다진 마늘, 1/2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 다진 마늘 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="다진 마늘"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1/2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="134dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 다진 마늘, 1/2큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentyfive"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 올리브오일, 2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 올리브오일 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="올리브오일"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="126dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 올리브오일, 2큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentysix"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 식초, 1큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 식초 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="식초"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 식초, 1큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentyseven"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 설탕, 1큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 설탕 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="설탕"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="160dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 설탕, 1큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentyeight"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+            <!-- 재료, 양 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp">
+
+                <!-- 참기름, 1/2큰술 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 참기름 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="참기름"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_gravity="start"/>
+
+                    <!-- 1/2큰술 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/2큰술"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="149dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 참기름, 1/2큰술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwentynine"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bar_recipe_see_material" />
+
+        </LinearLayout>
+
+    </GridLayout>
+    </ScrollView>
+</LinearLayout>

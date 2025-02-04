@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 뒤로가기 -->
+    <ImageButton
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_lelft_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 하트 버튼 -->
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_recipe_heart"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintTop_toTopOf="@id/backArrow" />
+
+    <!-- 좋아요 버튼 -->
+    <ImageButton
+        android:id="@+id/bellIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_good"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintTop_toTopOf="@id/searchIcon" />
+
+    <!-- 공유 버튼 -->
+    <ImageButton
+        android:id="@+id/person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="1dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchIcon" />
+
+    <ScrollView
+        android:id="@+id/activityMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="59dp"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 이미지 -->
+            <ImageView
+                android:id="@+id/riceImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_step_recipe_main"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <!-- 채식 -->
+            <TextView
+                android:id="@+id/vegetarianDiet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="23dp"
+                android:text="채식"
+                android:textSize="13sp"
+                android:textColor="#2B2B2B"
+                app:layout_constraintTop_toBottomOf="@id/riceImage"
+                app:layout_constraintStart_toStartOf="@id/riceImage" />
+
+            <!-- 알배추전골과 구운 두부 버섯 샐러드 -->
+            <TextView
+                android:id="@+id/vegetarianDietName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:layout_marginStart="0dp"
+                android:text="알배추전골과 구운 두부 버섯 샐러드"
+                android:textSize="20sp"
+                android:textColor="#2B2B2B"
+                app:layout_constraintTop_toBottomOf="@id/vegetarianDiet"
+                app:layout_constraintStart_toStartOf="@id/vegetarianDiet" />
+
+            <!-- 소금쇼 -->
+            <TextView
+                android:id="@+id/saltShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소금쇼"
+                android:textSize="13sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="9dp"
+                android:layout_marginStart="0dp"
+                android:layout_toEndOf="@id/riceImage"
+                app:layout_constraintTop_toBottomOf="@id/vegetarianDietName"
+                app:layout_constraintStart_toStartOf="@id/vegetarianDietName" />
+
+            <!-- | -->
+            <TextView
+                android:id="@+id/middle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="|"
+                android:textSize="11sp"
+                android:textColor="#8A8A8A"
+                android:layout_marginTop="9dp"
+                android:layout_marginStart="38dp"
+                android:layout_toEndOf="@id/riceImage"
+                app:layout_constraintTop_toBottomOf="@id/vegetarianDietName"
+                app:layout_constraintStart_toStartOf="@id/vegetarianDietName" />
+
+            <!-- 01.17 -->
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01.17"
+                android:textSize="13sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="9dp"
+                android:layout_marginStart="49dp"
+                android:layout_toEndOf="@id/riceImage"
+                app:layout_constraintTop_toBottomOf="@id/vegetarianDietName"
+                app:layout_constraintStart_toStartOf="@id/vegetarianDietName" />
+
+            <!-- 난이도 -->
+            <TextView
+                android:id="@+id/levelOfDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="난이도"
+                android:textSize="13sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="26dp"
+                android:layout_marginStart="0dp"
+                android:layout_toEndOf="@id/riceImage"
+                app:layout_constraintTop_toBottomOf="@id/saltShow"
+                app:layout_constraintStart_toStartOf="@id/saltShow" />
+
+            <!-- 초급 -->
+            <TextView
+                android:id="@+id/elementaryLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="초급"
+                android:textSize="13sp"
+                android:textColor="#35A825"
+                android:layout_marginTop="26dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/riceImage"
+                app:layout_constraintTop_toBottomOf="@id/saltShow"
+                app:layout_constraintStart_toEndOf="@id/levelOfDifficulty" />
+
+            <!-- 시간 -->
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시간"
+                android:textSize="13sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginTop="26dp"
+                android:layout_marginStart="28dp"
+                android:layout_toEndOf="@id/riceImage"
+                app:layout_constraintTop_toBottomOf="@id/saltShow"
+                app:layout_constraintStart_toEndOf="@id/elementaryLevel" />
+
+            <!-- 30분 -->
+            <TextView
+                android:id="@+id/halfHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="26dp"
+                android:layout_toEndOf="@id/riceImage"
+                android:text="30분"
+                android:textColor="#35A825"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/time"
+                app:layout_constraintTop_toBottomOf="@id/saltShow" />
+
+            <!-- 태그 사각형1 -->
+            <View
+                android:id="@+id/tagRectOne"
+                android:layout_width="58dp"
+                android:layout_height="23dp"
+                android:background="@drawable/ic_step_recipe_see_main_rect"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintStart_toStartOf="@id/levelOfDifficulty"
+                app:layout_constraintTop_toBottomOf="@id/levelOfDifficulty"/>
+
+            <!-- # -->
+            <TextView
+                android:id="@+id/tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="#"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagRectOne"
+                app:layout_constraintTop_toTopOf="@id/tagRectOne"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectOne"/>
+
+            <!-- 알배추 -->
+            <TextView
+                android:id="@+id/chineseCabbage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="알배추"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tag"
+                app:layout_constraintTop_toTopOf="@id/tagRectOne"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectOne"/>
+
+            <!-- 태그 사각형2 -->
+            <View
+                android:id="@+id/tagRectTwo"
+                android:layout_width="50dp"
+                android:layout_height="23dp"
+                android:background="@drawable/ic_step_recipe_see_main_rect"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toEndOf="@id/tagRectOne"
+                app:layout_constraintTop_toTopOf="@id/tagRectOne"/>
+
+            <!-- # -->
+            <TextView
+                android:id="@+id/tagTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="#"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagRectTwo"
+                app:layout_constraintTop_toTopOf="@id/tagRectTwo"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectTwo"/>
+
+            <!-- 두부 -->
+            <TextView
+                android:id="@+id/tofu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="두부"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagTwo"
+                app:layout_constraintTop_toTopOf="@id/tagRectTwo"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectTwo"/>
+
+            <!-- 태그 사각형3 -->
+            <View
+                android:id="@+id/tagRectThree"
+                android:layout_width="50dp"
+                android:layout_height="23dp"
+                android:background="@drawable/ic_step_recipe_see_main_rect"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toEndOf="@id/tagRectTwo"
+                app:layout_constraintTop_toTopOf="@id/tagRectTwo"/>
+
+            <!-- # -->
+            <TextView
+                android:id="@+id/tagThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="#"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagRectThree"
+                app:layout_constraintTop_toTopOf="@id/tagRectThree"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectThree"/>
+
+            <!-- 버섯 -->
+            <TextView
+                android:id="@+id/mushroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="버섯"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagThree"
+                app:layout_constraintTop_toTopOf="@id/tagRectThree"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectThree"/>
+
+            <!-- 태그 사각형4 -->
+            <View
+                android:id="@+id/tagRectFour"
+                android:layout_width="58dp"
+                android:layout_height="23dp"
+                android:background="@drawable/ic_step_recipe_see_main_rect"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toEndOf="@id/tagRectThree"
+                app:layout_constraintTop_toTopOf="@id/tagRectThree"/>
+
+            <!-- # -->
+            <TextView
+                android:id="@+id/tagFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="#"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagRectFour"
+                app:layout_constraintTop_toTopOf="@id/tagRectFour"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectFour"/>
+
+            <!-- 샐러드 -->
+            <TextView
+                android:id="@+id/salad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="샐러드"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagFour"
+                app:layout_constraintTop_toTopOf="@id/tagRectFour"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectFour"/>
+
+            <!-- 태그 사각형5 -->
+            <View
+                android:id="@+id/tagRectFive"
+                android:layout_width="50dp"
+                android:layout_height="23dp"
+                android:background="@drawable/ic_step_recipe_see_main_rect"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toEndOf="@id/tagRectFour"
+                app:layout_constraintTop_toTopOf="@id/tagRectFour"/>
+
+            <!-- # -->
+            <TextView
+                android:id="@+id/tagFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="#"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagRectFive"
+                app:layout_constraintTop_toTopOf="@id/tagRectFive"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectFive"/>
+
+            <!-- 전골 -->
+            <TextView
+                android:id="@+id/jeongol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="전골"
+                android:textColor="#747474"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tagFive"
+                app:layout_constraintTop_toTopOf="@id/tagRectFive"
+                app:layout_constraintBottom_toBottomOf="@id/tagRectFive"/>
+
+            <!-- 태그 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarOne"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintTop_toBottomOf="@id/tagRectOne" />
+
+            <!-- 재료 -->
+            <TextView
+                android:id="@+id/material"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="17dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="재료"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarOne"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+            <!-- 재료 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTewleve"
+                android:layout_width="117dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginStart="22dp"
+                android:background="@drawable/bar_recipe"
+                app:layout_constraintTop_toBottomOf="@id/material"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- 조리 순서 -->
+            <TextView
+                android:id="@+id/cookOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="0dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="조리 순서"
+                android:textColor="#A1A9AD"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/material"
+                app:layout_constraintTop_toTopOf="@id/material" />
+
+            <!-- 리뷰 -->
+            <TextView
+                android:id="@+id/review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="0dp"
+                android:layout_toStartOf="@id/riceImage"
+                android:text="리뷰"
+                android:textColor="#A1A9AD"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/cookOrder"
+                app:layout_constraintTop_toTopOf="@id/material" />
+
+            <!-- 선택 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintTop_toBottomOf="@id/review" />
+
+            <!-- 재료 리스트 -->
+            <include
+                android:id="@+id/materialList"
+                layout="@layout/recipe_see"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo"/>
+
+            <!-- 재료 리스트  아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarThree"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="1423dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintTop_toTopOf="@id/materialList" />
+
+            <!-- 대체 가능한 재료 -->
+            <TextView
+                android:id="@+id/replaceMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:text="대체 가능한 재료"
+                android:textColor="#2B2B2B"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree" />
+
+            <!-- 대체 가능한 재료 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFour"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/replaceMaterial" />
+
+            <!-- 쪽파 -->
+            <TextView
+                android:id="@+id/jjokpa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="쪽파"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
+            <!-- 대파 -->
+            <TextView
+                android:id="@+id/measuring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="10dp"
+                android:text="대파"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
+            <!-- 쪽파 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFive"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see_material"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/jjokpa"/>
+
+            <!-- 멸치육수 -->
+            <TextView
+                android:id="@+id/materialTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="멸치육수"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarFive"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+            <!-- 그 외 다른 육수-->
+            <TextView
+                android:id="@+id/measuringTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="10dp"
+                android:text="그 외 다른 육수"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarFive"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+            <!-- 멸치육수 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarSix"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see_material"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialTwo"/>
+
+            <!-- 맛술 -->
+            <TextView
+                android:id="@+id/materialThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="맛술"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarSix"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix" />
+
+            <!-- 소주-->
+            <TextView
+                android:id="@+id/measuringThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="10dp"
+                android:text="소주"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarSix"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix" />
+
+            <!-- 맛술 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarSeven"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see_material"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialThree"/>
+
+            <!-- 버섯 -->
+            <TextView
+                android:id="@+id/materialFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="버섯"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarSeven"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven" />
+
+            <!-- 새송이버섯-->
+            <TextView
+                android:id="@+id/measuringFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="10dp"
+                android:text="새송이버섯"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarSeven"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven" />
+
+            <!-- 버섯 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarEight"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see_material"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialFour"/>
+
+            <!-- 적양파 -->
+            <TextView
+                android:id="@+id/materialFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="적양파"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarEight"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight" />
+
+            <!-- 양파-->
+            <TextView
+                android:id="@+id/measuringFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="10dp"
+                android:text="양파"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarEight"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight" />
+
+            <!-- 적양파 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarNine"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see_material"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialFive"/>
+
+            <!-- 적양파 바 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTen"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+            <!-- 사용된 재료 처리 방법 -->
+            <TextView
+                android:id="@+id/materialHandlingMethodUsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:text="사용된 재료 처리 방법"
+                android:textColor="#2B2B2B"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTen" />
+
+
+            <!-- 사용된 재료 처리 방법 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarEleven"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialHandlingMethodUsed" />
+
+            <!-- 모든 재료 -->
+            <TextView
+                android:id="@+id/allMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="모든 재료"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarEleven"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEleven" />
+
+            <!-- 음식물 쓰레기 -->
+            <TextView
+                android:id="@+id/foodWaste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="10dp"
+                android:text="음식물 쓰레기"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarEleven"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEleven" />
+
+            <!-- 음식물 쓰레기 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwelve"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="100dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_recipe_see_material"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/allMaterial"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 뒤로가기 -->
+    <ImageButton
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_lelft_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchRect"
+        app:layout_constraintBottom_toBottomOf="@id/searchRect" />
+
+    <!-- 검색 박스 -->
+    <View
+        android:id="@+id/searchRect"
+        android:layout_width="286dp"
+        android:layout_height="35dp"
+        android:background="@drawable/ic_search_rect"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 검색어를 입력해주세요 -->
+    <TextView
+        android:id="@+id/writeReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:text="검색어를 입력해주세요"
+        android:textColor="#9B9B9B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/searchRect"
+        app:layout_constraintTop_toTopOf="@id/searchRect"
+        app:layout_constraintBottom_toBottomOf="@id/searchRect" />
+
+    <!-- 검색 버튼 -->
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_search"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow" />
+
+    <!-- 검색바 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarOne"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toTopOf="@id/searchRect" />
+
+    <!-- 제철 요리 추천 -->
+    <TextView
+        android:id="@+id/seasonalFoodRecommendations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="35dp"
+        android:text="제철 요리 추천"
+        android:textColor="#35A825"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/imageOne"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/image_the_recipe_saw_recently_one"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/seasonalFoodRecommendations"
+        app:layout_constraintTop_toBottomOf="@id/seasonalFoodRecommendations"/>
+
+    <!-- 알배추전골과 구운 두부 버섯 샐러드 -->
+    <TextView
+        android:id="@+id/foodNameOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="6dp"
+        android:text="알배추전골과 구운 두\n부 버섯 샐러드"
+        android:textColor="#2B2B2B"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/imageOne"
+        app:layout_constraintTop_toBottomOf="@id/imageOne" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/imageTwo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/image_the_recipe_saw_recently_two"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/imageOne"
+        app:layout_constraintTop_toBottomOf="@id/seasonalFoodRecommendations"/>
+
+    <!-- 황태무조림 -->
+    <TextView
+        android:id="@+id/foodNameTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="6dp"
+        android:text="황태무조림"
+        android:textColor="#2B2B2B"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/imageTwo"
+        app:layout_constraintTop_toBottomOf="@id/imageTwo" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/imageThree"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/image_the_recipe_saw_recently_three"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/imageTwo"
+        app:layout_constraintTop_toBottomOf="@id/seasonalFoodRecommendations"/>
+
+    <!-- 굴버섯전골 -->
+    <TextView
+        android:id="@+id/foodNameThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="6dp"
+        android:text="굴버섯전골"
+        android:textColor="#2B2B2B"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/imageThree"
+        app:layout_constraintTop_toBottomOf="@id/imageThree" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/imageFour"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/image_the_recipe_saw_recently_four"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/imageThree"
+        app:layout_constraintTop_toBottomOf="@id/seasonalFoodRecommendations"/>
+
+    <!-- 크리스피 치킨과 뿌리채소구이 -->
+    <TextView
+        android:id="@+id/foodNameFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="6dp"
+        android:text="크리스피 치킨과 뿌리\n채소구이"
+        android:textColor="#2B2B2B"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/imageFour"
+        app:layout_constraintTop_toBottomOf="@id/imageFour" />
+
+    <!-- 제철 요리 추천 리스트 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarTwo"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toBottomOf="@id/foodNameOne" />
+
+    <!-- 인기 검색어 -->
+    <TextView
+        android:id="@+id/popularSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="35dp"
+        android:text="인기 검색어"
+        android:textColor="#35A825"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
+
+    <!-- 1. 달걀 -->
+    <TextView
+        android:id="@+id/One"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:text="1.  달걀"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/popularSearch"
+        app:layout_constraintTop_toBottomOf="@id/popularSearch" />
+
+    <!-- 2. 샐러드 -->
+    <TextView
+        android:id="@+id/Two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="14dp"
+        android:text="2.  샐러드"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/popularSearch"
+        app:layout_constraintTop_toBottomOf="@id/One" />
+
+    <!-- 3. 두부 -->
+    <TextView
+        android:id="@+id/Three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="14dp"
+        android:text="3.  두부"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/popularSearch"
+        app:layout_constraintTop_toBottomOf="@id/Two" />
+
+    <!-- 4. 닭 -->
+    <TextView
+        android:id="@+id/Four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="14dp"
+        android:text="4.  닭"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/popularSearch"
+        app:layout_constraintTop_toBottomOf="@id/Three" />
+
+    <!-- 5.  고기 -->
+    <TextView
+        android:id="@+id/Five"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="14dp"
+        android:text="5.  고기"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/popularSearch"
+        app:layout_constraintTop_toBottomOf="@id/Four" />
+
+    <!-- 6.  감자 -->
+    <TextView
+        android:id="@+id/Six"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="0dp"
+        android:text="6.  감자"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/One"
+        app:layout_constraintTop_toTopOf="@id/One" />
+
+    <!-- 7.  음료 -->
+    <TextView
+        android:id="@+id/Seven"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="0dp"
+        android:text="7.  음료"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/Two"
+        app:layout_constraintTop_toTopOf="@id/Two" />
+
+    <!-- 8.  치즈 -->
+    <TextView
+        android:id="@+id/Eight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="0dp"
+        android:text="8.  치즈"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/Three"
+        app:layout_constraintTop_toTopOf="@id/Three" />
+
+    <!-- 9.  전골 -->
+    <TextView
+        android:id="@+id/Nine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="0dp"
+        android:text="9.  전골"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/Four"
+        app:layout_constraintTop_toTopOf="@id/Four" />
+
+    <!-- 10.  알배추 -->
+    <TextView
+        android:id="@+id/Ten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="0dp"
+        android:text="10.  알배추"
+        android:textColor="#63411C"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/Five"
+        app:layout_constraintTop_toTopOf="@id/Five" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
