@@ -1,5 +1,4 @@
 package com.example.test
-
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,24 +16,18 @@ import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 class LoginInfoActivity : AppCompatActivity() {
-
     private lateinit var userNameTextView: TextView
     private lateinit var userIdTextView: TextView
     private lateinit var logoutButton: Button
     private lateinit var sharedPreferences: SharedPreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logininfo)
-
         userNameTextView = findViewById(R.id.userNameTextView)
         userIdTextView = findViewById(R.id.userIdTextView)
         logoutButton = findViewById(R.id.logoutButton)
-
         val token = App.prefs.token
-
         Log.e("LoginInfoActivity", "가져온 토큰: $token")
         // 토큰이 있을 경우 서버에서 로그인 정보 가져오기
         if (token != null && token.isNotEmpty()) {
@@ -43,7 +36,6 @@ class LoginInfoActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "토큰이 없습니다. 로그인해주세요.", Toast.LENGTH_SHORT).show()
         }
-
         // 로그아웃 버튼 클릭 리스너 설정
         logoutButton.setOnClickListener {
             // 로그인 정보 삭제
@@ -54,7 +46,6 @@ class LoginInfoActivity : AppCompatActivity() {
             finish()
         }
     }
-
     private fun fetchUserInfo(token: String) {
         RetrofitInstance.apiService.getUserInfo("Bearer $token").enqueue(object : Callback<LoginInfoResponse> {
             override fun onResponse(call: Call<LoginInfoResponse>, response: Response<LoginInfoResponse>) {
@@ -74,7 +65,6 @@ class LoginInfoActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginInfoActivity, "서버 오류: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
                 Toast.makeText(this@LoginInfoActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
             }

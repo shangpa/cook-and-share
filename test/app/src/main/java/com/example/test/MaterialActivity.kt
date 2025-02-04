@@ -3,6 +3,7 @@ package com.example.test
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 
@@ -20,7 +21,7 @@ class MaterialActivity : AppCompatActivity() {
         }
 
         // searchIcon을 클릭했을 때 MaterialSearchActivity 이동
-        val searchIcon: LinearLayout = findViewById(R.id.searchIcon)
+        val searchIcon: ImageView = findViewById(R.id.searchIcon) // ImageView로 변경
         searchIcon.setOnClickListener {
             val intent = Intent(this, MaterialSearchActivity::class.java)
             startActivity(intent)
@@ -33,19 +34,20 @@ class MaterialActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // profileIcon 클릭했을 때 MaterialMyProfileActivityActivity 이동
-        val profileIcon: LinearLayout = findViewById(R.id.profileIcon)
+        // profileIcon 클릭했을 때 MaterialMyProfileActivity 이동
+        val profileIcon: ImageView = findViewById(R.id.profileIcon) // ImageView로 변경
         profileIcon.setOnClickListener {
             val intent = Intent(this, MaterialMyProfileActivity::class.java)
             startActivity(intent)
         }
 
-        // plusIcon3 클릭했을 때 MaterialMyProfileActivityActivity 이동
-        val plusIcon3: LinearLayout = findViewById(R.id.plusIcon3)
+        // plusIcon3 클릭했을 때 MaterialWritingActivity 이동
+        val plusIcon3: ImageView = findViewById(R.id.plusIcon3) // ImageView로 변경
         plusIcon3.setOnClickListener {
             val intent = Intent(this, MaterialWritingActivity::class.java)
             startActivity(intent)
         }
     }
+
 
 }

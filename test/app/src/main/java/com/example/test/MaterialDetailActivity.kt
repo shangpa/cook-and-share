@@ -3,6 +3,8 @@ package com.example.test
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 
@@ -20,7 +22,7 @@ class MaterialDetailActivity : AppCompatActivity() {
         }
 
         // chatButton 클릭했을 때 MaterialDetailActivity로 이동
-        val chatButton: LinearLayout = findViewById(R.id.chatButton)
+        val chatButton: Button = findViewById(R.id.chatButton)
         chatButton.setOnClickListener {
             val intent = Intent(this, MaterialChatActivity::class.java)
             startActivity(intent)

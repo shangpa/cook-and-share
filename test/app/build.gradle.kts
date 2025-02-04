@@ -36,10 +36,6 @@ android {
 }
 
 dependencies {
-    implementation ("com.naver.maps:map-sdk:3.16.0")
-}
-
-dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -50,6 +46,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.squareup.retrofit2:retrofit:2.9.0") // Retrofit2
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+        implementation("com.squareup.retrofit2:retrofit:2.9.0") // Retrofit2
+        implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson 변환기 추가
 }
