@@ -1,3 +1,4 @@
+/*냉장고 재료 관리 메인*/
 package com.example.test
 
 import android.os.Bundle

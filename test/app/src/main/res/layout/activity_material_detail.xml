@@ -245,6 +245,7 @@
 
             <!-- 사용자 정보 및 상품 판매 정보 -->
             <LinearLayout
+                android:id="@+id/otherProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"

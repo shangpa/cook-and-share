@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 로고 -->
+    <ImageButton
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/image_activity_main_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 검색 버튼 -->
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@id/logo"
+        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintTop_toTopOf="@id/logo" />
+
+    <!-- 알림 버튼 -->
+    <ImageButton
+        android:id="@+id/bellIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_bell"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintTop_toTopOf="@id/searchIcon" />
+
+    <!-- 마이페이지 버튼 -->
+    <ImageButton
+        android:id="@+id/person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchIcon" />
+
+    <!-- 레시피 방식 질문 위 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarOne"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="62dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toTopOf="@id/logo" />
+
+    <ScrollView
+        android:id="@+id/activityMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="84dp"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 굴버섯전골 -->
+            <TextView
+                android:id="@+id/cookname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="72dp"
+                android:text="굴버섯전골"
+                android:textColor="#35A825"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- 레시피를 어떤 방식으로 보고싶으신가요? -->
+            <TextView
+                android:id="@+id/recipeSee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:text="레시피를 어떤 방식으로 보고싶으신가요?"
+                android:textColor="#2B2B2B"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/cookname"
+                app:layout_constraintTop_toBottomOf="@id/cookname" />
+
+            <!-- 타이머와 같이 보기 -->
+            <TextView
+                android:id="@+id/viewWithTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="53dp"
+                android:text="타이머와 같이 보기"
+                android:textColor="#2B2B2B"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwo"
+                app:layout_constraintTop_toBottomOf="@id/recipeSee" />
+
+            <!-- 타이머와 같이보기 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarTwo"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/viewWithTimer" />
+
+            <!-- 타이머와 보러가기 화살표 -->
+            <View
+                android:id="@+id/rigthArrow"
+                android:layout_width="7dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_rigth_arrow"
+                app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwo"
+                app:layout_constraintTop_toTopOf="@id/viewWithTimer" />
+
+            <!-- 타이머 없이 보기 -->
+            <TextView
+                android:id="@+id/viewWithoutTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:text="타이머 없이 보기"
+                android:textColor="#2B2B2B"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
+
+            <!-- 타이머 없이 보기 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarThree"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/viewWithoutTimer" />
+
+            <!-- 타이머 없이와 보러가기 화살표 -->
+            <View
+                android:id="@+id/rigthArrowTwo"
+                android:layout_width="7dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_rigth_arrow"
+                app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThree"
+                app:layout_constraintTop_toTopOf="@id/viewWithoutTimer" />
+
+            <!-- 동영상 보기 -->
+            <TextView
+                android:id="@+id/videoSee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:text="동영상 보기"
+                android:textColor="#2B2B2B"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree" />
+
+            <!-- 동영상 보기 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFour"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/videoSee" />
+
+            <!-- 동영상 보기 화살표 -->
+            <View
+                android:id="@+id/rigthArrowThree"
+                android:layout_width="7dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_rigth_arrow"
+                app:layout_constraintEnd_toEndOf="@id/divideRectangleBarFour"
+                app:layout_constraintTop_toTopOf="@id/videoSee" />
+
+            <!-- 동영상 보기 전체 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarFive"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="59dp"
+                android:background="@drawable/bar_rectangle"
+                app:layout_constraintTop_toTopOf="@id/divideRectangleBarFour" />
+
+            <!-- 예상 사용 재료 -->
+            <TextView
+                android:id="@+id/expectationMaterialsToBeUsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="51dp"
+                android:text="예상 사용 재료"
+                android:textColor="#2B2B2B"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+            <!-- 계란 박스 -->
+            <View
+                android:id="@+id/eggBox"
+                android:layout_width="352dp"
+                android:layout_height="74dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/ic_recipe_rect"
+                app:layout_constraintStart_toStartOf="@id/expectationMaterialsToBeUsed"
+                app:layout_constraintTop_toBottomOf="@id/expectationMaterialsToBeUsed" />
+
+            <!-- 계란 -->
+            <TextView
+                android:id="@+id/egg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="25dp"
+                android:text="계란"
+                android:textSize="14sp"
+                android:textColor="#35A825"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/eggBox"
+                app:layout_constraintStart_toStartOf="@id/eggBox" />
+
+            <!-- 개수 -->
+            <TextView
+                android:id="@+id/theNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="25dp"
+                android:text="2알"
+                android:textSize="14sp"
+                android:textColor="#2B2B2B"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/egg"
+                app:layout_constraintEnd_toEndOf="@id/eggBox" />
+
+            <!-- 날짜 -->
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="25dp"
+                android:text="구매일자 : 2025.01.02"
+                android:textSize="11sp"
+                android:textColor="#000000"
+                app:layout_constraintTop_toTopOf="@id/egg"
+                app:layout_constraintStart_toStartOf="@id/eggBox" />
+
+            <!-- 전체 : 16 알 -->
+            <TextView
+                android:id="@+id/totalNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="25dp"
+                android:text="전체 : 16 알"
+                android:textSize="11sp"
+                android:textColor="#000000"
+                app:layout_constraintTop_toTopOf="@id/date"
+                app:layout_constraintEnd_toEndOf="@id/eggBox" />
+
+            <!-- 적양파 박스 -->
+            <View
+                android:id="@+id/redOnionBox"
+                android:layout_width="352dp"
+                android:layout_height="74dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="11dp"
+                android:background="@drawable/ic_recipe_rect"
+                app:layout_constraintStart_toStartOf="@id/expectationMaterialsToBeUsed"
+                app:layout_constraintTop_toBottomOf="@id/eggBox" />
+
+            <!-- 적양파 -->
+            <TextView
+                android:id="@+id/redOnion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="25dp"
+                android:text="적양파"
+                android:textSize="14sp"
+                android:textColor="#35A825"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/redOnionBox"
+                app:layout_constraintStart_toStartOf="@id/redOnionBox" />
+
+            <!-- 개수 -->
+            <TextView
+                android:id="@+id/theNumberTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="25dp"
+                android:text="1 개"
+                android:textSize="14sp"
+                android:textColor="#2B2B2B"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/redOnion"
+                app:layout_constraintEnd_toEndOf="@id/redOnionBox" />
+
+            <!-- 날짜 -->
+            <TextView
+                android:id="@+id/dateTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="25dp"
+                android:text="구매일자 : 2025.01.02"
+                android:textSize="11sp"
+                android:textColor="#000000"
+                app:layout_constraintTop_toTopOf="@id/redOnion"
+                app:layout_constraintStart_toStartOf="@id/redOnionBox" />
+
+            <!-- 전체 : 2 개 -->
+            <TextView
+                android:id="@+id/totalNumberTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="25dp"
+                android:text="전체 : 2 개"
+                android:textSize="11sp"
+                android:textColor="#000000"
+                app:layout_constraintTop_toTopOf="@id/dateTwo"
+                app:layout_constraintEnd_toEndOf="@id/redOnionBox" />
+
+            <!-- 냉장고 재료 관리하러 가기 버튼 -->
+            <Button
+                android:id="@+id/buyFixButton"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
+                android:text="냉장고 재료 관리하러 가기"
+                android:textSize="13sp"
+                android:textColor="#9B9B9B"
+                android:layout_marginTop="130dp"
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/btn_recipe_add"
+                app:layout_constraintTop_toTopOf="@id/redOnionBox"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

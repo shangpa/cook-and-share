@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 뒤로가기 -->
+    <ImageButton
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_lelft_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 레시피 작성 -->
+    <TextView
+        android:id="@+id/writeReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="레시피 작성"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 리뷰 작성 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarOne"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="41dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toTopOf="@id/writeReview" />
+
+    <!-- 이미지 -->
+    <TextView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="18dp"
+        android:text="이미지"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 동영상 -->
+    <TextView
+        android:id="@+id/video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="85dp"
+        android:layout_marginTop="18dp"
+        android:text="동영상"
+        android:textColor="#A1A9AD"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 리뷰 작성 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarNine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toBottomOf="@id/image" />
+
+    <!-- STEP 1 -->
+    <TextView
+        android:id="@+id/one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="23dp"
+        android:text="STEP 1"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+    <!-- STEP 2 -->
+    <TextView
+        android:id="@+id/two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:text="STEP 2"
+        android:textColor="#2B2B2B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/one"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+    <!-- STEP 3 -->
+    <TextView
+        android:id="@+id/three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:text="STEP 3"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/two"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+    <!-- STEP 4 -->
+    <TextView
+        android:id="@+id/four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:text="STEP 4"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/three"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+    <!-- STEP 5 -->
+    <TextView
+        android:id="@+id/five"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:text="STEP 5"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/four"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+    <!-- STEP 6 -->
+    <TextView
+        android:id="@+id/six"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="23dp"
+        android:text="STEP 6"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+    <!-- 리뷰 작성 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarTen"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toBottomOf="@id/one" />
+
+    <!-- 한식 -->
+    <TextView
+        android:id="@+id/koreanFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="35dp"
+        android:text="한식"
+        android:textColor="#2B2B2B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTen" />
+
+    <!-- 소세지야채볶음의 -->
+    <TextView
+        android:id="@+id/foodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="3dp"
+        android:text="소세지야채볶음의"
+        android:textColor="#2B2B2B"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/koreanFood" />
+
+    <!-- 1인분 재료 -->
+    <TextView
+        android:id="@+id/myOwnRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="3dp"
+        android:text="1인분 재료"
+        android:textColor="#35A825"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/foodName" />
+
+    <!-- 를 입력해주세요 -->
+    <TextView
+        android:id="@+id/made"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:text="를 입력해주세요"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/myOwnRecipe"
+        app:layout_constraintTop_toTopOf="@id/myOwnRecipe" />
+
+    <!-- 어떤 요리의 재료명인지 입력해주세요 -->
+    <TextView
+        android:id="@+id/materalInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:text="어떤 요리의 재료명인지 입력해주세요"
+        android:textColor="#A1A9AD"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@id/myOwnRecipe"
+        app:layout_constraintTop_toBottomOf="@id/myOwnRecipe" />
+
+    <!-- 어떤 요리의 재료명인지 입력해주세요 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarTwo"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materalInput" />
+
+    <!-- 재료명 -->
+    <TextView
+        android:id="@+id/material"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="재료명"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwo"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
+
+    <!-- 계량 -->
+    <TextView
+        android:id="@+id/measuring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:text="계량"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwo"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
+
+    <!-- 재료명 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarThree"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/material"/>
+
+    <!-- 재료명2 -->
+    <TextView
+        android:id="@+id/materialTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="재료명"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree" />
+
+    <!-- 계량2-->
+    <TextView
+        android:id="@+id/measuringTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:text="계량"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree" />
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/deleteTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree" />
+
+    <!-- 재료명2 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarFour"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialTwo"/>
+
+    <!-- 재료명3 -->
+    <TextView
+        android:id="@+id/materialThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="재료명"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
+    <!-- 계량3-->
+    <TextView
+        android:id="@+id/measuringThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:text="계량"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/deleteThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
+    <!-- 재료명3 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarFive"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialThree"/>
+
+    <!-- 재료명4 -->
+    <TextView
+        android:id="@+id/materialFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="재료명"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarFive"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+    <!-- 계량4-->
+    <TextView
+        android:id="@+id/measuringFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:text="계량"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarFive"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/deleteFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+    <!-- 재료명4 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarSix"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialFour"/>
+
+    <!-- 재료명5 -->
+    <TextView
+        android:id="@+id/materialFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="재료명"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarSix"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix" />
+
+    <!-- 계량5-->
+    <TextView
+        android:id="@+id/measuringFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:text="계량"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarSix"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix" />
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/deleteFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix" />
+
+    <!-- 재료명5 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarSeven"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialFive"/>
+
+    <!-- 재료명6 -->
+    <TextView
+        android:id="@+id/materialSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="재료명"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarSeven"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven" />
+
+    <!-- 계량6-->
+    <TextView
+        android:id="@+id/measuringSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:text="계량"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/divideRectangleBarSeven"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven" />
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/deleteSix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven" />
+
+    <!-- 재료명6 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarEight"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/materialSix"/>
+
+    <!-- 추가하기 -->
+    <Button
+        android:id="@+id/buyFixButton"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:text="추가하기"
+        android:textSize="13sp"
+        android:textColor="#9B9B9B"
+        android:layout_marginTop="37dp"
+        android:background="@drawable/btn_recipe_add"
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarEight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 건너뛰기 -->
+    <Button
+        android:id="@+id/skipFixButton"
+        android:layout_width="171dp"
+        android:layout_height="50dp"
+        android:text="건너뛰기"
+        android:textSize="13sp"
+        android:textColor="#9B9B9B"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="27dp"
+        android:background="@drawable/btn_recipe_add"
+        app:layout_constraintTop_toTopOf="@id/buyFixButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 계속하기 -->
+    <Button
+        android:id="@+id/nextFixButton"
+        android:layout_width="171dp"
+        android:layout_height="50dp"
+        android:text="계속하기"
+        android:textSize="14sp"
+        android:textColor="#A1A9AD"
+        android:textStyle="bold"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="27dp"
+        android:background="@drawable/btn_number_of_people"
+        app:layout_constraintTop_toTopOf="@id/buyFixButton"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

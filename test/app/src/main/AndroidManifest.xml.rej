@@ -1,0 +1,151 @@
+diff a/test/app/src/main/AndroidManifest.xml b/test/app/src/main/AndroidManifest.xml	(rejected hunks)
+@@ -103,6 +103,149 @@
+             </intent-filter>
+         </activity>
+ 
++        <!-- MaterialOtherProfileActivity -->
++        <activity
++            android:name=".MaterialOtherProfileActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialSearchActivity -->
++        <activity
++            android:name=".MaterialSearchActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialSearchDetailActivity -->
++        <activity
++            android:name=".MaterialSearchDetailActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialMyLocationActivity -->
++        <activity
++            android:name=".MaterialMyLocationActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialMyProfileActivity -->
++        <activity
++            android:name=".MaterialMyProfileActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialSalesActivity -->
++        <activity
++            android:name=".MaterialSalesActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialPurchaseActivity -->
++        <activity
++            android:name=".MaterialPurchaseActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialSavedActivity -->
++        <activity
++            android:name=".MaterialSavedActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialReviewActivity -->
++        <activity
++            android:name=".MaterialReviewActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialReviewSendActivity -->
++        <activity
++            android:name=".MaterialReviewSendActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialWritingActivity -->
++        <activity
++            android:name=".MaterialWritingActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialChatActivity -->
++        <activity
++            android:name=".MaterialChatActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
++        <!-- MaterialChatDetailActivity -->
++        <activity
++            android:name=".MaterialChatDetailActivity"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="android.intent.action.VIEW" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
++        </activity>
++
+     </application>
+ 
+ </manifest>

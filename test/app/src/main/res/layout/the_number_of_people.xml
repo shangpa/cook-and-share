@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- 로고 -->
+    <ImageButton
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/image_activity_main_logo"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 검색 버튼 -->
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:src="@drawable/ic_search"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintTop_toTopOf="@id/logo"
+        app:layout_constraintBottom_toBottomOf="@id/logo" />
+
+    <!-- 알림 버튼 -->
+    <ImageButton
+        android:id="@+id/bellIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_bell"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintTop_toTopOf="@id/searchIcon"/>
+
+    <!-- 마이페이지 버튼 -->
+    <ImageButton
+        android:id="@+id/person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_person"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchIcon"/>
+
+    <!-- 로고 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarOne"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="62dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toTopOf="@id/logo" />
+
+    <!-- 굴버섯전골 -->
+    <TextView
+        android:id="@+id/cookname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:text="굴버섯전골"
+        android:textColor="#35A825"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+
+    <!-- 요리를 먹을 인원수를 입력해주세요! -->
+    <TextView
+        android:id="@+id/recipeSee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="요리를 먹을 인원수를 입력해주세요!"
+        android:textColor="#2B2B2B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/cookname"
+        app:layout_constraintTop_toBottomOf="@id/cookname" />
+
+    <!-- 인원수 -->
+    <TextView
+        android:id="@+id/theNumberOfPeople"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="67dp"
+        android:layout_marginStart="41dp"
+        android:text="인원수"
+        android:textColor="#2B2B2B"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeSee" />
+
+    <!-- 4 -->
+    <TextView
+        android:id="@+id/four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="67dp"
+        android:layout_marginEnd="15dp"
+        android:text="4"
+        android:textColor="#A1A9AD"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@id/excrement"
+        app:layout_constraintTop_toBottomOf="@id/recipeSee" />
+
+    <!-- 4 아래 바 -->
+    <View
+        android:id="@+id/divideRectangleBarTwo"
+        android:layout_width="32dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bar_number_of_people"
+        android:layout_marginEnd="66dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/four"/>
+
+    <!-- 인분 -->
+    <TextView
+        android:id="@+id/excrement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="67dp"
+        android:layout_marginEnd="41dp"
+        android:text="인분"
+        android:textColor="#2B2B2B"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeSee" />
+
+    <!-- 조리하기 -->
+    <Button
+        android:id="@+id/nextFixButton"
+        android:layout_width="352dp"
+        android:layout_height="50dp"
+        android:text="조리하기"
+        android:textSize="14sp"
+        android:textColor="#A1A9AD"
+        android:textStyle="bold"
+        android:layout_marginTop="125dp"
+        android:background="@drawable/btn_number_of_people"
+        app:layout_constraintTop_toTopOf="@id/theNumberOfPeople"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
