@@ -317,12 +317,12 @@
         app:layout_constraintTop_toTopOf="@id/divideRectangleBarTwo"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 건너뛰기 -->
+    <!-- 끝내기 -->
     <Button
         android:id="@+id/buyFixButton"
         android:layout_width="171dp"
         android:layout_height="50dp"
-        android:text="건너뛰기"
+        android:text="끝내기"
         android:textSize="13sp"
         android:textColor="#9B9B9B"
         android:layout_marginTop="150dp"
@@ -331,12 +331,12 @@
         app:layout_constraintTop_toTopOf="@id/timerAdd"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- 계속하기 -->
+    <!-- STEP 추가하기 -->
     <Button
         android:id="@+id/nextFixButton"
         android:layout_width="171dp"
         android:layout_height="50dp"
-        android:text="계속하기"
+        android:text="STEP 추가하기"
         android:textSize="14sp"
         android:textColor="#A1A9AD"
         android:textStyle="bold"

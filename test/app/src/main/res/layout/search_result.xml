@@ -9,7 +9,7 @@
 
     <!-- 뒤로가기 -->
     <ImageButton
-        android:id="@+id/backArrow"
+        android:id="@+id/SearchResultBackIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -52,8 +52,8 @@
         android:src="@drawable/ic_search"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/backArrow"
-        app:layout_constraintBottom_toBottomOf="@id/backArrow" />
+        app:layout_constraintTop_toTopOf="@id/SearchResultBackIcon"
+        app:layout_constraintBottom_toBottomOf="@id/SearchResultBackIcon" />
 
     <!-- 전체 -->
     <Button

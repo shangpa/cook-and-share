@@ -12,10 +12,10 @@ class VideoSee : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.video_see)
 
-        // backArrow 클릭했을 때 NoticeActivity 이동
+        // backArrow 클릭했을 때 MainActivity 이동
         val backArrow: ImageButton = findViewById(R.id.backArrow)
         backArrow.setOnClickListener {
-            val intent = Intent(this, RecipeWriteSeven::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

@@ -11,10 +11,17 @@ class RecipeWriteVideoOne : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recipe_write9)
 
-        // video 클릭했을 때 NoticeActivity 이동
-        val video: TextView = findViewById(R.id.video)
-        video.setOnClickListener {
+        // nextFixButton 클릭했을 때 RecipeWriteVideoTwo 이동
+        val nextFixButton: TextView = findViewById(R.id.nextFixButton)
+        nextFixButton.setOnClickListener {
             val intent = Intent(this, RecipeWriteVideoTwo::class.java)
+            startActivity(intent)
+        }
+
+        // image 클릭했을 때 RecipeWriteTwo 이동
+        val image: TextView = findViewById(R.id.image)
+        image.setOnClickListener {
+            val intent = Intent(this, RecipeWriteTwo::class.java)
             startActivity(intent)
         }
     }
