@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -69,5 +70,12 @@ class LoginInfoActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginInfoActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+
+        // loginButton 클릭했을 때 NoticeActivity 이동
+        val loginButton: Button = findViewById(R.id.loginButton)
+        loginButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

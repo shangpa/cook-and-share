@@ -190,6 +190,7 @@
 
         <!-- 카테고리 컨테이너 (재료추가 +) -->
         <LinearLayout
+            android:id="@+id/fridgeAddMaterial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -728,6 +729,7 @@
 
     <!-- 레시피 추천받기 버튼 -->
     <LinearLayout
+        android:id="@+id/recipeRecomend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

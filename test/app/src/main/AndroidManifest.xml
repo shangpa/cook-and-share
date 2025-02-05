@@ -16,9 +16,9 @@
         android:theme="@style/Theme.Test"
         tools:targetApi="31">
 
-        <!-- MainActivity 추가 -->
+        <!-- LoginActivity 추가 -->
         <activity
-            android:name=".MaterialActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +51,7 @@
 
         <!-- MaterialActivity 추가 -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".MaterialActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

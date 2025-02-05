@@ -318,6 +318,7 @@
 
     <!-- 레시피 추천받기 버튼 -->
     <LinearLayout
+        android:id="@+id/fridgeAddButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

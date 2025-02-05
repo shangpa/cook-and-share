@@ -151,7 +151,7 @@
         android:id="@+id/nextFixButton"
         android:layout_width="270dp"
         android:layout_height="45dp"
-        android:text="다음으로"
+        android:text="완성하기"
         android:textSize="15sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
