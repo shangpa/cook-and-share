@@ -16,9 +16,9 @@
         android:theme="@style/Theme.Test"
         tools:targetApi="31">
 
-        <!-- LoginActivity 추가 -->
+        <!-- MainActivity 추가 -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +27,20 @@
             </intent-filter>
         </activity>
 
+        <!-- NoticeActivity 추가 -->
+        <activity
+            android:name=".NoticeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- LoginActivity 추가 -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

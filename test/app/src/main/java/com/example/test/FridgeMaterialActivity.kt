@@ -4,6 +4,7 @@ package com.example.test
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 
@@ -15,6 +16,13 @@ class FridgeMaterialActivity  : AppCompatActivity() {
         // fridgeAddButton 클릭했을 때 MaterialSalesActivity 이동
         val fridgeAddButton: LinearLayout = findViewById(R.id.fridgeAddButton)
         fridgeAddButton.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // fridgeMaterialBackButton 클릭했을 때 MaterialSalesActivity 이동
+        val fridgeMaterialBackButton: ImageView = findViewById(R.id.fridgeMaterialBackButton)
+        fridgeMaterialBackButton.setOnClickListener {
             val intent = Intent(this, FridgeActivity::class.java)
             startActivity(intent)
         }

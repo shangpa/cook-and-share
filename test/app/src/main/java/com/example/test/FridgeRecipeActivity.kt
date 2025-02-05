@@ -13,7 +13,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge_recipe)
 
-        // fridgeRecipe1 클릭했을 때 NoticeActivity 이동
+        // fridgeRecipe1 클릭했을 때 RecipeMainOne 이동
         val fridgeRecipe1: LinearLayout = findViewById(R.id.fridgeRecipe1)
         fridgeRecipe1.setOnClickListener {
             val intent = Intent(this, RecipeMainOne::class.java)

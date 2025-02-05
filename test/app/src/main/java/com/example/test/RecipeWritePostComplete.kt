@@ -15,7 +15,7 @@ class RecipeWritePostComplete : AppCompatActivity() {
         // nextFixButton 클릭했을 때 NoticeActivity 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
         nextFixButton.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoOne::class.java)
+            val intent = Intent(this, StepRecipeNoTimer::class.java)
             startActivity(intent)
         }
     }

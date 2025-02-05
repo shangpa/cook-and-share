@@ -22,7 +22,7 @@
 
         <!-- 뒤로가기 버튼 -->
         <ImageView
-            android:id="@+id/backButton"
+            android:id="@+id/LikeFoodBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_fridge"

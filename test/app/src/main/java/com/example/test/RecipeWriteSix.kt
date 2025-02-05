@@ -11,9 +11,9 @@ class RecipeWriteSix : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recipe_write6)
 
-        // nextFixButton 클릭했을 때 NoticeActivity 이동
-        val nextFixButton: Button = findViewById(R.id.nextFixButton)
-        nextFixButton.setOnClickListener {
+        // buyFixButton 클릭했을 때 NoticeActivity 이동
+        val buyFixButton: Button = findViewById(R.id.buyFixButton)
+        buyFixButton.setOnClickListener {
             val intent = Intent(this, RecipeWriteSeven::class.java)
             startActivity(intent)
         }

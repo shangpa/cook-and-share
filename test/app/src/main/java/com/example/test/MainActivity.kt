@@ -56,10 +56,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // seeMore 클릭했을 때 NoticeActivity 이동
-        val seeMore: TextView = findViewById(R.id.seeMore)
-        seeMore.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
+        // recipeWrite 클릭했을 때 RecipeDetail 이동
+        val recipeWrite: LinearLayout = findViewById(R.id.recipeWrite)
+        recipeWrite.setOnClickListener {
+            val intent = Intent(this, RecipeDetail::class.java)
             startActivity(intent)
         }
 

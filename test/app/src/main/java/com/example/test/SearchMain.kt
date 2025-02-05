@@ -17,5 +17,12 @@ class SearchMain : AppCompatActivity() {
             val intent = Intent(this, SearchResult::class.java)
             startActivity(intent)
         }
+
+        // SearchMainBackIcon 클릭했을 때 MainActivity 이동
+        val SearchMainBackIcon: ImageButton = findViewById(R.id.SearchMainBackIcon)
+        SearchMainBackIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
