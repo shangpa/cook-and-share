@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 회원가입 - 세부정보 입력(step 3) -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 바 -->
+
+    <!-- 회원가입 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="75dp"
+        android:orientation="horizontal">
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="뒤로가기"
+            android:src="@drawable/ic_back_fridge" />
+
+        <!-- 회원가입 텍스트 -->
+        <TextView
+            android:id="@+id/signupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="135dp"
+            android:text="회원가입"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세부정보 입력"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- 우편번호 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- 우편번호 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp">
+
+            <!-- 우편번호 입력 -->
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="우편번호 입력"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="13sp"
+                android:textColor="#A1A9AD"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"/>
+
+            <!-- 카테고리 컨테이너 (우편번호 찾기) -->
+            <LinearLayout
+                android:id="@+id/findAddress"
+                android:layout_width="100dp"
+                android:layout_height="26dp"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_fridge_recipe_green"
+                android:gravity="center"
+                android:layout_marginStart="150dp">
+
+                <!-- 인증번호 전송 텍스트 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="우편번호 찾기"
+                    android:textSize="12sp"
+                    android:textColor="#fff"
+                    android:layout_marginStart="1dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 주소 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- Input 텍스트 -->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="주소 입력"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 상세 주소 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- Input 텍스트 -->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="상세주소 입력"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 전화번호 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- Input 텍스트 -->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="전화번호 입력"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 생년월일 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- Input 텍스트 -->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="생년월일 입력"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 성별 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- 성별 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp">
+
+            <!-- 성별 -->
+            <TextView
+                android:id="@+id/genderTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="성별 선택"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#A1A9AD"
+                android:maxLines="1"
+                android:layout_marginTop="3dp"/>
+
+            <!-- 아래 아이콘 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_down_category_filter"
+                android:contentDescription="드롭다운 아이콘"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="257dp"/>
+
+        </LinearLayout>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+
+    <!-- 회원가입 버튼 -->
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="회원가입"
+        android:fontFamily="@font/pretendard_medium"
+        android:backgroundTint="#E7E7E7"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#A1A9AD"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="65dp"/>
+
+
+</LinearLayout>

@@ -30,7 +30,7 @@
 
         <!-- 재료 관리하기 텍스트 -->
         <TextView
-            android:id="@+id/fridgeMainTitle"
+            android:id="@+id/fridgeMaterialTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="재료 관리하기"
