@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 아이디 찾기 - 메인(step 1) -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_fridge"
+            android:contentDescription="뒤로가기" />
+
+        <!-- 아이디 찾기 텍스트 -->
+        <TextView
+            android:id="@+id/findIDTitleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디 찾기"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="125dp" />
+
+    </LinearLayout>
+
+    <!-- 탭바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="65dp">
+
+        <!-- 아이디 찾기 탭 바 -->
+        <LinearLayout
+            android:id="@+id/findIDTap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- 아이디 찾기 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디 찾기"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#35A825" />
+
+            <!-- 구분선 -->
+            <View
+                android:layout_width="206dp"
+                android:layout_height="2dp"
+                android:background="#35A825"
+                android:layout_marginTop="15dp"/>
+
+        </LinearLayout>
+
+        <!-- 비밀번호 찾기 탭 바 -->
+        <LinearLayout
+            android:id="@+id/findPasswordTap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- 비밀번호 찾기 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 찾기"
+                android:textSize="13sp"
+                android:textColor="#B3B3B3" />
+
+            <!-- 구분선 -->
+            <View
+                android:layout_width="206dp"
+                android:layout_height="1dp"
+                android:background="#B3B3B3"
+                android:layout_marginTop="15dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 이름 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- Input 텍스트 -->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="이름 입력"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 이메일 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- 이메일 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp">
+
+            <!-- 이메일 입력 -->
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="이메일 입력"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="13sp"
+                android:textColor="#A1A9AD"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"/>
+
+            <!-- 카테고리 컨테이너 (인증번호 전송) -->
+            <LinearLayout
+                android:id="@+id/sendAuthNumber"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_fridge_add"
+                android:gravity="center"
+                android:layout_marginStart="160dp">
+
+                <!-- 인증번호 전송 텍스트 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="인증번호 전송"
+                    android:textSize="12sp"
+                    android:textColor="#A1A9AD"
+                    android:layout_marginStart="1dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 인증번호 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp">
+
+        <!-- 인증번호 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp">
+
+            <!-- 인증번호 입력 -->
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="인증번호 입력"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="13sp"
+                android:textColor="#A1A9AD"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"/>
+
+            <!-- 카테고리 컨테이너 (인증번호 확인) -->
+            <LinearLayout
+                android:id="@+id/checkAuthNumber"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_fridge_add"
+                android:gravity="center"
+                android:layout_marginStart="150dp">
+
+                <!-- 인증번호 전송 텍스트 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="인증번호 확인"
+                    android:textSize="12sp"
+                    android:textColor="#A1A9AD"
+                    android:layout_marginStart="1dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 밑줄 -->
+        <View
+            android:layout_width="352dp"
+            android:layout_height="2dp"
+            android:background="#D2D5D6" />
+
+    </LinearLayout>
+
+    <!-- 아이디 찾기 버튼 -->
+    <Button
+        android:id="@+id/btnFindId"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="아이디 찾기"
+        android:fontFamily="@font/pretendard_medium"
+        android:backgroundTint="#E7E7E7"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#A1A9AD"
+        android:layout_marginTop="65dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp" />
+
+
+
+</LinearLayout>
