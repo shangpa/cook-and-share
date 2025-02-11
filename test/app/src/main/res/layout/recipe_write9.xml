@@ -20,16 +20,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 레시피 작성 -->
-    <EditText
+    <TextView
         android:id="@+id/writeReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="레시피 작성"
+        android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:textColor="#000000"
-        android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,16 +43,15 @@
         app:layout_constraintTop_toTopOf="@id/writeReview" />
 
     <!-- 타이틀 -->
-    <EditText
+    <TextView
         android:id="@+id/one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="타이틀"
-        android:textSize="12sp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="23dp"
+        android:text="타이틀"
         android:textColor="#2B2B2B"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
 
@@ -63,80 +61,75 @@
         android:layout_width="47dp"
         android:layout_height="3dp"
         android:layout_marginTop="13dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="13dp"
         android:background="@drawable/bar_recipe"
         app:layout_constraintTop_toBottomOf="@id/one"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- 재료 -->
-    <EditText
+    <TextView
         android:id="@+id/two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="재료"
-        android:textSize="12sp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
+        android:text="재료"
         android:textColor="#A1A9AD"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/one"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
 
     <!-- 대체재료 -->
-    <EditText
+    <TextView
         android:id="@+id/three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="대체재료"
-        android:textSize="12sp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
+        android:text="대체재료"
         android:textColor="#A1A9AD"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/two"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
 
     <!-- 처리방법 -->
-    <EditText
+    <TextView
         android:id="@+id/four"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="처리방법"
-        android:textSize="12sp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
+        android:text="처리방법"
         android:textColor="#A1A9AD"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/three"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
 
     <!-- 조리순서 -->
-    <EditText
+    <TextView
         android:id="@+id/five"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="조리순서"
-        android:textSize="12sp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
+        android:text="조리순서"
         android:textColor="#A1A9AD"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/four"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
 
     <!-- 세부설정 -->
-    <EditText
+    <TextView
         android:id="@+id/seven"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="세부설정"
-        android:textSize="12sp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="23dp"
+        android:text="세부설정"
         android:textColor="#A1A9AD"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
 
     <!-- 카테고리 아래 구분바 -->
     <View
@@ -148,60 +141,56 @@
         app:layout_constraintTop_toBottomOf="@id/one" />
 
     <!-- 레시피의 -->
-    <EditText
+    <TextView
         android:id="@+id/recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="레시피의"
-        android:textSize="16sp"
         android:layout_marginTop="50dp"
         android:layout_marginStart="23dp"
+        android:text="레시피의"
         android:textColor="#2B2B2B"
-        android:background="@null"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTen" />
 
     <!-- 카테고리와 제목을 입력해주세요 -->
-    <EditText
+    <TextView
         android:id="@+id/categoryTitleWrite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="카테고리와 제목을 입력해주세요"
-        android:textSize="16sp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="23dp"
+        android:text="카테고리와 제목을 입력해주세요"
         android:textColor="#2B2B2B"
-        android:background="@null"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recipe" />
+        app:layout_constraintTop_toBottomOf="@id/recipe"/>
 
     <!-- 카테고리 -->
-    <EditText
+    <TextView
         android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="카테고리"
-        android:textSize="13sp"
         android:layout_marginTop="67dp"
         android:layout_marginStart="41dp"
+        android:text="카테고리"
         android:textColor="#2B2B2B"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryTitleWrite"/>
+        app:layout_constraintTop_toBottomOf="@id/categoryTitleWrite" />
 
     <!-- 한식 -->
-    <EditText
+    <TextView
         android:id="@+id/koreanFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="한식"
-        android:textSize="13sp"
         android:layout_marginTop="67dp"
         android:layout_marginEnd="15dp"
+        android:text="한식"
         android:textColor="#A1A9AD"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/dowArrow"
-        app:layout_constraintTop_toBottomOf="@id/categoryTitleWrite"/>
+        app:layout_constraintTop_toBottomOf="@id/categoryTitleWrite" />
 
     <!-- 4 아래 바 -->
     <View
@@ -227,32 +216,31 @@
         app:layout_constraintTop_toBottomOf="@id/categoryTitleWrite"/>
 
     <!-- 레시피 제목 -->
-    <EditText
+    <TextView
         android:id="@+id/recipeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="레시피 제목"
-        android:textSize="13sp"
         android:layout_marginTop="35dp"
         android:layout_marginStart="41dp"
+        android:text="레시피 제목"
         android:textColor="#2B2B2B"
-        android:background="@null"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/category"/>
+        app:layout_constraintTop_toBottomOf="@id/category" />
 
     <!-- 레시피 제목을 입력해주세요 -->
     <EditText
         android:id="@+id/recipeTitleWrite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="레시피 제목을 입력해주세요"
+        android:hint="레시피 제목을 입력해주세요"
         android:textSize="13sp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="8dp"
-        android:textColor="#A1A9AD"
+        android:backgroundTint="#A1A9AD"
         android:background="@null"
         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThree"
-        app:layout_constraintTop_toTopOf="@id/recipeTitle" />
+        app:layout_constraintTop_toTopOf="@id/recipeTitle"/>
 
     <!-- 레시피 제목을 입력해주세요 아래 바 -->
     <View
