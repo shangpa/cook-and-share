@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:text="재료"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#A1A9AD"
         android:background="@null"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:text="대체재료"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#A1A9AD"
         android:background="@null"
@@ -92,21 +92,21 @@
         android:layout_height="wrap_content"
         android:text="처리방법"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#A1A9AD"
         android:background="@null"
         app:layout_constraintStart_toEndOf="@id/three"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
 
-    <!-- 조리순서 -->
+    <!-- 조리영상 -->
     <EditText
         android:id="@+id/five"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="조리순서"
+        android:text="조리영상"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#2B2B2B"
         android:background="@null"
@@ -116,27 +116,13 @@
     <!-- 조리순서 아래 바 -->
     <View
         android:id="@+id/divideRectangleBarTewleve"
-        android:layout_width="57dp"
+        android:layout_width="47dp"
         android:layout_height="3dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="131dp"
+        android:layout_marginEnd="89dp"
         android:background="@drawable/bar_recipe"
         app:layout_constraintTop_toBottomOf="@id/five"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- 조리영상 -->
-    <EditText
-        android:id="@+id/six"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="조리영상"
-        android:textSize="12sp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
-        android:textColor="#A1A9AD"
-        android:background="@null"
-        app:layout_constraintStart_toEndOf="@id/five"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
 
     <!-- 세부설정 -->
     <EditText
@@ -189,12 +175,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/koreanFood" />
 
-    <!-- 조리 순서 -->
+    <!-- 레시피 동영상 -->
     <EditText
-        android:id="@+id/cookOder"
+        android:id="@+id/recipeVideo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="조리 순서"
+        android:text="레시피 동영상"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginStart="23dp"
@@ -204,62 +190,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/foodName" />
 
-    <!-- 를 -->
+    <!-- 를 입력해주세요 -->
     <EditText
         android:id="@+id/write"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="를"
+        android:text="를 입력해주세요"
         android:textSize="16sp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:textColor="#000000"
         android:background="@null"
-        app:layout_constraintStart_toEndOf="@id/cookOder"
-        app:layout_constraintTop_toTopOf="@id/cookOder" />
+        app:layout_constraintStart_toEndOf="@id/recipeVideo"
+        app:layout_constraintTop_toTopOf="@id/recipeVideo" />
 
-    <!-- 이미지 -->
+    <!-- 동영상 업로드하기 -->
     <EditText
-        android:id="@+id/image"
+        android:id="@+id/videoUproad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이미지"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="3dp"
-        android:textColor="#35A825"
-        android:background="@null"
-        app:layout_constraintStart_toEndOf="@id/write"
-        app:layout_constraintTop_toBottomOf="@id/foodName" />
-
-    <!-- 로 입력해주세요 -->
-    <EditText
-        android:id="@+id/input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로 입력해주세요"
-        android:textSize="16sp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:textColor="#000000"
-        android:background="@null"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintTop_toTopOf="@id/cookOder" />
-
-    <!-- STEP 1 -->
-    <EditText
-        android:id="@+id/stepOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="STEP 1"
+        android:text="동영상 업로드하기"
         android:textSize="15sp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="50dp"
         android:textColor="#2B2B2B"
         android:background="@null"
-        app:layout_constraintStart_toStartOf="@id/cookOder"
-        app:layout_constraintTop_toBottomOf="@id/cookOder"/>
+        app:layout_constraintStart_toStartOf="@id/recipeVideo"
+        app:layout_constraintTop_toBottomOf="@id/recipeVideo"/>
 
     <!-- 카메라 -->
     <ImageButton
@@ -271,60 +228,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_camera"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/stepOne" />
-
-    <!-- 1-1. 레시피를 입력해주세요. -->
-    <EditText
-        android:id="@+id/recipeWrite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1-1. 레시피를 입력해주세요."
-        android:textSize="13sp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="38dp"
-        android:textColor="#A1A9AD"
-        android:background="@null"
-        app:layout_constraintStart_toStartOf="@id/stepOne"
-        app:layout_constraintTop_toBottomOf="@id/stepOne" />
-
-    <!-- 레시피를 입력해주세요. 아래 구분바 -->
-    <View
-        android:id="@+id/divideRectangleBarTwo"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/bar_rectangle"
-        app:layout_constraintTop_toBottomOf="@id/recipeWrite" />
-
-    <!-- 타이머 추가하기 -->
-    <Button
-        android:id="@+id/timerAdd"
-        android:layout_width="131dp"
-        android:layout_height="35dp"
-        android:text="타이머 추가하기"
-        android:textSize="12sp"
-        android:textColor="#9B9B9B"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/btn_recipe_add"
-        app:layout_constraintTop_toTopOf="@id/divideRectangleBarTwo"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- 내용 추가하기 -->
-    <Button
-        android:id="@+id/contentAdd"
-        android:layout_width="131dp"
-        android:layout_height="35dp"
-        android:text="내용 추가하기"
-        android:textSize="12sp"
-        android:textColor="#9B9B9B"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="7dp"
-        android:background="@drawable/btn_recipe_add"
-        app:layout_constraintTop_toTopOf="@id/divideRectangleBarTwo"
-        app:layout_constraintEnd_toStartOf="@id/timerAdd" />
+        app:layout_constraintTop_toTopOf="@id/videoUproad" />
 
     <ImageView
         android:id="@+id/tapFixBar"
@@ -363,5 +267,6 @@
         app:layout_constraintTop_toTopOf="@id/tapFixBar"
         app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
         app:layout_constraintEnd_toEndOf="@id/tapFixBar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

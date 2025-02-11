@@ -90,32 +90,32 @@
                 android:background="@drawable/bar_rectangle"
                 app:layout_constraintTop_toBottomOf="@id/baseInformation" />
 
-            <!-- 대표사진 -->
+            <!-- 썸네일 -->
             <TextView
-                android:id="@+id/representative"
+                android:id="@+id/thumbnail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:layout_marginStart="20dp"
-                android:text="대표사진"
+                android:text="썸네일"
                 android:textColor="#2B2B2B"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo" />
 
-            <!-- 대표 이미지 -->
+            <!-- 썸네일 이미지 -->
             <ImageView
-                android:id="@+id/representativeImage"
+                android:id="@+id/thumbnailImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/image_recipe_write"
+                android:src="@drawable/image_interest_recipe_video_five"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/representative"/>
+                app:layout_constraintTop_toBottomOf="@id/thumbnail"/>
 
             <!-- 카테고리 -->
             <TextView
@@ -128,20 +128,20 @@
                 android:textColor="#2B2B2B"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/representativeImage" />
+                app:layout_constraintTop_toBottomOf="@id/thumbnailImage" />
 
-            <!-- 한식 -->
+            <!-- 채식 -->
             <TextView
                 android:id="@+id/koreanFood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="0dp"
-                android:text="한식"
+                android:text="채식"
                 android:textColor="#2B2B2B"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@id/representativeImage"
-                app:layout_constraintTop_toBottomOf="@id/representativeImage" />
+                app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
+                app:layout_constraintTop_toBottomOf="@id/thumbnailImage" />
 
             <!-- 한식 아래 바 -->
             <View
@@ -167,23 +167,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/category" />
 
-            <!-- 소세지야채볶음 -->
+            <!-- 그릴드 벨 페퍼 샌드위치 -->
             <TextView
                 android:id="@+id/foodName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:text="소세지야채볶음"
+                android:text="그릴드 벨 페퍼 샌드위치"
                 android:textColor="#2B2B2B"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
                 app:layout_constraintTop_toTopOf="@id/recipeTitle" />
 
             <!-- 소세지야채볶음 아래 바 -->
             <View
                 android:id="@+id/divideRectangleBarFour"
-                android:layout_width="95dp"
+                android:layout_width="137dp"
                 android:layout_height="1dp"
                 android:background="@drawable/bar_number_of_people"
                 android:layout_marginEnd="20dp"
@@ -204,17 +204,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeTitle" />
 
-            <!-- 초급 -->
+            <!-- 중급 -->
             <TextView
                 android:id="@+id/beginningLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:text="초급"
+                android:text="중급"
                 android:textColor="#2B2B2B"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
                 app:layout_constraintTop_toTopOf="@id/level" />
 
             <!-- 초급 아래 바 -->
@@ -278,14 +278,14 @@
                 app:layout_constraintStart_toEndOf="@id/zero"
                 app:layout_constraintTop_toTopOf="@id/requiredTime" />
 
-            <!-- 30 -->
+            <!-- 35 -->
             <TextView
                 android:id="@+id/halfHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_marginStart="11dp"
-                android:text="30"
+                android:text="35"
                 android:textColor="#A1A9AD"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@id/time"
@@ -328,29 +328,66 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/requiredTime" />
 
-            <!-- 소세지, 야채 -->
+            <!-- 치즈, 샌드위치, 빵 -->
             <TextView
                 android:id="@+id/foodNameTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:text="소세지, 야채"
+                android:text="치즈, 샌드위치, 빵"
                 android:textColor="#2B2B2B"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
                 app:layout_constraintTop_toTopOf="@id/tag" />
 
             <!-- 소세지, 야채 아래 바 -->
             <View
                 android:id="@+id/divideRectangleBarEight"
-                android:layout_width="84dp"
+                android:layout_width="113dp"
                 android:layout_height="1dp"
                 android:background="@drawable/bar_number_of_people"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="7dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/foodNameTwo"/>
+
+            <!-- 공개 설정 -->
+            <TextView
+                android:id="@+id/shareSettle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:layout_marginStart="20dp"
+                android:text="공개 설정"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tag" />
+
+            <!-- 전체공개 -->
+            <TextView
+                android:id="@+id/totalShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:text="전체공개"
+                android:textColor="#2B2B2B"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
+                app:layout_constraintTop_toTopOf="@id/shareSettle" />
+
+            <!-- 전체공개 아래 바 -->
+            <View
+                android:id="@+id/divideRectangleBarNine"
+                android:layout_width="66dp"
+                android:layout_height="1dp"
+                android:background="@drawable/bar_number_of_people"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="7dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalShare"/>
 
             <!-- 리뷰 작성 아래 구분바 -->
             <View
@@ -359,236 +396,86 @@
                 android:layout_height="10dp"
                 android:layout_marginTop="70dp"
                 android:background="@drawable/bar_rectangle"
-                app:layout_constraintTop_toBottomOf="@id/tag" />
+                app:layout_constraintTop_toBottomOf="@id/shareSettle" />
 
-            <!-- 재료 -->
+            <!-- 동영상 -->
             <TextView
-                android:id="@+id/material"
+                android:id="@+id/video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="26dp"
-                android:text="재료"
+                android:text="동영상"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTen" />
 
-            <!-- 재료 리스트 -->
-            <include
-                android:id="@+id/materialList"
-                layout="@layout/material_see"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/material"/>
-
-            <!-- 재료 리스트  아래 바 -->
+            <!-- 동영상 아래 구분바 -->
             <View
                 android:id="@+id/divideRectangleBarEleven"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="1015dp"
-                android:background="@drawable/bar_rectangle"
-                app:layout_constraintTop_toTopOf="@id/materialList" />
-
-            <!-- 조리 순서 -->
-            <TextView
-                android:id="@+id/cookOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="26dp"
-                android:text="조리 순서"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEleven" />
-
-            <!-- 조리 순서 아래 바 -->
-            <View
-                android:id="@+id/divideRectangleBarTwelve"
-                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/bar_rectangle"
-                app:layout_constraintTop_toBottomOf="@id/cookOrder" />
+                app:layout_constraintTop_toBottomOf="@id/video" />
 
-            <!-- STEP 1 -->
-            <TextView
-                android:id="@+id/one"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="26dp"
-                android:text="STEP 1"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwelve" />
-
-            <!-- 비엔나 소시지 이미지 -->
+            <!-- 이미지 -->
             <ImageView
-                android:id="@+id/imageOne"
-                android:layout_width="wrap_content"
+                android:id="@+id/image"
+                android:layout_width="352dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/image_write_eight_one"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="15dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/one"/>
-
-            <!-- 내용 1 -->
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="26dp"
-                android:text="비엔나소시지는 한쪽에만 칼집을 낸 후, 끓는 물에 넣어 30초 정도 데\n쳐주세요"
-                android:textColor="#000000"
-                android:textSize="13sp"
-                app:layout_constraintStart_toStartOf="@id/imageOne"
-                app:layout_constraintTop_toBottomOf="@id/imageOne" />
-
-            <!-- 타이머 -->
-            <TextView
-                android:id="@+id/timerTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
+                android:src="@drawable/image_video_see"
                 android:layout_marginTop="20dp"
-                android:text="타이머"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@id/imageOne"
-                app:layout_constraintTop_toBottomOf="@id/content" />
-
-            <!-- 시간 -->
-            <TextView
-                android:id="@+id/timeTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:layout_marginTop="10dp"
-                android:text="00:30"
-                android:textColor="#2B2B2B"
-                android:textSize="32sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/content" />
-
-            <!-- STEP 1 아래 바 -->
-            <View
-                android:id="@+id/divideRectangleBarThirteen"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bar_rectangle"
-                app:layout_constraintTop_toBottomOf="@id/timeTwo" />
-
-            <!-- STEP 2 -->
-            <TextView
-                android:id="@+id/two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="26dp"
-                android:text="STEP 2"
-                android:textColor="#000000"
-                android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThirteen" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEleven"/>
 
-            <!-- 비엔나 소시지 이미지 -->
-            <ImageView
-                android:id="@+id/imageTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/image_write_eight_two"
+            <!-- 재생 버튼 -->
+            <ImageButton
+                android:id="@+id/btnVideo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="15dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/ic_video_play_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/two"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/image"
+                app:layout_constraintBottom_toBottomOf="@id/image"/>
 
-            <!-- 내용 2 -->
-            <TextView
-                android:id="@+id/contentTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="26dp"
-                android:text="양파와 파프리카는 한입크기로 크기로 썰고, 파슬리는 잘게 다져주세\n요."
-                android:textColor="#000000"
+            <!-- 이전으로 -->
+            <Button
+                android:id="@+id/buyFixButton"
+                android:layout_width="171dp"
+                android:layout_height="50dp"
+                android:text="이전으로"
                 android:textSize="13sp"
-                app:layout_constraintStart_toStartOf="@id/imageTwo"
-                app:layout_constraintTop_toBottomOf="@id/imageTwo" />
+                android:textColor="#9B9B9B"
+                android:layout_marginTop="100dp"
+                android:layout_marginStart="27dp"
+                android:background="@drawable/btn_recipe_add"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <!-- STEP 2 아래 바 -->
-            <View
-                android:id="@+id/divideRectangleBarFourteen"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bar_rectangle"
-                app:layout_constraintTop_toBottomOf="@id/contentTwo" />
+            <!-- 등록하기 -->
+            <Button
+                android:id="@+id/nextFixButton"
+                android:layout_width="171dp"
+                android:layout_height="50dp"
+                android:text="등록하기"
+                android:textSize="14sp"
+                android:textColor="#A1A9AD"
+                android:textStyle="bold"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="27dp"
+                android:background="@drawable/btn_number_of_people"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-    <!-- 탭바 배경 하얀색 사각형 -->
-    <ImageView
-        android:id="@+id/tapFixBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/bar_tap_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- 공개설정 -->
-    <Button
-        android:id="@+id/buyFixButton"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:text="공개설정"
-        android:textSize="13sp"
-        android:textColor="#9B9B9B"
-        android:layout_marginStart="27dp"
-        android:background="@drawable/btn_recipe_add"
-        app:layout_constraintTop_toTopOf="@id/tapFixBar"
-        app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
-        app:layout_constraintStart_toStartOf="@id/tapFixBar" />
-
-    <!-- 등록하기 -->
-    <Button
-        android:id="@+id/nextFixButton"
-        android:layout_width="223dp"
-        android:layout_height="50dp"
-        android:text="등록하기"
-        android:textSize="14sp"
-        android:textColor="#A1A9AD"
-        android:textStyle="bold"
-        android:layout_marginEnd="27dp"
-        android:background="@drawable/btn_recipe_add"
-        app:layout_constraintTop_toTopOf="@id/tapFixBar"
-        app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
-        app:layout_constraintEnd_toEndOf="@id/tapFixBar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:text="재료"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#A1A9AD"
         android:background="@null"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:text="대체재료"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#A1A9AD"
         android:background="@null"
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:text="처리방법"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#A1A9AD"
         android:background="@null"
@@ -106,7 +106,7 @@
         android:layout_height="wrap_content"
         android:text="조리순서"
         android:textSize="12sp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="23dp"
         android:textColor="#2B2B2B"
         android:background="@null"
@@ -116,27 +116,13 @@
     <!-- 조리순서 아래 바 -->
     <View
         android:id="@+id/divideRectangleBarTewleve"
-        android:layout_width="57dp"
+        android:layout_width="47dp"
         android:layout_height="3dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="131dp"
+        android:layout_marginEnd="89dp"
         android:background="@drawable/bar_recipe"
         app:layout_constraintTop_toBottomOf="@id/five"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- 조리영상 -->
-    <EditText
-        android:id="@+id/six"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="조리영상"
-        android:textSize="12sp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
-        android:textColor="#A1A9AD"
-        android:background="@null"
-        app:layout_constraintStart_toEndOf="@id/five"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
 
     <!-- 세부설정 -->
     <EditText
@@ -363,5 +349,6 @@
         app:layout_constraintTop_toTopOf="@id/tapFixBar"
         app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
         app:layout_constraintEnd_toEndOf="@id/tapFixBar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

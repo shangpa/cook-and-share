@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class RecipeWriteVideoComplete : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.recipe_write11)
+        setContentView(R.layout.recipe_write21)
 
         // video 클릭했을 때 NoticeActivity 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
