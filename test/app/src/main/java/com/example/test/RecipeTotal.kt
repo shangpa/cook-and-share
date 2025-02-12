@@ -14,7 +14,7 @@ class RecipeTotal : AppCompatActivity() {
         // recipeWrite 클릭했을 때 NoticeActivity 이동
         val recipeWrite: TextView = findViewById(R.id.recipeWrite)
         recipeWrite.setOnClickListener {
-            val intent = Intent(this, RecipeDetail::class.java)
+            val intent = Intent(this, RecipeWriteBothTitle::class.java)
             startActivity(intent)
         }
     }

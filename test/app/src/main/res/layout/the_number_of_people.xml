@@ -102,20 +102,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recipeSee" />
 
-    <!-- 4 -->
-    <TextView
-        android:id="@+id/four"
+    <!-- 0 -->
+    <EditText
+        android:id="@+id/zero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="0"
+        android:textSize="13sp"
         android:layout_marginTop="67dp"
         android:layout_marginEnd="15dp"
-        android:text="4"
-        android:textColor="#A1A9AD"
-        android:textSize="13sp"
+        android:backgroundTint="#A1A9AD"
+        android:background="@null"
         app:layout_constraintEnd_toStartOf="@id/excrement"
-        app:layout_constraintTop_toBottomOf="@id/recipeSee" />
+        app:layout_constraintTop_toBottomOf="@id/recipeSee"/>
 
-    <!-- 4 아래 바 -->
+    <!-- 0 아래 바 -->
     <View
         android:id="@+id/divideRectangleBarTwo"
         android:layout_width="32dp"
@@ -124,7 +125,7 @@
         android:layout_marginEnd="66dp"
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/four"/>
+        app:layout_constraintTop_toTopOf="@id/zero"/>
 
     <!-- 인분 -->
     <TextView

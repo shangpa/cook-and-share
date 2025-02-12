@@ -334,9 +334,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeDetail -->
+        <!-- RecipeWriteBothTitle -->
         <activity
-            android:name=".RecipeDetail"
+            android:name=".RecipeWriteBothTitle"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -411,9 +411,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteTwo -->
+        <!-- RecipeWriteBothMaterial -->
         <activity
-            android:name=".RecipeWriteTwo"
+            android:name=".RecipeWriteBothMaterial"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -422,9 +422,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteThree -->
+        <!-- RecipeWriteBothReplaceMaterial -->
         <activity
-            android:name=".RecipeWriteThree"
+            android:name=".RecipeWriteBothReplaceMaterial"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -433,9 +433,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteFour -->
+        <!-- RecipeWriteBothHandlindMethod -->
         <activity
-            android:name=".RecipeWriteFour"
+            android:name=".RecipeWriteBothHandlindMethod"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -444,9 +444,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteFive -->
+        <!-- RecipeWriteBothCookOrder -->
         <activity
-            android:name=".RecipeWriteFive"
+            android:name=".RecipeWriteBothCookOrder"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -455,9 +455,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteSix -->
+        <!-- RecipeWriteBothCookVideo -->
         <activity
-            android:name=".RecipeWriteSix"
+            android:name=".RecipeWriteBothCookVideo"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -466,9 +466,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteSeven -->
+        <!-- RecipeWriteBothDetailSettle -->
         <activity
-            android:name=".RecipeWriteSeven"
+            android:name=".RecipeWriteBothDetailSettle"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -477,9 +477,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWritePostComplete -->
+        <!-- RecipeWriteBothContentCheck -->
         <activity
-            android:name=".RecipeWritePostComplete"
+            android:name=".RecipeWriteBothContentCheck"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -488,9 +488,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteVideoComplete -->
+        <!-- RecipeWriteVideoContentCheck -->
         <activity
-            android:name=".RecipeWriteVideoComplete"
+            android:name=".RecipeWriteVideoContentCheck"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -499,9 +499,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteVideoOne -->
+        <!-- RecipeWriteImageTitle -->
         <activity
-            android:name=".RecipeWriteVideoOne"
+            android:name=".RecipeWriteImageTitle"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -510,9 +510,119 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteVideoTwo -->
+        <!-- RecipeWriteImageMaterial -->
         <activity
-            android:name=".RecipeWriteVideoTwo"
+            android:name=".RecipeWriteImageMaterial"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageCookOrder -->
+        <activity
+            android:name=".RecipeWriteImageCookOrder"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageDetailSettle -->
+        <activity
+            android:name=".RecipeWriteImageDetailSettle"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageHandlingMethod -->
+        <activity
+            android:name=".RecipeWriteImageHandlingMethod"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageReplaceMaterial -->
+        <activity
+            android:name=".RecipeWriteImageReplaceMaterial"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoCookVideo -->
+        <activity
+            android:name=".RecipeWriteVideoCookVideo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoDetailSettle -->
+        <activity
+            android:name=".RecipeWriteVideoDetailSettle"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoDetailSettle -->
+        <activity
+            android:name=".RecipeWriteVideoHandlingMethod"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoMaterial -->
+        <activity
+            android:name=".RecipeWriteVideoMaterial"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoReplaceMaterial -->
+        <activity
+            android:name=".RecipeWriteVideoReplaceMaterial"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoTitle -->
+        <activity
+            android:name=".RecipeWriteVideoTitle"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
