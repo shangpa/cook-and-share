@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
 
-        <!-- LoginActivity 추가 -->
+        <!-- LoginActivity -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -49,9 +49,97 @@
             </intent-filter>
         </activity>
 
-        <!-- SignUpActivity 추가 -->
+        <!-- SignUpActivity -->
         <activity
             android:name=".SignUpActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- SignupDefaultInfoActivity -->
+        <activity
+            android:name=".SignupDefaultInfoActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- SignupConfirmActivity -->
+        <activity
+            android:name=".SignupConfirmActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- SignupDetailInfoActivity -->
+        <activity
+            android:name=".SignupDetailInfoActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- LikeFoodActivity -->
+        <activity
+            android:name=".LikeFoodActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- FindIDMainActivity -->
+        <activity
+            android:name=".FindIDMainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- FindIDCompleteActivity -->
+        <activity
+            android:name=".FindIDCompleteActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- FindPasswordMainActivity -->
+        <activity
+            android:name=".FindPasswordMainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- FindPassswordCompleteActivity -->
+        <activity
+            android:name=".FindPassswordCompleteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -136,6 +224,17 @@
         <!-- MypageActivity -->
         <activity
             android:name=".MypageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MypagePersonalInfoActivity -->
+        <activity
+            android:name=".MypagePersonalInfoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -257,16 +356,6 @@
         <!-- MaterialChatDetailActivity -->
         <activity
             android:name=".MaterialChatDetailActivity"/>
-        <!-- LikeFoodActivity -->
-        <activity
-            android:name=".LikeFoodActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- CommunityDetail -->
         <activity
