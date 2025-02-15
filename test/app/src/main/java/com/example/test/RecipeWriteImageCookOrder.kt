@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -91,6 +92,12 @@ class RecipeWriteImageCookOrder : AppCompatActivity() {
             settle.visibility = View.VISIBLE
             middle.visibility = View.VISIBLE
             delete.visibility = View.VISIBLE
+        }
+
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 }

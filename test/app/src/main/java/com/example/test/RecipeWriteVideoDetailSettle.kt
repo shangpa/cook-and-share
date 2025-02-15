@@ -138,5 +138,11 @@ class RecipeWriteVideoDetailSettle : AppCompatActivity() {
                 elementaryLevel.setTextColor(Color.parseColor("#2B2B2B")) // 텍스트 색상 변경
             }
         }
+
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 }

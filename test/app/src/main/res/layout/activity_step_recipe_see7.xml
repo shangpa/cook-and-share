@@ -24,11 +24,11 @@
         android:id="@+id/heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="53dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_recipe_heart"
         app:layout_constraintBottom_toBottomOf="@id/backArrow"
-        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintEnd_toStartOf="@id/person"
         app:layout_constraintTop_toTopOf="@id/backArrow" />
 
     <!-- 채워진 하트 버튼 -->
@@ -36,38 +36,38 @@
         android:id="@+id/heartFill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="53dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_heart_fill"
         app:layout_constraintBottom_toBottomOf="@id/backArrow"
-        app:layout_constraintEnd_toStartOf="@id/bellIcon"
-        app:layout_constraintTop_toTopOf="@id/backArrow"
-        android:visibility="gone"/>
-
-    <!-- 채워진 좋아요 버튼 -->
-    <ImageButton
-        android:id="@+id/bellFill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_good_fill"
         app:layout_constraintEnd_toStartOf="@id/person"
-        app:layout_constraintTop_toTopOf="@id/heart"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
         android:visibility="gone"/>
 
     <!-- 좋아요 버튼 -->
     <ImageButton
-        android:id="@+id/bellIcon"
+        android:id="@+id/good"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_good"
         app:layout_constraintEnd_toStartOf="@id/person"
-        app:layout_constraintTop_toTopOf="@id/heart" />
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"/>
+
+    <!-- 채워진 좋아요 버튼 -->
+    <ImageButton
+        android:id="@+id/goodFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_good_fill"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        android:visibility="gone"/>
 
     <!-- 공유 버튼 -->
     <ImageButton
@@ -75,11 +75,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="1dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_share"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/heart" />
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow" />
 
     <!-- 알배추전골과 구운 두부 버섯 샐러드 -->
     <TextView

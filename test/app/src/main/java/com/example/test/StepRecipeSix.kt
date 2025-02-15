@@ -20,40 +20,43 @@ class StepRecipeSix : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 하트 버튼과 채워진 하트 버튼 선언
-        val heartButton = findViewById<ImageButton>(R.id.heart)
-        val heartFillButton = findViewById<ImageButton>(R.id.heartFill)
-
-        // 하트 버튼 클릭 리스너 설정
-        heartButton.setOnClickListener {
-            // 하트 버튼을 숨기고 채워진 하트 버튼을 보이게 설정
-            heartButton.visibility = View.GONE
-            heartFillButton.visibility = View.VISIBLE
+        // endFixButton 클릭했을 때 RecipeMainOne 이동
+        val endFixButton: Button = findViewById(R.id.endFixButton)
+        endFixButton.setOnClickListener {
+            val intent = Intent(this, RecipeMainOne::class.java)
+            startActivity(intent)
         }
 
-        // 채워진 하트 클릭시 다시 그냥 하트로 돌아감
-        heartFillButton.setOnClickListener {
-            // 채워진 하트 버튼을 숨기고 하트 버튼을 보이게 설정
-            heartFillButton.visibility = View.GONE
-            heartButton.visibility = View.VISIBLE
+        // 비워진 하트와 채워진 하트 선언
+        val heart = findViewById<ImageButton>(R.id.heart)
+        val heartFill = findViewById<ImageButton>(R.id.heartFill)
+
+        // 비워진 하트 눌렀을때 비워진 하트 없어지고 채워진 하트 나타남
+        heart.setOnClickListener {
+            heart.visibility = View.GONE
+            heartFill.visibility = View.VISIBLE
         }
 
-        // 좋아요 버튼과 좋아요 하트 버튼 선언
-        val bellIcon = findViewById<ImageButton>(R.id.bellIcon)
-        val bellFill = findViewById<ImageButton>(R.id.bellFill)
-
-        // 좋아요 버튼 클릭 리스너 설정
-        bellIcon.setOnClickListener {
-            // 하트 버튼을 숨기고 채워진 하트 버튼을 보이게 설정
-            bellIcon.visibility = View.GONE
-            bellFill.visibility = View.VISIBLE
+        // 채워진 하트 눌렀을때 채워진 하트 없어지고 비워진 하트 나타남
+        heartFill.setOnClickListener {
+            heartFill.visibility = View.GONE
+            heart.visibility = View.VISIBLE
         }
 
-        // 채워진 좋아요 클릭시 다시 그냥 좋아요로 돌아감
-        bellFill.setOnClickListener {
-            // 채워진 하트 버튼을 숨기고 하트 버튼을 보이게 설정
-            bellFill.visibility = View.GONE
-            bellIcon.visibility = View.VISIBLE
+        // 비워진 좋아요와 채워진 좋아요 선언
+        val good = findViewById<ImageButton>(R.id.good)
+        val goodFill = findViewById<ImageButton>(R.id.goodFill)
+
+        // 비워진 좋아요 눌렀을때 비워진 좋아요 없어지고 채워진 좋아요 나타남
+        good.setOnClickListener {
+            good.visibility = View.GONE
+            goodFill.visibility = View.VISIBLE
+        }
+
+        // 채워진 좋아요 눌렀을때 채워진 좋아요 없어지고 비워진 좋아요 나타남
+        goodFill.setOnClickListener {
+            goodFill.visibility = View.GONE
+            good.visibility = View.VISIBLE
         }
     }
 }

@@ -4,6 +4,7 @@ package com.example.test
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -59,6 +60,12 @@ class RecipeWriteVideoCookVideo : AppCompatActivity() {
         six.setOnClickListener {
             val intent = Intent(this, RecipeWriteVideoDetailSettle::class.java)
             startActivity(intent)
+        }
+
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 }

@@ -56,10 +56,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // recipeWrite 클릭했을 때 RecipeDetail 이동
+        // recipeWrite 클릭했을 때 RecipeWriteMain 이동
         val recipeWrite: LinearLayout = findViewById(R.id.recipeWrite)
         recipeWrite.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothTitle::class.java)
+            val intent = Intent(this, RecipeWriteMain::class.java)
             startActivity(intent)
         }
 

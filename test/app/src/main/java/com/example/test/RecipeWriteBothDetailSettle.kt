@@ -146,5 +146,11 @@ class RecipeWriteBothDetailSettle : AppCompatActivity() {
             }
         }
 
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
     }
 }

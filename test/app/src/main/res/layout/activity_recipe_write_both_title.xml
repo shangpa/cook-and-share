@@ -48,12 +48,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="타이틀"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne"/>
 
     <!-- 타이틀 아래 바 -->
     <View
@@ -72,12 +72,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="재료"
         android:textColor="#A1A9AD"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/one"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne"/>
 
     <!-- 대체재료 -->
     <TextView
@@ -85,12 +85,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="대체재료"
         android:textColor="#A1A9AD"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/two"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne"/>
 
     <!-- 처리방법 -->
     <TextView
@@ -98,12 +98,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="처리방법"
         android:textColor="#A1A9AD"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/three"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne"/>
 
     <!-- 조리순서 -->
     <TextView
@@ -111,12 +111,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="조리순서"
         android:textColor="#A1A9AD"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/four"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne"/>
 
     <!-- 조리영상 -->
     <TextView
@@ -124,12 +124,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="조리영상"
         android:textColor="#A1A9AD"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/five"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"/>
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne"/>
 
     <!-- 세부설정 -->
     <TextView
@@ -137,12 +137,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="16dp"
         android:text="세부설정"
         android:textColor="#A1A9AD"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarOne" />
 
     <!-- 카테고리 아래 구분바 -->
     <View

@@ -24,11 +24,11 @@
         android:id="@+id/heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="53dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_recipe_heart"
         app:layout_constraintBottom_toBottomOf="@id/backArrow"
-        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintEnd_toStartOf="@id/person"
         app:layout_constraintTop_toTopOf="@id/backArrow" />
 
     <!-- 채워진 하트 버튼 -->
@@ -36,37 +36,37 @@
         android:id="@+id/heartFill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="53dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_heart_fill"
         app:layout_constraintBottom_toBottomOf="@id/backArrow"
-        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintEnd_toStartOf="@id/person"
         app:layout_constraintTop_toTopOf="@id/backArrow"
         android:visibility="gone"/>
 
     <!-- 좋아요 버튼 -->
     <ImageButton
-        android:id="@+id/bellIcon"
+        android:id="@+id/good"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_good"
         app:layout_constraintEnd_toStartOf="@id/person"
-        app:layout_constraintTop_toTopOf="@id/heart"/>
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"/>
 
     <!-- 채워진 좋아요 버튼 -->
     <ImageButton
-        android:id="@+id/bellFill"
+        android:id="@+id/goodFill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_good_fill"
         app:layout_constraintEnd_toStartOf="@id/person"
-        app:layout_constraintTop_toTopOf="@id/heart"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
         android:visibility="gone"/>
 
     <!-- 공유 버튼 -->
@@ -75,11 +75,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="1dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_share"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/heart" />
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow" />
 
     <ScrollView
         android:id="@+id/activityMain"
@@ -766,6 +766,58 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <!-- 하트 눌렀을때 설명 박스 -->
+    <View
+        android:id="@+id/heartExplain"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="92dp"
+        android:background="@drawable/ic_heart_explain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
+    <!-- 관심 레시피로 저장하였습니다. -->
+    <TextView
+        android:id="@+id/recipeStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="관심 레시피로 저장하였습니다."
+        android:textSize="10sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/heartExplain"
+        app:layout_constraintTop_toTopOf="@id/heartExplain"
+        app:layout_constraintStart_toStartOf="@id/heartExplain"
+        app:layout_constraintEnd_toEndOf="@id/heartExplain"
+        android:visibility="gone"/>
+
+    <!-- 좋아요 눌렀을때 설명 박스 -->
+    <View
+        android:id="@+id/goodExplain"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="92dp"
+        android:background="@drawable/ic_heart_explain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
+    <!-- 해당 레시피를 추천하였습니다. -->
+    <TextView
+        android:id="@+id/recipeRecomend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="해당 레시피를 추천하였습니다."
+        android:textSize="10sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/heartExplain"
+        app:layout_constraintTop_toTopOf="@id/heartExplain"
+        app:layout_constraintStart_toStartOf="@id/heartExplain"
+        app:layout_constraintEnd_toEndOf="@id/heartExplain"
+        android:visibility="gone"/>
 
     <!-- 탭바 배경 하얀색 사각형 -->
     <ImageView

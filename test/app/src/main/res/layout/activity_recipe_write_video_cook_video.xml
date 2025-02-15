@@ -120,7 +120,7 @@
 
     <!-- 세부설정 -->
     <TextView
-        android:id="@+id/seven"
+        android:id="@+id/six"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -229,12 +229,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- 끝내기 -->
+    <!-- 이전으로 -->
     <Button
         android:id="@+id/skipFixButton"
         android:layout_width="171dp"
         android:layout_height="50dp"
-        android:text="끝내기"
+        android:text="이전으로"
         android:textSize="13sp"
         android:textColor="#9B9B9B"
         android:layout_marginStart="27dp"
@@ -242,12 +242,12 @@
         app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
         app:layout_constraintStart_toStartOf="@id/tapFixBar" />
 
-    <!-- STEP 추가하기 -->
+    <!-- 계속하기 -->
     <Button
         android:id="@+id/nextFixButton"
         android:layout_width="171dp"
         android:layout_height="50dp"
-        android:text="STEP 추가하기"
+        android:text="계속하기"
         android:textSize="14sp"
         android:textColor="#A1A9AD"
         android:textStyle="bold"

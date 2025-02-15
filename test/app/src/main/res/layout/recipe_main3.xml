@@ -91,7 +91,7 @@
 
     <!-- 동영상 보기 -->
     <TextView
-        android:id="@+id/viewWithTimer"
+        android:id="@+id/videoSee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -114,18 +114,18 @@
         android:background="@drawable/bar_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/viewWithTimer" />
+        app:layout_constraintTop_toTopOf="@id/videoSee" />
 
     <!-- 동영상 보기 화살표 -->
     <View
-        android:id="@+id/rigthArrow"
+        android:id="@+id/rigthArrowThree"
         android:layout_width="7dp"
         android:layout_height="13dp"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/ic_rigth_arrow"
         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwo"
-        app:layout_constraintTop_toTopOf="@id/viewWithTimer" />
+        app:layout_constraintTop_toTopOf="@id/videoSee" />
 
 
     <!-- 동영상 보기 전체 아래 바 -->
@@ -150,6 +150,30 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
+    <!-- 1인분 -->
+    <TextView
+        android:id="@+id/onePerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:text="1인분"
+        android:textSize="12sp"
+        android:textColor="#2B2B2B"
+        app:layout_constraintTop_toTopOf="@id/expectationMaterialsToBeUsed"
+        app:layout_constraintEnd_toStartOf="@id/rigthArrowFour" />
+
+    <!-- 1인분 화살표 -->
+    <ImageButton
+        android:id="@+id/rigthArrowFour"
+        android:layout_width="6dp"
+        android:layout_height="11dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_arrow_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/onePerson" />
 
     <!-- 계란 박스 -->
     <View
@@ -290,10 +314,76 @@
         android:textSize="13sp"
         android:textColor="#9B9B9B"
         android:layout_marginTop="130dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/btn_recipe_add"
         app:layout_constraintTop_toTopOf="@id/redOnionBox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- 회색 배경 View -->
+    <View
+        android:id="@+id/dimView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"/>
+
+    <!-- 냉장고 재료를 사용하시겠어요? 상자 -->
+    <View
+        android:id="@+id/materialUseBox"
+        android:layout_width="280dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/ic_activity_recipe_content_check_rect"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
+
+    <!-- 냉장고 재료를 사용하시겠어요? -->
+    <TextView
+        android:id="@+id/materialUse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="냉장고 재료를 사용하시겠어요?"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/materialUseBox"
+        android:visibility="gone"/>
+
+    <!-- 아니요 -->
+    <Button
+        android:id="@+id/no"
+        android:layout_width="115dp"
+        android:layout_height="33dp"
+        android:text="아니요"
+        android:textSize="11sp"
+        android:textColor="#000000"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/ic_recipe_main_rect_no"
+        app:layout_constraintBottom_toBottomOf="@id/materialUseBox"
+        app:layout_constraintStart_toStartOf="@id/materialUseBox"
+        android:visibility="gone"/>
+
+    <!-- 네 -->
+    <Button
+        android:id="@+id/yes"
+        android:layout_width="115dp"
+        android:layout_height="33dp"
+        android:text="네"
+        android:textSize="11sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/ic_recipe_main_rect_yes"
+        app:layout_constraintBottom_toBottomOf="@id/materialUseBox"
+        app:layout_constraintEnd_toEndOf="@id/materialUseBox"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

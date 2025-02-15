@@ -156,62 +156,128 @@
     <!-- 별 -->
     <ImageButton
         android:id="@+id/star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
         android:layout_marginStart="43dp"
         android:layout_marginTop="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_star"
+        android:src="@drawable/ic_star_no_fill"
         app:layout_constraintStart_toStartOf="@id/grade"
         app:layout_constraintTop_toTopOf="@id/grade" />
 
     <!-- 별 -->
     <ImageButton
-        android:id="@+id/starTwo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:id="@+id/starSix"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="43dp"
         android:layout_marginTop="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_star"
+        app:layout_constraintStart_toStartOf="@id/grade"
+        app:layout_constraintTop_toTopOf="@id/grade"
+        android:visibility="gone"/>
+
+    <!-- 별 -->
+    <ImageButton
+        android:id="@+id/starTwo"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_star_no_fill"
         app:layout_constraintStart_toStartOf="@id/star"
         app:layout_constraintTop_toTopOf="@id/grade" />
 
     <!-- 별 -->
     <ImageButton
-        android:id="@+id/starThree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:id="@+id/starSeven"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_star"
+        app:layout_constraintStart_toStartOf="@id/star"
+        app:layout_constraintTop_toTopOf="@id/grade"
+        android:visibility="gone"/>
+
+    <!-- 별 -->
+    <ImageButton
+        android:id="@+id/starThree"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_star_no_fill"
         app:layout_constraintStart_toStartOf="@id/starTwo"
         app:layout_constraintTop_toTopOf="@id/grade" />
 
     <!-- 별 -->
     <ImageButton
-        android:id="@+id/starFour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:id="@+id/starEight"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_star"
+        app:layout_constraintStart_toStartOf="@id/starTwo"
+        app:layout_constraintTop_toTopOf="@id/grade"
+        android:visibility="gone"/>
+
+
+    <!-- 별 -->
+    <ImageButton
+        android:id="@+id/starFour"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_star_no_fill"
         app:layout_constraintStart_toStartOf="@id/starThree"
         app:layout_constraintTop_toTopOf="@id/grade" />
 
     <!-- 별 -->
     <ImageButton
+        android:id="@+id/starNine"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_star"
+        app:layout_constraintStart_toStartOf="@id/starThree"
+        app:layout_constraintTop_toTopOf="@id/grade"
+        android:visibility="gone"/>
+
+    <!-- 별 -->
+    <ImageButton
         android:id="@+id/starFive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_star_no_fill"
+        app:layout_constraintStart_toStartOf="@id/starFour"
+        app:layout_constraintTop_toTopOf="@id/grade" />
+
+    <!-- 별 -->
+    <ImageButton
+        android:id="@+id/starTen"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="0dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_star"
         app:layout_constraintStart_toStartOf="@id/starFour"
-        app:layout_constraintTop_toTopOf="@id/grade" />
+        app:layout_constraintTop_toTopOf="@id/grade"
+        android:visibility="gone"/>
 
     <!-- 평점 아래 바 -->
     <View
@@ -249,17 +315,18 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- 리뷰 내용을 작성해주세요 -->
-    <TextView
+    <EditText
         android:id="@+id/reviewContentWrite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="리뷰 내용을 작성해주세요"
+        android:textSize="11sp"
         android:layout_marginTop="11dp"
         android:layout_marginStart="11dp"
-        android:text="리뷰 내용을 작성해주세요"
-        android:textColor="#A1A9AD"
-        android:textSize="11sp"
+        android:backgroundTint="#A1A9AD"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="@id/contentRect"
-        app:layout_constraintTop_toTopOf="@id/contentRect" />
+        app:layout_constraintTop_toTopOf="@id/contentRect"/>
 
     <!-- 카메라 -->
     <ImageButton

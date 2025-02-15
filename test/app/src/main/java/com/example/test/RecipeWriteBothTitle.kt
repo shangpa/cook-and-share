@@ -26,6 +26,13 @@ class RecipeWriteBothTitle : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // skipFixButton 클릭했을 때 RecipeWriteMain 이동
+        val skipFixButton: Button = findViewById(R.id.skipFixButton)
+        skipFixButton.setOnClickListener {
+            val intent = Intent(this, RecipeWriteMain::class.java)
+            startActivity(intent)
+        }
+
         // two 클릭했을 때 RecipeWriteBothMaterial 이동
         val two: TextView = findViewById(R.id.two)
         two.setOnClickListener {
@@ -170,6 +177,12 @@ class RecipeWriteBothTitle : AppCompatActivity() {
                 koreanFood.visibility = View.VISIBLE
                 koreanFood.setTextColor(Color.parseColor("#2B2B2B")) // 텍스트 색상 변경
             }
+        }
+
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
     }

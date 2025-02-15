@@ -4,8 +4,10 @@ package com.example.test
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -73,10 +75,9 @@ class RecipeWriteBothCookOrder : AppCompatActivity() {
         // 1-1. 레시피를 입력해주세요.에 입력된 텍스트 가져오기
         val recipeWrite = findViewById<EditText>(R.id.recipeWrite)
 
-        // 타이머 추가 버튼 클릭 이벤트
-        val timerAddButton = findViewById<Button>(R.id.timerAdd)
+        // 선언
+        val timerAdd: Button = findViewById(R.id.timerAdd)
         val contentAddButton = findViewById<Button>(R.id.contentAdd)
-
         val timer = findViewById<TextView>(R.id.timer)
         val hour = findViewById<EditText>(R.id.hour)
         val time = findViewById<TextView>(R.id.time)
@@ -84,10 +85,15 @@ class RecipeWriteBothCookOrder : AppCompatActivity() {
         val settle = findViewById<TextView>(R.id.settle)
         val middle = findViewById<TextView>(R.id.middle)
         val delete = findViewById<TextView>(R.id.delete)
+        val contentAdd = findViewById<TextView>(R.id.contentAdd)
+        val recipeWriteTwo = findViewById<TextView>(R.id.recipeWriteTwo)
+        val deleteTwo = findViewById<ImageButton>(R.id.deleteTwo)
+        val divideRectangleBarThree = findViewById<View>(R.id.divideRectangleBarThree)
 
-        timerAddButton.setOnClickListener {
+        // 타이머 버튼 클릭시
+        timerAdd.setOnClickListener {
             // 버튼들 사라지게 하기
-            timerAddButton.visibility = View.GONE
+            timerAdd.visibility = View.GONE
             contentAddButton.visibility = View.GONE
 
             // 타이머 관련 요소들 나타나게 하기
@@ -98,6 +104,58 @@ class RecipeWriteBothCookOrder : AppCompatActivity() {
             settle.visibility = View.VISIBLE
             middle.visibility = View.VISIBLE
             delete.visibility = View.VISIBLE
+        }
+
+        // 내용 추가하기 버튼 클릭시
+        contentAdd.setOnClickListener {
+            // 기존 요소 보이게 하기
+            recipeWriteTwo.visibility = View.VISIBLE
+            deleteTwo.visibility = View.VISIBLE
+            divideRectangleBarThree.visibility = View.VISIBLE
+
+            // 타이머 165dp 이동
+            val params = timer.layoutParams as ViewGroup.MarginLayoutParams
+            params.topMargin += 165
+            timer.layoutParams = params
+
+            // contentAdd 165dp 이동
+            val contentParams = contentAdd.layoutParams as ViewGroup.MarginLayoutParams
+            contentParams.topMargin += 165
+            contentAdd.layoutParams = contentParams
+
+            // timerAdd 165dp 이동
+            val timerParams = timerAdd.layoutParams as ViewGroup.MarginLayoutParams
+            timerParams.topMargin += 165
+            timerAdd.layoutParams = timerParams
+        }
+
+        // 삭제 버튼 클릭시
+        deleteTwo.setOnClickListener {
+            // 버튼들 사라지게 하기
+            recipeWriteTwo.visibility = View.GONE
+            deleteTwo.visibility = View.GONE
+            divideRectangleBarThree.visibility = View.GONE
+
+            // 타이머 165dp 이동
+            val params = timer.layoutParams as ViewGroup.MarginLayoutParams
+            params.topMargin -= 165
+            timer.layoutParams = params
+
+            // contentAdd 165dp 이동
+            val contentParams = contentAdd.layoutParams as ViewGroup.MarginLayoutParams
+            contentParams.topMargin -= 165
+            contentAdd.layoutParams = contentParams
+
+            // timerAdd 165dp 이동
+            val timerParams = timerAdd.layoutParams as ViewGroup.MarginLayoutParams
+            timerParams.topMargin -= 165
+            timerAdd.layoutParams = timerParams
+        }
+
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
     }

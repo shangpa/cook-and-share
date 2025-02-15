@@ -3,10 +3,13 @@ package com.example.test
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class RecipeWriteImageMaterial : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,5 +100,45 @@ class RecipeWriteImageMaterial : AppCompatActivity() {
 
         // 계량6 입력된 텍스트 가져오기
         val measuringSix = findViewById<EditText>(R.id.measuringSix)
+
+        // 선언
+        val buyFixButton = findViewById<Button>(R.id.buyFixButton)
+        val materialSeven = findViewById<EditText>(R.id.materialSeven)
+        val measuringSeven = findViewById<EditText>(R.id.measuringSeven)
+        val deleteSeven = findViewById<ImageButton>(R.id.deleteSeven)
+        val divideRectangleBarNine = findViewById<View>(R.id.divideRectangleBarNine)
+        val params = buyFixButton.layoutParams as ConstraintLayout.LayoutParams
+
+        // 추가하기 눌렀을때 재료명7이랑 계량 7나옴
+        buyFixButton.setOnClickListener {
+            materialSeven.visibility = View.VISIBLE
+            measuringSeven.visibility = View.VISIBLE
+            deleteSeven.visibility = ImageButton.VISIBLE
+            divideRectangleBarNine.visibility = View.VISIBLE
+
+            // 버튼을 아래로 87dp 이동
+            params.topMargin += 87
+            buyFixButton.layoutParams = params
+        }
+
+        // 재료7, 계량 7 삭제 버튼 눌렀을때 사라짐
+        deleteSeven.setOnClickListener {
+            // 재료명7, 계량7, 아래 바 숨기기
+            materialSeven.visibility = View.GONE
+            measuringSeven.visibility = View.GONE
+            divideRectangleBarNine.visibility = View.GONE
+            deleteSeven.visibility = ImageButton.GONE
+
+            // 추가하기 버튼 위치 조정(위로 87dp)올라감
+            val params = buyFixButton.layoutParams as ConstraintLayout.LayoutParams
+            params.topMargin -= 87 // 87dp 위로 이동
+            buyFixButton.layoutParams = params
+        }
+
+        // 이전 화면으로 이동
+        val backArrow: ImageButton = findViewById(R.id.backArrow)
+        backArrow.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 }

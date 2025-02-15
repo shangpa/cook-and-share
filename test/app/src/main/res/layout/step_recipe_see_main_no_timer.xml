@@ -21,27 +21,53 @@
 
     <!-- 하트 버튼 -->
     <ImageButton
-        android:id="@+id/searchIcon"
+        android:id="@+id/heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="53dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_recipe_heart"
         app:layout_constraintBottom_toBottomOf="@id/backArrow"
-        app:layout_constraintEnd_toStartOf="@id/bellIcon"
+        app:layout_constraintEnd_toStartOf="@id/person"
         app:layout_constraintTop_toTopOf="@id/backArrow" />
+
+    <!-- 채워진 하트 버튼 -->
+    <ImageButton
+        android:id="@+id/heartFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="53dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_heart_fill"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        android:visibility="gone"/>
 
     <!-- 좋아요 버튼 -->
     <ImageButton
-        android:id="@+id/bellIcon"
+        android:id="@+id/good"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_good"
         app:layout_constraintEnd_toStartOf="@id/person"
-        app:layout_constraintTop_toTopOf="@id/searchIcon" />
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"/>
+
+    <!-- 채워진 좋아요 버튼 -->
+    <ImageButton
+        android:id="@+id/goodFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_good_fill"
+        app:layout_constraintEnd_toStartOf="@id/person"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        android:visibility="gone"/>
 
     <!-- 공유 버튼 -->
     <ImageButton
@@ -49,11 +75,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="1dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_share"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/searchIcon" />
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow" />
 
     <ScrollView
         android:id="@+id/activityMain"
@@ -89,6 +115,70 @@
                 android:textColor="#2B2B2B"
                 app:layout_constraintTop_toBottomOf="@id/riceImage"
                 app:layout_constraintStart_toStartOf="@id/riceImage" />
+
+            <!-- 더하기 -->
+            <ImageButton
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="1dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_recipe_see_add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/vegetarianDiet" />
+
+            <!-- 더하기 선택 상자 -->
+            <View
+                android:id="@+id/addBox"
+                android:layout_width="39dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/ic_activity_recipe_write_both_title_rect"
+                app:layout_constraintTop_toBottomOf="@id/add"
+                app:layout_constraintEnd_toEndOf="@id/add"
+                android:visibility="gone"/>
+
+            <!-- 수정 -->
+            <TextView
+                android:id="@+id/modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수정"
+                android:textColor="#8A8F9C"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/addBox"
+                app:layout_constraintEnd_toEndOf="@id/addBox"
+                app:layout_constraintTop_toTopOf="@id/addBox"
+                app:layout_constraintBottom_toBottomOf="@id/categoryBoxBar"
+                android:visibility="gone"/>
+
+            <!-- 더하기 선택 상자 선 -->
+            <View
+                android:id="@+id/categoryBoxBar"
+                android:layout_width="38dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/bar_category"
+                app:layout_constraintTop_toTopOf="@id/addBox"
+                app:layout_constraintStart_toStartOf="@id/addBox"
+                app:layout_constraintEnd_toEndOf="@id/addBox"
+                android:visibility="gone"/>
+
+            <!-- 삭제 -->
+            <TextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="삭제"
+                android:textColor="#8A8F9C"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/addBox"
+                app:layout_constraintEnd_toEndOf="@id/addBox"
+                app:layout_constraintTop_toTopOf="@id/categoryBoxBar"
+                app:layout_constraintBottom_toBottomOf="@id/addBox"
+                android:visibility="gone"/>
 
             <!-- 알배추전골과 구운 두부 버섯 샐러드 -->
             <TextView

@@ -272,7 +272,7 @@
         app:layout_constraintStart_toStartOf="@id/stepOne"
         app:layout_constraintTop_toBottomOf="@id/stepOne"/>
 
-    <!-- 레시피를 입력해주세요. 아래 구분바 -->
+    <!-- 1-1. 레시피를 입력해주세요. 아래 구분바 -->
     <View
         android:id="@+id/divideRectangleBarTwo"
         android:layout_width="match_parent"
@@ -283,19 +283,45 @@
         android:background="@drawable/bar_rectangle"
         app:layout_constraintTop_toBottomOf="@id/recipeWrite" />
 
-    <!-- 타이머 추가하기 -->
-    <Button
-        android:id="@+id/timerAdd"
-        android:layout_width="131dp"
-        android:layout_height="35dp"
-        android:text="타이머 추가하기"
-        android:textSize="12sp"
-        android:textColor="#9B9B9B"
-        android:layout_marginTop="32dp"
+    <!-- 1-2. 레시피를 입력해주세요. -->
+    <EditText
+        android:id="@+id/recipeWriteTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1-2. 레시피를 입력해주세요."
+        android:textSize="13sp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:backgroundTint="#A1A9AD"
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="@id/stepOne"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo"
+        android:visibility="gone"/>
+
+    <!-- 삭제 -->
+    <ImageButton
+        android:id="@+id/deleteTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="22dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo"
+        android:visibility="gone" />
+
+    <!-- 1-2. 레시피를 입력해주세요. 아래 구분바 -->
+    <View
+        android:id="@+id/divideRectangleBarThree"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/btn_recipe_add"
-        app:layout_constraintTop_toTopOf="@id/divideRectangleBarTwo"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toBottomOf="@id/recipeWriteTwo"
+        android:visibility="gone" />
 
     <!-- 타이머 -->
     <TextView
@@ -396,6 +422,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/time"
         android:visibility="gone"/>
+
+    <!-- 타이머 추가하기 -->
+    <Button
+        android:id="@+id/timerAdd"
+        android:layout_width="131dp"
+        android:layout_height="35dp"
+        android:text="타이머 추가하기"
+        android:textSize="12sp"
+        android:textColor="#9B9B9B"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/btn_recipe_add"
+        app:layout_constraintTop_toTopOf="@id/divideRectangleBarTwo"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 내용 추가하기 -->
     <Button
