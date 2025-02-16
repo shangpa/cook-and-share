@@ -756,7 +756,7 @@
             android:gravity="center_horizontal"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="25dp">
+            android:layout_marginBottom="20dp">
 
             <!-- 총 몇개의 레시피-->
             <LinearLayout
@@ -920,13 +920,21 @@
 
                         <!-- 시간 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipetime1"
+                            android:id="@+id/recipeTime1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20분"
+                            android:text="20"
                             android:textSize="11sp"
                             android:textColor="#9B9B9B"
                             android:layout_marginStart="1dp"/>
+
+                        <!-- 분 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="분"
+                            android:textSize="11sp"
+                            android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1122,13 +1130,21 @@
 
                         <!-- 시간 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipetime2"
+                            android:id="@+id/recipeTime2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30분"
+                            android:text="30"
                             android:textSize="11sp"
                             android:textColor="#9B9B9B"
                             android:layout_marginStart="1dp"/>
+
+                        <!-- 분 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="분"
+                            android:textSize="11sp"
+                            android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1314,13 +1330,21 @@
 
                         <!-- 시간 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipetime3"
+                            android:id="@+id/recipeTime3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30분"
+                            android:text="30"
                             android:textSize="11sp"
                             android:textColor="#9B9B9B"
                             android:layout_marginStart="1dp"/>
+
+                        <!-- 분 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="분"
+                            android:textSize="11sp"
+                            android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1506,13 +1530,21 @@
 
                         <!-- 시간 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipetime4"
+                            android:id="@+id/recipeTime4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20분"
+                            android:text="30"
                             android:textSize="11sp"
                             android:textColor="#9B9B9B"
                             android:layout_marginStart="1dp"/>
+
+                        <!-- 분 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="분"
+                            android:textSize="11sp"
+                            android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </LinearLayout>
 

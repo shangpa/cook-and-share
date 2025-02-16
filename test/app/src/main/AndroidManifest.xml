@@ -243,6 +243,72 @@
             </intent-filter>
         </activity>
 
+        <!-- MypageLoveRecipeActivity -->
+        <activity
+            android:name=".MypageLoveRecipeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MypageWriteRecipeActivity -->
+        <activity
+            android:name=".MypageWriteRecipeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MypageRecipeReviewActivity -->
+        <activity
+            android:name=".MypageRecipeReviewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MypageFridgeMaterialListActivity -->
+        <activity
+            android:name=".MypageFridgeMaterialListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MypageSavePostActivity -->
+        <activity
+            android:name=".MypageSavePostActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MypageWritePostActivity -->
+        <activity
+            android:name=".MypageWritePostActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- MaterialSearchDetailActivity -->
         <activity
             android:name=".MaterialSearchDetailActivity"
