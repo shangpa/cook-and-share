@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- 마이페이지 - 찜한 레시피 -->
+<!-- 마이페이지 - 작성한 레시피 -->
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,15 +36,15 @@
                 android:src="@drawable/ic_back_fridge"
                 android:contentDescription="뒤로가기" />
 
-            <!-- 찜한 레시피 텍스트 -->
+            <!-- 작성한 레시피 텍스트 -->
             <TextView
                 android:id="@+id/loveRecipeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="찜한 레시피"
+                android:text="작성한 레시피"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="122dp" />
+                android:layout_marginLeft="120dp" />
 
         </LinearLayout>
 
@@ -168,7 +168,7 @@
                     android:id="@+id/fridgeRecipeResultNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="5"
                     android:textSize="12sp"
                     android:textColor="@color/green"
                     android:layout_marginStart="3dp"
@@ -215,7 +215,7 @@
 
         <!-- 레시피 1 -->
         <LinearLayout
-            android:id="@+id/recipe1"
+            android:id="@+id/writeRecipe1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -225,11 +225,11 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/recipeimg1"
+                android:id="@+id/writeRecipeImg1"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/img_recipe_sausage_kimchi_rice1"
-                android:contentDescription="소세지김치볶음밥" />
+                android:src="@drawable/img_recipe_spinach_chicken"
+                android:contentDescription="시금치통닭" />
 
             <!-- 레시피 설명 -->
             <LinearLayout
@@ -246,25 +246,26 @@
 
                     <!-- 요리명 -->
                     <TextView
-                        android:id="@+id/recipeText1"
+                        android:id="@+id/writeRecipeText1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="소세지김치볶음밥"
+                        android:text="시금치통닭"
                         android:textSize="13sp"
                         android:textColor="@color/black" />
 
+                    <!-- 더보기 - 수정, 삭제 -->
                     <ImageButton
-                        android:id="@+id/heartIcon1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_heart_recipe_fill_list"
+                        android:id="@+id/moreIcon1"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_more"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginTop="1dp"
-                        android:layout_marginStart="154dp"/>
+                        android:layout_marginStart="187dp"/>
 
                 </LinearLayout>
 
-                <!-- 난이도 + 시간 -->
+                <!-- 찜 + 좋아요 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -276,22 +277,22 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- 난이도 아이콘 -->
+                        <!-- 찜 아이콘 -->
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_level"
-                            android:contentDescription="난이도 아이콘" />
+                            android:src="@drawable/ic_write_recipe_heart"
+                            android:contentDescription="찜 아이콘" />
 
-                        <!-- 난이도 텍스트 -->
+                        <!-- 찜 텍스트 -->
                         <TextView
-                            android:id="@+id/recipelevel1"
+                            android:id="@+id/writeHeartText1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="초급"
+                            android:text="1,411"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -300,132 +301,58 @@
                         android:orientation="horizontal"
                         android:layout_marginStart="15dp">
 
-                        <!-- 시간 아이콘 -->
+                        <!-- 좋아요 아이콘 -->
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_time"
-                            android:contentDescription="시간 아이콘"
-                            android:layout_marginTop="2dp"/>
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_write_recipe_good"
+                            android:contentDescription="좋아요 아이콘"
+                            android:layout_marginTop="-2.5dp"/>
 
-                        <!-- 시간 텍스트 -->
+                        <!-- 좋아요 텍스트 -->
                         <TextView
-                            android:id="@+id/recipeTime1"
+                            android:id="@+id/writeGoodText1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="35"
+                            android:text="2,137"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
-
-                        <!-- 분 -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="분"
-                            android:textSize="11sp"
-                            android:textColor="#9B9B9B" />
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 별점 + 작성자 -->
+                <!-- 작성일자 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="18dp">
 
-                    <!-- 별점 -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!-- 별점 아이콘 -->
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/ic_star"
-                            android:contentDescription="별 아이콘"
-                            android:layout_marginTop="2dp"/>
-
-                        <!-- 별점 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5.0"
-                            android:textSize="11sp"
-                            android:textColor="#454A52"
-                            android:layout_marginStart="4dp"/>
-
+                        <!-- 작성일자 고정 텍스트-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="("
-                            android:textSize="11sp"
-                            android:textColor="#747474"
+                            android:text="작성일자 : "
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+
+                        <!-- 작성일자 변동 텍스트 -->
+                        <TextView
+                            android:id="@+id/writeRecipeDateText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2025.01.24"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C"
                             android:layout_marginStart="2dp"/>
 
-                        <!-- 리뷰 갯수 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReviewCount1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="6"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=")"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                    </LinearLayout>
-
-                    <!-- 동그라미 구분 -->
-                    <View
-                        android:layout_width="3dp"
-                        android:layout_height="3dp"
-                        android:background="@drawable/ic_radius"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginEnd="7dp"
-                        android:layout_marginTop="7dp"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!-- 작성자 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeWriter1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="성준성아맘"
-                            android:textSize="11sp"
-                            android:textColor="@color/green"
-                            android:layout_marginStart="1dp"/>
-
-                        <!-- 작성자 뱃지 아이콘 -->
-                        <ImageView
-                            android:id="@+id/recipeWriterBadge1"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_writer_badge"
-                            android:layout_marginStart="1dp"
-                            android:contentDescription="작성자 뱃지 아이콘" />
-
-
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <!-- 레시피 2 -->
         <LinearLayout
+            android:id="@+id/writeRecipe2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -435,11 +362,11 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/recipeimg2"
+                android:id="@+id/writeRecipeImg2"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/img_recipe_kimchi_rice1"
-                android:contentDescription="백김치볶음밥" />
+                android:src="@drawable/img_recipe_rolled_omelet"
+                android:contentDescription="간단 달걀말이" />
 
             <!-- 레시피 설명 -->
             <LinearLayout
@@ -456,25 +383,26 @@
 
                     <!-- 요리명 -->
                     <TextView
-                        android:id="@+id/recipeText2"
+                        android:id="@+id/writeRecipeText2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="백김치볶음밥"
+                        android:text="간단 달걀말이"
                         android:textSize="13sp"
                         android:textColor="@color/black" />
 
+                    <!-- 더보기 - 수정, 삭제 -->
                     <ImageButton
-                        android:id="@+id/heartIcon2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_heart_recipe_fill_list"
+                        android:id="@+id/moreIcon2"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_more"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginTop="1dp"
-                        android:layout_marginStart="176dp"/>
+                        android:layout_marginStart="172dp"/>
 
                 </LinearLayout>
 
-                <!-- 난이도 + 시간 -->
+                <!-- 찜 + 좋아요 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -486,22 +414,22 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- 난이도 아이콘 -->
+                        <!-- 찜 아이콘 -->
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_level"
-                            android:contentDescription="난이도 아이콘" />
+                            android:src="@drawable/ic_write_recipe_heart"
+                            android:contentDescription="찜 아이콘" />
 
-                        <!-- 난이도 텍스트 -->
+                        <!-- 찜 텍스트 -->
                         <TextView
-                            android:id="@+id/recipelevel2"
+                            android:id="@+id/writeHeartText2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="초급"
+                            android:text="175"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -510,122 +438,58 @@
                         android:orientation="horizontal"
                         android:layout_marginStart="15dp">
 
-                        <!-- 시간 아이콘 -->
+                        <!-- 좋아요 아이콘 -->
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_time"
-                            android:contentDescription="시간 아이콘"
-                            android:layout_marginTop="2dp"/>
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_write_recipe_good"
+                            android:contentDescription="좋아요 아이콘"
+                            android:layout_marginTop="-2.5dp"/>
 
-                        <!-- 시간 텍스트 -->
+                        <!-- 좋아요 텍스트 -->
                         <TextView
-                            android:id="@+id/recipeTime2"
+                            android:id="@+id/writeGoodText2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30"
+                            android:text="230"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
-
-                        <!-- 분 -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="분"
-                            android:textSize="11sp"
-                            android:textColor="#9B9B9B" />
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 별점 + 작성자 -->
+                <!-- 작성일자 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="18dp">
 
-                    <!-- 별점 -->
-                    <LinearLayout
+                    <!-- 작성일자 고정 텍스트-->
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="작성일자 : "
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C" />
 
-                        <!-- 별점 아이콘 -->
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/ic_star"
-                            android:contentDescription="별 아이콘"
-                            android:layout_marginTop="2dp"/>
-
-                        <!-- 별점 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReview2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5.0"
-                            android:textSize="11sp"
-                            android:textColor="#454A52"
-                            android:layout_marginStart="4dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="("
-                            android:textSize="11sp"
-                            android:textColor="#747474"
-                            android:layout_marginStart="2dp"/>
-
-                        <!-- 리뷰 갯수 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReviewCount2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=")"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                    </LinearLayout>
-
-                    <!-- 동그라미 구분 -->
-                    <View
-                        android:layout_width="3dp"
-                        android:layout_height="3dp"
-                        android:background="@drawable/ic_radius"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginEnd="7dp"
-                        android:layout_marginTop="7dp"/>
-
-                    <LinearLayout
+                    <!-- 작성일자 변동 텍스트 -->
+                    <TextView
+                        android:id="@+id/writeRecipeDateText2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="2025.01.25"
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C"
+                        android:layout_marginStart="2dp"/>
 
-                        <!-- 작성자 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeWriter2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="아라씨"
-                            android:textSize="11sp"
-                            android:textColor="@color/green"
-                            android:layout_marginStart="1dp"/>
-
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <!-- 레시피 3 -->
         <LinearLayout
+            android:id="@+id/writeRecipe3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -635,11 +499,11 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/recipeimg3"
+                android:id="@+id/writeRecipeImg3"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/img_recipe_sausage_vegi1"
-                android:contentDescription="소세지볶음" />
+                android:src="@drawable/img_recipe_cold_pasta"
+                android:contentDescription="콜드 파스타" />
 
             <!-- 레시피 설명 -->
             <LinearLayout
@@ -656,25 +520,26 @@
 
                     <!-- 요리명 -->
                     <TextView
-                        android:id="@+id/recipeText3"
+                        android:id="@+id/writeRecipeText3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="소세지볶음"
+                        android:text="콜드 파스타"
                         android:textSize="13sp"
                         android:textColor="@color/black" />
 
+                    <!-- 더보기 - 수정, 삭제 -->
                     <ImageButton
-                        android:id="@+id/heartIcon3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_heart_recipe_fill_list"
+                        android:id="@+id/moreIcon3"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_more"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_marginStart="187dp"
-                        android:layout_marginTop="1dp"/>
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="184dp"/>
 
                 </LinearLayout>
 
-                <!-- 난이도 + 시간 -->
+                <!-- 찜 + 좋아요 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -686,22 +551,22 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- 난이도 아이콘 -->
+                        <!-- 찜 아이콘 -->
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_level"
-                            android:contentDescription="난이도 아이콘" />
+                            android:src="@drawable/ic_write_recipe_heart"
+                            android:contentDescription="찜 아이콘" />
 
-                        <!-- 난이도 텍스트 -->
+                        <!-- 찜 텍스트 -->
                         <TextView
-                            android:id="@+id/recipelevel3"
+                            android:id="@+id/writeHeartText3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="초급"
+                            android:text="364"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -710,122 +575,58 @@
                         android:orientation="horizontal"
                         android:layout_marginStart="15dp">
 
-                        <!-- 시간 아이콘 -->
+                        <!-- 좋아요 아이콘 -->
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_time"
-                            android:contentDescription="시간 아이콘"
-                            android:layout_marginTop="2dp"/>
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_write_recipe_good"
+                            android:contentDescription="좋아요 아이콘"
+                            android:layout_marginTop="-2.5dp"/>
 
-                        <!-- 시간 텍스트 -->
+                        <!-- 좋아요 텍스트 -->
                         <TextView
-                            android:id="@+id/recipeTime3"
+                            android:id="@+id/writeGoodText3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30"
+                            android:text="524"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
-
-                        <!-- 분 -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="분"
-                            android:textSize="11sp"
-                            android:textColor="#9B9B9B" />
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 별점 + 작성자 -->
+                <!-- 작성일자 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="18dp">
 
-                    <!-- 별점 -->
-                    <LinearLayout
+                    <!-- 작성일자 고정 텍스트-->
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="작성일자 : "
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C" />
 
-                        <!-- 별점 아이콘 -->
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/ic_star"
-                            android:contentDescription="별 아이콘"
-                            android:layout_marginTop="2dp"/>
-
-                        <!-- 별점 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReview3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5.0"
-                            android:textSize="11sp"
-                            android:textColor="#454A52"
-                            android:layout_marginStart="4dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="("
-                            android:textSize="11sp"
-                            android:textColor="#747474"
-                            android:layout_marginStart="2dp"/>
-
-                        <!-- 리뷰 갯수 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReviewCount3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="26"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=")"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                    </LinearLayout>
-
-                    <!-- 동그라미 구분 -->
-                    <View
-                        android:layout_width="3dp"
-                        android:layout_height="3dp"
-                        android:background="@drawable/ic_radius"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginEnd="7dp"
-                        android:layout_marginTop="7dp"/>
-
-                    <LinearLayout
+                    <!-- 작성일자 변동 텍스트 -->
+                    <TextView
+                        android:id="@+id/writeRecipeDateText3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="2025.01.23"
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C"
+                        android:layout_marginStart="2dp"/>
 
-                        <!-- 작성자 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeWriter3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="승급원하는은우아빠"
-                            android:textSize="11sp"
-                            android:textColor="@color/green"
-                            android:layout_marginStart="1dp"/>
-
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <!-- 레시피 4 -->
         <LinearLayout
+            android:id="@+id/writeRecipe4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -835,11 +636,11 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/recipeimg4"
+                android:id="@+id/writeRecipeImg4"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/img_recipe_sausage_rice1"
-                android:contentDescription="소세지볶음밥" />
+                android:src="@drawable/img_recipe_chicken_cranberry_sandwich"
+                android:contentDescription="치킨 크랜베리 샌드위치" />
 
             <!-- 레시피 설명 -->
             <LinearLayout
@@ -856,25 +657,26 @@
 
                     <!-- 요리명 -->
                     <TextView
-                        android:id="@+id/recipeText4"
+                        android:id="@+id/writeRecipeText4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="소세지볶음밥"
+                        android:text="치킨 크랜베리 샌드위치"
                         android:textSize="13sp"
                         android:textColor="@color/black" />
 
+                    <!-- 더보기 - 수정, 삭제 -->
                     <ImageButton
-                        android:id="@+id/heartIcon4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_heart_recipe_fill_list"
+                        android:id="@+id/moreIcon4"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_more"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginTop="1dp"
-                        android:layout_marginStart="176dp"/>
+                        android:layout_marginStart="125dp"/>
 
                 </LinearLayout>
 
-                <!-- 난이도 + 시간 -->
+                <!-- 찜 + 좋아요 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -886,22 +688,22 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- 난이도 아이콘 -->
+                        <!-- 찜 아이콘 -->
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_level"
-                            android:contentDescription="난이도 아이콘" />
+                            android:src="@drawable/ic_write_recipe_heart"
+                            android:contentDescription="찜 아이콘" />
 
-                        <!-- 난이도 텍스트 -->
+                        <!-- 찜 텍스트 -->
                         <TextView
-                            android:id="@+id/recipelevel4"
+                            android:id="@+id/writeHeartText4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="초급"
+                            android:text="23"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -910,125 +712,188 @@
                         android:orientation="horizontal"
                         android:layout_marginStart="15dp">
 
-                        <!-- 시간 아이콘 -->
+                        <!-- 좋아요 아이콘 -->
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_recipe_time"
-                            android:contentDescription="시간 아이콘"
-                            android:layout_marginTop="2dp"/>
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_write_recipe_good"
+                            android:contentDescription="좋아요 아이콘"
+                            android:layout_marginTop="-2.5dp"/>
 
-                        <!-- 시간 텍스트 -->
+                        <!-- 좋아요 텍스트 -->
                         <TextView
-                            android:id="@+id/recipeTime4"
+                            android:id="@+id/writeGoodText4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20"
+                            android:text="14"
                             android:textSize="11sp"
-                            android:textColor="#9B9B9B"
-                            android:layout_marginStart="1dp"/>
-
-                        <!-- 분 -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="분"
-                            android:textSize="11sp"
-                            android:textColor="#9B9B9B" />
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 별점 + 작성자 -->
+                <!-- 작성일자 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="18dp">
+
+                    <!-- 작성일자 고정 텍스트-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="작성일자 : "
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C" />
+
+                    <!-- 작성일자 변동 텍스트 -->
+                    <TextView
+                        android:id="@+id/writeRecipeDateText4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2024.12.17"
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C"
+                        android:layout_marginStart="2dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 레시피 5 -->
+        <LinearLayout
+            android:id="@+id/writeRecipe5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- 요리 이미지 -->
+            <ImageView
+                android:id="@+id/writeRecipeImg5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/img_recipe_mukenji_perilla_oil_pasta"
+                android:contentDescription="묵은지 들기름 파스타" />
+
+            <!-- 레시피 설명 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="13dp" >
+
+                <!-- 요리명 + 찜 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- 요리명 -->
+                    <TextView
+                        android:id="@+id/writeRecipeText5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="묵은지 들기름 파스타"
+                        android:textSize="13sp"
+                        android:textColor="@color/black" />
+
+                    <!-- 더보기 - 수정, 삭제 -->
+                    <ImageButton
+                        android:id="@+id/moreIcon5"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_more"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="136dp"/>
+
+                </LinearLayout>
+
+                <!-- 찜 + 좋아요 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="6dp">
 
-                    <!-- 별점 -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- 별점 아이콘 -->
+                        <!-- 찜 아이콘 -->
                         <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/ic_star"
-                            android:contentDescription="별 아이콘"
-                            android:layout_marginTop="2dp"/>
-
-                        <!-- 별점 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReview4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5.0"
-                            android:textSize="11sp"
-                            android:textColor="#454A52"
-                            android:layout_marginStart="4dp"/>
+                            android:src="@drawable/ic_write_recipe_heart"
+                            android:contentDescription="찜 아이콘" />
 
+                        <!-- 찜 텍스트 -->
                         <TextView
+                            android:id="@+id/writeHeartText5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="("
+                            android:text="20"
                             android:textSize="11sp"
-                            android:textColor="#747474"
-                            android:layout_marginStart="2dp"/>
-
-                        <!-- 리뷰 갯수 텍스트 -->
-                        <TextView
-                            android:id="@+id/recipeReviewCount4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="143"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=")"
-                            android:textSize="11sp"
-                            android:textColor="#747474" />
-
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
-
-                    <!-- 동그라미 구분 -->
-                    <View
-                        android:layout_width="3dp"
-                        android:layout_height="3dp"
-                        android:background="@drawable/ic_radius"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginEnd="7dp"
-                        android:layout_marginTop="7dp"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginStart="15dp">
 
-                        <!-- 작성자 텍스트 -->
+                        <!-- 좋아요 아이콘 -->
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_write_recipe_good"
+                            android:contentDescription="좋아요 아이콘"
+                            android:layout_marginTop="-2.5dp"/>
+
+                        <!-- 좋아요 텍스트 -->
                         <TextView
-                            android:id="@+id/recipeWriter4"
+                            android:id="@+id/writeGoodText5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="유바바"
+                            android:text="35"
                             android:textSize="11sp"
-                            android:textColor="@color/green"
-                            android:layout_marginStart="1dp"/>
-
-                        <!-- 작성자 뱃지 아이콘 -->
-                        <ImageView
-                            android:id="@+id/recipeWriterBadge2"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_writer_badge"
-                            android:layout_marginStart="1dp"
-                            android:contentDescription="작성자 뱃지 아이콘" />
-
+                            android:textColor="@color/black"
+                            android:layout_marginStart="3dp"/>
                     </LinearLayout>
+                </LinearLayout>
+
+                <!-- 작성일자 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="18dp">
+
+                    <!-- 작성일자 고정 텍스트-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="작성일자 : "
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C" />
+
+                    <!-- 작성일자 변동 텍스트 -->
+                    <TextView
+                        android:id="@+id/writeRecipeDateText5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2025.02.25"
+                        android:textSize="12sp"
+                        android:textColor="#8A8F9C"
+                        android:layout_marginStart="2dp"/>
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -1044,11 +909,11 @@
             android:layout_marginStart="95dp"
             android:layout_marginTop="40dp">
 
-            <!-- 더 많은 레시피 보러 가기 텍스트 -->
+            <!-- 더 많은 레시피 작성하러 가기 텍스트 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="더 많은 레시피 보러 가기"
+                android:text="더 많은 레시피 작성하러 가기"
                 android:textSize="12sp"
                 android:textColor="#9B9B9B" />
 
