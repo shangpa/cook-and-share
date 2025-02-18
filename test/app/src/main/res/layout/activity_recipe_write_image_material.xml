@@ -548,68 +548,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/materialSix"/>
 
-            <!-- 재료명7 -->
-            <EditText
-                android:id="@+id/materialSeven"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="재료명"
-                android:textSize="13sp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#A1A9AD"
-                android:background="@null"
-                android:inputType="text"
-                app:layout_constraintStart_toStartOf="@id/divideRectangleBarEight"
-                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight"
-                android:visibility="gone"/>
-
-            <!-- 계량7-->
-            <EditText
-                android:id="@+id/measuringSeven"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="계량"
-                android:textSize="13sp"
-                android:layout_marginStart="200dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#A1A9AD"
-                android:background="@null"
-                android:inputType="text"
-                app:layout_constraintStart_toStartOf="@id/divideRectangleBarEight"
-                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight"
-                android:visibility="gone"/>
-
-            <!-- 삭제 -->
-            <ImageButton
-                android:id="@+id/deleteSeven"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:layout_marginTop="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_delete"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight"
-                android:visibility="gone" />
-
-            <!-- 재료명7 아래 바 -->
-            <View
-                android:id="@+id/divideRectangleBarNine"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bar_recipe_see_material"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/materialSeven"
-                android:visibility="gone"/>
-
             <!-- 추가하기 -->
             <Button
-                android:id="@+id/buyFixButton"
+                android:id="@+id/addFixButton"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:text="추가하기"
@@ -620,6 +561,23 @@
                 app:layout_constraintTop_toTopOf="@id/divideRectangleBarEight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="480dp"
+                android:padding="16dp">
+
+                <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
+                <LinearLayout
+                    android:id="@+id/materialContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -588,6 +588,39 @@
             </intent-filter>
         </activity>
 
+        <!-- RecipeWriteBothCookOrderStepTwo -->
+        <activity
+            android:name=".RecipeWriteBothCookOrderStepTwo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteBothCookOrderStepThree -->
+        <activity
+            android:name=".RecipeWriteBothCookOrderStepThree"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteBothCookOrderStepFour -->
+        <activity
+            android:name=".RecipeWriteBothCookOrderStepFour"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- RecipeWriteVideoContentCheck -->
         <activity
             android:name=".RecipeWriteVideoContentCheck"
@@ -624,6 +657,39 @@
         <!-- RecipeWriteImageCookOrder -->
         <activity
             android:name=".RecipeWriteImageCookOrder"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageCookOrderStepTwo -->
+        <activity
+            android:name=".RecipeWriteImageCookOrderStepTwo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageCookOrderStepThree -->
+        <activity
+            android:name=".RecipeWriteImageCookOrderStepThree"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteImageCookOrderStepFour -->
+        <activity
+            android:name=".RecipeWriteImageCookOrderStepFour"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
