@@ -2,12 +2,16 @@
 package com.example.test
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,15 +23,19 @@ private lateinit var deleteTextView: TextView
 private var countDownTimer: CountDownTimer? = null
 private var timeInMillis: Long = 0
 
+private lateinit var container: LinearLayout
+private lateinit var addButton: Button
+private var stepCount = 1 // 1-1부터 시작
+
 class RecipeWriteImageCookOrder : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_image_cook_order)
 
-        // nextFixButton 클릭했을 때 RecipeWriteImageDetailSettle 이동
+        // nextFixButton 클릭했을 때 RecipeWriteImageCookOrderStep2 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
         nextFixButton.setOnClickListener {
-            val intent = Intent(this, RecipeWriteImageDetailSettle::class.java)
+            val intent = Intent(this, RecipeWriteImageCookOrderStepTwo::class.java)
             startActivity(intent)
         }
 
@@ -76,10 +84,20 @@ class RecipeWriteImageCookOrder : AppCompatActivity() {
         // 1-1. 레시피를 입력해주세요.에 입력된 텍스트 가져오기
         val recipeWrite = findViewById<EditText>(R.id.recipeWrite)
 
-        // 타이머 추가 버튼 클릭 이벤트
-        val timerAddButton = findViewById<Button>(R.id.timerAdd)
-        val contentAddButton = findViewById<Button>(R.id.contentAdd)
+        // 내용 추가하기 눌렀을때 내용 추가
+        container = findViewById(R.id.recipeContainer) // 레이아웃 ID
+        addButton = findViewById(R.id.contentAdd) // 버튼 ID
 
+        addButton.setOnClickListener {
+            if (stepCount < 10) { // 최대 1-9까지 허용 (원하는 개수 조절 가능)
+                stepCount++
+                addRecipeStep(stepCount)
+            }
+        }
+
+        // 선언
+        val timerAdd: Button = findViewById(R.id.timerAdd)
+        val contentAddButton = findViewById<Button>(R.id.contentAdd)
         val timer = findViewById<TextView>(R.id.timer)
         val hour = findViewById<EditText>(R.id.hour)
         val time = findViewById<TextView>(R.id.time)
@@ -88,9 +106,10 @@ class RecipeWriteImageCookOrder : AppCompatActivity() {
         val middle = findViewById<TextView>(R.id.middle)
         val delete = findViewById<TextView>(R.id.delete)
 
-        timerAddButton.setOnClickListener {
+        // 타이머 버튼 클릭시
+        timerAdd.setOnClickListener {
             // 버튼들 사라지게 하기
-            timerAddButton.visibility = View.GONE
+            timerAdd.visibility = View.GONE
             contentAddButton.visibility = View.GONE
 
             // 타이머 관련 요소들 나타나게 하기
@@ -124,6 +143,51 @@ class RecipeWriteImageCookOrder : AppCompatActivity() {
         deleteTextView.setOnClickListener {
             resetTimer()
         }
+    }
+
+    private fun addRecipeStep(step: Int) {
+        val editText = EditText(this).apply {
+            id = View.generateViewId()
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(45, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
+            }
+            hint = "1-$step. 레시피를 입력해주세요."
+            textSize = 13f
+            backgroundTintList = ColorStateList.valueOf(Color.parseColor("#A1A9AD"))
+            background = null // 배경을 없앰
+        }
+
+        // 구분 바(View) 생성
+        val divider = View(this).apply {
+            id = View.generateViewId()
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                1
+            ).apply {
+                setMargins(45, 12, 45, 0) // 기존처럼 12dp 상단 마진 설정
+            }
+            setBackgroundColor(Color.parseColor("#D9D9D9")) // 배경 색상 설정
+        }
+
+        // 기존 버튼 가져오기
+        val addButton = findViewById<Button>(R.id.contentAdd)
+        val timerButton = findViewById<Button>(R.id.timerAdd)
+
+        // 🚀 버튼 위치 조정 (입력 칸과 70dp 떨어지게 설정)
+        val buttonParams = addButton.layoutParams as ViewGroup.MarginLayoutParams
+        buttonParams.topMargin += 150 // 🔽 입력 칸과 70dp 간격 유지
+        addButton.requestLayout()
+
+        val timerParams = timerButton.layoutParams as ViewGroup.MarginLayoutParams
+        timerParams.topMargin += 150 // 🔽 동일하게 70dp 유지
+        timerButton.requestLayout()
+
+        // 🔽 UI에 추가
+        container.addView(editText)
+        container.addView(divider)
     }
 
     private fun startTimer() {

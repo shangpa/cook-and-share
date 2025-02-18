@@ -1,7 +1,6 @@
-/*레시피 작성 STEP5*/
+/*레시피 작성 동영상 STEP1*/
 package com.example.test
 
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -28,64 +27,57 @@ private lateinit var container: LinearLayout
 private lateinit var addButton: Button
 private var stepCount = 1 // 1-1부터 시작
 
-class RecipeWriteBothCookOrder : AppCompatActivity() {
+class RecipeWriteImageCookOrderStepTwo : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recipe_write_both_cook_order)
+        setContentView(R.layout.activity_recipe_write_image_cook_order_step2)
 
-        // nextFixButton 클릭했을 때 RecipeWriteBothCookOrderStepTwo 이동
+        // nextFixButton 클릭했을 때 RecipeWriteImageCookOrderStep3 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
         nextFixButton.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothCookOrderStepTwo::class.java)
+            val intent = Intent(this, RecipeWriteImageCookOrderStepThree::class.java)
             startActivity(intent)
         }
 
-        // skipFixButton 클릭했을 때 StepRecipeNoTimer 이동
+        // skipFixButton 클릭했을 때 RecipeWriteImageHandlingMethod 이동
         val skipFixButton: Button = findViewById(R.id.skipFixButton)
         skipFixButton.setOnClickListener {
-            val intent = Intent(this, StepRecipeNoTimer::class.java)
+            val intent = Intent(this, RecipeWriteImageHandlingMethod::class.java)
             startActivity(intent)
         }
 
-        // one 클릭했을 때 RecipeWriteBothTitle 이동
+        // one 클릭했을 때 RecipeWriteImageTitle 이동
         val one: TextView = findViewById(R.id.one)
         one.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothTitle::class.java)
+            val intent = Intent(this, RecipeWriteImageTitle::class.java)
             startActivity(intent)
         }
 
-        // two 클릭했을 때 RecipeWriteBothMaterial 이동
+        // two 클릭했을 때 RecipeWriteImageMaterial 이동
         val two: TextView = findViewById(R.id.two)
         two.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothMaterial::class.java)
+            val intent = Intent(this, RecipeWriteImageMaterial::class.java)
             startActivity(intent)
         }
 
-        // three 클릭했을 때 RecipeWriteBothReplaceMaterial 이동
+        // three 클릭했을 때 RecipeWriteImageReplaceMaterial 이동
         val three: TextView = findViewById(R.id.three)
         three.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothReplaceMaterial::class.java)
+            val intent = Intent(this, RecipeWriteImageReplaceMaterial::class.java)
             startActivity(intent)
         }
 
-        // four 클릭했을 때 RecipeWriteBothHandlindMethod 이동
+        // four 클릭했을 때 RecipeWriteImageHandlingMethod 이동
         val four: TextView = findViewById(R.id.four)
         four.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothHandlindMethod::class.java)
+            val intent = Intent(this, RecipeWriteImageHandlingMethod::class.java)
             startActivity(intent)
         }
 
-        // six 클릭했을 때 RecipeWriteBothCookVideo 이동
+        // six 클릭했을 때 RecipeWriteImageDetailSettle 이동
         val six: TextView = findViewById(R.id.six)
         six.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothCookVideo::class.java)
-            startActivity(intent)
-        }
-
-        // seven 클릭했을 때 RecipeWriteBothDetailSettle 이동
-        val seven: TextView = findViewById(R.id.seven)
-        seven.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothDetailSettle::class.java)
+            val intent = Intent(this, RecipeWriteImageDetailSettle::class.java)
             startActivity(intent)
         }
 
@@ -162,7 +154,7 @@ class RecipeWriteBothCookOrder : AppCompatActivity() {
             ).apply {
                 setMargins(45, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
             }
-            hint = "1-$step. 레시피를 입력해주세요."
+            hint = "2-$step. 레시피를 입력해주세요."
             textSize = 13f
             backgroundTintList = ColorStateList.valueOf(Color.parseColor("#A1A9AD"))
             background = null // 배경을 없앰

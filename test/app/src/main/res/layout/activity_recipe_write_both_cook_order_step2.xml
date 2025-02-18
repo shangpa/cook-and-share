@@ -244,14 +244,14 @@
                 app:layout_constraintStart_toEndOf="@id/image"
                 app:layout_constraintTop_toTopOf="@id/cookOder" />
 
-            <!-- STEP 1 -->
+            <!-- STEP 2 -->
             <TextView
-                android:id="@+id/stepOne"
+                android:id="@+id/stepTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="50dp"
-                android:text="STEP 1"
+                android:text="STEP 2"
                 android:textColor="#2B2B2B"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="@id/cookOder"
@@ -267,7 +267,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_camera"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/stepOne" />
+                app:layout_constraintTop_toTopOf="@id/stepTwo" />
 
             <LinearLayout
                 android:id="@+id/recipeContainer"
@@ -278,21 +278,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- 1-1. 레시피를 입력해주세요. -->
+            <!-- 2-1. 레시피를 입력해주세요. -->
             <EditText
                 android:id="@+id/recipeWrite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="1-1. 레시피를 입력해주세요."
+                android:hint="2-1. 레시피를 입력해주세요."
                 android:textSize="13sp"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="38dp"
                 android:backgroundTint="#A1A9AD"
                 android:background="@null"
-                app:layout_constraintStart_toStartOf="@id/stepOne"
-                app:layout_constraintTop_toBottomOf="@id/stepOne"/>
+                app:layout_constraintStart_toStartOf="@id/stepTwo"
+                app:layout_constraintTop_toBottomOf="@id/stepTwo"/>
 
-            <!-- 1-1. 레시피를 입력해주세요. 아래 구분바 -->
+            <!-- 2-1. 레시피를 입력해주세요. 아래 구분바 -->
             <View
                 android:id="@+id/divideRectangleBarTwo"
                 android:layout_width="match_parent"
