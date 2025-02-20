@@ -13,10 +13,10 @@ class RecipeWriteVideoCookVideo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_video_cook_video)
 
-        // nextFixButton 클릭했을 때 RecipeWriteVideoHandlingMethod 이동
+        // nextFixButton 클릭했을 때 RecipeWriteVideoDetailSettle 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
         nextFixButton.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoHandlingMethod::class.java)
+            val intent = Intent(this, RecipeWriteVideoDetailSettle::class.java)
             startActivity(intent)
         }
 

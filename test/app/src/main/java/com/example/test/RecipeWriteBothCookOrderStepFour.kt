@@ -28,15 +28,15 @@ private lateinit var container: LinearLayout
 private lateinit var addButton: Button
 private var stepCount = 1 // 1-1부터 시작
 
-class RecipeWriteBothCookOrder : AppCompatActivity() {
+class RecipeWriteBothCookOrderStepFour : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recipe_write_both_cook_order)
+        setContentView(R.layout.activity_recipe_write_both_cook_order_step4)
 
-        // nextFixButton 클릭했을 때 RecipeWriteBothCookOrderStepTwo 이동
+        // nextFixButton 클릭했을 때 RecipeWriteBothCookVideo 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
         nextFixButton.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothCookOrderStepTwo::class.java)
+            val intent = Intent(this, RecipeWriteBothCookVideo::class.java)
             startActivity(intent)
         }
 
@@ -162,7 +162,7 @@ class RecipeWriteBothCookOrder : AppCompatActivity() {
             ).apply {
                 setMargins(45, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
             }
-            hint = "1-$step. 레시피를 입력해주세요."
+            hint = "4-$step. 레시피를 입력해주세요."
             textSize = 13f
             backgroundTintList = ColorStateList.valueOf(Color.parseColor("#A1A9AD"))
             background = null // 배경을 없앰
