@@ -29,7 +29,7 @@
                     android:id="@+id/fridgeMainTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="동네재료"
+                    android:text="동네주방"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -88,6 +88,7 @@
 
                 <!-- 첫 번째 거리순 컨테이너 (재료) -->
                 <LinearLayout
+                    android:id="@+id/materialFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -100,6 +101,7 @@
 
                     <!-- 재료 텍스트 -->
                     <TextView
+                        android:id="@+id/materialText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="재료"
@@ -109,7 +111,7 @@
 
                     <!-- 화살표 아이콘 -->
                     <ImageView
-                        android:id="@+id/arrowDownIcon1"
+                        android:id="@+id/materialIcon"
                         android:layout_width="10dp"
                         android:layout_height="10dp"
                         android:src="@drawable/ic_arrow_down"
@@ -119,6 +121,7 @@
 
                 <!-- 두 번째 거리순 컨테이너 (거리) -->
                 <LinearLayout
+                    android:id="@+id/distanceFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -129,6 +132,7 @@
 
                     <!-- 거리 텍스트 -->
                     <TextView
+                        android:id="@+id/distanceText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="거리"
@@ -138,7 +142,7 @@
 
                     <!-- 화살표 아이콘 -->
                     <ImageView
-                        android:id="@+id/arrowDownIcon2"
+                        android:id="@+id/distanceIcon"
                         android:layout_width="10dp"
                         android:layout_height="10dp"
                         android:src="@drawable/ic_arrow_down"
@@ -146,8 +150,6 @@
                         app:tint="#8A8F9C" />
                 </LinearLayout>
             </LinearLayout>
-
-
 
             <!-- 구분선 -->
             <View
@@ -238,22 +240,22 @@
                             android:orientation="horizontal"
                             android:layout_weight="1">
 
-                        <TextView
-                            android:id="@+id/itemTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="떡볶이를 만들 수 있는 떡"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginRight="130dp"/>
+                            <TextView
+                                android:id="@+id/itemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="떡볶이를 만들 수 있는 떡"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginRight="130dp"/>
 
-                        <ImageView
-                            android:id="@+id/itemMore"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_more"
-                            android:contentDescription="더보기 아이콘"
-                            android:layout_marginEnd="4dp" />
+                            <ImageView
+                                android:id="@+id/itemMore"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_more"
+                                android:contentDescription="더보기 아이콘"
+                                android:layout_marginEnd="4dp" />
                         </LinearLayout>
 
 
@@ -265,7 +267,7 @@
                             android:layout_marginTop="4dp">
 
                             <ImageView
-                                android:id="@+id/distanceIcon"
+                                android:id="@+id/distanceIcon1"
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/ic_location"
@@ -273,7 +275,7 @@
                                 android:layout_marginEnd="4dp" />
 
                             <TextView
-                                android:id="@+id/distanceText"
+                                android:id="@+id/distanceText1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="500m | 1.06km"
@@ -867,18 +869,208 @@
                 android:layout_height="1dp"
                 android:background="#E0E0E0"
                 android:layout_marginVertical="8dp" />
-
         </LinearLayout>
     </ScrollView>
 
-        <ImageView
-            android:id="@+id/plusIcon3"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_plus_button"
-            android:contentDescription="추가 버튼"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:backgroundTint="#35A825"
-            android:elevation="6dp" />
+    <!-- 재료 선택 -->
+    <LinearLayout
+        android:id="@+id/material"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/filter_back"
+        android:layout_marginTop="107dp"
+        android:padding="4dp"
+        android:strokeColor="#D2D5D6"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="15dp"
+        android:visibility="gone">
+
+        <!-- 전체 선택 -->
+        <Button
+            android:id="@+id/all"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@drawable/rounded_rectangle_background"
+            android:padding="2dp"
+            android:gravity="center"
+            android:text="전체"
+            android:textSize="11sp"
+            android:textColor="#8A8F9C"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+
+
+        <!-- 곡물 선택 -->
+        <Button
+            android:id="@+id/grain"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@drawable/rounded_rectangle_background"
+            android:padding="2dp"
+            android:gravity="center"
+            android:text="곡물"
+            android:textSize="11sp"
+            android:textColor="#8A8F9C"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <!-- 과일 선택 -->
+        <Button
+            android:id="@+id/fruit"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@drawable/rounded_rectangle_background"
+            android:padding="2dp"
+            android:gravity="center"
+            android:text="과일"
+            android:textSize="11sp"
+            android:textColor="#8A8F9C"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <!-- 거리 선택 -->
+    <LinearLayout
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filter_back"
+        android:layout_marginTop="107dp"
+        android:padding="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="15dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <!-- 첫 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <!-- 전체 선택 -->
+            <Button
+                android:id="@+id/alll"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="전체"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 300m 선택 -->
+            <Button
+                android:id="@+id/threeHundred"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="300m 이내"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 500m 선택 -->
+            <Button
+                android:id="@+id/fiveHundred"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="500m 이내"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 1km 선택 -->
+            <Button
+                android:id="@+id/oneThousand"
+                android:layout_width="75dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="1km 이내"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
+        <!-- 두 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <!-- 1.5km 선택 -->
+            <Button
+                android:id="@+id/onefiveThousand"
+                android:layout_width="85dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="1.5km 이내"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 2km 선택 -->
+            <Button
+                android:id="@+id/twoThousand"
+                android:layout_width="75dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="2km 이내"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/aa"
+        android:layout_width="93dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_writting"
+        android:contentDescription="작성 버튼"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="323dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/bb"
+        android:layout_width="93dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_chat"
+        android:contentDescription="채팅 버튼"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="298dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/plusIcon3"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_plus_button"
+        android:contentDescription="추가 버튼"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="250dp"
+        android:backgroundTint="#35A825"
+        android:elevation="6dp" />
 </FrameLayout>
