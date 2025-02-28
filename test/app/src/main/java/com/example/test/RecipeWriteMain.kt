@@ -13,28 +13,7 @@ class RecipeWriteMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_main)
 
-        // rigthArrow 클릭했을 때 RecipeWriteBothTitle 이동
-        val rigthArrow: View = findViewById(R.id.rigthArrow)
-        rigthArrow.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothTitle::class.java)
-            startActivity(intent)
-        }
-
-        // rigthArrowTwo 클릭했을 때 RecipeWriteImageTitle 이동
-        val rigthArrowTwo: View = findViewById(R.id.rigthArrowTwo)
-        rigthArrowTwo.setOnClickListener {
-            val intent = Intent(this, RecipeWriteImageTitle::class.java)
-            startActivity(intent)
-        }
-
-        // rigthArrowThree 클릭했을 때 RecipeWriteVideoTitle 이동
-        val rigthArrowThree: View = findViewById(R.id.rigthArrowThree)
-        rigthArrowThree.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoTitle::class.java)
-            startActivity(intent)
-        }
-
-        // searchIcon 클릭했을 때 RecipeWriteVideoTitle 이동
+        // searchIcon 클릭했을 때 SearchMain 이동
         val searchIcon: View = findViewById(R.id.searchIcon)
         searchIcon.setOnClickListener {
             val intent = Intent(this, SearchMain::class.java)
@@ -55,26 +34,48 @@ class RecipeWriteMain : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // bothWrite 클릭했을 때 RecipeWriteBothTitle 이동
+        // bothWrite 클릭했을 때 RecipeWriteBothActivity 이동
         val bothWrite: TextView = findViewById(R.id.bothWrite)
         bothWrite.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothTitle::class.java)
+            val intent = Intent(this, RecipeWriteBothActivity::class.java)
             startActivity(intent)
         }
 
-        // imageWrite 클릭했을 때 RecipeWriteImageTitle 이동
+        // imageWrite 클릭했을 때 RecipeWriteImageActivity 이동
         val imageWrite: TextView = findViewById(R.id.imageWrite)
         imageWrite.setOnClickListener {
-            val intent = Intent(this, RecipeWriteImageTitle::class.java)
+            val intent = Intent(this, RecipeWriteImageActivity::class.java)
             startActivity(intent)
         }
 
-        // videoWrite 클릭했을 때 RecipeWriteVideoTitle 이동
+        // videoWrite 클릭했을 때 RecipeWriteVideoActivity 이동
         val videoWrite: TextView = findViewById(R.id.videoWrite)
         videoWrite.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoTitle::class.java)
+            val intent = Intent(this, RecipeWriteVideoActivity::class.java)
             startActivity(intent)
         }
+
+        // rigthArrow 클릭했을 때 RecipeWriteVideoActivity 이동
+        val rigthArrow: View = findViewById(R.id.rigthArrow)
+        rigthArrow.setOnClickListener {
+            val intent = Intent(this, RecipeWriteVideoActivity::class.java)
+            startActivity(intent)
+        }
+
+        // rigthArrowTwo 클릭했을 때 RecipeWriteImageActivity 이동
+        val rigthArrowTwo: View = findViewById(R.id.rigthArrowTwo)
+        rigthArrowTwo.setOnClickListener {
+            val intent = Intent(this, RecipeWriteImageActivity::class.java)
+            startActivity(intent)
+        }
+
+        // rigthArrowThree 클릭했을 때 RecipeWriteVideoActivity 이동
+        val rigthArrowThree: View = findViewById(R.id.rigthArrowThree)
+        rigthArrowThree.setOnClickListener {
+            val intent = Intent(this, RecipeWriteVideoActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }

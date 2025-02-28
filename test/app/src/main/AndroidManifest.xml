@@ -489,9 +489,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeComplete -->
+        <!-- RecipeWriteBothActivity -->
         <activity
-            android:name=".RecipeComplete"
+            android:name=".RecipeWriteBothActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -500,9 +500,31 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeWriteBothTitle -->
+        <!-- RecipeWriteImageActivity -->
         <activity
-            android:name=".RecipeWriteBothTitle"
+            android:name=".RecipeWriteImageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeWriteVideoActivity -->
+        <activity
+            android:name=".RecipeWriteVideoActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeComplete -->
+        <activity
+            android:name=".RecipeComplete"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -569,292 +591,6 @@
         <!-- RecipeTotal -->
         <activity
             android:name=".RecipeTotal"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothMaterial -->
-        <activity
-            android:name=".RecipeWriteBothMaterial"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothReplaceMaterial -->
-        <activity
-            android:name=".RecipeWriteBothReplaceMaterial"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothHandlindMethod -->
-        <activity
-            android:name=".RecipeWriteBothHandlindMethod"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothCookOrder -->
-        <activity
-            android:name=".RecipeWriteBothCookOrder"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothCookVideo -->
-        <activity
-            android:name=".RecipeWriteBothCookVideo"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothDetailSettle -->
-        <activity
-            android:name=".RecipeWriteBothDetailSettle"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothContentCheck -->
-        <activity
-            android:name=".RecipeWriteBothContentCheck"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothCookOrderStepTwo -->
-        <activity
-            android:name=".RecipeWriteBothCookOrderStepTwo"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothCookOrderStepThree -->
-        <activity
-            android:name=".RecipeWriteBothCookOrderStepThree"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteBothCookOrderStepFour -->
-        <activity
-            android:name=".RecipeWriteBothCookOrderStepFour"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoContentCheck -->
-        <activity
-            android:name=".RecipeWriteVideoContentCheck"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageTitle -->
-        <activity
-            android:name=".RecipeWriteImageTitle"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageMaterial -->
-        <activity
-            android:name=".RecipeWriteImageMaterial"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageCookOrder -->
-        <activity
-            android:name=".RecipeWriteImageCookOrder"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageCookOrderStepTwo -->
-        <activity
-            android:name=".RecipeWriteImageCookOrderStepTwo"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageCookOrderStepThree -->
-        <activity
-            android:name=".RecipeWriteImageCookOrderStepThree"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageCookOrderStepFour -->
-        <activity
-            android:name=".RecipeWriteImageCookOrderStepFour"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageDetailSettle -->
-        <activity
-            android:name=".RecipeWriteImageDetailSettle"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageHandlingMethod -->
-        <activity
-            android:name=".RecipeWriteImageHandlingMethod"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteImageReplaceMaterial -->
-        <activity
-            android:name=".RecipeWriteImageReplaceMaterial"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoCookVideo -->
-        <activity
-            android:name=".RecipeWriteVideoCookVideo"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoDetailSettle -->
-        <activity
-            android:name=".RecipeWriteVideoDetailSettle"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoDetailSettle -->
-        <activity
-            android:name=".RecipeWriteVideoHandlingMethod"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoMaterial -->
-        <activity
-            android:name=".RecipeWriteVideoMaterial"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoReplaceMaterial -->
-        <activity
-            android:name=".RecipeWriteVideoReplaceMaterial"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- RecipeWriteVideoTitle -->
-        <activity
-            android:name=".RecipeWriteVideoTitle"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
