@@ -17,14 +17,7 @@ class VideoSee : AppCompatActivity() {
         // delete 클릭했을 때 RecipeWriteVideoContentCheck 이동
         val delete: TextView = findViewById(R.id.delete)
         delete.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoContentCheck::class.java)
-            startActivity(intent)
-        }
-
-        // modify 클릭했을 때 RecipeWriteVideoDetailSettle 이동
-        val modify: TextView = findViewById(R.id.modify)
-        modify.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoDetailSettle::class.java)
+            val intent = Intent(this, RecipeWriteVideoActivity::class.java)
             startActivity(intent)
         }
 
@@ -63,6 +56,7 @@ class VideoSee : AppCompatActivity() {
         // 더하기 상자 선언
         val add = findViewById<ImageButton>(R.id.add)
         val addBox = findViewById<View>(R.id.addBox)
+        val modify = findViewById<TextView>(R.id.modify)
         val categoryBoxBar = findViewById<View>(R.id.categoryBoxBar)
 
         // 더하기 눌렀을때 더하기 상자 짜라잔
