@@ -499,11 +499,12 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
             findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
-            findViewById<ConstraintLayout>(R.id.contentCheckTapFix).visibility = View.VISIBLE
+            findViewById<ConstraintLayout>(R.id.contentCheckTapBar).visibility = View.VISIBLE
+            findViewById<ConstraintLayout>(R.id.recipeWriteCookOrderLayout).visibility = View.GONE
+            findViewById<View>(R.id.cookOrderTapBar).visibility = View.GONE
             findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
-            findViewById<View>(R.id.tapBar).visibility = View.GONE
         }
 
         // 레시피 조리순서 step 추가히기 버튼 클릭시
