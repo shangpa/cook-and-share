@@ -593,8 +593,7 @@
             android:id="@+id/tapBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:visibility="gone">
+            android:layout_gravity="bottom">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/tapFix"
@@ -2293,7 +2292,8 @@
             android:id="@+id/cookOrderTapBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cookOOrderTapFix"
@@ -4339,14 +4339,14 @@
             android:id="@+id/contentCheckTapBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/contentCheckTapFix"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <!-- 탭바 배경 하얀색 사각형 -->
                 <ImageView

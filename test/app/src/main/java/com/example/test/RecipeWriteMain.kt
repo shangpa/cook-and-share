@@ -58,7 +58,7 @@ class RecipeWriteMain : AppCompatActivity() {
         // rigthArrow 클릭했을 때 RecipeWriteVideoActivity 이동
         val rigthArrow: View = findViewById(R.id.rigthArrow)
         rigthArrow.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoActivity::class.java)
+            val intent = Intent(this, RecipeWriteBothActivity::class.java)
             startActivity(intent)
         }
 
