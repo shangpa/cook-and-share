@@ -186,7 +186,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val detailSettleDownArrow = findViewById<ImageButton>(R.id.detailSettleDownArrow)
         val zero = findViewById<EditText>(R.id.zero)
         val halfHour = findViewById<EditText>(R.id.halfHour)
-        val detailSettleRecipeTitleWrite = findViewById<View>(R.id.detailSettleRecipeTitleWrite)
+        val detailSettleRecipeTitleWrite = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)
         val representCheck = findViewById<Button>(R.id.representCheck)
 
         // 레시피 작성한 내용 선언
@@ -494,6 +494,82 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
+            // 카테고리 가져오기 (선택된 값이 있을 경우)
+            val category = koreanFood.text.toString()
+
+            // 레시피 제목 가져오기
+            val recipeTitle = recipeTitleWrite.text.toString()
+
+
+            // 재료 가져오기 (각 EditText에서 입력한 값)
+            val ingredients = listOf(
+                "${material.text.toString()} ${measuring.text.toString()}",
+                "${materialTwo.text.toString()} ${measuringTwo.text.toString()}",
+                "${materialThree.text.toString()} ${measuringThree.text.toString()}",
+                "${materialFour.text.toString()} ${measuringFour.text.toString()}",
+                "${materialFive.text.toString()} ${measuringFive.text.toString()}",
+                "${materialSix.text.toString()} ${measuringSix.text.toString()}"
+            ).filter { it.isNotBlank() } // 빈 값 제거
+            // 재료 리스트가 들어갈 레이아웃 찾기 (materialList 내부 컨테이너)
+            val materialContainer = findViewById<LinearLayout>(R.id.materialList)
+
+            // 기존 뷰 제거 (중복 방지)
+            materialContainer.removeAllViews()
+
+            // 동적으로 TextView 추가
+            for (ingredient in ingredients) {
+                val textView = TextView(this).apply {
+                    text = ingredient
+                    textSize = 14f
+                    setTextColor(Color.BLACK)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(20, 10, 0, 0)
+                    }
+                }
+                materialContainer.addView(textView)
+            }
+            // 대체 재료 가져오기
+            val replaceIngredients = listOf(
+                "${replaceMaterialName.text.toString()} → ${replaceMaterial.text.toString()}",
+                "${replaceMaterialMaterialTwo.text.toString()} → ${replaceMaterialTwo.text.toString()}"
+            ).filter { it.isNotBlank() }
+
+            // 처리 방법 가져오기
+            val handlingMethods = listOf(
+                "${handlingMethodName.text.toString()} : ${handlingMethod.text.toString()}",
+                "${handlingMethodMaterialTwo.text.toString()} : ${handlingMethodTwo.text.toString()}"
+            ).filter { it.isNotBlank() }
+
+            // 조리 순서 가져오기
+            val cookOrder = cookOrderRecipeWrite.text.toString()
+
+            // 타이머 값 가져오기
+            val cookingHour = zero.text.toString()
+            val cookingMinute = halfHour.text.toString()
+
+            //태그 값 가져오기
+            val recipeTag = detailSettleRecipeTitleWrite.text.toString()
+
+            // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
+            findViewById<TextView>(R.id.contentCheckFoodName).text = recipeTitle
+            findViewById<TextView>(R.id.contentCheckKoreanFood).text = category
+            findViewById<TextView>(R.id.contentCheckBeginningLevel).text = elementaryLevel.text
+            // todo 재료랑 대체재료랑 처리방법 조리순서 해야함
+            /*
+
+            findViewById<TextView>(R.id.replaceIngredientsTextView).text = "대체 재료:\n${replaceIngredients.joinToString("\n")}"
+            findViewById<TextView>(R.id.handlingMethodsTextView).text = "처리 방법:\n${handlingMethods.joinToString("\n")}"
+            findViewById<TextView>(R.id.cookOrderTextView).text = "조리 순서:\n$cookOrder"
+
+            */
+            findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
+            findViewById<TextView>(R.id.contentCheckZero).text = cookingHour
+            findViewById<TextView>(R.id.contentCheckHalfHour).text = cookingMinute
+
+            // 기존 레이아웃 변경 (가시성 설정 유지)
             findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
             findViewById<ConstraintLayout>(R.id.contentCheckTapBar).visibility = View.VISIBLE
             findViewById<ConstraintLayout>(R.id.recipeWriteCookOrderLayout).visibility = View.GONE
