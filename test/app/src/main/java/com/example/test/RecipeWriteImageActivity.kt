@@ -9,6 +9,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,14 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.test.Repository.RecipeRepository
+import com.example.test.model.CookingStep
+import com.example.test.model.Ingredient
+import com.example.test.model.RecipeRequest
+import com.google.gson.Gson
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -491,46 +498,93 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     .start()
             }
         }
+        fun updateMaterialList(materialContainer: LinearLayout, ingredients: List<Pair<String, String>>) {
+            materialContainer.removeAllViews() // 기존 뷰 제거
 
-        // 레시피 조리순서 끝내기 버튼 클릭시
-        endFixButton.setOnClickListener {
-            // 카테고리 가져오기 (선택된 값이 있을 경우)
-            val category = koreanFood.text.toString()
-
-            // 레시피 제목 가져오기
-            val recipeTitle = recipeTitleWrite.text.toString()
-
-
-            // 재료 가져오기 (각 EditText에서 입력한 값)
-            val ingredients = listOf(
-                "${material.text.toString()} ${measuring.text.toString()}",
-                "${materialTwo.text.toString()} ${measuringTwo.text.toString()}",
-                "${materialThree.text.toString()} ${measuringThree.text.toString()}",
-                "${materialFour.text.toString()} ${measuringFour.text.toString()}",
-                "${materialFive.text.toString()} ${measuringFive.text.toString()}",
-                "${materialSix.text.toString()} ${measuringSix.text.toString()}"
-            ).filter { it.isNotBlank() } // 빈 값 제거
-            // 재료 리스트가 들어갈 레이아웃 찾기 (materialList 내부 컨테이너)
-            val materialContainer = findViewById<LinearLayout>(R.id.materialList)
-
-            // 기존 뷰 제거 (중복 방지)
-            materialContainer.removeAllViews()
-
-            // 동적으로 TextView 추가
-            for (ingredient in ingredients) {
-                val textView = TextView(this).apply {
-                    text = ingredient
-                    textSize = 14f
-                    setTextColor(Color.BLACK)
+            for ((materialName, quantity) in ingredients) {
+                val itemLayout = LinearLayout(materialContainer.context).apply {
+                    orientation = LinearLayout.HORIZONTAL
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply {
-                        setMargins(20, 10, 0, 0)
+                    ).apply { setMargins(15, 10, 0, 0) }
+                }
+
+                val materialTextView = TextView(materialContainer.context).apply {
+                    text = materialName
+                    textSize = 13f
+                    setTextColor(Color.parseColor("#2B2B2B"))
+                }
+
+                val quantityTextView = TextView(materialContainer.context).apply {
+                    text = quantity
+                    textSize = 13f
+                    setTextColor(Color.parseColor("#2B2B2B"))
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { setMargins(115, 0, 0, 0) }
+                }
+
+                itemLayout.addView(materialTextView)
+                itemLayout.addView(quantityTextView)
+                materialContainer.addView(itemLayout)
+            }
+        }
+        fun mapCategoryToEnum(category: String): String {
+            return when (category) {
+                "한식" -> "koreaFood"
+                "양식" -> "westernFood"
+                "일식" -> "japaneseFood"
+                "중식" -> "chineseFood"
+                "채식" -> "vegetarianDiet"
+                "간식" -> "snack"
+                "안주" -> "alcoholSnack"
+                "반찬" -> "sideDish"
+                "기타" -> "etc"
+                else -> "etc" // 예외 처리
+            }
+        }
+        // 레시피 조리순서 끝내기 버튼 클릭시
+        endFixButton.setOnClickListener {
+            val materialContainer = findViewById<LinearLayout>(R.id.materialList)
+            // 선택된 카테고리 가져오기
+            val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
+
+            // 레시피 제목 가져오기
+            val recipeTitle = recipeTitleWrite.text.toString()
+            // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
+            val ingredients = mutableListOf<Pair<String, String>>()
+            // 정적 재료 입력란 추가
+            ingredients.add(material.text.toString() to measuring.text.toString())
+            ingredients.add(materialTwo.text.toString() to measuringTwo.text.toString())
+            ingredients.add(materialThree.text.toString() to measuringThree.text.toString())
+            ingredients.add(materialFour.text.toString() to measuringFour.text.toString())
+            ingredients.add(materialFive.text.toString() to measuringFive.text.toString())
+            ingredients.add(materialSix.text.toString() to measuringSix.text.toString())
+
+            // 동적으로 추가된 재료 가져오기
+            for (i in 0 until materialContainer.childCount) {
+                val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
+
+                val materialEditText = itemLayout.getChildAt(0) as? EditText
+                val measuringEditText = itemLayout.getChildAt(1) as? EditText
+
+                if (materialEditText != null && measuringEditText != null) {
+                    val materialName = materialEditText.text.toString()
+                    val quantity = measuringEditText.text.toString()
+
+                    if (materialName.isNotBlank() && quantity.isNotBlank()) {
+                        ingredients.add(materialName to quantity)
                     }
                 }
-                materialContainer.addView(textView)
             }
+            // 빈 값 제거
+            val filteredIngredients = ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+
+            // UI 업데이트 (RecyclerView 대신 기존 LinearLayout에 추가)
+            updateMaterialList(materialContainer, filteredIngredients)
+
             // 대체 재료 가져오기
             val replaceIngredients = listOf(
                 "${replaceMaterialName.text.toString()} → ${replaceMaterial.text.toString()}",
@@ -555,14 +609,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
             // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
             findViewById<TextView>(R.id.contentCheckFoodName).text = recipeTitle
-            findViewById<TextView>(R.id.contentCheckKoreanFood).text = category
+            findViewById<TextView>(R.id.contentCheckKoreanFood).text = categoryText
             findViewById<TextView>(R.id.contentCheckBeginningLevel).text = elementaryLevel.text
+            findViewById<TextView>(R.id.content).text = cookOrder
             // todo 재료랑 대체재료랑 처리방법 조리순서 해야함
             /*
 
             findViewById<TextView>(R.id.replaceIngredientsTextView).text = "대체 재료:\n${replaceIngredients.joinToString("\n")}"
             findViewById<TextView>(R.id.handlingMethodsTextView).text = "처리 방법:\n${handlingMethods.joinToString("\n")}"
-            findViewById<TextView>(R.id.cookOrderTextView).text = "조리 순서:\n$cookOrder"
 
             */
             findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
@@ -577,6 +631,48 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
+
+            val totalCookingTime = (cookingHour.toInt() * 60) + cookingMinute.toInt()
+            val difficulty = elementaryLevel.text.toString()
+            // Gson 인스턴스 생성
+            val gson = Gson()
+            val categoryEnum = mapCategoryToEnum(categoryText) // Enum 변환
+            // 로그 출력 (디버깅용)
+            Log.d("CATEGORY", "사용자가 선택한 카테고리: $categoryText -> 변환된 값: $categoryEnum")
+            // RecipeRequest 객체 생성
+            val recipe = RecipeRequest(
+                title = recipeTitle,
+                category = categoryEnum,
+                ingredients = gson.toJson(filteredIngredients.map { Ingredient(it.first, it.second) }),
+                alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
+                    .map {
+                        val parts = it.split(" → ")
+                        Ingredient(parts[0], parts[1])
+                    }),
+                cookingSteps = gson.toJson(cookOrder.split("\n").mapIndexed { index, step ->
+                    CookingStep(index + 1, step, "", "IMAGE")
+                }),
+                mainImageUrl = "", // 이미지 업로드 기능 추가 가능
+                difficulty = difficulty,
+                cookingTime = totalCookingTime,
+                servings = 2,
+                isPublic = true
+            )
+
+            fun sendRecipeToServer(recipe: RecipeRequest) {
+                val token = App.prefs.token
+                RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
+                    if (response != null) {
+                        Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+            }
+            Log.d("RecipeRequest", gson.toJson(recipe))
+            sendRecipeToServer(recipe)
         }
 
         // 레시피 조리순서 step 추가히기 버튼 클릭시
