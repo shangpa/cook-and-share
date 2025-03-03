@@ -4,6 +4,7 @@ package com.example.test
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -248,21 +249,31 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
-            if (currentIndex > 0) {
-                // 현재 화면 숨기기
-                layouts[currentIndex].visibility = View.GONE
-                // 이전 화면 표시
-                currentIndex--
-                layouts[currentIndex].visibility = View.VISIBLE
+            val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
 
-                // 해당 TextView 색상 변경
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
+            // 현재 화면이 recipeWriteTitleLayout이면 RecipeWriteMain.kt로 이동
+            if (recipeWriteTitleLayout.visibility == View.VISIBLE) {
+                val intent = Intent(this, RecipeWriteMain::class.java)
+                startActivity(intent)
+                finish()  // 현재 액티비티 종료 (선택 사항)
+            } else {
+                // 현재 보이는 레이아웃 찾기
+                val currentIndex = layouts.indexOfFirst { it.visibility == View.VISIBLE }
 
-                // 바(View)의 위치 변경
-                val targetX =
-                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
+                // 현재 화면이 첫 번째가 아니라면 이전 화면으로 이동
+                if (currentIndex > 0) {
+                    layouts[currentIndex].visibility = View.GONE  // 현재 화면 숨기기
+                    layouts[currentIndex - 1].visibility = View.VISIBLE  // 이전 화면 보이기
+
+                    // TextView 색상 변경
+                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
+                    textViews[currentIndex - 1].setTextColor(Color.parseColor("#2B2B2B"))
+
+                    // 바(View)의 위치 변경
+                    val targetX =
+                        textViews[currentIndex - 1].x + (textViews[currentIndex - 1].width / 2) - (indicatorBar.width / 2)
+                    indicatorBar.x = targetX
+                }
             }
         }
 
@@ -342,9 +353,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             handlingMethodDeleteTwo.visibility = ImageButton.GONE
             divideRectangleBarSixteen.visibility = View.GONE
         }
-
-        // 화면 들어올 때 cookOrderTapBar 보이기
-        findViewById<ConstraintLayout>(R.id.cookOrderTapBar).visibility = View.VISIBLE
 
         // 레시피 조리영상 카메라 버튼 클릭 시 앨범 보이기/숨기기
         cookVideoCamera.setOnClickListener {

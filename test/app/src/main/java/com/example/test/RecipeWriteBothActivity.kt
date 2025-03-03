@@ -4,10 +4,12 @@ package com.example.test
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -155,6 +157,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val cookOrderAddButton = findViewById<ConstraintLayout>(R.id.cookOrderAddButton)
         val cookOrderTimer = findViewById<ConstraintLayout>(R.id.cookOrderTimer)
         val imageChoice = findViewById<ConstraintLayout>(R.id.imageChoice)
+        val cookOrderTapBar = findViewById<ConstraintLayout>(R.id.cookOrderTapBar)
         val imageContainer = findViewById<LinearLayout>(R.id.imageContainer)
         val cookOrderRecipeWrite = findViewById<EditText>(R.id.cookOrderRecipeWrite)
         val camera = findViewById<ImageButton>(R.id.camera)
@@ -170,6 +173,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val middle = findViewById<TextView>(R.id.middle)
         val timerDelete = findViewById<TextView>(R.id.timerDelete)
         val stepOne = findViewById<TextView>(R.id.stepOne)
+        val five = findViewById<TextView>(R.id.five)
         hourEditText = findViewById(R.id.hour)
         minuteEditText = findViewById(R.id.minute)
         startTextView = findViewById(R.id.start)
@@ -205,6 +209,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val shareSettle = findViewById<ConstraintLayout>(R.id.shareSettle)
         val recipeRegister = findViewById<ConstraintLayout>(R.id.recipeRegister)
         val contentCheckTapBar = findViewById<ConstraintLayout>(R.id.contentCheckTapBar)
+        val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
         val shareFixButton = findViewById<Button>(R.id.shareFixButton)
         val registerFixButton = findViewById<Button>(R.id.registerFixButton)
         val uncheck = findViewById<ImageButton>(R.id.uncheck)
@@ -236,8 +241,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.recipeWriteReplaceMaterialLayout),
             findViewById<ConstraintLayout>(R.id.recipeWriteHandlingMethodLayout),
             findViewById<ConstraintLayout>(R.id.recipeWriteCookOrderLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout)
+            findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
         )
 
         // 카테고리 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
@@ -260,6 +265,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 indicatorBar.x = targetX
             }
         }
+
         // 현재 활성화된 화면 인덱스 추적 변수
         var currentIndex = 0
 
@@ -294,21 +300,31 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
-            if (currentIndex > 0) {
-                // 현재 화면 숨기기
-                layouts[currentIndex].visibility = View.GONE
-                // 이전 화면 표시
-                currentIndex--
-                layouts[currentIndex].visibility = View.VISIBLE
+            val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
 
-                // 해당 TextView 색상 변경
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
+            // 현재 화면이 recipeWriteTitleLayout이면 RecipeWriteMain.kt로 이동
+            if (recipeWriteTitleLayout.visibility == View.VISIBLE) {
+                val intent = Intent(this, RecipeWriteMain::class.java)
+                startActivity(intent)
+                finish()  // 현재 액티비티 종료 (선택 사항)
+            } else {
+                // 현재 보이는 레이아웃 찾기
+                val currentIndex = layouts.indexOfFirst { it.visibility == View.VISIBLE }
 
-                // 바(View)의 위치 변경
-                val targetX =
-                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
+                // 현재 화면이 첫 번째가 아니라면 이전 화면으로 이동
+                if (currentIndex > 0) {
+                    layouts[currentIndex].visibility = View.GONE  // 현재 화면 숨기기
+                    layouts[currentIndex - 1].visibility = View.VISIBLE  // 이전 화면 보이기
+
+                    // TextView 색상 변경
+                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
+                    textViews[currentIndex - 1].setTextColor(Color.parseColor("#2B2B2B"))
+
+                    // 바(View)의 위치 변경
+                    val targetX =
+                        textViews[currentIndex - 1].x + (textViews[currentIndex - 1].width / 2) - (indicatorBar.width / 2)
+                    indicatorBar.x = targetX
+                }
             }
         }
 
@@ -520,8 +536,45 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             cookOrderRecipeWrite.hint = "$stepCount-1. 레시피를 입력해주세요."
         }
 
-        // 화면 들어올 때 cookOrderTapBar 보이기
-        findViewById<ConstraintLayout>(R.id.cookOrderTapBar).visibility = View.VISIBLE
+        // 레시피 조리순서 다른 레이아웃 목록을 먼저 선언
+        val otherLayouts = listOf(
+            findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteReplaceMaterialLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteHandlingMethodLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
+        )
+
+        // 레시피 조리순서 초기 상태: cookOrderTapBar 숨김
+        cookOrderTapBar.visibility = View.GONE
+
+        // 레시피 조리순서 "five" 버튼 클릭 시 조리순서 화면을 표시하고, 다른 화면은 숨김
+        findViewById<TextView>(R.id.five).setOnClickListener {
+            // 다른 화면 숨기기
+            otherLayouts.forEach { it.visibility = View.GONE }
+
+            // 조리순서 화면만 보이게 설정
+            recipeWriteCookOrderLayout.visibility = View.VISIBLE
+            cookOrderTapBar.visibility = View.VISIBLE
+        }
+
+        // 레시피 조리순서 조리순서 화면이 나타날 때 cookOrderTapBar 보이게 설정
+        recipeWriteCookOrderLayout.viewTreeObserver.addOnGlobalLayoutListener {
+            if (recipeWriteCookOrderLayout.visibility == View.VISIBLE) {
+                cookOrderTapBar.visibility = View.VISIBLE
+            }
+        }
+
+        // 레시피 조리순서 다른 화면이 나타나면 조리순서 화면을 숨기고 cookOrderTapBar도 숨김
+        otherLayouts.forEach { layout ->
+            layout.viewTreeObserver.addOnGlobalLayoutListener {
+                if (layout.visibility == View.VISIBLE) {
+                    recipeWriteCookOrderLayout.visibility = View.GONE // 겹치는 문제 해결
+                    cookOrderTapBar.visibility = View.GONE
+                }
+            }
+        }
 
         // 레시피 조리영상 카메라 버튼 클릭 시 앨범 보이기/숨기기
         cookVideoCamera.setOnClickListener {
@@ -556,8 +609,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val imageViewId = resources.getIdentifier(videoImageImageIds[i], "id", packageName)
             val checkBoxId = resources.getIdentifier(videoImageCheckBoxIds[i], "id", packageName)
 
+            Log.d("DEBUG", "ImageView ID: $imageViewId, CheckBox ID: $checkBoxId")
+
             val imageView = findViewById<ImageView>(imageViewId)
             val checkBox = findViewById<ImageButton>(checkBoxId)
+
+            if (imageView == null || checkBox == null) {
+                Log.e("ERROR", "Invalid View ID at index $i: ImageView=$imageView, CheckBox=$checkBox")
+                continue // 널이면 건너뜀
+            }
 
             videoImageImageViews.add(imageView)
             videoImageCheckBoxes.add(checkBox)
@@ -565,7 +625,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val index = i
             val toggleCheck: () -> Unit = {
                 videoImageIsCheckedList[index] = !videoImageIsCheckedList[index]
-                checkBoxes[index].setImageResource(
+                videoImageCheckBoxes[index].setImageResource(
                     if (videoImageIsCheckedList[index]) R.drawable.ic_check_fill_circle
                     else R.drawable.ic_check_circle
                 )
@@ -744,6 +804,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         register.setOnClickListener {
             registerRecipeUpLayout.visibility = View.VISIBLE
             registerRecipeSeeLayout.visibility = View.VISIBLE
+            tapBar.visibility = View.GONE
             contentCheckTapBar.visibility = View.GONE
             recipeRegister.visibility = View.GONE
             contentCheckLayout.visibility = View.GONE
@@ -754,6 +815,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         registerFixButton.setOnClickListener {
             registerRecipeUpLayout.visibility = View.VISIBLE
             registerRecipeSeeLayout.visibility = View.VISIBLE
+            tapBar.visibility = View.GONE
             contentCheckTapBar.visibility = View.GONE
             recipeRegister.visibility = View.GONE
             contentCheckLayout.visibility = View.GONE
@@ -1232,19 +1294,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     // EditText에서 숫자 가져오기 (비어있으면 0 반환)
     private fun parseEditText(editText: EditText): Int {
         return editText.text.toString().trim().toIntOrNull() ?: 0
-    }
-
-    // 조리순서 화면 보일때 탭바 보이게
-    override fun onResume() {
-        super.onResume()
-        // 화면이 다시 보일 때 cookOrderTapBar 보이게 설정
-        findViewById<ConstraintLayout>(R.id.cookOrderTapBar).visibility = View.VISIBLE
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // 화면을 나갈 때 cookOrderTapBar 숨기기
-        findViewById<ConstraintLayout>(R.id.cookOrderTapBar).visibility = View.GONE
     }
 
     // 레시피 세부설정 드롭다운 열기
