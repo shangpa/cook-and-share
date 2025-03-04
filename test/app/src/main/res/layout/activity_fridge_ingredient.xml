@@ -22,21 +22,47 @@
 
         <!-- 뒤로가기 버튼 -->
         <ImageView
-            android:id="@+id/fridgeMaterialBackButton"
+            android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_fridge"
-            android:contentDescription="뒤로가기" />
+            android:contentDescription="뒤로가기"
+            android:layout_marginEnd="20dp"/>
 
         <!-- 재료 관리하기 텍스트 -->
         <TextView
-            android:id="@+id/fridgeMaterialTitle"
+            android:id="@+id/fridgeIngredientTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="재료 관리하기"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="118dp" />
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/fridgeCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="126dp"
+            android:layout_marginTop="1dp">
+
+            <!-- 카메라 아이콘 -->
+            <ImageView
+                android:id="@+id/fridgeCameraIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_fridge_camera"
+                android:contentDescription="카메라 아이콘"
+                android:layout_marginEnd="5dp"/>
+
+            <!-- 영수증 재료 추가 텍스트 -->
+            <TextView
+                android:id="@+id/fridegeCameraText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="영수증 재료 추가"
+                android:textSize="12sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -67,7 +93,7 @@
 
         <!-- 꾸밈말 -->
         <TextView
-            android:id="@+id/fridgeUserPlusText"
+            android:id="@+id/fridgeUserAdverbText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="님이 가진 재료를 입력해보세요!"
@@ -88,7 +114,7 @@
 
         <!-- 보관장소 텍스트 -->
         <TextView
-            android:id="@+id/fridgeTagTitle"
+            android:id="@+id/fridgeStorage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="보관장소"
@@ -99,7 +125,7 @@
 
         <!-- 태그 선택 텍스트 -->
         <TextView
-            android:id="@+id/fridgeTagChooseText"
+            android:id="@+id/fridgeStorageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전체"
@@ -110,7 +136,7 @@
 
         <!-- 드롭박스 아이콘 -->
         <ImageView
-            android:id="@+id/fridgeMDropButton"
+            android:id="@+id/fridgeStorageDropBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fridge_dropbox"
@@ -131,6 +157,7 @@
 
         <!-- Input 텍스트 -->
         <EditText
+            android:id="@+id/fridgeIngredientInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -166,6 +193,7 @@
 
             <!-- 갯수 텍스트 -->
             <EditText
+                android:id="@+id/fridgeIngredientNumInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -186,7 +214,7 @@
 
         <!-- 단위 선택 텍스트 -->
         <TextView
-            android:id="@+id/fridgeUnitChooseText"
+            android:id="@+id/fridgeIngredientUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="단위"
@@ -198,7 +226,7 @@
 
         <!-- 드롭박스 아이콘 -->
         <ImageView
-            android:id="@+id/fridgeUDropButton"
+            android:id="@+id/fridgeUnitDropBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fridge_dropbox"
@@ -220,7 +248,7 @@
 
         <!-- 구매일자 / 유통기한 선택 텍스트 -->
         <TextView
-            android:id="@+id/fridgeDateChooseText"
+            android:id="@+id/fridgeDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="구매일자"
@@ -232,7 +260,7 @@
 
         <!-- 드롭박스 아이콘 -->
         <ImageView
-            android:id="@+id/fridgeDDropButton"
+            android:id="@+id/DateDropBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fridge_dropbox"
@@ -247,6 +275,7 @@
 
             <!-- 갯수 텍스트 -->
             <EditText
+                android:id="@+id/fridgeDateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -268,7 +297,7 @@
 
     </LinearLayout>
 
-    <!-- 추가하기 -->
+    <!-- 가격 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -285,6 +314,7 @@
 
             <!-- 가격 텍스트 -->
             <EditText
+                android:id="@+id/fridgePriceInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -305,6 +335,7 @@
 
         <!-- 원 텍스트 -->
         <TextView
+            android:id="@+id/fridgePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="원"
@@ -316,9 +347,8 @@
 
     </LinearLayout>
 
-    <!-- 레시피 추천받기 버튼 -->
+    <!-- 추가하기 버튼 -->
     <LinearLayout
-        android:id="@+id/fridgeAddButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -328,6 +358,7 @@
 
         <!-- 버튼 배경 -->
         <LinearLayout
+            android:id="@+id/fridgeAddButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -336,6 +367,7 @@
 
             <!-- 레시피 추천받기 텍스트 -->
             <TextView
+                android:id="@+id/fridgeAddText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="추가하기"

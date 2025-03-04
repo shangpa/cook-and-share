@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // materialExchange 클릭했을 때 NoticeActivity 이동
         val materialExchange: LinearLayout = findViewById(R.id.materialExchange)
         materialExchange.setOnClickListener {
-            val intent = Intent(this, FridgeMaterialActivity::class.java)
+            val intent = Intent(this, FridgeIngredientActivity::class.java)
             startActivity(intent)
         }
 

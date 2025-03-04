@@ -4,6 +4,7 @@ package com.example.test
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 
@@ -12,6 +13,13 @@ class FridgeRecipeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge_recipe)
+
+        // backBtn 클릭했을 때 MaterialSalesActivity 이동
+        val backBtn: ImageView = findViewById(R.id.backBtn)
+        backBtn.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
 
         // fridgeRecipe1 클릭했을 때 RecipeMainOne 이동
         val fridgeRecipe1: LinearLayout = findViewById(R.id.fridgeRecipe1)

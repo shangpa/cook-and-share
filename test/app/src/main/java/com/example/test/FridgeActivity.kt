@@ -13,16 +13,16 @@ class FridgeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge)
 
-        // fridgeAddMaterial 클릭했을 때 NoticeActivity 이동
-        val fridgeAddMaterial: LinearLayout = findViewById(R.id.fridgeAddMaterial)
-        fridgeAddMaterial.setOnClickListener {
-            val intent = Intent(this, FridgeMaterialActivity::class.java)
+        // fridgeAddBtn 클릭했을 때 FridgeMaterialActivity 이동
+        val fridgeAddBtn: LinearLayout = findViewById(R.id.fridgeAddBtn)
+        fridgeAddBtn.setOnClickListener {
+            val intent = Intent(this, FridgeIngredientActivity::class.java)
             startActivity(intent)
         }
 
-        // recipeRecomend 클릭했을 때 NoticeActivity 이동
-        val recipeRecomend: LinearLayout = findViewById(R.id.recipeRecomend)
-        recipeRecomend.setOnClickListener {
+        // recipeRecommendBtn 클릭했을 때 FridgeRecipeActivity 이동
+        val recipeRecommendBtn: LinearLayout = findViewById(R.id.recipeRecommendBtn)
+        recipeRecommendBtn.setOnClickListener {
             val intent = Intent(this, FridgeRecipeActivity::class.java)
             startActivity(intent)
         }

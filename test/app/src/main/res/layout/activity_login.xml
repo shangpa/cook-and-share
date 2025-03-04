@@ -87,7 +87,7 @@
                 android:id="@+id/etLoginId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아이디를 입력하세요"
+                android:hint="아이디를 입력하세요"
                 android:fontFamily="@font/pretendard_medium"
                 android:textSize="12sp"
                 android:textColor="#B4B4B4"
