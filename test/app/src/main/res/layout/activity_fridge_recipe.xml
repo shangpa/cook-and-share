@@ -31,7 +31,7 @@
 
             <!-- 뒤로가기 아이콘 -->
             <ImageButton
-                android:id="@+id/fridgeBackIcon"
+                android:id="@+id/backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back_fridge"
@@ -85,7 +85,7 @@
 
             <!-- 선택한 재료 텍스트 -->
             <TextView
-                android:id="@+id/selectMaterialTitle"
+                android:id="@+id/selectIngredientTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="선택한 재료"
@@ -94,7 +94,7 @@
 
             <!-- 드롭다운 아이콘 -->
             <ImageButton
-                android:id="@+id/meterialDropDownIcon"
+                android:id="@+id/IngredientDropDownBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_dropdown"
@@ -123,7 +123,7 @@
 
             <!-- 카테고리 텍스트 -->
             <TextView
-                android:id="@+id/dayTitle"
+                android:id="@+id/fridgeCategoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="카테고리"
@@ -141,6 +141,7 @@
 
             <!-- 카테고리 컨테이너 (전체) -->
             <LinearLayout
+                android:id="@+id/fridgeCategoryAllBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -150,6 +151,7 @@
 
                 <!-- 전체 텍스트 -->
                 <TextView
+                    android:id="@+id/fridgeCategoryAllText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체"
@@ -159,6 +161,7 @@
 
             <!-- 카테고리 컨테이너 (냉장) -->
             <LinearLayout
+                android:id="@+id/fridgeCategoryColdBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -168,6 +171,7 @@
 
                 <!-- 냉장 텍스트 -->
                 <TextView
+                    android:id="@+id/fridgeCategoryColdText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="냉장"
@@ -177,6 +181,7 @@
 
             <!-- 카테고리 컨테이너 (냉동) -->
             <LinearLayout
+                android:id="@+id/fridgeCategoryFreezeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -186,6 +191,7 @@
 
                 <!-- 냉동 텍스트 -->
                 <TextView
+                    android:id="@+id/fridgeCategoryFreezeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="냉동"
@@ -195,6 +201,7 @@
 
             <!-- 카테고리 컨테이너 (실외) -->
             <LinearLayout
+                android:id="@+id/fridgeCategoryOutBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -204,6 +211,7 @@
 
                 <!-- 실외 텍스트 -->
                 <TextView
+                    android:id="@+id/fridgeCategoryOutText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="실외"
@@ -213,7 +221,7 @@
 
         </LinearLayout>
 
-        <!-- 선택 바 + 수정, 삭제 -->
+        <!-- 선택 바 + 삭제 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -228,7 +236,7 @@
                 android:id="@+id/fridgeAllCheckIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/btn_fridge_check"
+                android:src="@drawable/ic_fridge_check"
                 android:background="?attr/selectableItemBackgroundBorderless" />
 
             <!-- 전체선택 텍스트 -->
@@ -262,6 +270,7 @@
 
             <!-- 재료 1 -->
             <LinearLayout
+                android:id="@+id/fridegeRecipeItem1"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -284,6 +293,7 @@
 
                         <!-- 재료 텍스트 -->
                         <TextView
+                            android:id="@+id/fridgeIngredientName1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="소세지"
@@ -299,6 +309,7 @@
 
                             <!-- 재료 갯수 텍스트 -->
                             <TextView
+                                android:id="@+id/fridgeIngredientNumText1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="16"
@@ -308,6 +319,7 @@
 
                             <!-- 개 -->
                             <TextView
+                                android:id="@+id/fridgeIngredientUnitText1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="개"
@@ -328,6 +340,7 @@
 
                         <!-- 구매일자 -->
                         <TextView
+                            android:id="@+id/purchaseDate1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="구매일자 : "
@@ -336,7 +349,7 @@
 
                         <!-- 구매일자 날짜 텍스트 -->
                         <TextView
-                            android:id="@+id/purchaseDate1"
+                            android:id="@+id/purchaseDateText1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2025.01.12"
@@ -351,6 +364,7 @@
 
             <!-- 재료 2 -->
             <LinearLayout
+                android:id="@+id/fridegeRecipeItem2"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -374,6 +388,7 @@
 
                         <!-- 재료 텍스트 -->
                         <TextView
+                            android:id="@+id/fridgeIngredientName2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="김치"
@@ -389,6 +404,7 @@
 
                             <!-- 재료 갯수 텍스트 -->
                             <TextView
+                                android:id="@+id/fridgeIngredientNumText2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2"
@@ -398,6 +414,7 @@
 
                             <!-- 개 -->
                             <TextView
+                                android:id="@+id/fridgeIngredientUnitText2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="개"
@@ -418,6 +435,7 @@
 
                         <!-- 구매일자 -->
                         <TextView
+                            android:id="@+id/purchaseDate2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="구매일자 : "
@@ -426,7 +444,7 @@
 
                         <!-- 구매일자 날짜 텍스트 -->
                         <TextView
-                            android:id="@+id/purchaseDate2"
+                            android:id="@+id/purchaseDateText2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2024.10.18"
@@ -441,6 +459,7 @@
 
             <!-- 재료 3 -->
             <LinearLayout
+                android:id="@+id/fridegeRecipeItem3"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -464,6 +483,7 @@
 
                         <!-- 재료 텍스트 -->
                         <TextView
+                            android:id="@+id/fridgeIngredientName3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="양파"
@@ -479,6 +499,7 @@
 
                             <!-- 재료 갯수 텍스트 -->
                             <TextView
+                                android:id="@+id/fridgeIngredientNumText3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="6"
@@ -488,6 +509,7 @@
 
                             <!-- 개 -->
                             <TextView
+                                android:id="@+id/fridgeIngredientUnitText3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="개"
@@ -508,6 +530,7 @@
 
                         <!-- 구매일자 -->
                         <TextView
+                            android:id="@+id/purchaseDate3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="구매일자 : "
@@ -516,7 +539,7 @@
 
                         <!-- 구매일자 날짜 텍스트 -->
                         <TextView
-                            android:id="@+id/purchaseDate3"
+                            android:id="@+id/purchaseDateText3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2025.01.18"
@@ -541,7 +564,7 @@
 
         <!-- 추천 레시피 텍스트 -->
         <TextView
-            android:id="@+id/RCRecipeTitle"
+            android:id="@+id/fridgeRecipeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="추천 레시피"
@@ -560,7 +583,7 @@
 
             <!-- 카테고리 텍스트 -->
             <TextView
-                android:id="@+id/dayTitle2"
+                android:id="@+id/ingredientCategoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="카테고리"
@@ -578,6 +601,7 @@
 
             <!-- 카테고리 컨테이너 ( 음식 전체 ) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryAllBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -586,6 +610,7 @@
 
                 <!-- 전체 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryAllText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체"
@@ -595,6 +620,7 @@
 
             <!-- 카테고리 컨테이너 (한식) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryKRBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -604,6 +630,7 @@
 
                 <!-- 한식 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryKRText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="한식"
@@ -613,6 +640,7 @@
 
             <!-- 카테고리 컨테이너 (양식) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryWSBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -622,6 +650,7 @@
 
                 <!-- 양식 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryWSText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="양식"
@@ -631,6 +660,7 @@
 
             <!-- 카테고리 컨테이너 (일식) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryJPBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -640,6 +670,7 @@
 
                 <!-- 일식 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryJPText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="일식"
@@ -649,6 +680,7 @@
 
             <!-- 카테고리 컨테이너 (중식) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryCNBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -658,6 +690,7 @@
 
                 <!-- 중식 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryCNText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="중식"
@@ -667,6 +700,7 @@
 
             <!-- 카테고리 컨테이너 (채식) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryVGBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -676,6 +710,7 @@
 
                 <!-- 채식 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryVGText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="채식"
@@ -685,6 +720,7 @@
 
             <!-- 카테고리 컨테이너 (간식) -->
             <LinearLayout
+                android:id="@+id/ingredientCategorySNBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -694,6 +730,7 @@
 
                 <!-- 간식 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategorySNText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="간식"
@@ -703,6 +740,7 @@
 
             <!-- 카테고리 컨테이너 (안주) -->
             <LinearLayout
+                android:id="@+id/ingredientCategoryMCBtn"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -712,6 +750,7 @@
 
                 <!-- 안주 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategoryMCText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="안주"
@@ -721,6 +760,7 @@
 
             <!-- 카테고리 컨테이너 (밑반찬) -->
             <LinearLayout
+                android:id="@+id/ingredientCategorySDBtn"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -730,6 +770,7 @@
 
                 <!-- 밑반찬 텍스트 -->
                 <TextView
+                    android:id="@+id/ingredientCategorySDText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="밑반찬"
@@ -775,7 +816,7 @@
 
                 <!-- 갯수 -->
                 <TextView
-                    android:id="@+id/fridgeRecipeResultNumber"
+                    android:id="@+id/recipeSearchResultNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8"
@@ -804,7 +845,7 @@
 
                 <!-- 필터링 텍스트 -->
                 <TextView
-                    android:id="@+id/fridgeRecipefillterText"
+                    android:id="@+id/RecipeResultFilterText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="조회수순"
@@ -814,7 +855,7 @@
 
                 <!-- 드롭다운 아이콘 -->
                 <ImageView
-                    android:id="@+id/fridgeRecipeResultDropDownIcon"
+                    android:id="@+id/RecipeResultDropDownBtn"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_dropdown"
@@ -835,7 +876,7 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/fridgeRecipeimg1"
+                android:id="@+id/fridgeRecipeImg1"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/img_recipe_sausage_kimchi_rice1"
@@ -895,7 +936,7 @@
 
                         <!-- 난이도 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipelevel1"
+                            android:id="@+id/fridgeRecipeLevel1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="초급"
@@ -1045,7 +1086,7 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/fridgeRecipeimg2"
+                android:id="@+id/fridgeRecipeImg2"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/img_recipe_kimchi_rice1"
@@ -1105,7 +1146,7 @@
 
                         <!-- 난이도 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipelevel2"
+                            android:id="@+id/fridgeRecipeLevel2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="초급"
@@ -1245,7 +1286,7 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/fridgeRecipeimg3"
+                android:id="@+id/fridgeRecipeImg3"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/img_recipe_sausage_vegi1"
@@ -1305,7 +1346,7 @@
 
                         <!-- 난이도 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipelevel3"
+                            android:id="@+id/fridgeRecipeLevel3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="초급"
@@ -1445,7 +1486,7 @@
 
             <!-- 요리 이미지 -->
             <ImageView
-                android:id="@+id/fridgeRecipeimg4"
+                android:id="@+id/fridgeRecipeImg4"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/img_recipe_sausage_rice1"
@@ -1505,7 +1546,7 @@
 
                         <!-- 난이도 텍스트 -->
                         <TextView
-                            android:id="@+id/fridgeRecipelevel4"
+                            android:id="@+id/fridgeRecipeLevel4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="초급"

@@ -136,7 +136,7 @@
             android:id="@+id/CheckIDIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_fridge_check"
+            android:src="@drawable/ic_fridge_check"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
         <!-- 아이디 결과값 -->
