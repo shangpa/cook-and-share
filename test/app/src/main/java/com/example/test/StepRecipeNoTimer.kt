@@ -29,17 +29,17 @@ class StepRecipeNoTimer : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // delete 클릭했을 때 RecipeWriteBothContentCheck 이동
-        val delete: TextView = findViewById(R.id.delete)
-        delete.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothContentCheck::class.java)
-            startActivity(intent)
-        }
-
         // modify 클릭했을 때 RecipeWriteBothDetailSettle 이동
         val modify: TextView = findViewById(R.id.modify)
         modify.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothDetailSettle::class.java)
+            val intent = Intent(this, RecipeWriteBothActivity::class.java)
+            startActivity(intent)
+        }
+
+        // delete 클릭했을 때 RecipeWriteBothContentCheck 이동
+        val delete: TextView = findViewById(R.id.delete)
+        delete.setOnClickListener {
+            val intent = Intent(this, RecipeWriteBothActivity::class.java)
             startActivity(intent)
         }
 
