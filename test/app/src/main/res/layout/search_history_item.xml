@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="15dp">
+
+    <!-- 검색 기록 아이콘 -->
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_time"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="center"
+        android:contentDescription="검색 기록 아이콘"/>
+
+    <!-- 검색 기록 텍스트 -->
+    <TextView
+        android:id="@+id/searchHistoryText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="검색 기록"
+        android:textSize="13sp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"/>
+
+    <!-- 삭제 버튼 -->
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_close"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="30dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="삭제 아이콘"/>
+</LinearLayout>

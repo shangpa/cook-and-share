@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -83,6 +82,7 @@
                 android:layout_marginRight="260dp"/>
 
             <TextView
+                android:id="@+id/clearAllText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전체 삭제"
@@ -93,118 +93,10 @@
 
         <!-- 검색기록 -->
         <LinearLayout
+            android:id="@+id/searchHistoryContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <!-- 검색기록1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="15dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_time"
-                    android:contentDescription="검색기록 아이콘"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="묵은쌀"
-                    android:textSize="13sp"
-                    android:textColor="#2B2B2B"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="250dp"/>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_close"
-                    android:contentDescription="지우기 아이콘"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-            </LinearLayout>
-
-            <!-- 검색기록2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="15dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_time"
-                    android:contentDescription="검색기록 아이콘"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="당근"
-                    android:textSize="13sp"
-                    android:textColor="#2B2B2B"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="260dp"/>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_close"
-                    android:contentDescription="지우기 아이콘"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-            </LinearLayout>
-
-            <!-- 검색기록2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="15dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_time"
-                    android:contentDescription="검색기록 아이콘"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="토마토"
-                    android:textSize="13sp"
-                    android:textColor="#2B2B2B"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="250dp"/>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_close"
-                    android:contentDescription="지우기 아이콘"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-            </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>

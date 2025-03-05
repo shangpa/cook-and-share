@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#000000" /> <!-- 배경색 -->
+    <corners android:radius="8dp" /> <!-- 둥근 모서리 설정 -->
+    <size android:width="60dp" /> <!-- 가로 크기 설정 -->
+</shape>
