@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item_all" android:title="개"/>
+    <item android:id="@+id/item_refrigerated" android:title="그램"/>
+
+</menu>
