@@ -2,91 +2,64 @@ package com.example.test
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FridgeActivity : AppCompatActivity() {
     private var isChecked = false // 아이콘 상태 저장 변수
+    private val selectedLayouts = mutableSetOf<LinearLayout>() // 선택된 레이아웃 목록
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge)
 
-        // 오늘 날짜를 yyyy.MM.dd 형식으로 가져오기
         val todayDate = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
-
-        // dayInput TextView에 오늘 날짜 설정
         val dayInput: TextView = findViewById(R.id.dayInput)
         dayInput.text = todayDate
 
-
-        // rootLayout을 LinearLayout 혹은 ViewGroup으로 정의해야 합니다.
-        val rootLayout: ViewGroup = findViewById(R.id.rootLayout) // rootLayout은 최상위 레이아웃의 ID
-
-        // 모든 LinearLayout 찾아서 배경 변경
+        val rootLayout: ViewGroup = findViewById(R.id.rootLayout)
         val allFridgeLayouts = rootLayout.children.filterIsInstance<LinearLayout>()
 
-        // 전체선택 아이콘 버튼 설정
         val fridgeAllCheckIcon: ImageView = findViewById(R.id.fridgeAllCheckIcon)
         fridgeAllCheckIcon.setOnClickListener {
-            isChecked = !isChecked // 상태 변경
+            isChecked = !isChecked
             if (isChecked) {
-                fridgeAllCheckIcon.setImageResource(R.drawable.btn_fridge_checked) // 체크된 상태
-                // 모든 LinearLayout 배경을 rounded_rectangle_fridge_ck로 변경
+                fridgeAllCheckIcon.setImageResource(R.drawable.btn_fridge_checked)
                 allFridgeLayouts.forEach { layout ->
                     layout.setBackgroundResource(R.drawable.rounded_rectangle_fridge_ck)
+                    selectedLayouts.add(layout)
                 }
             } else {
-                fridgeAllCheckIcon.setImageResource(R.drawable.ic_fridge_check) // 체크 해제 상태
-                // 모든 LinearLayout 배경을 원래의 rounded_rectangle_fridge로 변경
+                fridgeAllCheckIcon.setImageResource(R.drawable.ic_fridge_check)
                 allFridgeLayouts.forEach { layout ->
                     layout.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                    selectedLayouts.remove(layout)
                 }
             }
         }
 
-
-        // 카테고리 버튼들 (LinearLayout)
-        val categoryAll: LinearLayout = findViewById(R.id.categoryAll)
-        val categoryFridge: LinearLayout = findViewById(R.id.categoryFridge)
-        val categoryFreeze: LinearLayout = findViewById(R.id.categoryFreeze)
-        val categoryRoom: LinearLayout = findViewById(R.id.categoryRoom)
-
-        // 카테고리 텍스트 (TextView)
-        val textAll: TextView = findViewById(R.id.textAll)
-        val textFridge: TextView = findViewById(R.id.textFridge)
-        val textFreeze: TextView = findViewById(R.id.textFreeze)
-        val textRoom: TextView = findViewById(R.id.textRoom)
-
-        // 버튼 & 텍스트 리스트
-        val categories = listOf(
-            Pair(categoryAll, textAll),
-            Pair(categoryFridge, textFridge),
-            Pair(categoryFreeze, textFreeze),
-            Pair(categoryRoom, textRoom)
-        )
-
-        // 카테고리 클릭 이벤트 설정
-        categories.forEach { (layout, textView) ->
+        allFridgeLayouts.forEach { layout ->
             layout.setOnClickListener {
-                // 모든 버튼을 기본 색상으로 변경
-                categories.forEach { (otherLayout, otherText) ->
-                    otherLayout.setBackgroundResource(R.drawable.btn_fridge_ct) // 기본 배경
-                    otherText.setTextColor(ContextCompat.getColor(this, R.color.black)) // 글자색 검정
+                if (selectedLayouts.contains(layout)) {
+                    layout.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                    selectedLayouts.remove(layout)
+                } else {
+                    layout.setBackgroundResource(R.drawable.rounded_rectangle_fridge_ck)
+                    selectedLayouts.add(layout)
                 }
-
-                // 선택된 버튼을 강조 색상으로 변경
-                layout.setBackgroundResource(R.drawable.btn_fridge_ct_ck) // 선택된 배경
-                textView.setTextColor(ContextCompat.getColor(this, R.color.white)) // 글자색 흰색
             }
         }
 
@@ -102,6 +75,57 @@ class FridgeActivity : AppCompatActivity() {
         recipeRecommendBtn.setOnClickListener {
             val intent = Intent(this, FridgeRecipeActivity::class.java)
             startActivity(intent)
+        }
+        // 다른 화면의 데이터를 가져오는 부분
+        val ingredient = intent.getStringExtra("ingredient") ?: ""
+        val quantity = intent.getStringExtra("quantity") ?: ""
+        val unit = intent.getStringExtra("unit") ?: ""
+        val date = intent.getStringExtra("date") ?: ""
+        val price = intent.getStringExtra("price") ?: ""
+
+        // 입력 값 출력 (디버깅 용도)
+        println("Ingredient: $ingredient, Quantity: $quantity, Unit: $unit, Date: $date, Price: $price")
+
+        // 동적으로 추가될 재료 박스를 생성하는 함수 (예시)
+        fun createIngredientBox(ingredientName: String, storageArea: String, expirationDate: String, ingredientNum: String): LinearLayout {
+            val ingredientBox = LinearLayout(this)
+            ingredientBox.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            ingredientBox.orientation = LinearLayout.HORIZONTAL
+            ingredientBox.setPadding(15, 15, 15, 15)
+
+            // 재료 이름 TextView
+            val ingredientNameText = TextView(this)
+            ingredientNameText.text = ingredientName
+            ingredientNameText.textSize = 14f
+            ingredientNameText.setTextColor(resources.getColor(R.color.green))
+
+            // 보관장소 TextView
+            val storageAreaText = TextView(this)
+            storageAreaText.text = "보관장소 : $storageArea"
+            storageAreaText.textSize = 11f
+            storageAreaText.setTextColor(resources.getColor(R.color.black))
+
+            // 유통기한 TextView
+            val expirationDateText = TextView(this)
+            expirationDateText.text = "유통기한 : $expirationDate"
+            expirationDateText.textSize = 11f
+            expirationDateText.setTextColor(resources.getColor(R.color.black))
+
+            // 재료 갯수 TextView
+            val ingredientNumText = TextView(this)
+            ingredientNumText.text = "$ingredientNum 개"
+            ingredientNumText.textSize = 14f
+            ingredientNumText.setTextColor(resources.getColor(R.color.black))
+
+            // 재료 박스에 텍스트 추가
+            ingredientBox.addView(ingredientNameText)
+            ingredientBox.addView(storageAreaText)
+            ingredientBox.addView(expirationDateText)
+            ingredientBox.addView(ingredientNumText)
+
+            return ingredientBox
         }
     }
 }

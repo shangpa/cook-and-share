@@ -1,0 +1,18 @@
+<!-- res/menu/recipe_result_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_view_count"
+        android:title="조회수순" />
+    <item
+        android:id="@+id/menu_likes"
+        android:title="찜순" />
+    <item
+        android:id="@+id/menu_latest"
+        android:title="최신순" />
+    <item
+        android:id="@+id/menu_cooking_time_short"
+        android:title="요리시간 짧은순" />
+    <item
+        android:id="@+id/menu_cooking_time_long"
+        android:title="요리시간 긴순" />
+</menu>
