@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -746,6 +747,18 @@
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour"/>
 
+                    <!-- 드롭다운 -->
+                    <ImageButton
+                        android:id="@+id/dropDown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_drop_down"
+                        app:layout_constraintStart_toEndOf="@id/unit"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
+
                     <!-- 계량 -->
                     <EditText
                         android:id="@+id/measuring"
@@ -759,6 +772,19 @@
                         android:background="@null"
                         android:inputType="text"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour"/>
+
+                    <!-- 단위 -->
+                    <TextView
+                        android:id="@+id/unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="단위"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="11dp"
+                        app:layout_constraintStart_toEndOf="@id/measuring"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour"/>
 
                     <!-- 삭제 -->
@@ -801,6 +827,18 @@
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarFive"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive"/>
 
+                    <!-- 드롭다운 -->
+                    <ImageButton
+                        android:id="@+id/dropDownTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_drop_down"
+                        app:layout_constraintStart_toEndOf="@id/unitTwo"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive" />
+
                     <!-- 계량2-->
                     <EditText
                         android:id="@+id/measuringTwo"
@@ -814,6 +852,19 @@
                         android:background="@null"
                         android:inputType="text"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarFive"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive"/>
+
+                    <!-- 단위 -->
+                    <TextView
+                        android:id="@+id/unitTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="단위"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="11dp"
+                        app:layout_constraintStart_toEndOf="@id/measuringTwo"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFive"/>
 
                     <!-- 삭제 -->
@@ -856,6 +907,18 @@
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarSix"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix"/>
 
+                    <!-- 드롭다운 -->
+                    <ImageButton
+                        android:id="@+id/dropDownThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_drop_down"
+                        app:layout_constraintStart_toEndOf="@id/unitThree"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix" />
+
                     <!-- 계량3-->
                     <EditText
                         android:id="@+id/measuringThree"
@@ -869,6 +932,19 @@
                         android:background="@null"
                         android:inputType="text"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarSix"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix"/>
+
+                    <!-- 단위 -->
+                    <TextView
+                        android:id="@+id/unitThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="단위"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="11dp"
+                        app:layout_constraintStart_toEndOf="@id/measuringThree"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSix"/>
 
                     <!-- 삭제 -->
@@ -911,6 +987,18 @@
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarSeven"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven"/>
 
+                    <!-- 드롭다운 -->
+                    <ImageButton
+                        android:id="@+id/dropDownFour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_drop_down"
+                        app:layout_constraintStart_toEndOf="@id/unitFour"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven" />
+
                     <!-- 계량4-->
                     <EditText
                         android:id="@+id/measuringFour"
@@ -924,6 +1012,19 @@
                         android:background="@null"
                         android:inputType="text"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarSeven"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven"/>
+
+                    <!-- 단위 -->
+                    <TextView
+                        android:id="@+id/unitFour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="단위"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="11dp"
+                        app:layout_constraintStart_toEndOf="@id/measuringFour"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeven"/>
 
                     <!-- 삭제 -->
@@ -966,6 +1067,18 @@
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarEight"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight"/>
 
+                    <!-- 드롭다운 -->
+                    <ImageButton
+                        android:id="@+id/dropDownFive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_drop_down"
+                        app:layout_constraintStart_toEndOf="@id/unitFive"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight" />
+
                     <!-- 계량5-->
                     <EditText
                         android:id="@+id/measuringFive"
@@ -979,6 +1092,19 @@
                         android:background="@null"
                         android:inputType="text"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarEight"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight"/>
+
+                    <!-- 단위 -->
+                    <TextView
+                        android:id="@+id/unitFive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="단위"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="11dp"
+                        app:layout_constraintStart_toEndOf="@id/measuringFive"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarEight"/>
 
                     <!-- 삭제 -->
@@ -1020,6 +1146,390 @@
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarNine"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine"/>
 
+                    <!-- 드롭다운 -->
+                    <ImageButton
+                        android:id="@+id/dropDownSix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_drop_down"
+                        app:layout_constraintStart_toEndOf="@id/unitSix"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/materialDropDown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="90dp"
+                        app:layout_constraintTop_toBottomOf="@id/dropDown"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="gone">
+
+                        <!-- 카테고리 선택 상자 -->
+                        <View
+                            android:id="@+id/materialCategoryBox"
+                            android:layout_width="43dp"
+                            android:layout_height="333dp"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginStart="1dp"
+                            android:background="@drawable/ic_activity_recipe_write_both_title_rect"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <!-- 컵 -->
+                        <TextView
+                            android:id="@+id/cup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="컵"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBox"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBar"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBar"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBox"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 큰솔 -->
+                        <TextView
+                            android:id="@+id/tbsp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="큰솔"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBar"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarTwo"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarTwo"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBar"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 작은솔 -->
+                        <TextView
+                            android:id="@+id/tsp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="작은솔"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTwo"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarThree"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarThree"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTwo"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 티스푼 -->
+                        <TextView
+                            android:id="@+id/teaSpoon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="티스푼"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarThree"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarFour"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarFour"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarThree"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 리터 -->
+                        <TextView
+                            android:id="@+id/letter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="리터"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarFour"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarFive"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarFive"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarFour"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- g -->
+                        <TextView
+                            android:id="@+id/gram"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="g"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarFive"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarSix"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarSix"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarFive"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- kg -->
+                        <TextView
+                            android:id="@+id/kg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="kg"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarSix"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarSeven"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarSeven"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarSix"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 덩어리 -->
+                        <TextView
+                            android:id="@+id/mass"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="덩어리"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarSeven"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarEight"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarEight"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarSeven"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 묶음 -->
+                        <TextView
+                            android:id="@+id/bundle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="묶음"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarEight"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarNine"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarNine"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarEight"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 주머니 -->
+                        <TextView
+                            android:id="@+id/pocket"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="주머니"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarNine"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarTen"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarTen"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarNine"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 봉지 -->
+                        <TextView
+                            android:id="@+id/bag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="봉지"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTen"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarEleven"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarEleven"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTen"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 통 -->
+                        <TextView
+                            android:id="@+id/container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="통"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarEleven"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarTweleve"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarTweleve"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarEleven"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 팩 -->
+                        <TextView
+                            android:id="@+id/pack"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="팩"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTweleve"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarThirteen"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarThirteen"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTweleve"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 한 줌 -->
+                        <TextView
+                            android:id="@+id/aHandful"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="한 줌"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarThirteen"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarForteen"/>
+
+                        <!-- 카테고리 선택 상자 선 -->
+                        <View
+                            android:id="@+id/materialCategoryBoxBarForteen"
+                            android:layout_width="42dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/bar_category"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarThirteen"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
+
+                        <!-- 한 술 -->
+                        <TextView
+                            android:id="@+id/bite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="한 술"
+                            android:textColor="#8A8F9C"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                            app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                            app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarForteen"
+                            app:layout_constraintBottom_toBottomOf="@id/materialCategoryBox"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <!-- 계량6-->
                     <EditText
                         android:id="@+id/measuringSix"
@@ -1032,6 +1542,19 @@
                         android:backgroundTint="#A1A9AD"
                         android:background="@null"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarNine"
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine"/>
+
+                    <!-- 단위 -->
+                    <TextView
+                        android:id="@+id/unitSix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="단위"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="11dp"
+                        app:layout_constraintStart_toEndOf="@id/measuringSix"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarNine"/>
 
                     <!-- 삭제 -->
@@ -1651,497 +2174,128 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cookOrderStep"
+            <LinearLayout
+                android:id="@+id/stepContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginTop="50dp"
                 app:layout_constraintTop_toBottomOf="@+id/recipeWriteCookOrder">
 
-                <!-- STEP 1 -->
-                <TextView
-                    android:id="@+id/stepOne"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="23dp"
-                    android:text="STEP 1"
-                    android:textColor="#2B2B2B"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- 카메라 -->
-                <ImageButton
-                    android:id="@+id/camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginTop="0dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_camera"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/stepOne" />
-
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cookOrderStep"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="1dp"
-                    app:layout_constraintTop_toBottomOf="@id/stepOne"
-                    android:padding="16dp">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
+                    <!-- STEP 1 -->
+                    <TextView
+                        android:id="@+id/stepOne"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="23dp"
+                        android:text="STEP 1"
+                        android:textColor="#2B2B2B"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 카메라 -->
+                    <ImageButton
+                        android:id="@+id/camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="0dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/stepOne" />
+
                     <LinearLayout
-                        android:id="@+id/imageContainer"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginTop="1dp"
+                        app:layout_constraintTop_toBottomOf="@id/stepOne"
+                        android:padding="16dp">
+
+                        <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
+                        <LinearLayout
+                            android:id="@+id/imageContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cookOrderWrite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/cookOrderStep">
+
+                    <!-- 1-1 -->
+                    <TextView
+                        android:id="@+id/stepLittleOne"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="23dp"
+                        android:text="1-1"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 레시피를 입력해주세요. -->
+                    <EditText
+                        android:id="@+id/cookOrderRecipeWrite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="레시피를 입력해주세요."
+                        android:textSize="13sp"
+                        android:layout_marginStart="7dp"
+                        android:backgroundTint="#A1A9AD"
+                        android:background="@null"
+                        app:layout_constraintStart_toEndOf="@id/stepLittleOne"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <!-- 1-1. 레시피를 입력해주세요. 아래 구분바 -->
+                    <View
+                        android:id="@+id/divideRectangleBarSeventeen"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/bar_rectangle"
+                        app:layout_constraintTop_toBottomOf="@id/cookOrderRecipeWrite" />
+
+                    <LinearLayout
+                        android:id="@+id/cookOrderRecipeContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_gravity="center"/>
+                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/imageChoice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="190dp"
-                app:layout_constraintTop_toBottomOf="@id/cookOrderStep"
-                android:visibility="gone">
-
-                <!-- 이미지 틀 -->
-                <View
-                    android:id="@+id/imageBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="370dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/ic_image_rect"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <!-- 삭제 -->
-                <ImageButton
-                    android:id="@+id/btnDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_delete"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/imageBox"/>
-
-                <!-- 앨범 -->
-                <TextView
-                    android:id="@+id/album"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="앨범"
-                    android:textColor="#2B2B2B"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/imageBox"
-                    app:layout_constraintBottom_toBottomOf="@id/divideRectangleBarTwentyfour"/>
-
-                <!-- 확인 -->
-                <Button
-                    android:id="@+id/check"
-                    android:layout_width="71dp"
-                    android:layout_height="39dp"
-                    android:text="확인"
-                    android:textSize="12sp"
-                    android:textColor="#A1A9AD"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="20dp"
-                    app:layout_constraintTop_toTopOf="@id/imageBox"
-                    app:layout_constraintBottom_toBottomOf="@id/divideRectangleBarTwentyfour"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 앨범 아래 바 -->
-                <View
-                    android:id="@+id/divideRectangleBarTwentyfour"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="45dp"
-                    android:background="@drawable/bar_rectangle"
-                    app:layout_constraintTop_toTopOf="@id/imageBox"/>
-
-                <!-- 이미지1 -->
-                <ImageView
-                    android:id="@+id/imageOne"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentyfour"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageOne"
-                    app:layout_constraintTop_toTopOf="@id/imageOne"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageOne"
-                    app:layout_constraintBottom_toBottomOf="@id/imageOne"/>
-
-                <!-- 이미지2 -->
-                <ImageView
-                    android:id="@+id/imageTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentyfour"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageTwo"
-                    app:layout_constraintTop_toTopOf="@id/imageTwo"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageTwo"
-                    app:layout_constraintBottom_toBottomOf="@id/imageTwo"/>
-
-                <!-- 이미지3 -->
-                <ImageView
-                    android:id="@+id/imageThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentyfour"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageThree"
-                    app:layout_constraintTop_toTopOf="@id/imageThree"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageThree"
-                    app:layout_constraintBottom_toBottomOf="@id/imageThree"/>
-
-                <!-- 이미지4 -->
-                <ImageView
-                    android:id="@+id/imageFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/imageOne"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageFour"
-                    app:layout_constraintTop_toTopOf="@id/imageFour"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageFour"
-                    app:layout_constraintBottom_toBottomOf="@id/imageFour"/>
-
-                <!-- 이미지5 -->
-                <ImageView
-                    android:id="@+id/imageFive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/imageTwo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxFive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageFive"
-                    app:layout_constraintTop_toTopOf="@id/imageFive"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreFive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageFive"
-                    app:layout_constraintBottom_toBottomOf="@id/imageFive" />
-
-                <!-- 이미지6 -->
-                <ImageView
-                    android:id="@+id/imageSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/imageTwo"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageSix"
-                    app:layout_constraintTop_toTopOf="@id/imageSix"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageSix"
-                    app:layout_constraintBottom_toBottomOf="@id/imageSix"/>
-
-                <!-- 이미지7 -->
-                <ImageView
-                    android:id="@+id/imageSeven"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/imageFour"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxSeven"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageSeven"
-                    app:layout_constraintTop_toTopOf="@id/imageSeven"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreSeven"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageSeven"
-                    app:layout_constraintBottom_toBottomOf="@id/imageSeven"/>
-
-                <!-- 이미지8 -->
-                <ImageView
-                    android:id="@+id/imageEight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/imageFive"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxEight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageEight"
-                    app:layout_constraintTop_toTopOf="@id/imageEight"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreEight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageEight"
-                    app:layout_constraintBottom_toBottomOf="@id/imageEight"/>
-
-                <!-- 이미지9 -->
-                <ImageView
-                    android:id="@+id/imageNine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/imageSix"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/checkBoxNine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/imageNine"
-                    app:layout_constraintTop_toTopOf="@id/imageNine"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/seeMoreNine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/imageNine"
-                    app:layout_constraintBottom_toBottomOf="@id/imageNine" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cookOrderWrite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/cookOrderStep">
-
-                <!-- 1-1. 레시피를 입력해주세요. -->
-                <EditText
-                    android:id="@+id/cookOrderRecipeWrite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="1-1. 레시피를 입력해주세요."
-                    android:textSize="13sp"
-                    android:layout_marginStart="23dp"
-                    android:backgroundTint="#A1A9AD"
-                    android:background="@null"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <!-- 1-1. 레시피를 입력해주세요. 아래 구분바 -->
-                <View
-                    android:id="@+id/divideRectangleBarSeventeen"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/bar_rectangle"
-                    app:layout_constraintTop_toBottomOf="@id/cookOrderRecipeWrite" />
-
-                <LinearLayout
-                    android:id="@+id/cookOrderRecipeContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cookOrderTimer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="27dp"
-                app:layout_constraintTop_toBottomOf="@+id/cookOrderWrite"
+                app:layout_constraintTop_toBottomOf="@+id/stepContainer"
                 android:visibility="gone">
 
                 <!-- 타이머 -->
@@ -2434,397 +2588,6 @@
                         android:layout_gravity="center"/>
 
                 </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/representImageImageChoice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="190dp"
-                app:layout_constraintTop_toBottomOf="@id/representImageChoice"
-                android:visibility="gone">
-
-                <!-- 이미지 틀 -->
-                <View
-                    android:id="@+id/representImageBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="370dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/ic_image_rect"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <!-- 삭제 -->
-                <ImageButton
-                    android:id="@+id/representBtnDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_delete"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/representImageBox"/>
-
-                <!-- 앨범 -->
-                <TextView
-                    android:id="@+id/representAlbum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="앨범"
-                    android:textColor="#2B2B2B"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/representImageBox"
-                    app:layout_constraintBottom_toBottomOf="@id/divideRectangleBarTwentyfive"/>
-
-                <!-- 확인 -->
-                <Button
-                    android:id="@+id/representCheck"
-                    android:layout_width="71dp"
-                    android:layout_height="39dp"
-                    android:text="확인"
-                    android:textSize="12sp"
-                    android:textColor="#A1A9AD"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="20dp"
-                    app:layout_constraintTop_toTopOf="@id/representImageBox"
-                    app:layout_constraintBottom_toBottomOf="@id/divideRectangleBarTwentyfive"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 앨범 아래 바 -->
-                <View
-                    android:id="@+id/divideRectangleBarTwentyfive"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="45dp"
-                    android:background="@drawable/bar_rectangle"
-                    app:layout_constraintTop_toTopOf="@id/representImageBox"/>
-
-                <!-- 이미지1 -->
-                <ImageView
-                    android:id="@+id/representImageOne"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentyfive"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageOne"
-                    app:layout_constraintTop_toTopOf="@id/representImageOne"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageOne"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageOne"/>
-
-                <!-- 이미지2 -->
-                <ImageView
-                    android:id="@+id/representImageTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentyfive"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageTwo"
-                    app:layout_constraintTop_toTopOf="@id/representImageTwo"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageTwo"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageTwo"/>
-
-                <!-- 이미지3 -->
-                <ImageView
-                    android:id="@+id/representImageThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentyfive"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageThree"
-                    app:layout_constraintTop_toTopOf="@id/representImageThree"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageThree"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageThree"/>
-
-                <!-- 이미지4 -->
-                <ImageView
-                    android:id="@+id/representImageFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/representImageOne"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageFour"
-                    app:layout_constraintTop_toTopOf="@id/representImageFour"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageFour"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageFour"/>
-
-                <!-- 이미지5 -->
-                <ImageView
-                    android:id="@+id/representImageFive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/representImageTwo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxFive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageFive"
-                    app:layout_constraintTop_toTopOf="@id/representImageFive"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreFive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageFive"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageFive" />
-
-                <!-- 이미지6 -->
-                <ImageView
-                    android:id="@+id/representImageSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/representImageTwo"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageSix"
-                    app:layout_constraintTop_toTopOf="@id/representImageSix"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageSix"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageSix"/>
-
-                <!-- 이미지7 -->
-                <ImageView
-                    android:id="@+id/representImageSeven"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/representImageFour"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxSeven"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageSeven"
-                    app:layout_constraintTop_toTopOf="@id/representImageSeven"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreSeven"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageSeven"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageSeven"/>
-
-                <!-- 이미지8 -->
-                <ImageView
-                    android:id="@+id/representImageEight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/representImageFive"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxEight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageEight"
-                    app:layout_constraintTop_toTopOf="@id/representImageEight"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreEight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageEight"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageEight"/>
-
-                <!-- 이미지9 -->
-                <ImageView
-                    android:id="@+id/representImageNine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/image_image_box"
-                    app:layout_constraintTop_toBottomOf="@id/representImageSix"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- 이미지 선택 박스 -->
-                <ImageButton
-                    android:id="@+id/representCheckBoxNine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_check_circle"
-                    app:layout_constraintEnd_toEndOf="@id/representImageNine"
-                    app:layout_constraintTop_toTopOf="@id/representImageNine"/>
-
-                <!-- 자세히 보기 -->
-                <ImageButton
-                    android:id="@+id/representSeeMoreNine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_see_more"
-                    app:layout_constraintStart_toStartOf="@id/representImageNine"
-                    app:layout_constraintBottom_toBottomOf="@id/representImageNine" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

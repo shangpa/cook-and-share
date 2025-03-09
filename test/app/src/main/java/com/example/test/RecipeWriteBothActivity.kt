@@ -1,17 +1,22 @@
 /*레시피 둘다*/
 package com.example.test
 
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.FIND_VIEWS_WITH_TEXT
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -19,8 +24,18 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
+import com.example.test.Repository.RecipeRepository
+import com.example.test.model.CookingStep
+import com.example.test.model.Ingredient
+import com.example.test.model.RecipeRequest
+import com.google.gson.Gson
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -40,9 +55,66 @@ private val maxItems = 10 // 최대 10개 제한
 private val buttonMarginIncrease = 130 // 버튼을 아래로 내릴 거리 (px)
 private var countDownTimer: CountDownTimer? = null
 private var timeInMillis: Long = 0
+private lateinit var camera: ImageButton
+private lateinit var detailSettleCamera: ImageButton
+private lateinit var imageContainer: LinearLayout
+private lateinit var representImageContainer: LinearLayout
 private var stepCount = 1 // 1-1부터 시작
+private var currentStep = 1  // 현재 Step 번호 (ex. 1, 2, 3...)
+private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서 개수 저장
 
 class RecipeWriteBothActivity : AppCompatActivity() {
+
+    // 갤러리에서 선택한 이미지를 처리하는 콜백
+
+    // 첫 번째 pickImageLauncher (camera 버튼용)
+    private val pickImageLauncherForCamera =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                // 이미지를 동적으로 추가
+                val imageView = ImageView(this)
+                imageView.setImageURI(it) // 이미지 URI 설정
+                val layoutParams =
+                    LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 이미지 크기 설정
+                imageView.layoutParams = layoutParams
+                imageContainer.addView(imageView) // LinearLayout에 이미지 추가
+                representImageContainer.addView(imageView) // LinearLayout에 이미지 추가
+            }
+        }
+
+    // 두 번째 pickImageLauncher (camera 버튼용)
+    private val pickImageLauncherForVideoSettle =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                // 이미지를 동적으로 추가
+                val imageView = ImageView(this)
+                imageView.setImageURI(it) // 이미지 URI 설정
+                val layoutParams =
+                    LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 이미지 크기 설정
+                imageView.layoutParams = layoutParams
+                imageContainer.addView(imageView) // LinearLayout에 이미지 추가
+                representImageContainer.addView(imageView) // LinearLayout에 이미지 추가
+            }
+        }
+
+    // 세 번째 pickImageLauncher (세부설정 카메라 버튼용)
+    private val pickImageLauncherForDetailSettle =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                // 이미지를 동적으로 추가
+                val imageView = ImageView(this)
+                imageView.setImageURI(it) // 이미지 URI 설정
+                val layoutParams =
+                    LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 이미지 크기 설정
+                imageView.layoutParams = layoutParams
+                imageContainer.addView(imageView) // LinearLayout에 이미지 추가
+                representImageContainer.addView(imageView) // LinearLayout에 이미지 추가
+            }
+        }
+
+    private lateinit var stepContainer: LinearLayout // STEP을 추가할 컨테이너
+    private lateinit var pickImageLauncherForStepCamera: ActivityResultLauncher<String>
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,6 +196,12 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val divideRectangleBarEight = findViewById<View>(R.id.divideRectangleBarEight)
         val divideRectangleBarNine = findViewById<View>(R.id.divideRectangleBarNine)
         val divideRectangleBarTen = findViewById<View>(R.id.divideRectangleBarTen)
+        val unit = findViewById<TextView>(R.id.unit)
+        val unitTwo = findViewById<TextView>(R.id.unitTwo)
+        val unitThree = findViewById<TextView>(R.id.unitThree)
+        val unitFour = findViewById<TextView>(R.id.unitFour)
+        val unitFive = findViewById<TextView>(R.id.unitFive)
+        val unitSix = findViewById<TextView>(R.id.unitSix)
 
         // 레시피 대체재료 선언
         val recipeWriteReplaceMaterialLayout =
@@ -156,15 +234,14 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.recipeWriteCookOrderLayout)
         val cookOrderAddButton = findViewById<ConstraintLayout>(R.id.cookOrderAddButton)
         val cookOrderTimer = findViewById<ConstraintLayout>(R.id.cookOrderTimer)
-        val imageChoice = findViewById<ConstraintLayout>(R.id.imageChoice)
         val cookOrderTapBar = findViewById<ConstraintLayout>(R.id.cookOrderTapBar)
         val imageContainer = findViewById<LinearLayout>(R.id.imageContainer)
+        val stepLittleOne = findViewById<TextView>(R.id.stepLittleOne)
         val cookOrderRecipeWrite = findViewById<EditText>(R.id.cookOrderRecipeWrite)
         val camera = findViewById<ImageButton>(R.id.camera)
         val timerAdd = findViewById<Button>(R.id.timerAdd)
         val endFixButton = findViewById<Button>(R.id.endFixButton)
         val stepAddFixButton = findViewById<Button>(R.id.stepAddFixButton)
-        val check = findViewById<Button>(R.id.check)
         val timer = findViewById<TextView>(R.id.timer)
         val hour = findViewById<EditText>(R.id.hour)
         val time = findViewById<TextView>(R.id.time)
@@ -183,18 +260,14 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         // 레시피 조리영상 선언
         val recipeWriteCookVideoLayout =
             findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout)
-        val videoImageChoice = findViewById<ConstraintLayout>(R.id.videoImageChoice)
         val videoImageContainer = findViewById<LinearLayout>(R.id.videoImageContainer)
         val cookVideoCamera = findViewById<ImageButton>(R.id.cookVideoCamera)
-        val videoImageCheck = findViewById<Button>(R.id.videoImageCheck)
 
         // 레시피 세부설정 선언
         val recipeWriteDetailSettleLayout =
             findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
         val levelBoxChoice = findViewById<ConstraintLayout>(R.id.levelBoxChoice)
         val requiredTimeAndTag = findViewById<ConstraintLayout>(R.id.requiredTimeAndTag)
-        val representImageImageChoice =
-            findViewById<ConstraintLayout>(R.id.representImageImageChoice)
         val representImageContainer = findViewById<LinearLayout>(R.id.representImageContainer)
         val detailSettleCamera = findViewById<ImageButton>(R.id.detailSettleCamera)
         val elementaryLevel = findViewById<TextView>(R.id.elementaryLevel)
@@ -202,7 +275,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val zero = findViewById<EditText>(R.id.zero)
         val halfHour = findViewById<EditText>(R.id.halfHour)
         val detailSettleRecipeTitleWrite = findViewById<View>(R.id.detailSettleRecipeTitleWrite)
-        val representCheck = findViewById<Button>(R.id.representCheck)
 
         // 레시피 작성한 내용 선언
         val contentCheckLayout = findViewById<ConstraintLayout>(R.id.contentCheckLayout)
@@ -349,6 +421,46 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             }
         }
 
+        // 레시피 재료 materialDropDown을 findViewById로 제대로 연결
+        val materialDropDown = findViewById<ConstraintLayout>(R.id.materialDropDown)
+
+        // 레시피 재료 드롭다운 버튼과 연결할 unit을 관리하는 Map
+        val buttonToUnitMap = mapOf(
+            R.id.dropDown to R.id.unit,
+            R.id.dropDownTwo to R.id.unitTwo,
+            R.id.dropDownThree to R.id.unitThree,
+            R.id.dropDownFour to R.id.unitFour,
+            R.id.dropDownFive to R.id.unitFive,
+            R.id.dropDownSix to R.id.unitSix
+        )
+
+        // 레시피 재료 드롭다운 버튼 클릭 시 동작 설정
+        buttonToUnitMap.forEach { (buttonId, unitId) ->
+            val button = findViewById<ImageButton>(buttonId)
+            val unit = findViewById<TextView>(unitId)
+            val materialDropDown = findViewById<ConstraintLayout>(R.id.materialDropDown)
+
+            button.setOnClickListener {
+                // 드롭다운 열기
+                materialDropDown.visibility = View.VISIBLE
+
+                // 드롭다운에서 텍스트를 선택할 때의 이벤트 처리
+                for (i in 0 until materialDropDown.childCount) {
+                    val child = materialDropDown.getChildAt(i)
+                    if (child is TextView) {
+                        child.setOnClickListener {
+                            // 선택된 텍스트를 해당 unit에 설정
+                            unit.text = child.text.toString()
+                            unit.setTextColor(Color.parseColor("#2B2B2B")) // 색상 변경
+
+                            // 드롭다운 닫기
+                            materialDropDown.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
         deleteTwo.setOnClickListener {
             materialTwo.visibility = View.GONE
@@ -407,13 +519,57 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 레시피 조리순서 내용 추가하기 눌렀을때 내용 추가
         cookOrderRecipeContainer = findViewById(R.id.cookOrderRecipeContainer) // 레이아웃 ID
-        contentAdd = findViewById(R.id.contentAdd) // 버튼 ID
+        contentAdd = findViewById(R.id.contentAdd)
 
         contentAdd.setOnClickListener {
             if (stepCount < 10) { // 최대 1-9까지 허용 (원하는 개수 조절 가능)
                 stepCount++
                 addRecipeStep(stepCount)
             }
+        }
+
+        // 레시피 조리순서 step 추가
+        stepContainer = findViewById(R.id.stepContainer) // onCreate에서 초기화
+
+        stepAddFixButton.setOnClickListener {
+            addNewStep()  // stepContainer 사용 가능
+        }
+
+        // 레시피 조리순서 step을 추가하는 함수
+        fun addNewStep() {
+            // 새로운 step을 추가하고 서브step 번호를 초기화
+            currentStep++
+            currentSubStep = 1  // 서브step은 1부터 시작
+        }
+
+        // 레시피 조리순서 카메라 버튼 클릭 시 갤러리 열기
+        camera.setOnClickListener {
+            pickImageLauncherForCamera.launch("image/*")
+        }
+
+        stepContainer = findViewById(R.id.stepContainer) // stepContainer 초기화
+
+        // 레시피 조리순서 갤러리에서 이미지 선택하는 런처 초기화
+        pickImageLauncherForStepCamera =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                uri?.let {
+                    val imageView = ImageView(this)
+                    imageView.setImageURI(it) // 선택한 이미지 설정
+                    val layoutParams =
+                        LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 크기 설정
+                    imageView.layoutParams = layoutParams
+                    stepContainer.addView(imageView) // 이미지 추가
+                }
+            }
+
+        // 레시피 조리순서 새로운 STEP을 담을 ConstraintLayout 생성
+        val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
+        val stepCamera = newStepLayout.findViewById<ImageButton>(R.id.stepCamera)
+
+        // 레시피 조리순서 카메라 버튼 클릭 시 갤러리 열기
+        stepCamera.setOnClickListener {
+            // 갤러리에서 이미지 선택하기
+            pickImageLauncherForStepCamera.launch("image/*")
         }
 
         // 레시피 조리순서 타이머 버튼 클릭시
@@ -435,83 +591,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             resetTimer()
         }
 
-        // 레시피 조리순서 카메라 버튼 클릭 시 앨범 보이기/숨기기
-        camera.setOnClickListener {
-            imageChoice.visibility =
-                if (imageChoice.visibility == View.GONE) View.VISIBLE else View.GONE
-        }
-
-        // 레시피 조리순서 이미지 및 체크박스 리스트
-        val imageViews = mutableListOf<ImageView>()
-        val checkBoxes = mutableListOf<ImageButton>()
-        val isCheckedList = MutableList(9) { false } // 체크 상태 저장 리스트
-
-        // 레시피 조리순서 아이디 리스트
-        val imageIds = listOf(
-            "imageOne", "imageTwo", "imageThree", "imageFour", "imageFive",
-            "imageSix", "imageSeven", "imageEight", "imageNine"
-        )
-
-        val checkBoxIds = listOf(
-            "checkBox", "checkBoxTwo", "checkBoxThree", "checkBoxFour", "checkBoxFive",
-            "checkBoxSix", "checkBoxSeven", "checkBoxEight", "checkBoxNine"
-        )
-
-        for (i in imageIds.indices) {
-            val imageViewId = resources.getIdentifier(imageIds[i], "id", packageName)
-            val checkBoxId = resources.getIdentifier(checkBoxIds[i], "id", packageName)
-
-            val imageView = findViewById<ImageView>(imageViewId)
-            val checkBox = findViewById<ImageButton>(checkBoxId)
-
-            imageViews.add(imageView)
-            checkBoxes.add(checkBox)
-
-            val index = i
-            val toggleCheck: () -> Unit = {
-                isCheckedList[index] = !isCheckedList[index]
-                checkBoxes[index].setImageResource(
-                    if (isCheckedList[index]) R.drawable.ic_check_fill_circle
-                    else R.drawable.ic_check_circle
-                )
-            }
-
-            imageView.setOnClickListener { toggleCheck() }
-            checkBox.setOnClickListener { toggleCheck() }
-        }
-
-        // 레시피 조리순서 확인버튼 클릭시 이미지 등장
-        check.setOnClickListener {
-            val selectedIndex = isCheckedList.indexOf(true)
-
-            if (selectedIndex != -1) {
-                val selectedImageView = imageViews[selectedIndex]
-
-                // 기존 이미지 삭제 (하나만 유지)
-                imageContainer.removeAllViews()
-
-                // 새로운 ImageView 추가
-                val newImageView = ImageView(this).apply {
-                    setImageDrawable(selectedImageView.drawable)
-                    layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    ).apply {
-                        gravity = Gravity.CENTER // 이미지 자체를 중앙 정렬
-                    }
-                }
-
-                imageContainer.addView(newImageView)
-
-                // 앨범 닫기
-                imageChoice.animate()
-                    .alpha(0f)
-                    .setDuration(300)
-                    .withEndAction { imageChoice.visibility = View.INVISIBLE }
-                    .start()
-            }
-        }
-
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
             findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
@@ -521,19 +600,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
-        }
-
-        // 레시피 조리순서 step 추가히기 버튼 클릭시
-        var stepCount = 1 // 현재 STEP 개수 저장
-
-        stepAddFixButton.setOnClickListener {
-            stepCount++
-
-            // STEP 번호 변경
-            stepOne.text = "STEP $stepCount"
-
-            // 레시피 입력 필드 번호 변경
-            cookOrderRecipeWrite.hint = "$stepCount-1. 레시피를 입력해주세요."
         }
 
         // 레시피 조리순서 다른 레이아웃 목록을 먼저 선언
@@ -576,95 +642,14 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             }
         }
 
-        // 레시피 조리영상 카메라 버튼 클릭 시 앨범 보이기/숨기기
+        // 레시피 조리영상 카메라 버튼 클릭 시 갤러리 열기
         cookVideoCamera.setOnClickListener {
-            videoImageChoice.visibility =
-                if (videoImageChoice.visibility == View.GONE) View.VISIBLE else View.GONE
+            pickImageLauncherForVideoSettle.launch("image/*")
         }
 
-        // 레시피 조리영상이미지 및 체크박스 리스트
-        val videoImageImageViews = mutableListOf<ImageView>()
-        val videoImageCheckBoxes = mutableListOf<ImageButton>()
-        val videoImageIsCheckedList = MutableList(9) { false } // 체크 상태 저장 리스트
-
-        // 레시피 조리영상 아이디 리스트
-        val videoImageImageIds = listOf(
-            "videoImageOne", "videoImageTwo", "videoImageThree", "videoImageFour", "videoImageFive",
-            "videoImageSix", "videoImageSeven", "videoImageEight", "videoImageNine"
-        )
-
-        val videoImageCheckBoxIds = listOf(
-            "videoImageCheckBox",
-            "videoImageCheckBoxTwo",
-            "videoImageCheckBoxThree",
-            "videoImageCheckBoxFour",
-            "videoImageCheckBoxFive",
-            "videoImageCheckBoxSix",
-            "videoImageCheckBoxSeven",
-            "videoImageCheckBoxEight",
-            "videoImageCheckBoxNine"
-        )
-
-        for (i in videoImageImageIds.indices) {
-            val imageViewId = resources.getIdentifier(videoImageImageIds[i], "id", packageName)
-            val checkBoxId = resources.getIdentifier(videoImageCheckBoxIds[i], "id", packageName)
-
-            Log.d("DEBUG", "ImageView ID: $imageViewId, CheckBox ID: $checkBoxId")
-
-            val imageView = findViewById<ImageView>(imageViewId)
-            val checkBox = findViewById<ImageButton>(checkBoxId)
-
-            if (imageView == null || checkBox == null) {
-                Log.e("ERROR", "Invalid View ID at index $i: ImageView=$imageView, CheckBox=$checkBox")
-                continue // 널이면 건너뜀
-            }
-
-            videoImageImageViews.add(imageView)
-            videoImageCheckBoxes.add(checkBox)
-
-            val index = i
-            val toggleCheck: () -> Unit = {
-                videoImageIsCheckedList[index] = !videoImageIsCheckedList[index]
-                videoImageCheckBoxes[index].setImageResource(
-                    if (videoImageIsCheckedList[index]) R.drawable.ic_check_fill_circle
-                    else R.drawable.ic_check_circle
-                )
-            }
-
-            imageView.setOnClickListener { toggleCheck() }
-            checkBox.setOnClickListener { toggleCheck() }
-        }
-
-        // 레시피 조리영상 확인버튼 클릭시 이미지 등장
-        videoImageCheck.setOnClickListener {
-            val selectedIndex = videoImageIsCheckedList.indexOf(true)
-
-            if (selectedIndex != -1) {
-                val selectedImageView = imageViews[selectedIndex]
-
-                // 기존 이미지 삭제 (하나만 유지)
-                videoImageContainer.removeAllViews()
-
-                // 새로운 ImageView 추가
-                val newImageView = ImageView(this).apply {
-                    setImageDrawable(selectedImageView.drawable)
-                    layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    ).apply {
-                        gravity = Gravity.CENTER // 이미지 자체를 중앙 정렬
-                    }
-                }
-
-                videoImageContainer.addView(newImageView)
-
-                // 앨범 닫기
-                imageChoice.animate()
-                    .alpha(0f)
-                    .setDuration(300)
-                    .withEndAction { imageChoice.visibility = View.INVISIBLE }
-                    .start()
-            }
+        // 레시피 세부설정 카메라 버튼 클릭 시 갤러리 열기
+        detailSettleCamera.setOnClickListener {
+            pickImageLauncherForDetailSettle.launch("image/*")
         }
 
         // 레시피 세부설정 드롭다운 버튼 클릭 시 열기/닫기 토글
@@ -685,82 +670,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     elementaryLevel.setTextColor(Color.parseColor("#2B2B2B")) // 색깔 변경
                     detailSettleCloseDropDown(levelBoxChoice, requiredTimeAndTag)
                 }
-            }
-        }
-
-        // 레시피 세부설정 카메라 버튼 클릭 시 앨범 보이기/숨기기
-        detailSettleCamera.setOnClickListener {
-            representImageImageChoice.visibility = if (representImageImageChoice.visibility == View.GONE) View.VISIBLE else View.GONE
-        }
-
-        // 레시피 세부설정 이미지 및 체크박스 리스트
-        val detailSettleiImageViews = mutableListOf<ImageView>()
-        val detailSettleCheckBoxes = mutableListOf<ImageButton>()
-        val detailSettleIsCheckedList = MutableList(9) { false } // 체크 상태 저장 리스트
-
-        // 레시피 세부설정 아이디 리스트
-        val detailSettleImageIds = listOf(
-            "representImageOne", "representImageTwo", "representImageThree", "representImageFour", "representImageFive",
-            "representImageSix", "representImageSeven", "representImageEight", "representImageNine"
-        )
-
-        val detailSettleCheckBoxIds = listOf(
-            "representCheckBox", "representCheckBoxTwo", "representCheckBoxThree", "representCheckBoxFour", "representCheckBoxFive",
-            "representCheckBoxSix", "representCheckBoxSeven", "representCheckBoxEight", "representCheckBoxNine"
-        )
-
-        for (i in detailSettleImageIds.indices) {
-            val imageViewId = resources.getIdentifier(detailSettleImageIds[i], "id", packageName)
-            val checkBoxId = resources.getIdentifier(detailSettleCheckBoxIds[i], "id", packageName)
-
-            val imageView = findViewById<ImageView>(imageViewId)
-            val checkBox = findViewById<ImageButton>(checkBoxId)
-
-            detailSettleiImageViews.add(imageView)
-            detailSettleCheckBoxes.add(checkBox)
-
-            val index = i
-            val toggleCheck: () -> Unit = {
-                detailSettleIsCheckedList[index] = !detailSettleIsCheckedList[index]
-                detailSettleCheckBoxes[index].setImageResource(
-                    if (detailSettleIsCheckedList[index]) R.drawable.ic_check_fill_circle
-                    else R.drawable.ic_check_circle
-                )
-            }
-
-            imageView.setOnClickListener { toggleCheck() }
-            checkBox.setOnClickListener { toggleCheck() }
-        }
-
-        // 레시피 세부설정 확인버튼 클릭시 이미지 등장
-        representCheck.setOnClickListener {
-            val selectedIndex = detailSettleIsCheckedList.indexOf(true)
-
-            if (selectedIndex != -1) {
-                val selectedImageView = detailSettleiImageViews[selectedIndex]
-
-                // 기존 이미지 삭제 (하나만 유지)
-                representImageContainer.removeAllViews()
-
-                // 새로운 ImageView 추가
-                val newImageView = ImageView(this).apply {
-                    setImageDrawable(selectedImageView.drawable)
-                    layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    ).apply {
-                        gravity = Gravity.CENTER // 이미지 자체를 중앙 정렬
-                    }
-                }
-
-                representImageContainer.addView(newImageView)
-
-                // 앨범 닫기
-                representImageImageChoice.animate()
-                    .alpha(0f)
-                    .setDuration(300)
-                    .withEndAction { representImageImageChoice.visibility = View.INVISIBLE }
-                    .start()
             }
         }
 
@@ -846,6 +755,30 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     // dp → px 변환 함수
     private fun View.dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
+    }
+
+    // 레이아웃 위치 업데이트 함수
+    private fun updateDropdownPosition(button: ImageButton) {
+        val layout = findViewById<ConstraintLayout>(R.id.materialDropDown)
+        val layoutParams = layout.layoutParams as? ConstraintLayout.LayoutParams
+
+        if (layoutParams != null) {
+            layoutParams.topToBottom = button.id  // 버튼의 아래로 레이아웃을 배치
+            layoutParams.topMargin = (7 * resources.displayMetrics.density).toInt()  // 7dp 간격을 px로 변환
+            layout.layoutParams = layoutParams
+        }
+    }
+
+    // 텍스트뷰 위치 업데이트 함수
+    private fun updateDropdownTextPosition(textView: TextView) {
+        val layout = findViewById<ConstraintLayout>(R.id.materialDropDown)
+        val layoutParams = layout.layoutParams as? ConstraintLayout.LayoutParams
+
+        if (layoutParams != null) {
+            layoutParams.topToBottom = textView.id  // 텍스트뷰의 아래로 레이아웃을 배치
+            layoutParams.topMargin = (7 * resources.displayMetrics.density).toInt()  // 7dp 간격을 px로 변환
+            layout.layoutParams = layoutParams
+        }
     }
 
     // 레시피 재료 내용 추가하기 클릭시 내용 추가
@@ -1252,6 +1185,41 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         cookOrderRecipeContainer.addView(divider)
     }
 
+    // 조리순서 step 추가
+    private fun addNewStep() {
+        // 기존 stepContainer 내부의 모든 뷰 제거
+        stepContainer.removeAllViews()
+
+        // STEP 번호 증가
+        stepCount++
+
+        val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
+
+        // STEP 번호 업데이트
+        val stepTextView = newStepLayout.findViewById<TextView>(R.id.stepOne)
+        stepTextView.text = "STEP $stepCount"
+
+        // 세부 단계 번호 업데이트
+        val stepLittleTextView = newStepLayout.findViewById<TextView>(R.id.stepLittleOne)
+        stepLittleTextView.text = "$stepCount-1"
+
+        // 새로운 뷰를 stepContainer에 추가
+        stepContainer.addView(newStepLayout)
+
+        // 카메라 버튼 찾기
+        val stepCamera = newStepLayout.findViewById<ImageButton>(R.id.stepCamera)
+
+        // 버튼이 보이도록 설정
+        stepCamera.visibility = View.VISIBLE
+        stepCamera.isClickable = true
+
+        // 카메라 버튼 클릭 시 갤러리 열기
+        stepCamera.setOnClickListener {
+            Log.d("StepCamera", "카메라 버튼 클릭됨!") // ✅ 로그 추가
+            pickImageLauncherForStepCamera.launch("image/*")
+        }
+    }
+
     private fun startTimer() {
         // 입력된 시간 가져오기
         val hours = parseEditText(hourEditText)
@@ -1294,6 +1262,11 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     // EditText에서 숫자 가져오기 (비어있으면 0 반환)
     private fun parseEditText(editText: EditText): Int {
         return editText.text.toString().trim().toIntOrNull() ?: 0
+    }
+
+    //dp를 px로 변환하는 확장 함수
+    private fun Int.dpToPx(): Int {
+        return (this * resources.displayMetrics.density).toInt()
     }
 
     // 레시피 세부설정 드롭다운 열기
