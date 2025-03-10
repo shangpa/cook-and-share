@@ -604,6 +604,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
         }
 
+        // 백엔드 여기서부터 endfix버튼 클리너까지 다 백엔드이긴해요
         fun mapCategoryToEnum(category: String): String {
             return when (category) {
                 "한식" -> "koreaFood"
@@ -623,7 +624,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             val materialContainer = findViewById<LinearLayout>(R.id.materialList)
             // 선택된 카테고리 가져오기
             val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
-
             // 레시피 제목 가져오기
             val recipeTitle = recipeTitleWrite.text.toString()
             // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
@@ -661,22 +661,22 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
             // 대체 재료 가져오기
             val replaceIngredients = listOf(
-                "${replaceMaterialName.text.toString()} → ${replaceMaterial.text.toString()}",
-                "${replaceMaterialMaterialTwo.text.toString()} → ${replaceMaterialTwo.text.toString()}"
+                "${replaceMaterialName.text.toString().trim()} → ${replaceMaterial.text.toString().trim()}",
+                "${replaceMaterialMaterialTwo.text.toString().trim()} → ${replaceMaterialTwo.text.toString().trim()}"
             ).filter { it.isNotBlank() }
 
             // 처리 방법 가져오기
             val handlingMethods = listOf(
-                "${handlingMethodName.text.toString()} : ${handlingMethod.text.toString()}",
-                "${handlingMethodMaterialTwo.text.toString()} : ${handlingMethodTwo.text.toString()}"
+                "${handlingMethodName.text.toString().trim()} : ${handlingMethod.text.toString().trim()}",
+                "${handlingMethodMaterialTwo.text.toString().trim()} : ${handlingMethodTwo.text.toString().trim()}"
             ).filter { it.isNotBlank() }
 
             // 조리 순서 가져오기
-            val cookOrder = cookOrderRecipeWrite.text.toString()
+            val cookingSteps = saveRecipeSteps()
 
             // 타이머 값 가져오기
-            val cookingHour = zero.text.toString()
-            val cookingMinute = halfHour.text.toString()
+            val cookingHour = zero.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
+            val cookingMinute = halfHour.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
 
             //태그 값 가져오기
             val recipeTag = detailSettleRecipeTitleWrite.text.toString()
@@ -685,7 +685,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.contentCheckFoodName).text = recipeTitle
             findViewById<TextView>(R.id.contentCheckKoreanFood).text = categoryText
             findViewById<TextView>(R.id.contentCheckBeginningLevel).text = elementaryLevel.text
-            findViewById<TextView>(R.id.content).text = cookOrder
             // todo 재료랑 대체재료랑 처리방법 조리순서 해야함
             /*
 
@@ -694,8 +693,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
             */
             findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
-            findViewById<TextView>(R.id.contentCheckZero).text = cookingHour
-            findViewById<TextView>(R.id.contentCheckHalfHour).text = cookingMinute
+            findViewById<TextView>(R.id.contentCheckZero).text = cookingHour.toString()
+            findViewById<TextView>(R.id.contentCheckHalfHour).text = cookingMinute.toString()
 
             // 기존 레이아웃 변경 (가시성 설정 유지)
             findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
@@ -706,11 +705,15 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
             findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
 
+            // 소요시간 (조리시간)
             val totalCookingTime = (cookingHour.toInt() * 60) + cookingMinute.toInt()
+            //난이도
             val difficulty = elementaryLevel.text.toString()
+            // 카테고리 Enum 변환
+            val categoryEnum = mapCategoryToEnum(categoryText)
             // Gson 인스턴스 생성
             val gson = Gson()
-            val categoryEnum = mapCategoryToEnum(categoryText) // Enum 변환
+
             // 로그 출력 (디버깅용)
             Log.d("CATEGORY", "사용자가 선택한 카테고리: $categoryText -> 변환된 값: $categoryEnum")
             // RecipeRequest 객체 생성
@@ -728,9 +731,9 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                         val parts = it.split(" → ")
                         Ingredient(parts[0], parts[1])
                     }),
-                cookingSteps = gson.toJson(cookOrder.split("\n").mapIndexed { index, step ->
+                cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, step ->
                     CookingStep(index + 1, step, "", "IMAGE")
-                }),
+                }), // cookingSteps는 이제 리스트 그대로 전달
                 mainImageUrl = "", // 이미지 업로드 기능 추가 가능
                 difficulty = difficulty,
                 cookingTime = totalCookingTime,
@@ -743,7 +746,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
                     if (response != null) {
                         Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
-                        finish()
                     } else {
                         Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
 
@@ -1428,7 +1430,35 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             pickImageLauncherForStepCamera.launch("image/*")
         }
     }
+    // 레시피 조리순서 입력 데이터를 추출하고 저장하는 함수
+    private fun saveRecipeSteps(): List<String> {
+        val recipeSteps = mutableListOf<String>()
 
+        // 기본적으로 존재하는 EditText를 먼저 처리
+        val defaultRecipeEditText = findViewById<EditText>(R.id.cookOrderRecipeWrite)
+        val defaultText = defaultRecipeEditText.text.toString().trim()
+        if (defaultText.isNotEmpty()) {
+            recipeSteps.add(defaultText)
+        }
+
+        // cookOrderRecipeContainer에 포함된 모든 뷰를 순회합니다.
+        for (i in 0 until cookOrderRecipeContainer.childCount) {
+            val view = cookOrderRecipeContainer.getChildAt(i)
+
+            // EditText인 경우에만 처리
+            if (view is EditText) {
+                val stepText = view.text.toString().trim()
+                if (stepText.isNotEmpty()) {
+                    recipeSteps.add(stepText)
+                }
+            }
+        }
+        // 반환된 리스트 로그로 확인
+        recipeSteps.forEachIndexed { index, step ->
+            Log.d("RecipeStep", "Step ${index + 1}: $step")
+        }
+        return recipeSteps
+    }
     private fun startTimer() {
         // 입력된 시간 가져오기
         val hours = parseEditText(hourEditText)
