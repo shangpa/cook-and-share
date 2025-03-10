@@ -2300,6 +2300,41 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cookOrderAddButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintTop_toBottomOf="@+id/cookOrderTimer">
+
+                    <!-- 내용 추가하기 -->
+                    <Button
+                        android:id="@+id/contentAdd"
+                        android:layout_width="131dp"
+                        android:layout_height="35dp"
+                        android:text="내용 추가하기"
+                        android:textSize="12sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginEnd="7dp"
+                        android:background="@drawable/btn_recipe_add"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/timerAdd" />
+
+                    <!-- 타이머 추가하기 -->
+                    <Button
+                        android:id="@+id/timerAdd"
+                        android:layout_width="131dp"
+                        android:layout_height="35dp"
+                        android:text="타이머 추가하기"
+                        android:textSize="12sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/btn_recipe_add"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -2401,41 +2436,6 @@
                     android:textSize="13sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/time"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cookOrderAddButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@+id/cookOrderTimer">
-
-                <!-- 내용 추가하기 -->
-                <Button
-                    android:id="@+id/contentAdd"
-                    android:layout_width="131dp"
-                    android:layout_height="35dp"
-                    android:text="내용 추가하기"
-                    android:textSize="12sp"
-                    android:textColor="#9B9B9B"
-                    android:layout_marginEnd="7dp"
-                    android:background="@drawable/btn_recipe_add"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/timerAdd" />
-
-                <!-- 타이머 추가하기 -->
-                <Button
-                    android:id="@+id/timerAdd"
-                    android:layout_width="131dp"
-                    android:layout_height="35dp"
-                    android:text="타이머 추가하기"
-                    android:textSize="12sp"
-                    android:textColor="#9B9B9B"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/btn_recipe_add"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
