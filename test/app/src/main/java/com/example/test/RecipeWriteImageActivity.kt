@@ -62,6 +62,7 @@ private lateinit var representImageContainer: LinearLayout
 private var stepCount = 1 // 1-1부터 시작
 private var currentStep = 1  // 현재 Step 번호 (ex. 1, 2, 3...)
 var currentSubStep = 1
+private var recipeStepCount = 1 // 조리 순서 번호 관리 (1-1, 1-2, ...)
 private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서 개수 저장
 
 class RecipeWriteImageActivity : AppCompatActivity() {
@@ -188,6 +189,11 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val unitFour = findViewById<TextView>(R.id.unitFour)
         val unitFive = findViewById<TextView>(R.id.unitFive)
         val unitSix = findViewById<TextView>(R.id.unitSix)
+        val dropDownTwo = findViewById<ImageButton>(R.id.dropDownTwo)
+        val dropDownThree = findViewById<ImageButton>(R.id.dropDownThree)
+        val dropDownFour = findViewById<ImageButton>(R.id.dropDownFour)
+        val dropDownFive = findViewById<ImageButton>(R.id.dropDownFive)
+        val dropDownSix = findViewById<ImageButton>(R.id.dropDownSix)
 
         // 레시피 대체재료 선언
         val recipeWriteReplaceMaterialLayout =
@@ -444,6 +450,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             measuringTwo.visibility = View.GONE
             deleteTwo.visibility = ImageButton.GONE
             divideRectangleBarSix.visibility = View.GONE
+            unitTwo.visibility = View.GONE
+            dropDownTwo.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -452,6 +460,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             measuringThree.visibility = View.GONE
             deleteThree.visibility = ImageButton.GONE
             divideRectangleBarSeven.visibility = View.GONE
+            unitThree.visibility = View.GONE
+            dropDownThree.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -460,6 +470,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             measuringFour.visibility = View.GONE
             deleteFour.visibility = ImageButton.GONE
             divideRectangleBarEight.visibility = View.GONE
+            unitFour.visibility = View.GONE
+            dropDownFour.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -468,6 +480,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             measuringFive.visibility = View.GONE
             deleteFive.visibility = ImageButton.GONE
             divideRectangleBarNine.visibility = View.GONE
+            unitFive.visibility = View.GONE
+            dropDownFive.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -476,6 +490,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             measuringSix.visibility = View.GONE
             deleteSix.visibility = ImageButton.GONE
             divideRectangleBarTen.visibility = View.GONE
+            unitSix.visibility = View.GONE
+            dropDownSix.visibility = ImageButton.GONE
         }
 
         // 레시피 대체재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -498,9 +514,9 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         cookOrderRecipeContainer = findViewById(R.id.cookOrderRecipeContainer) // 레이아웃 ID
 
         contentAdd.setOnClickListener {
-            if (stepCount < 10) { // 최대 1-9까지 허용 (원하는 개수 조절 가능)
-                stepCount++
-                addRecipeStep(stepCount)
+            if (recipeStepCount < 10) { // 최대 1-9까지 허용 (원하는 개수 조절 가능)
+                recipeStepCount++
+                addRecipeStep(recipeStepCount)
             }
         }
 
@@ -509,13 +525,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         stepAddButton.setOnClickListener {
             addNewStep()  // stepContainer 사용 가능
-        }
-
-        // 레시피 조리순서 step을 추가하는 함수
-        fun addNewStep() {
-            // 새로운 step을 추가하고 서브step 번호를 초기화
-            currentStep++
-            currentSubStep = 1  // 서브step은 1부터 시작
         }
 
         // 레시피 조리순서 카메라 버튼 클릭 시 갤러리 열기
@@ -1360,21 +1369,22 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             ).apply {
                 setMargins(45, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
             }
-            setText("1-$step")
+            setText("1-$recipeStepCount")
             hint = "레시피를 입력해주세요."
             textSize = 13f
-            backgroundTintList = ColorStateList.valueOf(Color.parseColor("#A1A9AD"))// Step 번호에 따라 텍스트 설정 (예: 2-2, 2-3)
-        }
+            backgroundTintList =
+                ColorStateList.valueOf(Color.parseColor("#A1A9AD"))// Step 번호에 따라 텍스트 설정 (예: 2-2, 2-3)
+            }
 
         // 구분 바(View) 생성
         val divider = View(this).apply {
             id = View.generateViewId()
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                1
-            ).apply {
-                setMargins(45, 12, 45, 0) // 기존처럼 12dp 상단 마진 설정
-            }
+                    1
+                ).apply {
+                    setMargins(45, 12, 45, 0) // 기존처럼 12dp 상단 마진 설정
+                }
             setBackgroundColor(Color.parseColor("#D9D9D9")) // 배경 색상 설정
         }
 
@@ -1396,7 +1406,9 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         cookOrderRecipeContainer.addView(divider)
     }
 
-    // 조리순서 step 추가
+    // 조리순서 step 추가 후 내용 추가하기
+    val stepRecipeCountMap = mutableMapOf<Int, Int>()
+
     private fun addNewStep() {
         // 기존 stepContainer 내부의 모든 뷰 제거
         stepContainer.removeAllViews()
@@ -1404,21 +1416,24 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         // STEP 번호 증가
         stepCount++
 
-        val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
+        // 새로운 STEP 레이아웃 인플레이트
+        val newStepLayout =
+            LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
 
         // STEP 번호 업데이트
         val stepTextView = newStepLayout.findViewById<TextView>(R.id.stepOne)
         stepTextView.text = "STEP $stepCount"
 
-        // 세부 단계 번호 업데이트
+        // 세부 단계 번호 업데이트 (stepCount와 stepRecipeCount 값을 기반으로)
         val stepLittleTextView = newStepLayout.findViewById<TextView>(R.id.stepLittleOne)
-        stepLittleTextView.text = "$stepCount-1"
-
-        // 새로운 뷰를 stepContainer에 추가
-        stepContainer.addView(newStepLayout)
+        stepLittleTextView.text = "$stepCount-${stepRecipeCountMap[stepCount] ?: 1}"
 
         // 카메라 버튼 찾기
         val stepCamera = newStepLayout.findViewById<ImageButton>(R.id.stepCamera)
+
+        // 내용추가 버튼 선언
+        val contentAddTwo = newStepLayout.findViewById<Button>(R.id.contentAddTwo)
+        val timerAddTwo = newStepLayout.findViewById<Button>(R.id.timerAddTwo)
 
         // 버튼이 보이도록 설정
         stepCamera.visibility = View.VISIBLE
@@ -1429,6 +1444,76 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             Log.d("StepCamera", "카메라 버튼 클릭됨!") // ✅ 로그 추가
             pickImageLauncherForStepCamera.launch("image/*")
         }
+
+        // 내용추가 버튼 클릭 시 내용추가
+        contentAddTwo.setOnClickListener {
+            // 현재 STEP에 해당하는 recipeStepCount 가져오기
+            val currentRecipeStepCount = stepRecipeCountMap[stepCount] ?: 2
+
+            // 동적으로 EditText 생성
+            val editText = EditText(this).apply {
+                id = View.generateViewId()
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(51, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
+                }
+                // stepCount와 recipeStepCount로 초기화
+                setText("${stepCount}-${currentRecipeStepCount}")
+                hint = "레시피를 입력해주세요."
+                textSize = 13f
+                backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor("#A1A9AD")) // 배경 색상 설정
+            }
+
+            // 동적으로 구분선(View) 생성
+            val divider = View(this).apply {
+                id = View.generateViewId()
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    1
+                ).apply {
+                    setMargins(45, 12, 45, 0) // 기존처럼 12dp 상단 마진 설정
+                }
+                setBackgroundColor(Color.parseColor("#D9D9D9")) // 배경 색상 설정
+            }
+
+            // STEP 순서 번호 증가
+            stepRecipeCountMap[stepCount] = currentRecipeStepCount + 1 // 현재 STEP의 recipeStepCount 증가
+
+            // 동적으로 추가된 EditText와 Divider를 cookOrderRecipeContainerAdd에 추가
+            val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
+
+            dynamicRecipeInputContainer.apply {
+                addView(editText)   // EditText 추가
+                addView(divider)    // Divider 추가
+            }
+
+            // dp 값으로 변환하는 함수
+            fun dpToPx(dp: Int): Int {
+                val density = resources.displayMetrics.density
+                return (dp * density).toInt()
+            }
+
+            // 🚀 구분선의 아래 위치를 구한 후 버튼 위치 조정
+            divider.post {
+                val dividerParams = divider.layoutParams as ViewGroup.MarginLayoutParams
+                val dividerBottom = divider.top + dividerParams.height // 구분선의 끝 위치
+
+                // 🚀 버튼 위치 조정 (구분선 아래 70dp 위치)
+                val buttonParams = contentAddTwo.layoutParams as ViewGroup.MarginLayoutParams
+                buttonParams.topMargin = dividerBottom + dpToPx(15) // 구분선 아래 70dp
+                contentAddTwo.requestLayout()
+
+                val timerParams = timerAddTwo.layoutParams as ViewGroup.MarginLayoutParams
+                timerParams.topMargin = dividerBottom + dpToPx(15) // 동일하게 조정
+                timerAddTwo.requestLayout()
+            }
+        }
+
+        // 새로운 Step을 stepContainer에 추가
+        stepContainer.addView(newStepLayout)
     }
     // 레시피 조리순서 입력 데이터를 추출하고 저장하는 함수
     private fun saveRecipeSteps(): List<String> {

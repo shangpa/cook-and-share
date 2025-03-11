@@ -148,6 +148,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val unitFour = findViewById<TextView>(R.id.unitFour)
         val unitFive = findViewById<TextView>(R.id.unitFive)
         val unitSix = findViewById<TextView>(R.id.unitSix)
+        val dropDownTwo = findViewById<ImageButton>(R.id.dropDownTwo)
+        val dropDownThree = findViewById<ImageButton>(R.id.dropDownThree)
+        val dropDownFour = findViewById<ImageButton>(R.id.dropDownFour)
+        val dropDownFive = findViewById<ImageButton>(R.id.dropDownFive)
+        val dropDownSix = findViewById<ImageButton>(R.id.dropDownSix)
 
         // 레시피 대체재료 선언
         val recipeWriteReplaceMaterialLayout =
@@ -374,6 +379,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             measuringTwo.visibility = View.GONE
             deleteTwo.visibility = ImageButton.GONE
             divideRectangleBarSix.visibility = View.GONE
+            unitTwo.visibility = View.GONE
+            dropDownTwo.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -382,6 +389,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             measuringThree.visibility = View.GONE
             deleteThree.visibility = ImageButton.GONE
             divideRectangleBarSeven.visibility = View.GONE
+            unitThree.visibility = View.GONE
+            dropDownThree.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -390,6 +399,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             measuringFour.visibility = View.GONE
             deleteFour.visibility = ImageButton.GONE
             divideRectangleBarEight.visibility = View.GONE
+            unitFour.visibility = View.GONE
+            dropDownFour.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -398,6 +409,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             measuringFive.visibility = View.GONE
             deleteFive.visibility = ImageButton.GONE
             divideRectangleBarNine.visibility = View.GONE
+            unitFive.visibility = View.GONE
+            dropDownFive.visibility = ImageButton.GONE
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -406,6 +419,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             measuringSix.visibility = View.GONE
             deleteSix.visibility = ImageButton.GONE
             divideRectangleBarTen.visibility = View.GONE
+            unitSix.visibility = View.GONE
+            dropDownSix.visibility = ImageButton.GONE
         }
 
         // 레시피 대체재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -575,6 +590,25 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             setBackgroundResource(android.R.color.transparent)  // 배경을 투명으로 설정
         }
 
+        // 단위 TextView 생성
+        val unitSix = TextView(this).apply {
+            id = View.generateViewId()  // ID 생성
+            layoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,  // 계량 EditText는 내용 크기만큼 표시
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+
+                startToStart = measuringSix.id  // 재료명 EditText 왼쪽 끝에 맞추기
+                endToEnd = ConstraintLayout.LayoutParams.PARENT_ID  // 오른쪽 끝에 맞추기
+                topToTop = measuringSix.id  // 재료명 EditText 위쪽 끝에 맞추기
+
+                setMargins(dpToPx(236), dpToPx(12), 0, 0) // 적절한 여백 설정
+            }
+            hint = "단위"
+            textSize = 12f
+            setBackgroundResource(android.R.color.transparent)  // 배경을 투명으로 설정
+        }
+
         // 삭제 버튼 생성
         val deleteSix = ImageButton(this).apply {
             id = View.generateViewId()  // ID 생성
@@ -591,6 +625,29 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
             setImageResource(R.drawable.ic_delete) // 삭제 아이콘 설정
             setBackgroundResource(android.R.color.transparent) // 배경 투명
+        }
+
+        // 드롭다운 버튼 생성
+        val dropDownSix = ImageButton(this).apply {
+            id = View.generateViewId()  // ID 생성
+            layoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                // 오른쪽 끝에 위치하도록 설정
+                endToEnd = deleteSix.id  // materialEditText의 오른쪽 끝에 맞추기
+                topToTop = deleteSix.id  // materialEditText의 위쪽 끝에 맞추기
+
+                // 오른쪽 마진을 5dp로 설정하여 왼쪽으로 이동
+                setMargins(0, 0, dpToPx(80), 0) // dpToPx를 사용하여 픽셀로 변환한 후 오른쪽 마진 설정
+            }
+            setImageResource(R.drawable.ic_drop_down) // 삭제 아이콘 설정
+            setBackgroundResource(android.R.color.transparent) // 배경 투명
+        }
+
+        // 🔹 드롭다운 버튼 클릭 이벤트 설정
+        dropDownSix.setOnClickListener {
+            showDropdownMenu(unitSix) // 드롭다운 표시
         }
 
         // 삭제 버튼 클릭 시 해당 레이아웃 삭제 & 버튼 위치 조정
@@ -626,13 +683,36 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         newItemLayout.apply {
             addView(materialSix)
             addView(measuringSix)
+            addView(unitSix)
             addView(deleteSix)
+            addView(dropDownSix)
             addView(divideRectangleBarEight)
         }
 
         // 부모 레이아웃에 추가
         materialContainer.addView(newItemLayout)
         itemCount++
+    }
+
+    // 🔹 드롭다운을 표시하는 함수
+    private fun showDropdownMenu(unitView: TextView) {
+        val materialDropDown = findViewById<ConstraintLayout>(R.id.materialDropDown)
+
+        // 드롭다운 열기
+        materialDropDown.visibility = View.VISIBLE
+
+        // 드롭다운 내부의 TextView(옵션) 클릭 이벤트 설정
+        for (i in 0 until materialDropDown.childCount) {
+            val child = materialDropDown.getChildAt(i)
+            if (child is TextView) {
+                child.setOnClickListener {
+                    // 선택한 텍스트를 unitView에 설정
+                    unitView.text = child.text.toString()
+                    unitView.setTextColor(Color.parseColor("#2B2B2B")) // 색상 변경
+                    materialDropDown.visibility = View.GONE // 드롭다운 닫기
+                }
+            }
+        }
     }
 
     // 레시피 재료 내용 추가 버튼 클릭시 버튼 아래로 이동
