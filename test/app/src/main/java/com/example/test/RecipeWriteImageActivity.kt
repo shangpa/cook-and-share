@@ -779,7 +779,10 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                         Ingredient(parts[0], parts[1])
                     }),
                 cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, step ->
-                    CookingStep(index + 1, step, "", "IMAGE")
+                    val hours = parseEditText(hourEditText)
+                    val minutes = parseEditText(minuteEditText)
+                    val totalSeconds = (hours * 3600) + (minutes * 60) // 초 단위로 변환
+                    CookingStep(index + 1, step, "", "IMAGE", totalSeconds)
                 }), // cookingSteps는 이제 리스트 그대로 전달
                 mainImageUrl = "", // 이미지 업로드 기능 추가 가능
                 difficulty = difficulty,
