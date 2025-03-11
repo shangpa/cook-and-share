@@ -23,6 +23,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -588,12 +589,49 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             pickImageLauncherForStepCamera.launch("image/*")
         }
 
+        val linearLayout2 = findViewById<LinearLayout>(R.id.linearLayout2)
+        val cookOrderStoreButton = findViewById<ConstraintLayout>(R.id.cookOrderStoreButton)
+
         // 레시피 조리순서 타이머 버튼 클릭시
         timerAdd.setOnClickListener {
             // 버튼들 사라지게 하기
             cookOrderAddButton.visibility = View.GONE
 
             // 타이머 관련 요소들 나타나게 하기
+            linearLayout2.visibility = View.VISIBLE
+            cookOrderStoreButton.visibility = View.VISIBLE
+        }
+
+        // NumberPicker 초기화
+        val hourPicker = findViewById<NumberPicker>(R.id.numberPicker1)
+        val minutePicker = findViewById<NumberPicker>(R.id.numberPicker2)
+        val storeBtn = findViewById<Button>(R.id.storeBtn)
+
+        // 시 (0~23)
+        hourPicker.minValue = 0
+        hourPicker.maxValue = 24
+        hourPicker.wrapSelectorWheel = true
+
+        // 분 (0~59)
+        minutePicker.minValue = 0
+        minutePicker.maxValue = 59
+        minutePicker.wrapSelectorWheel = true
+
+        // 00~59 형식 맞추기
+        minutePicker.setFormatter { i -> String.format("%02d", i) }
+
+        storeBtn.setOnClickListener {
+            // NumberPicker에서 선택한 값 가져오기
+            val selectedHour = hourPicker.value
+            val selectedMinute = minutePicker.value
+
+            // EditText에 설정된 형식으로 반영
+            hourEditText.setText(String.format("%02d", selectedHour))
+            minuteEditText.setText(String.format("%02d", selectedMinute))
+
+            // View 변경 (기존 버튼 숨기고 새로운 레이아웃 표시)
+            cookOrderStoreButton.visibility = View.GONE
+            linearLayout2.visibility = View.GONE
             cookOrderTimer.visibility = View.VISIBLE
         }
 
