@@ -17,7 +17,6 @@ class FridgeActivity : AppCompatActivity() {
     private var isChecked = false // 아이콘 상태 저장 변수
     private val selectedLayouts = mutableSetOf<LinearLayout>() // 선택된 레이아웃 목록
 
-    // dp -> px 변환 함수
     private fun dpToPx(dp: Int): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -35,7 +34,7 @@ class FridgeActivity : AppCompatActivity() {
         val dayInput: TextView = findViewById(R.id.dayInput)
         dayInput.text = todayDate
 
-        // 카테고리 컨테이너 참조 및 초기 선택 (전체)
+        // 카테고리 컨테이너 및 초기 선택
         val categoryAll: LinearLayout = findViewById(R.id.categoryAll)
         val categoryFridge: LinearLayout = findViewById(R.id.categoryFridge)
         val categoryFreeze: LinearLayout = findViewById(R.id.categoryFreeze)
@@ -62,7 +61,6 @@ class FridgeActivity : AppCompatActivity() {
             }
         }
 
-        // 기존 재료 레이아웃 클릭 리스너 등록
         rootLayout.children.filterIsInstance<LinearLayout>().forEach { layout ->
             layout.setOnClickListener {
                 if (selectedLayouts.contains(layout)) {
@@ -75,28 +73,24 @@ class FridgeActivity : AppCompatActivity() {
             }
         }
 
-        // 재료 추가 버튼 → FridgeIngredientActivity 이동 (새로 추가)
         val fridgeAddBtn: LinearLayout = findViewById(R.id.fridgeAddBtn)
         fridgeAddBtn.setOnClickListener {
             val intent = Intent(this, FridgeIngredientActivity::class.java)
             startActivity(intent)
         }
 
-        // 레시피 추천 버튼 → FridgeRecipeActivity 이동
         val recipeRecommendBtn: LinearLayout = findViewById(R.id.recipeRecommendBtn)
         recipeRecommendBtn.setOnClickListener {
             val intent = Intent(this, FridgeRecipeActivity::class.java)
             startActivity(intent)
         }
 
-        // 삭제 버튼 클릭 시 선택된 재료 삭제
         val fridgeDeleteText: TextView = findViewById(R.id.fridgeDeleteText)
         fridgeDeleteText.setOnClickListener {
             selectedLayouts.forEach { rootLayout.removeView(it) }
             selectedLayouts.clear()
         }
 
-        // 편집 버튼 (fridgeEditText) 클릭 시
         val fridgeEditText: TextView = findViewById(R.id.fridgeEditText)
         fridgeEditText.setOnClickListener {
             if (selectedLayouts.size != 1) {
@@ -114,7 +108,6 @@ class FridgeActivity : AppCompatActivity() {
                     val quantity = if (parts.isNotEmpty()) parts[0] else ""
                     val unit = if (parts.size > 1) parts[1] else ""
                     val storageArea = (row2.getChildAt(1) as? TextView)?.text.toString()
-                    // row3: 첫 번째 TextView는 dateOption label, 두 번째는 dateValue
                     val dateOption = (row3.getChildAt(0) as? TextView)?.text.toString().removeSuffix(" : ")
                     val dateValue = (row3.getChildAt(1) as? TextView)?.text.toString()
 
@@ -132,11 +125,10 @@ class FridgeActivity : AppCompatActivity() {
             }
         }
 
-        // 인텐트로 전달된 데이터 가져오기 (편집 후 수정한 경우 또는 새로 추가된 데이터)
         val intentIngredientName = intent.getStringExtra("ingredientName") ?: ""
         val storageAreaExtra = intent.getStringExtra("storageArea") ?: ""
         val fridgeDateExtra = intent.getStringExtra("fridgeDate") ?: ""
-        val dateOptionExtra = intent.getStringExtra("dateOption") ?: "유통기한" // 기본값
+        val dateOptionExtra = intent.getStringExtra("dateOption") ?: "유통기한"
         val quantityExtra = intent.getStringExtra("quantity") ?: ""
         val unitExtra = intent.getStringExtra("unit") ?: ""
 
@@ -145,7 +137,6 @@ class FridgeActivity : AppCompatActivity() {
                 view is LinearLayout && view.tag == intentIngredientName
             }
             if (existingView != null) {
-                // 업데이트: 기존 항목의 내용을 수정
                 val ingredientBox = existingView as LinearLayout
                 val row1 = ingredientBox.getChildAt(0) as? LinearLayout
                 val row2 = ingredientBox.getChildAt(1) as? LinearLayout
@@ -162,7 +153,6 @@ class FridgeActivity : AppCompatActivity() {
                     (it.getChildAt(1) as? TextView)?.text = fridgeDateExtra
                 }
             } else {
-                // 새 항목 추가
                 val ingredientBox = createIngredientBox(
                     ingredientName = intentIngredientName,
                     storageArea = storageAreaExtra,
@@ -199,8 +189,6 @@ class FridgeActivity : AppCompatActivity() {
         }
     }
 
-    // 재료 박스를 생성하는 함수
-    // row3는 드롭다운에서 선택한 날짜 옵션과 입력한 값을 "dateOption : dateValue" 형식으로 출력합니다.
     private fun createIngredientBox(
         ingredientName: String,
         storageArea: String,

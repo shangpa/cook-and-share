@@ -214,10 +214,33 @@
 
         <!-- 단위 선택 텍스트 -->
         <TextView
-            android:id="@+id/fridgeIngredientUnit"
+            android:id="@+id/fridgeIngredientUnit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="단위"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- 드롭박스 아이콘 -->
+        <ImageView
+            android:id="@+id/fridgeUnitDropBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fridge_dropbox"
+            android:contentDescription="드롭박스"
+            android:layout_marginStart="3dp"
+            android:layout_marginBottom="8dp" />
+
+
+        <!-- 단위 선택 텍스트 -->
+        <TextView
+            android:id="@+id/fridgeIngredientUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:textStyle="bold"
