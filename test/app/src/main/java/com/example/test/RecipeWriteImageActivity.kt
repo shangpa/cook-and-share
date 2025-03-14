@@ -86,8 +86,15 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private val pickImageLauncherForCamera =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                displaySelectedImage(it)
-                uploadImageToServer(it)
+                displaySelectedImage(it, imageContainer)
+                uploadImageToServer(it) { imageUrl ->
+                    if (imageUrl != null) {
+                        Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
+                        uploadedImageUrls.add(imageUrl) //  업로드된 이미지 URL 저장
+                    } else {
+                        Log.e("Upload", "이미지 업로드 실패")
+                    }
+                }
             }
         }
 
@@ -95,11 +102,17 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                displaySelectedImage(it)
-                uploadImageToServer(it)
+                displaySelectedImage(it, representImageContainer)
+                uploadImageToServer(it) { imageUrl ->
+                    if (imageUrl != null) {
+                        Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
+                        uploadedImageUrls.add(imageUrl) // 업로드된 이미지 URL 저장
+                    } else {
+                        Log.e("Upload", "이미지 업로드 실패")
+                    }
+                }
             }
         }
-
     private lateinit var stepContainer: LinearLayout // STEP을 추가할 컨테이너
     private lateinit var pickImageLauncherForStepCamera: ActivityResultLauncher<String>
 
@@ -229,6 +242,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val cookOrderTimer = findViewById<ConstraintLayout>(R.id.cookOrderTimer)
         val cookOrderTapBar = findViewById<ConstraintLayout>(R.id.cookOrderTapBar)
         imageContainer = findViewById(R.id.imageContainer)
+        representImageContainer = findViewById(R.id.representImageContainer)
         val cookOrderRecipeWrite = findViewById<EditText>(R.id.cookOrderRecipeWrite)
         val stepLittleOne = findViewById<TextView>(R.id.stepLittleOne)
         val camera = findViewById<ImageButton>(R.id.camera)
@@ -683,6 +697,9 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             ingredients.add(materialFive.text.toString() to measuringFive.text.toString())
             ingredients.add(materialSix.text.toString() to measuringSix.text.toString())
 
+            //메인 이미지 url
+            val ImageUrl = if (uploadedImageUrls.isNotEmpty()) uploadedImageUrls.first() else ""
+
             // 동적으로 추가된 재료 가져오기
             for (i in 0 until materialContainer.childCount) {
                 val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
@@ -784,7 +801,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     val totalSeconds = (hours * 3600) + (minutes * 60) // 초 단위로 변환
                     CookingStep(index + 1, step, "", "IMAGE", totalSeconds)
                 }), // cookingSteps는 이제 리스트 그대로 전달
-                mainImageUrl = "", // 이미지 업로드 기능 추가 가능
+                mainImageUrl = ImageUrl,
                 difficulty = difficulty,
                 cookingTime = totalCookingTime,
                 servings = 2,
@@ -1650,21 +1667,17 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         requiredTimeAndTag.layoutParams = params
     }
     //이미지선택
-    private fun displaySelectedImage(uri: Uri) {
-        if (!::imageContainer.isInitialized) {
-            Log.e("RecipeWriteImageActivity", "imageContainer가 초기화되지 않았음! onCreate() 실행을 기다립니다.")
-            return
-        }
-
+    private fun displaySelectedImage(uri: Uri, targetContainer: LinearLayout) {
         val imageView = ImageView(this)
         imageView.setImageURI(uri)
         val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
         imageView.layoutParams = layoutParams
-        imageContainer.addView(imageView) // ✅ 여기서 사용됨!
+        targetContainer.addView(imageView) // 선택한 컨테이너에 이미지 추가
+        Log.d("RecipeWriteImageActivity", "이미지 추가 완료! 대상 컨테이너: ${targetContainer.id}")
     }
     
     //백엔드 서버에 이미지 업로드
-    fun uploadImageToServer(uri: Uri) {
+    fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
         val file = uriToFile(this, uri) ?: return
         val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
@@ -1672,6 +1685,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val token = App.prefs.token ?: ""
         if (token.isEmpty()) {
             Log.e("Upload", "토큰이 없음!")
+            callback(null) // 실패 시 null 반환
             return
         }
 
@@ -1681,14 +1695,18 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                        Log.d("Upload", "이미지 업로드 성공! URL: ${response.body()?.string()}")
+                        val imageUrl = response.body()?.string()
+                        Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
+                        callback(imageUrl) // ✅ 성공 시 URL 반환
                     } else {
                         Log.e("Upload", "이미지 업로드 실패: 응답 코드 ${response.code()}, 오류 메시지: ${response.errorBody()?.string()}")
+                        callback(null) // 실패 시 null 반환
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("Upload", "네트워크 요청 실패: ${t.message}")
+                    callback(null) // 실패 시 null 반환
                 }
             })
     }
