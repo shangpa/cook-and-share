@@ -281,288 +281,288 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                <!-- 재료 1 -->
-                <LinearLayout
-                    android:id="@+id/fridegeRecipeItem1"
-                    android:layout_width="150dp"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_rectangle_fridge_green"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:gravity="center_vertical"
-                    android:strokeColor="#fff">
-
+                    <!-- 재료 1 -->
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:id="@+id/fridegeRecipeItem1"
+                        android:layout_width="150dp"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rounded_rectangle_fridge_green"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:gravity="center_vertical"
+                        android:strokeColor="#fff">
 
                         <LinearLayout
-                            android:id="@+id/item1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <!-- 재료 텍스트 -->
-                            <TextView
-                                android:id="@+id/fridgeIngredientName1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="소세지"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:textColor="#fff" />
+                            android:orientation="vertical">
 
                             <LinearLayout
+                                android:id="@+id/item1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginLeft="60dp">
+                                android:orientation="horizontal">
 
-                                <!-- 재료 갯수 텍스트 -->
+                                <!-- 재료 텍스트 -->
                                 <TextView
-                                    android:id="@+id/fridgeIngredientNumText1"
+                                    android:id="@+id/fridgeIngredientName1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="16"
+                                    android:text="소세지"
                                     android:textSize="12sp"
                                     android:textStyle="bold"
                                     android:textColor="#fff" />
 
-                                <!-- 개 -->
-                                <TextView
-                                    android:id="@+id/fridgeIngredientUnitText1"
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="개"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#fff"
-                                    android:layout_marginLeft="2dp"/>
+                                    android:orientation="horizontal"
+                                    android:layout_marginLeft="60dp">
+
+                                    <!-- 재료 갯수 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/fridgeIngredientNumText1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="16"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#fff" />
+
+                                    <!-- 개 -->
+                                    <TextView
+                                        android:id="@+id/fridgeIngredientUnitText1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="개"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#fff"
+                                        android:layout_marginLeft="2dp"/>
+
+                                </LinearLayout>
 
                             </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="9dp">
-
-                            <!-- 구매일자 -->
-                            <TextView
-                                android:id="@+id/purchaseDate1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="구매일자 : "
-                                android:textSize="11sp"
-                                android:textColor="#fff" />
-
-                            <!-- 구매일자 날짜 텍스트 -->
-                            <TextView
-                                android:id="@+id/purchaseDateText1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2025.01.12"
-                                android:textSize="11sp"
-                                android:textColor="#fff" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <!-- 재료 2 -->
-                <LinearLayout
-                    android:id="@+id/fridegeRecipeItem2"
-                    android:layout_width="150dp"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_rectangle_fridge"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:gravity="center_vertical"
-                    android:strokeColor="#D9D9D9"
-                    android:layout_marginStart="10dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/item2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <!-- 재료 텍스트 -->
-                            <TextView
-                                android:id="@+id/fridgeIngredientName2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="김치"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:textColor="#8A8F9C" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginLeft="80dp">
+                                android:layout_marginTop="9dp">
 
-                                <!-- 재료 갯수 텍스트 -->
+                                <!-- 구매일자 -->
                                 <TextView
-                                    android:id="@+id/fridgeIngredientNumText2"
+                                    android:id="@+id/purchaseDate1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="2"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#8A8F9C" />
+                                    android:text="구매일자 : "
+                                    android:textSize="11sp"
+                                    android:textColor="#fff" />
 
-                                <!-- 개 -->
+                                <!-- 구매일자 날짜 텍스트 -->
                                 <TextView
-                                    android:id="@+id/fridgeIngredientUnitText2"
+                                    android:id="@+id/purchaseDateText1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="개"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#8A8F9C"
-                                    android:layout_marginLeft="2dp"/>
+                                    android:text="2025.01.12"
+                                    android:textSize="11sp"
+                                    android:textColor="#fff" />
 
                             </LinearLayout>
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="9dp">
-
-                            <!-- 구매일자 -->
-                            <TextView
-                                android:id="@+id/purchaseDate2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="구매일자 : "
-                                android:textSize="11sp"
-                                android:textColor="#8A8F9C" />
-
-                            <!-- 구매일자 날짜 텍스트 -->
-                            <TextView
-                                android:id="@+id/purchaseDateText2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2024.10.18"
-                                android:textSize="11sp"
-                                android:textColor="#8A8F9C" />
-
-                        </LinearLayout>
-
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <!-- 재료 3 -->
-                <LinearLayout
-                    android:id="@+id/fridegeRecipeItem3"
-                    android:layout_width="150dp"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rounded_rectangle_fridge"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:gravity="center_vertical"
-                    android:strokeColor="#D9D9D9"
-                    android:layout_marginStart="10dp">
-
+                    <!-- 재료 2 -->
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:id="@+id/fridegeRecipeItem2"
+                        android:layout_width="150dp"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rounded_rectangle_fridge"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:gravity="center_vertical"
+                        android:strokeColor="#D9D9D9"
+                        android:layout_marginStart="10dp">
 
                         <LinearLayout
-                            android:id="@+id/item3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <!-- 재료 텍스트 -->
-                            <TextView
-                                android:id="@+id/fridgeIngredientName3"
+                            <LinearLayout
+                                android:id="@+id/item2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="양파"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:textColor="#8A8F9C" />
+                                android:orientation="horizontal">
+
+                                <!-- 재료 텍스트 -->
+                                <TextView
+                                    android:id="@+id/fridgeIngredientName2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="김치"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#8A8F9C" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginLeft="80dp">
+
+                                    <!-- 재료 갯수 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/fridgeIngredientNumText2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="2"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#8A8F9C" />
+
+                                    <!-- 개 -->
+                                    <TextView
+                                        android:id="@+id/fridgeIngredientUnitText2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="개"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#8A8F9C"
+                                        android:layout_marginLeft="2dp"/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginLeft="80dp">
+                                android:layout_marginTop="9dp">
 
-                                <!-- 재료 갯수 텍스트 -->
+                                <!-- 구매일자 -->
                                 <TextView
-                                    android:id="@+id/fridgeIngredientNumText3"
+                                    android:id="@+id/purchaseDate2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="6"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
+                                    android:text="구매일자 : "
+                                    android:textSize="11sp"
                                     android:textColor="#8A8F9C" />
 
-                                <!-- 개 -->
+                                <!-- 구매일자 날짜 텍스트 -->
                                 <TextView
-                                    android:id="@+id/fridgeIngredientUnitText3"
+                                    android:id="@+id/purchaseDateText2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="개"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#8A8F9C"
-                                    android:layout_marginLeft="2dp"/>
+                                    android:text="2024.10.18"
+                                    android:textSize="11sp"
+                                    android:textColor="#8A8F9C" />
 
                             </LinearLayout>
 
                         </LinearLayout>
 
+                    </LinearLayout>
+
+                    <!-- 재료 3 -->
+                    <LinearLayout
+                        android:id="@+id/fridegeRecipeItem3"
+                        android:layout_width="150dp"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rounded_rectangle_fridge"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:gravity="center_vertical"
+                        android:strokeColor="#D9D9D9"
+                        android:layout_marginStart="10dp">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="9dp">
+                            android:orientation="vertical">
 
-                            <!-- 구매일자 -->
-                            <TextView
-                                android:id="@+id/purchaseDate3"
+                            <LinearLayout
+                                android:id="@+id/item3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="구매일자 : "
-                                android:textSize="11sp"
-                                android:textColor="#8A8F9C" />
+                                android:orientation="horizontal">
 
-                            <!-- 구매일자 날짜 텍스트 -->
-                            <TextView
-                                android:id="@+id/purchaseDateText3"
+                                <!-- 재료 텍스트 -->
+                                <TextView
+                                    android:id="@+id/fridgeIngredientName3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="양파"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#8A8F9C" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginLeft="80dp">
+
+                                    <!-- 재료 갯수 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/fridgeIngredientNumText3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="6"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#8A8F9C" />
+
+                                    <!-- 개 -->
+                                    <TextView
+                                        android:id="@+id/fridgeIngredientUnitText3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="개"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#8A8F9C"
+                                        android:layout_marginLeft="2dp"/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2025.01.18"
-                                android:textSize="11sp"
-                                android:textColor="#8A8F9C" />
+                                android:orientation="horizontal"
+                                android:layout_marginTop="9dp">
+
+                                <!-- 구매일자 -->
+                                <TextView
+                                    android:id="@+id/purchaseDate3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="구매일자 : "
+                                    android:textSize="11sp"
+                                    android:textColor="#8A8F9C" />
+
+                                <!-- 구매일자 날짜 텍스트 -->
+                                <TextView
+                                    android:id="@+id/purchaseDateText3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2025.01.18"
+                                    android:textSize="11sp"
+                                    android:textColor="#8A8F9C" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
                     </LinearLayout>
-                </LinearLayout>
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -613,192 +613,192 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-            <!-- 하나의 LinearLayout으로 모든 항목을 감싸기 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            <!-- 카테고리 컨테이너 ( 음식 전체 ) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryAllBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct_ck"
-                android:gravity="center">
-
-                <!-- 전체 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryAllText"
+                <!-- 하나의 LinearLayout으로 모든 항목을 감싸기 -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="전체"
-                    android:textSize="12sp"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    android:orientation="horizontal">
 
-            <!-- 카테고리 컨테이너 (한식) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryKRBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
+                    <!-- 카테고리 컨테이너 ( 음식 전체 ) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryAllBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct_ck"
+                        android:gravity="center">
 
-                <!-- 한식 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryKRText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="한식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 전체 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryAllText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="전체"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (양식) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryWSBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
+                    <!-- 카테고리 컨테이너 (한식) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryKRBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginLeft="7dp">
 
-                <!-- 양식 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryWSText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="양식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 한식 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryKRText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="한식"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (일식) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryJPBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
+                    <!-- 카테고리 컨테이너 (양식) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryWSBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginLeft="7dp">
 
-                <!-- 일식 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryJPText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="일식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 양식 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryWSText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="양식"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (중식) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryCNBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
+                    <!-- 카테고리 컨테이너 (일식) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryJPBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginLeft="7dp">
 
-                <!-- 중식 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryCNText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="중식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 일식 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryJPText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="일식"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (채식) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryVGBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
+                    <!-- 카테고리 컨테이너 (중식) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryCNBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginLeft="7dp">
 
-                <!-- 채식 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryVGText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="채식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 중식 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryCNText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="중식"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (간식) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategorySNBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginRight="7dp">
+                    <!-- 카테고리 컨테이너 (채식) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryVGBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginLeft="7dp">
 
-                <!-- 간식 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategorySNText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="간식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 채식 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryVGText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="채식"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (안주) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategoryMCBtn"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginRight="7dp">
+                    <!-- 카테고리 컨테이너 (간식) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategorySNBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginRight="7dp">
 
-                <!-- 안주 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategoryMCText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="안주"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 간식 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategorySNText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="간식"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-            <!-- 카테고리 컨테이너 (밑반찬) -->
-            <LinearLayout
-                android:id="@+id/ingredientCategorySDBtn"
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginRight="7dp">
+                    <!-- 카테고리 컨테이너 (안주) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategoryMCBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginRight="7dp">
 
-                <!-- 밑반찬 텍스트 -->
-                <TextView
-                    android:id="@+id/ingredientCategorySDText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="밑반찬"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                        <!-- 안주 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategoryMCText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="안주"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
 
-        </LinearLayout>
+                    <!-- 카테고리 컨테이너 (밑반찬) -->
+                    <LinearLayout
+                        android:id="@+id/ingredientCategorySDBtn"
+                        android:layout_width="55dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/btn_fridge_ct"
+                        android:gravity="center"
+                        android:layout_marginRight="7dp">
+
+                        <!-- 밑반찬 텍스트 -->
+                        <TextView
+                            android:id="@+id/ingredientCategorySDText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="밑반찬"
+                            android:textSize="12sp"
+                            android:textColor="#8A8F9C" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
 
@@ -933,7 +933,8 @@
                         android:src="@drawable/ic_heart_recipe_list"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginTop="1dp"
-                        android:layout_marginStart="154dp"/>
+                        android:layout_marginStart="154dp"
+                        android:onClick="toggleHeart"/>
 
                 </LinearLayout>
 
@@ -1143,7 +1144,8 @@
                         android:src="@drawable/ic_heart_recipe_list"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginTop="1dp"
-                        android:layout_marginStart="176dp"/>
+                        android:layout_marginStart="176dp"
+                        android:onClick="toggleHeart"/>
 
                 </LinearLayout>
 
@@ -1343,7 +1345,8 @@
                         android:src="@drawable/ic_heart_recipe_list"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginStart="187dp"
-                        android:layout_marginTop="1dp"/>
+                        android:layout_marginTop="1dp"
+                        android:onClick="toggleHeart"/>
 
                 </LinearLayout>
 
@@ -1543,7 +1546,8 @@
                         android:src="@drawable/ic_heart_recipe_list"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_marginTop="1dp"
-                        android:layout_marginStart="176dp"/>
+                        android:layout_marginStart="176dp"
+                        android:onClick="toggleHeart"/>
 
                 </LinearLayout>
 
