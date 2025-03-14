@@ -13,10 +13,10 @@ class StepRecipeSeven : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_step_recipe_see7)
 
-        // nextFixButton 클릭했을 때 RecipeComplete 이동
+        // nextFixButton 클릭했을 때 ReveiwWriteActivity 이동
         val nextFixButton: Button = findViewById(R.id.nextFixButton)
         nextFixButton.setOnClickListener {
-            val intent = Intent(this, RecipeComplete::class.java)
+            val intent = Intent(this, ReveiwWriteActivity::class.java)
             startActivity(intent)
         }
 

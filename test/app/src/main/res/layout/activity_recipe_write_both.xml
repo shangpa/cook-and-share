@@ -1211,12 +1211,36 @@
                     <View
                         android:id="@+id/materialCategoryBox"
                         android:layout_width="43dp"
-                        android:layout_height="333dp"
+                        android:layout_height="335dp"
                         android:layout_marginTop="1dp"
                         android:layout_marginStart="1dp"
                         android:background="@drawable/ic_activity_recipe_write_both_title_rect"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
+
+                    <!-- 개 -->
+                    <TextView
+                        android:id="@+id/numberThe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="개"
+                        android:textColor="#8A8F9C"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                        app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
+                        app:layout_constraintTop_toTopOf="@id/materialCategoryBox"
+                        app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarOne"/>
+
+                    <!-- 카테고리 선택 상자 선 -->
+                    <View
+                        android:id="@+id/materialCategoryBoxBarOne"
+                        android:layout_width="42dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="22dp"
+                        android:background="@drawable/bar_category"
+                        app:layout_constraintTop_toTopOf="@id/materialCategoryBox"
+                        app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
+                        app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
 
                     <!-- 컵 -->
                     <TextView
@@ -1228,7 +1252,7 @@
                         android:textSize="10sp"
                         app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
                         app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
-                        app:layout_constraintTop_toTopOf="@id/materialCategoryBox"
+                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarOne"
                         app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBar"/>
 
                     <!-- 카테고리 선택 상자 선 -->
@@ -1238,31 +1262,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="22dp"
                         android:background="@drawable/bar_category"
-                        app:layout_constraintTop_toTopOf="@id/materialCategoryBox"
-                        app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
-                        app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
-
-                    <!-- 큰솔 -->
-                    <TextView
-                        android:id="@+id/tbsp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="큰솔"
-                        android:textColor="#8A8F9C"
-                        android:textSize="10sp"
-                        app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
-                        app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
-                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBar"
-                        app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarTwo"/>
-
-                    <!-- 카테고리 선택 상자 선 -->
-                    <View
-                        android:id="@+id/materialCategoryBoxBarTwo"
-                        android:layout_width="42dp"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="22dp"
-                        android:background="@drawable/bar_category"
-                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBar"
+                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarOne"
                         app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
                         app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
 
@@ -1276,7 +1276,7 @@
                         android:textSize="10sp"
                         app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
                         app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"
-                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTwo"
+                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBar"
                         app:layout_constraintBottom_toBottomOf="@id/materialCategoryBoxBarThree"/>
 
                     <!-- 카테고리 선택 상자 선 -->
@@ -1286,7 +1286,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="22dp"
                         android:background="@drawable/bar_category"
-                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBarTwo"
+                        app:layout_constraintTop_toTopOf="@id/materialCategoryBoxBar"
                         app:layout_constraintStart_toStartOf="@id/materialCategoryBox"
                         app:layout_constraintEnd_toEndOf="@id/materialCategoryBox"/>
 

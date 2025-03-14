@@ -522,6 +522,17 @@
             </intent-filter>
         </activity>
 
+        <!-- ReveiwWriteActivity -->
+        <activity
+            android:name=".ReveiwWriteActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- RecipeComplete -->
         <activity
             android:name=".RecipeComplete"
