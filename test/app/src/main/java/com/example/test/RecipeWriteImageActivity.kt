@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.OpenableColumns
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -36,7 +37,18 @@ import com.example.test.Repository.RecipeRepository
 import com.example.test.model.CookingStep
 import com.example.test.model.Ingredient
 import com.example.test.model.RecipeRequest
+import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -69,19 +81,13 @@ private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서
 class RecipeWriteImageActivity : AppCompatActivity() {
 
     // 갤러리에서 선택한 이미지를 처리하는 콜백
-
+    private val uploadedImageUrls = mutableListOf<String>()
     // 첫 번째 pickImageLauncher (camera 버튼용)
     private val pickImageLauncherForCamera =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                // 이미지를 동적으로 추가
-                val imageView = ImageView(this)
-                imageView.setImageURI(it) // 이미지 URI 설정
-                val layoutParams =
-                    LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 이미지 크기 설정
-                imageView.layoutParams = layoutParams
-                imageContainer.addView(imageView) // LinearLayout에 이미지 추가
-                representImageContainer.addView(imageView) // LinearLayout에 이미지 추가
+                displaySelectedImage(it)
+                uploadImageToServer(it)
             }
         }
 
@@ -89,14 +95,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                // 이미지를 동적으로 추가
-                val imageView = ImageView(this)
-                imageView.setImageURI(it) // 이미지 URI 설정
-                val layoutParams =
-                    LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 이미지 크기 설정
-                imageView.layoutParams = layoutParams
-                imageContainer.addView(imageView) // LinearLayout에 이미지 추가
-                representImageContainer.addView(imageView) // LinearLayout에 이미지 추가
+                displaySelectedImage(it)
+                uploadImageToServer(it)
             }
         }
 
@@ -228,7 +228,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val cookOrderAddButton = findViewById<ConstraintLayout>(R.id.cookOrderAddButton)
         val cookOrderTimer = findViewById<ConstraintLayout>(R.id.cookOrderTimer)
         val cookOrderTapBar = findViewById<ConstraintLayout>(R.id.cookOrderTapBar)
-        val imageContainer = findViewById<LinearLayout>(R.id.imageContainer)
+        imageContainer = findViewById(R.id.imageContainer)
         val cookOrderRecipeWrite = findViewById<EditText>(R.id.cookOrderRecipeWrite)
         val stepLittleOne = findViewById<TextView>(R.id.stepLittleOne)
         val camera = findViewById<ImageButton>(R.id.camera)
@@ -1629,10 +1629,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         return editText.text.toString().trim().toIntOrNull() ?: 0
     }
 
-    //dp를 px로 변환하는 확장 함수
-    private fun Int.dpToPx(): Int {
-        return (this * resources.displayMetrics.density).toInt()
-    }
 
     // 레시피 세부설정 드롭다운 열기
     private fun detailSettleOpenDropDown(levelBoxChoice: ConstraintLayout, requiredTimeAndTag: ConstraintLayout) {
@@ -1652,5 +1648,84 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val params = requiredTimeAndTag.layoutParams as ViewGroup.MarginLayoutParams
         params.topMargin = requiredTimeAndTag.dpToPx(20)
         requiredTimeAndTag.layoutParams = params
+    }
+    //이미지선택
+    private fun displaySelectedImage(uri: Uri) {
+        if (!::imageContainer.isInitialized) {
+            Log.e("RecipeWriteImageActivity", "imageContainer가 초기화되지 않았음! onCreate() 실행을 기다립니다.")
+            return
+        }
+
+        val imageView = ImageView(this)
+        imageView.setImageURI(uri)
+        val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
+        imageView.layoutParams = layoutParams
+        imageContainer.addView(imageView) // ✅ 여기서 사용됨!
+    }
+    
+    //백엔드 서버에 이미지 업로드
+    fun uploadImageToServer(uri: Uri) {
+        val file = uriToFile(this, uri) ?: return
+        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        val token = App.prefs.token ?: ""
+        if (token.isEmpty()) {
+            Log.e("Upload", "토큰이 없음!")
+            return
+        }
+
+        Log.d("Upload", "이미지 업로드 시작 - 파일명: ${file.name}, 크기: ${file.length()} 바이트")
+
+        RetrofitInstance.apiService.uploadImage("Bearer $token", body)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Log.d("Upload", "이미지 업로드 성공! URL: ${response.body()?.string()}")
+                    } else {
+                        Log.e("Upload", "이미지 업로드 실패: 응답 코드 ${response.code()}, 오류 메시지: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("Upload", "네트워크 요청 실패: ${t.message}")
+                }
+            })
+    }
+
+    fun uriToFile(context: Context, uri: Uri): File? {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        var fileName: String? = null
+
+        cursor?.use {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex != -1) {
+                it.moveToFirst()
+                fileName = it.getString(nameIndex)
+            }
+        }
+
+        // 파일명이 비어있으면 기본 파일명 설정
+        if (fileName.isNullOrEmpty()) {
+            fileName = "temp_image_${System.currentTimeMillis()}.jpg"
+        }
+
+        val file = File(context.cacheDir, fileName)
+
+        return try {
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun Int.dpToPx(): Int {
+        return (this * resources.displayMetrics.density).toInt()
     }
 }
