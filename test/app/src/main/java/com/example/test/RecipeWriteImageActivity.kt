@@ -80,9 +80,9 @@ private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서
 
 class RecipeWriteImageActivity : AppCompatActivity() {
 
-    // 갤러리에서 선택한 이미지를 처리하는 콜백
+    // 업로드된 이미지 url
     private val uploadedImageUrls = mutableListOf<String>()
-    // 첫 번째 pickImageLauncher (camera 버튼용)
+    // 조리순서 이미지 업로드
     private val pickImageLauncherForCamera =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
@@ -98,7 +98,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
         }
 
-    // 세 번째 pickImageLauncher (세부설정 카메라 버튼용)
+    // 대표사진 이미지 업로드
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
@@ -432,7 +432,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             R.id.dropDownSix to R.id.unitSix
         )
 
-        // 레시피 재료 드롭다운 버튼 클릭 시 동작 설정
+// 레시피 재료 드롭다운 버튼 클릭 시 동작 설정
         buttonToUnitMap.forEach { (buttonId, unitId) ->
             val button = findViewById<ImageButton>(buttonId)
             val unit = findViewById<TextView>(unitId)
@@ -447,7 +447,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     val child = materialDropDown.getChildAt(i)
                     if (child is TextView) {
                         child.setOnClickListener {
-                            // 선택된 텍스트를 해당 unit에 설정
+                            // ✅ 선택된 텍스트를 해당 unit에 설정
                             unit.text = child.text.toString()
                             unit.setTextColor(Color.parseColor("#2B2B2B")) // 색상 변경
 
@@ -525,6 +525,13 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             divideRectangleBarSixteen.visibility = View.GONE
         }
 
+        //조리 순서 생성될때 초기화
+        stepCount = 1
+        currentStep = 1
+        currentSubStep = 1
+        recipeStepCount = 1
+        stepOrderMap.clear() 
+        
         // 레시피 조리순서 내용 추가하기 눌렀을때 내용 추가
         cookOrderRecipeContainer = findViewById(R.id.cookOrderRecipeContainer) // 레이아웃 ID
 
@@ -682,40 +689,43 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
-            val materialContainer = findViewById<LinearLayout>(R.id.materialList)
+
             // 선택된 카테고리 가져오기
             val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
             // 레시피 제목 가져오기
             val recipeTitle = recipeTitleWrite.text.toString()
             // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
             val ingredients = mutableListOf<Pair<String, String>>()
+
             // 정적 재료 입력란 추가
-            ingredients.add(material.text.toString() to measuring.text.toString())
-            ingredients.add(materialTwo.text.toString() to measuringTwo.text.toString())
-            ingredients.add(materialThree.text.toString() to measuringThree.text.toString())
-            ingredients.add(materialFour.text.toString() to measuringFour.text.toString())
-            ingredients.add(materialFive.text.toString() to measuringFive.text.toString())
-            ingredients.add(materialSix.text.toString() to measuringSix.text.toString())
+            ingredients.add(material.text.toString() to "${measuring.text} ${unit.text}")
+            ingredients.add(materialTwo.text.toString() to "${measuringTwo.text} ${unitTwo.text}")
+            ingredients.add(materialThree.text.toString() to "${measuringThree.text} ${unitThree.text}")
+            ingredients.add(materialFour.text.toString() to "${measuringFour.text} ${unitFour.text}")
+            ingredients.add(materialFive.text.toString() to "${measuringFive.text} ${unitFive.text}")
+            ingredients.add(materialSix.text.toString() to "${measuringSix.text} ${unitSix.text}")
+
+
+            // 동적으로 추가된 재료 입력란에서 데이터 수집
+            for (i in 0 until materialContainer.childCount) {
+                val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
+                val materialEditText = itemLayout.getChildAt(0) as? EditText
+                val measuringEditText = itemLayout.getChildAt(1) as? EditText
+                val unitTextView = itemLayout.getChildAt(2) as? TextView
+
+                if (materialEditText != null && measuringEditText != null && unitTextView != null) {
+                    val materialName = materialEditText.text.toString()
+                    val amountWithUnit = "${measuringEditText.text} ${unitTextView.text}" //단위 추가
+
+                    if (materialName.isNotBlank() && amountWithUnit.isNotBlank()) {
+                        ingredients.add(materialName to amountWithUnit)
+                    }
+                }
+            }
 
             //메인 이미지 url
             val ImageUrl = if (uploadedImageUrls.isNotEmpty()) uploadedImageUrls.first() else ""
 
-            // 동적으로 추가된 재료 가져오기
-            for (i in 0 until materialContainer.childCount) {
-                val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
-
-                val materialEditText = itemLayout.getChildAt(0) as? EditText
-                val measuringEditText = itemLayout.getChildAt(1) as? EditText
-
-                if (materialEditText != null && measuringEditText != null) {
-                    val materialName = materialEditText.text.toString()
-                    val quantity = measuringEditText.text.toString()
-
-                    if (materialName.isNotBlank() && quantity.isNotBlank()) {
-                        ingredients.add(materialName to quantity)
-                    }
-                }
-            }
             // 빈 값 제거
             val filteredIngredients =
                 ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
@@ -795,6 +805,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                         val parts = it.split(" → ")
                         Ingredient(parts[0], parts[1])
                     }),
+                handlingMethods = gson.toJson(handlingMethods),
                 cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, step ->
                     val hours = parseEditText(hourEditText)
                     val minutes = parseEditText(minuteEditText)
@@ -803,6 +814,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 }), // cookingSteps는 이제 리스트 그대로 전달
                 mainImageUrl = ImageUrl,
                 difficulty = difficulty,
+                tags = recipeTag,
                 cookingTime = totalCookingTime,
                 servings = 2,
                 isPublic = true

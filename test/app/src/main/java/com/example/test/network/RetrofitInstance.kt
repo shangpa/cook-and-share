@@ -15,5 +15,3 @@ object RetrofitInstance {  // 주소 변경해야함
             .create(ApiService::class.java)
     }
 }
-
-
