@@ -80,6 +80,8 @@ private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서
 
 class RecipeWriteImageActivity : AppCompatActivity() {
 
+    //메인 이미지
+    private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
     // 업로드된 이미지 url
     private val uploadedImageUrls = mutableListOf<String>()
     // 조리순서 이미지 업로드
@@ -102,13 +104,13 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                displaySelectedImage(it, representImageContainer)
+                displaySelectedImage(it, representImageContainer) // 대표 이미지 표시
                 uploadImageToServer(it) { imageUrl ->
                     if (imageUrl != null) {
-                        Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
-                        uploadedImageUrls.add(imageUrl) // 업로드된 이미지 URL 저장
+                        Log.d("Upload", "대표 이미지 업로드 성공! URL: $imageUrl")
+                        mainImageUrl = imageUrl // 대표 이미지 저장
                     } else {
-                        Log.e("Upload", "이미지 업로드 실패")
+                        Log.e("Upload", "대표 이미지 업로드 실패")
                     }
                 }
             }
@@ -812,7 +814,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     val totalSeconds = (hours * 3600) + (minutes * 60) // 초 단위로 변환
                     CookingStep(index + 1, step, "", "IMAGE", totalSeconds)
                 }), // cookingSteps는 이제 리스트 그대로 전달
-                mainImageUrl = ImageUrl,
+                mainImageUrl = mainImageUrl,
                 difficulty = difficulty,
                 tags = recipeTag,
                 cookingTime = totalCookingTime,
