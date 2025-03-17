@@ -532,7 +532,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         currentStep = 1
         currentSubStep = 1
         recipeStepCount = 1
-        stepOrderMap.clear()
         
         // 레시피 조리순서 내용 추가하기 눌렀을때 내용 추가
         cookOrderRecipeContainer = findViewById(R.id.cookOrderRecipeContainer) // 레이아웃 ID
@@ -1588,14 +1587,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private fun saveRecipeSteps(): List<String> {
         val recipeSteps = mutableListOf<String>()
 
-        // 기본적으로 존재하는 EditText 추가
+        // ✅ 기본적으로 존재하는 EditText 추가 (조리순서 전체 입력 필드)
         val defaultRecipeEditText = findViewById<EditText>(R.id.cookOrderRecipeWrite)
-        val defaultText = defaultRecipeEditText.text.toString().trim()
-        if (defaultText.isNotEmpty()) {
+        val defaultText = defaultRecipeEditText?.text?.toString()?.trim()
+        if (!defaultText.isNullOrEmpty()) {
             recipeSteps.add(defaultText)
         }
 
-        // 기존 조리 순서 목록에서 EditText 가져오기
+        // ✅ 기존 조리 순서 목록에서 EditText 가져오기 (개별적으로 추가된 조리 순서)
         for (i in 0 until cookOrderRecipeContainer.childCount) {
             val view = cookOrderRecipeContainer.getChildAt(i)
             if (view is EditText) {
@@ -1606,18 +1605,33 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
         }
 
-        // 🔥 추가된 Step 내부의 EditText도 포함
+        // ✅ 추가된 Step 내부의 EditText도 포함 (각 Step을 하나의 항목으로 묶음)
         for (i in 0 until stepContainer.childCount) {
             val stepLayout = stepContainer.getChildAt(i)
             if (stepLayout is ViewGroup) {
+                val stepTextView = stepLayout.findViewById<TextView>(R.id.stepOne)
+                if (stepTextView == null) {
+                    Log.e("RecipeStep", "❌ Step TextView (stepOne) 찾을 수 없음. stepLayout: $stepLayout")
+                    continue // stepOne이 없으면 건너뛰기
+                }
+                val stepText = stepTextView.text.toString().trim() // "STEP X"
+
+                val subStepList = mutableListOf<String>()
                 for (j in 0 until stepLayout.childCount) {
                     val view = stepLayout.getChildAt(j)
                     if (view is EditText) {
-                        val stepText = view.text.toString().trim()
-                        if (stepText.isNotEmpty()) {
-                            recipeSteps.add(stepText)
+                        val subStepText = view.text.toString().trim()
+                        if (subStepText.isNotEmpty()) {
+                            subStepList.add(subStepText) // ✅ SubStep을 리스트에 추가
                         }
                     }
+                }
+
+                if (subStepList.isNotEmpty()) {
+                    val fullStepText = "$stepText: " + subStepList.joinToString(" → ")
+                    recipeSteps.add(fullStepText) // ✅ Step 단위로 저장
+                } else {
+                    Log.w("RecipeStep", "⚠️ Step $stepText 에는 입력된 내용이 없음")
                 }
             }
         }
