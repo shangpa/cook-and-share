@@ -83,7 +83,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
     // 업로드된 이미지 url
-    private val uploadedImageUrls = mutableListOf<String>()
+    private val stepImages  =  mutableMapOf<Int, String>()
     // 조리순서 이미지 업로드
     private val pickImageLauncherForCamera =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -92,7 +92,11 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 uploadImageToServer(it) { imageUrl ->
                     if (imageUrl != null) {
                         Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
-                        uploadedImageUrls.add(imageUrl) //  업로드된 이미지 URL 저장
+
+                        // 현재 Step과 매핑하여 저장
+                        stepImages[currentStep] = imageUrl
+
+                        Log.d("StepImage", "STEP $currentStep -> $imageUrl")
                     } else {
                         Log.e("Upload", "이미지 업로드 실패")
                     }
@@ -733,9 +737,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 }
             }
 
-            //메인 이미지 url
-            val ImageUrl = if (uploadedImageUrls.isNotEmpty()) uploadedImageUrls.first() else ""
-
             // 빈 값 제거
             val filteredIngredients =
                 ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
@@ -812,9 +813,21 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, step ->
                     val hours = parseEditText(hourEditText)
                     val minutes = parseEditText(minuteEditText)
-                    val totalSeconds = (hours * 3600) + (minutes * 60) // 초 단위로 변환
-                    CookingStep(index + 1, step, "", "IMAGE", totalSeconds)
-                }), // cookingSteps는 이제 리스트 그대로 전달
+                    val totalSeconds = (hours * 3600) + (minutes * 60) // 초 단위 변환
+
+                    // stepImages에서 현재 step의 index에 맞는 이미지 URL 가져오기 (없으면 빈 값)
+                    val imageUrl = stepImages[index + 1] ?: ""
+
+                    Log.d("StepMapping", "STEP ${index + 1} -> Image URL: $imageUrl")
+
+                    CookingStep(
+                        step = index + 1,
+                        description = step,
+                        mediaUrl = imageUrl,
+                        mediaType = "IMAGE",
+                        timeInSeconds = totalSeconds
+                    )
+                }), // Step별 이미지 URL 추가하여 리스트 그대로 전달
                 mainImageUrl = mainImageUrl,
                 difficulty = difficulty,
                 tags = recipeTag,
@@ -1433,7 +1446,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
     // 레시피 조리순서 내용 추가 버튼 위로 이동
     private fun addRecipeStep(step: Int, subStep: Int) {
-
         val editText = EditText(this).apply {
             id = View.generateViewId()
             tag = "$step"
@@ -1514,8 +1526,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 카메라 버튼 클릭 시 갤러리 열기
         stepCamera.setOnClickListener {
-            Log.d("StepCamera", "카메라 버튼 클릭됨!") // ✅ 로그 추가
-            pickImageLauncherForStepCamera.launch("image/*")
+            pickImageLauncherForCamera.launch("image/*")
         }
 
         // 내용추가 버튼 클릭 시 내용추가
