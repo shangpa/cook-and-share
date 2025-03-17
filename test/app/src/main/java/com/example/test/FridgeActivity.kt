@@ -1,21 +1,34 @@
 package com.example.test
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.MenuItem
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
+import com.example.test.model.FridgeResponse
+import com.example.test.network.ApiService
+import com.example.test.network.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
+import androidx.core.content.ContextCompat
 import java.util.*
 
 class FridgeActivity : AppCompatActivity() {
     private var isChecked = false // 아이콘 상태 저장 변수
     private val selectedLayouts = mutableSetOf<LinearLayout>() // 선택된 레이아웃 목록
+
+    // Retrofit API 서비스
+    private lateinit var apiService: ApiService
 
     private fun dpToPx(dp: Int): Int {
         return TypedValue.applyDimension(
@@ -25,10 +38,12 @@ class FridgeActivity : AppCompatActivity() {
         ).toInt()
     }
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge)
+
+        // Retrofit API 서비스 초기화
+        apiService = RetrofitInstance.apiService
 
         val todayDate = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
         val dayInput: TextView = findViewById(R.id.dayInput)
@@ -54,8 +69,7 @@ class FridgeActivity : AppCompatActivity() {
             )
             rootLayout.children.filterIsInstance<LinearLayout>().forEach { layout ->
                 layout.setBackgroundResource(
-                    if (isChecked) R.drawable.rounded_rectangle_fridge_ck
-                    else R.drawable.rounded_rectangle_fridge
+                    if (isChecked) R.drawable.rounded_rectangle_fridge_ck else R.drawable.rounded_rectangle_fridge
                 )
                 if (isChecked) selectedLayouts.add(layout) else selectedLayouts.remove(layout)
             }
@@ -75,14 +89,12 @@ class FridgeActivity : AppCompatActivity() {
 
         val fridgeAddBtn: LinearLayout = findViewById(R.id.fridgeAddBtn)
         fridgeAddBtn.setOnClickListener {
-            val intent = Intent(this, FridgeIngredientActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, FridgeIngredientActivity::class.java))
         }
 
         val recipeRecommendBtn: LinearLayout = findViewById(R.id.recipeRecommendBtn)
         recipeRecommendBtn.setOnClickListener {
-            val intent = Intent(this, FridgeRecipeActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, FridgeRecipeActivity::class.java))
         }
 
         val fridgeDeleteText: TextView = findViewById(R.id.fridgeDeleteText)
@@ -97,6 +109,7 @@ class FridgeActivity : AppCompatActivity() {
                 Toast.makeText(this, "편집할 항목을 하나 선택해 주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 val selectedBox = selectedLayouts.first()
+                // 기존 편집 로직 그대로 사용 (수정 시 FridgeIngredientActivity로 이동)
                 val row1 = selectedBox.getChildAt(0) as? LinearLayout
                 val row2 = selectedBox.getChildAt(1) as? LinearLayout
                 val row3 = selectedBox.getChildAt(2) as? LinearLayout
@@ -124,54 +137,67 @@ class FridgeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-        val intentIngredientName = intent.getStringExtra("ingredientName") ?: ""
-        val storageAreaExtra = intent.getStringExtra("storageArea") ?: ""
-        val fridgeDateExtra = intent.getStringExtra("fridgeDate") ?: ""
-        val dateOptionExtra = intent.getStringExtra("dateOption") ?: "유통기한"
-        val quantityExtra = intent.getStringExtra("quantity") ?: ""
-        val unitExtra = intent.getStringExtra("unit") ?: ""
+    // onResume에서 백엔드에서 최신 냉장고 데이터 불러오기
+    override fun onResume() {
+        super.onResume()
+        fetchFridgeData()
+    }
 
-        if (intentIngredientName.isNotEmpty()) {
-            val existingView = rootLayout.children.find { view ->
-                view is LinearLayout && view.tag == intentIngredientName
-            }
-            if (existingView != null) {
-                val ingredientBox = existingView as LinearLayout
-                val row1 = ingredientBox.getChildAt(0) as? LinearLayout
-                val row2 = ingredientBox.getChildAt(1) as? LinearLayout
-                val row3 = ingredientBox.getChildAt(2) as? LinearLayout
-                row1?.let {
-                    (it.getChildAt(0) as? TextView)?.text = intentIngredientName
-                    (it.getChildAt(1) as? TextView)?.text = "$quantityExtra $unitExtra"
-                }
-                row2?.let {
-                    (it.getChildAt(1) as? TextView)?.text = storageAreaExtra
-                }
-                row3?.let {
-                    (it.getChildAt(0) as? TextView)?.text = "$dateOptionExtra : "
-                    (it.getChildAt(1) as? TextView)?.text = fridgeDateExtra
-                }
-            } else {
-                val ingredientBox = createIngredientBox(
-                    ingredientName = intentIngredientName,
-                    storageArea = storageAreaExtra,
-                    dateOption = dateOptionExtra,
-                    dateValue = fridgeDateExtra,
-                    quantity = quantityExtra,
-                    unit = unitExtra
-                )
-                ingredientBox.setOnClickListener {
-                    if (selectedLayouts.contains(ingredientBox)) {
-                        ingredientBox.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
-                        selectedLayouts.remove(ingredientBox)
+    // 백엔드 API 호출하여 냉장고 데이터 불러오기 (JWT 토큰 포함)
+    private fun fetchFridgeData() {
+        val rootLayout: LinearLayout = findViewById(R.id.rootLayout)
+        // 기존 뷰에 추가된 항목들을 모두 삭제
+        rootLayout.removeAllViews()
+        // 로그인한 사용자의 ID와 JWT 토큰 가져오기
+        val userId = getLoggedInUserId()
+        val token = "Bearer " + getTokenFromPreferences()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getMyFridges(token, userId)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val fridgeList = response.body() ?: listOf()
+                        fridgeList.forEach { fridgeResponse ->
+                            // FridgeResponse 데이터를 사용하여 뷰 생성
+                            val ingredientBox = createIngredientBox(
+                                ingredientName = fridgeResponse.ingredientName,
+                                storageArea = fridgeResponse.storageArea,
+                                dateOption = fridgeResponse.dateOption ?: "유통기한",
+                                dateValue = fridgeResponse.fridgeDate,
+                                quantity = fridgeResponse.quantity.toString(),
+                                unit = fridgeResponse.unitDetail
+                            )
+                            ingredientBox.setOnClickListener {
+                                if (selectedLayouts.contains(ingredientBox)) {
+                                    ingredientBox.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                                    selectedLayouts.remove(ingredientBox)
+                                } else {
+                                    ingredientBox.setBackgroundResource(R.drawable.rounded_rectangle_fridge_ck)
+                                    selectedLayouts.add(ingredientBox)
+                                }
+                            }
+                            ingredientBox.tag = fridgeResponse.ingredientName
+                            rootLayout.addView(ingredientBox)
+                        }
                     } else {
-                        ingredientBox.setBackgroundResource(R.drawable.rounded_rectangle_fridge_ck)
-                        selectedLayouts.add(ingredientBox)
+                        Toast.makeText(
+                            this@FridgeActivity,
+                            "데이터 불러오기 실패: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-                ingredientBox.tag = intentIngredientName
-                rootLayout.addView(ingredientBox)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@FridgeActivity,
+                        "네트워크 오류: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
@@ -233,7 +259,7 @@ class FridgeActivity : AppCompatActivity() {
             text = "$quantity $unit"
             textSize = 16f
             setTypeface(typeface, android.graphics.Typeface.BOLD)
-            setTextColor(resources.getColor(R.color.black))
+            setTextColor(resources.getColor(R.color.black, theme))
         }
         row1.addView(ingredientNameText)
         row1.addView(quantityText)
@@ -249,12 +275,12 @@ class FridgeActivity : AppCompatActivity() {
         val storageAreaLabel = TextView(this).apply {
             text = "보관장소 : "
             textSize = 12f
-            setTextColor(resources.getColor(R.color.black))
+            setTextColor(resources.getColor(R.color.black, theme))
         }
         val storageAreaText = TextView(this).apply {
             text = storageArea
             textSize = 12f
-            setTextColor(resources.getColor(R.color.black))
+            setTextColor(resources.getColor(R.color.black, theme))
         }
         row2.addView(storageAreaLabel)
         row2.addView(storageAreaText)
@@ -270,12 +296,12 @@ class FridgeActivity : AppCompatActivity() {
         val dateOptionLabel = TextView(this).apply {
             text = "$dateOption : "
             textSize = 12f
-            setTextColor(resources.getColor(R.color.black))
+            setTextColor(resources.getColor(R.color.black, theme))
         }
         val dateValueText = TextView(this).apply {
             text = dateValue
             textSize = 12f
-            setTextColor(resources.getColor(R.color.black))
+            setTextColor(resources.getColor(R.color.black, theme))
         }
         row3.addView(dateOptionLabel)
         row3.addView(dateValueText)
@@ -285,5 +311,16 @@ class FridgeActivity : AppCompatActivity() {
         ingredientBox.addView(row3)
 
         return ingredientBox
+    }
+
+    // 예시: 로그인한 사용자 ID를 반환하는 메서드 (실제 구현에서는 인증 컨텍스트나 SharedPreferences에서 가져옴)
+    private fun getLoggedInUserId(): Long {
+        return 1L
+    }
+
+    // 예시: 실제 저장된 JWT 토큰을 반환하는 메서드 (실제 구현에서는 SharedPreferences 등 사용)
+    private fun getTokenFromPreferences(): String {
+        // 여기에 실제 토큰을 반환하도록 구현하세요.
+        return "your_actual_jwt_token"
     }
 }
