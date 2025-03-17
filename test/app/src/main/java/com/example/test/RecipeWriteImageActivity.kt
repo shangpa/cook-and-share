@@ -532,15 +532,16 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         currentStep = 1
         currentSubStep = 1
         recipeStepCount = 1
-        stepOrderMap.clear() 
+        stepOrderMap.clear()
         
         // 레시피 조리순서 내용 추가하기 눌렀을때 내용 추가
         cookOrderRecipeContainer = findViewById(R.id.cookOrderRecipeContainer) // 레이아웃 ID
 
         contentAdd.setOnClickListener {
-            if (recipeStepCount < 10) { // 최대 1-9까지 허용 (원하는 개수 조절 가능)
+            if (recipeStepCount < 10) {
                 recipeStepCount++
-                addRecipeStep(recipeStepCount)
+                currentSubStep++  //현재 STEP의 SubStep 증가
+                addRecipeStep(currentStep, currentSubStep)
             }
         }
 
@@ -548,7 +549,9 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         stepContainer = findViewById(R.id.stepContainer) // onCreate에서 초기화
 
         stepAddButton.setOnClickListener {
-            addNewStep()  // stepContainer 사용 가능
+            currentStep++  // 새로운 Step 추가 시 Step 번호 증가
+            currentSubStep = 1  // 새로운 Step 시작 시 SubStep 초기화
+            addNewStep(currentStep)
         }
 
         // 레시피 조리순서 카메라 버튼 클릭 시 갤러리 열기
@@ -1431,7 +1434,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     }
 
     // 레시피 조리순서 내용 추가 버튼 위로 이동
-    private fun addRecipeStep(step: Int) {
+    private fun addRecipeStep(step: Int, subStep: Int) {
 
         val editText = EditText(this).apply {
             id = View.generateViewId()
@@ -1441,7 +1444,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             ).apply {
                 setMargins(45, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
             }
-            setText("1-$recipeStepCount")
+            setText("$step-$subStep")
             hint = "레시피를 입력해주세요."
             textSize = 13f
             backgroundTintList =
@@ -1481,30 +1484,24 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     // 조리순서 step 추가 후 내용 추가하기
     val stepRecipeCountMap = mutableMapOf<Int, Int>()
 
-    private fun addNewStep() {
-        // 기존 stepContainer 내부의 모든 뷰 제거
-        stepContainer.removeAllViews()
+    private fun addNewStep(step: Int) {
+        // ✅ 기존 Step을 삭제하지 않고 새 Step 추가
+        val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
 
-        // STEP 번호 증가
-        stepCount++
-
-        // 새로운 STEP 레이아웃 인플레이트
-        val newStepLayout =
-            LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
-
-        // STEP 번호 업데이트
+        // Step 번호 설정
         val stepTextView = newStepLayout.findViewById<TextView>(R.id.stepOne)
-        stepTextView.text = "STEP $stepCount"
+        stepTextView.text = "STEP $step"
 
-        // 세부 단계 번호 업데이트 (stepCount와 stepRecipeCount 값을 기반으로)
+        // SubStep 번호 초기화
         val stepLittleTextView = newStepLayout.findViewById<TextView>(R.id.stepLittleOne)
-        stepLittleTextView.text = "$stepCount-${stepRecipeCountMap[stepCount] ?: 1}"
+        stepLittleTextView.text = "$step-1"
 
         // 카메라 버튼 찾기
         val stepCamera = newStepLayout.findViewById<ImageButton>(R.id.stepCamera)
 
         // 내용추가 버튼 선언
         val contentAddTwo = newStepLayout.findViewById<Button>(R.id.contentAddTwo)
+
         val timerAddTwo = newStepLayout.findViewById<Button>(R.id.timerAddTwo)
 
         // 버튼이 보이도록 설정
@@ -1520,7 +1517,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         // 내용추가 버튼 클릭 시 내용추가
         contentAddTwo.setOnClickListener {
             // 현재 STEP에 해당하는 recipeStepCount 가져오기
-            val currentRecipeStepCount = stepRecipeCountMap[stepCount] ?: 2
+            val currentRecipeStepCount = stepRecipeCountMap[step] ?: 2
 
             // 동적으로 EditText 생성
             val editText = EditText(this).apply {
@@ -1532,7 +1529,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     setMargins(51, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
                 }
                 // stepCount와 recipeStepCount로 초기화
-                setText("${stepCount}-${currentRecipeStepCount}")
+                setText("$step-${currentRecipeStepCount}")
                 hint = "레시피를 입력해주세요."
                 textSize = 13f
                 backgroundTintList =
@@ -1591,18 +1588,16 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private fun saveRecipeSteps(): List<String> {
         val recipeSteps = mutableListOf<String>()
 
-        // 기본적으로 존재하는 EditText를 먼저 처리
+        // 기본적으로 존재하는 EditText 추가
         val defaultRecipeEditText = findViewById<EditText>(R.id.cookOrderRecipeWrite)
         val defaultText = defaultRecipeEditText.text.toString().trim()
         if (defaultText.isNotEmpty()) {
             recipeSteps.add(defaultText)
         }
 
-        // cookOrderRecipeContainer에 포함된 모든 뷰를 순회합니다.
+        // 기존 조리 순서 목록에서 EditText 가져오기
         for (i in 0 until cookOrderRecipeContainer.childCount) {
             val view = cookOrderRecipeContainer.getChildAt(i)
-
-            // EditText인 경우에만 처리
             if (view is EditText) {
                 val stepText = view.text.toString().trim()
                 if (stepText.isNotEmpty()) {
@@ -1610,10 +1605,28 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 }
             }
         }
-        // 반환된 리스트 로그로 확인
+
+        // 🔥 추가된 Step 내부의 EditText도 포함
+        for (i in 0 until stepContainer.childCount) {
+            val stepLayout = stepContainer.getChildAt(i)
+            if (stepLayout is ViewGroup) {
+                for (j in 0 until stepLayout.childCount) {
+                    val view = stepLayout.getChildAt(j)
+                    if (view is EditText) {
+                        val stepText = view.text.toString().trim()
+                        if (stepText.isNotEmpty()) {
+                            recipeSteps.add(stepText)
+                        }
+                    }
+                }
+            }
+        }
+
+        // ✅ 디버깅 로그 추가
         recipeSteps.forEachIndexed { index, step ->
             Log.d("RecipeStep", "Step ${index + 1}: $step")
         }
+
         return recipeSteps
     }
     private fun startTimer() {
