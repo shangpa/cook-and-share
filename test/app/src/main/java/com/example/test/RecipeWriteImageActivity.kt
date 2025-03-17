@@ -769,13 +769,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.contentCheckFoodName).text = recipeTitle
             findViewById<TextView>(R.id.contentCheckKoreanFood).text = categoryText
             findViewById<TextView>(R.id.contentCheckBeginningLevel).text = elementaryLevel.text
-            // todo 재료랑 대체재료랑 처리방법 조리순서 해야함
-            /*
-
-            findViewById<TextView>(R.id.replaceIngredientsTextView).text = "대체 재료:\n${replaceIngredients.joinToString("\n")}"
-            findViewById<TextView>(R.id.handlingMethodsTextView).text = "처리 방법:\n${handlingMethods.joinToString("\n")}"
-
-            */
             findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
             findViewById<TextView>(R.id.contentCheckZero).text = cookingHour.toString()
             findViewById<TextView>(R.id.contentCheckHalfHour).text = cookingMinute.toString()
@@ -1443,6 +1436,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         val editText = EditText(this).apply {
             id = View.generateViewId()
+            tag = "$step"
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -1490,9 +1484,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     val stepRecipeCountMap = mutableMapOf<Int, Int>()
 
     private fun addNewStep(step: Int) {
-        // ✅ 기존 Step을 삭제하지 않고 새 Step 추가
-        val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
+        for (i in 0 until stepContainer.childCount) {
+            stepContainer.getChildAt(i).visibility = View.GONE
+        }
 
+        val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
+        // 기존에 XML에 있던 cookOrderRecipeWrite도 매번 태그 업데이트
+        val cookOrderRecipeWrite = newStepLayout.findViewById<EditText>(R.id.cookOrderRecipeWrite)
+        cookOrderRecipeWrite.tag = "$step"
         // Step 번호 설정
         val stepTextView = newStepLayout.findViewById<TextView>(R.id.stepOne)
         stepTextView.text = "STEP $step"
@@ -1527,6 +1526,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             // 동적으로 EditText 생성
             val editText = EditText(this).apply {
                 id = View.generateViewId()
+                tag = "$step"
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -1593,63 +1593,57 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     // 레시피 조리순서 입력 데이터를 추출하고 저장하는 함수
     private fun saveRecipeSteps(): List<String> {
         val recipeSteps = mutableListOf<String>()
+        val stepMap = mutableMapOf<Int, MutableList<String>>()
 
-        // ✅ 기본적으로 존재하는 EditText 추가 (조리순서 전체 입력 필드)
-        val defaultRecipeEditText = findViewById<EditText>(R.id.cookOrderRecipeWrite)
-        val defaultText = defaultRecipeEditText?.text?.toString()?.trim()
-        if (!defaultText.isNullOrEmpty()) {
-            recipeSteps.add(defaultText)
-        }
+        val containers = listOf(cookOrderRecipeContainer, stepContainer)
 
-        // ✅ 기존 조리 순서 목록에서 EditText 가져오기 (개별적으로 추가된 조리 순서)
-        for (i in 0 until cookOrderRecipeContainer.childCount) {
-            val view = cookOrderRecipeContainer.getChildAt(i)
-            if (view is EditText) {
-                val stepText = view.text.toString().trim()
-                if (stepText.isNotEmpty()) {
-                    recipeSteps.add(stepText)
-                }
-            }
-        }
-
-        // ✅ 추가된 Step 내부의 EditText도 포함 (각 Step을 하나의 항목으로 묶음)
-        for (i in 0 until stepContainer.childCount) {
-            val stepLayout = stepContainer.getChildAt(i)
-            if (stepLayout is ViewGroup) {
-                val stepTextView = stepLayout.findViewById<TextView>(R.id.stepOne)
-                if (stepTextView == null) {
-                    Log.e("RecipeStep", "❌ Step TextView (stepOne) 찾을 수 없음. stepLayout: $stepLayout")
-                    continue // stepOne이 없으면 건너뛰기
-                }
-                val stepText = stepTextView.text.toString().trim() // "STEP X"
-
-                val subStepList = mutableListOf<String>()
-                for (j in 0 until stepLayout.childCount) {
-                    val view = stepLayout.getChildAt(j)
-                    if (view is EditText) {
-                        val subStepText = view.text.toString().trim()
-                        if (subStepText.isNotEmpty()) {
-                            subStepList.add(subStepText) // ✅ SubStep을 리스트에 추가
-                        }
+        containers.forEach { container ->
+            traverseViews(container) { view ->
+                if (view is EditText) {
+                    val stepTag = view.tag?.toString()?.toIntOrNull()
+                    val text = view.text.toString().trim()
+                    if (stepTag != null && text.isNotEmpty()) {
+                        stepMap.getOrPut(stepTag) { mutableListOf() }.add(text)
                     }
                 }
-
-                if (subStepList.isNotEmpty()) {
-                    val fullStepText = "$stepText: " + subStepList.joinToString(" → ")
-                    recipeSteps.add(fullStepText) // ✅ Step 단위로 저장
-                } else {
-                    Log.w("RecipeStep", "⚠️ Step $stepText 에는 입력된 내용이 없음")
-                }
             }
         }
 
-        // ✅ 디버깅 로그 추가
+        // step 번호별로 정렬해서 "→"로 구분하여 저장
+        stepMap.toSortedMap().forEach { (step, texts) ->
+            val joinedTexts = texts.joinToString(" → ")
+            recipeSteps.add("STEP $step: $joinedTexts")
+        }
+
+        // 디버깅 로그 추가
         recipeSteps.forEachIndexed { index, step ->
             Log.d("RecipeStep", "Step ${index + 1}: $step")
         }
 
         return recipeSteps
     }
+
+    // 뷰를 재귀적으로 탐색하는 함수
+    private fun traverseViews(view: View, action: (View) -> Unit) {
+        action(view)
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                traverseViews(view.getChildAt(i), action)
+            }
+        }
+    }
+
+    // 뷰 전체를 순회하는 함수
+    private fun traverseViews(viewGroup: ViewGroup, action: (View) -> Unit) {
+        for (i in 0 until viewGroup.childCount) {
+            val child = viewGroup.getChildAt(i)
+            action(child)
+            if (child is ViewGroup) {
+                traverseViews(child, action) // 재귀 호출로 하위 뷰 그룹까지 탐색
+            }
+        }
+    }
+
     private fun startTimer() {
         // 입력된 시간 가져오기
         val hours = parseEditText(hourEditText)
