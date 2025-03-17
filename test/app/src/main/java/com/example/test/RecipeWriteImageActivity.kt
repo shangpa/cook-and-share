@@ -539,8 +539,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         contentAdd.setOnClickListener {
             if (recipeStepCount < 10) {
                 recipeStepCount++
-                currentSubStep++  //현재 STEP의 SubStep 증가
+
+                // ✅ 현재 Step의 SubStep 가져오기 (없으면 2부터 시작)
+                val currentSubStep = stepRecipeCountMap[currentStep] ?: 2
+
                 addRecipeStep(currentStep, currentSubStep)
+
+                // ✅ Step별 SubStep 증가
+                stepRecipeCountMap[currentStep] = currentSubStep + 1
             }
         }
 
@@ -549,7 +555,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         stepAddButton.setOnClickListener {
             currentStep++  // 새로운 Step 추가 시 Step 번호 증가
-            currentSubStep = 1  // 새로운 Step 시작 시 SubStep 초기화
+            stepRecipeCountMap[currentStep] = 2 // 새로운 Step의 첫 번째 SubStep을 2로 설정
             addNewStep(currentStep)
         }
 
@@ -1548,7 +1554,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
 
             // STEP 순서 번호 증가
-            stepRecipeCountMap[stepCount] = currentRecipeStepCount + 1 // 현재 STEP의 recipeStepCount 증가
+            stepRecipeCountMap[step] = currentRecipeStepCount + 1
+            // 현재 STEP의 recipeStepCount 증가
 
             // 동적으로 추가된 EditText와 Divider를 cookOrderRecipeContainerAdd에 추가
             val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
