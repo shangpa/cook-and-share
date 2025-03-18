@@ -144,11 +144,27 @@ class FridgeIngredientActivity : AppCompatActivity() {
             val dateOption = fridgeDateDropText.text.toString().trim()
             val quantity = fridgeIngredientNumInput.text.toString().toDoubleOrNull() ?: 0.0
             val price = fridgePriceInput.text.toString().toDoubleOrNull() ?: 0.0
-            val unitCategory = fridgeIngredientUnit2.text.toString().trim()  // 예: "무게"
-            val unitDetail = fridgeIngredientUnit.text.toString().trim()       // 예: "kg"
 
-            // 로그인한 사용자의 ID (실제 구현에서는 SharedPreferences나 인증 컨텍스트에서 가져옴)
+            // 단위 범주 변환: 클라이언트에서는 "개수" 등으로 선택하지만, 서버는 "COUNT"를 원함
+            val unitCategoryMapping = mapOf(
+                "무게" to "WEIGHT",
+                "부피" to "VOLUME",
+                "개수" to "COUNT"
+            )
+            val rawUnitCategory = fridgeIngredientUnit2.text.toString().trim()
+            val unitCategory = unitCategoryMapping[rawUnitCategory] ?: rawUnitCategory
+
+            val unitDetail = fridgeIngredientUnit.text.toString().trim()  // 예: "kg"
+
+            // 로그인한 사용자의 ID 및 토큰 가져오기 (PrefApp.prefs 사용)
             val userId = getLoggedInUserId()
+            val tokenFromPrefs = getTokenFromPreferences()
+            val token = "Bearer $tokenFromPrefs"
+
+            // 디버깅: SharedPreferences에서 가져온 값 출력
+            println("getLoggedInUserId(): $userId")
+            println("getTokenFromPreferences(): $tokenFromPrefs")
+            println("Final token used: $token")
 
             // FridgeRequest DTO 생성
             val fridgeRequest = FridgeRequest(
@@ -163,16 +179,12 @@ class FridgeIngredientActivity : AppCompatActivity() {
                 userId = userId
             )
 
-            // 실제 로그인 시 저장된 JWT 토큰을 가져오는 함수 (예시: SharedPreferences)
-            val token = "Bearer " + getTokenFromPreferences()
-
             // Retrofit API 호출 (토큰과 함께)
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val response = apiService.createFridge(token, fridgeRequest)
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            // 저장 성공 시 FridgeActivity로 이동
                             startActivity(Intent(this@FridgeIngredientActivity, FridgeActivity::class.java))
                         } else {
                             Toast.makeText(
@@ -210,15 +222,11 @@ class FridgeIngredientActivity : AppCompatActivity() {
     }
 
     private fun getLoggedInUserId(): Long {
-        val sharedPref = getSharedPreferences("auth", MODE_PRIVATE)
-        // 값이 없으면 기본값으로 -1L을 반환 (원하는 기본값으로 수정하세요)
-        return sharedPref.getLong("userId", -1L)
+        // App.prefs를 통해 전역적으로 저장된 값 사용 (Prefs 파일 이름 "mPref")
+        return App.prefs.userId
     }
 
     private fun getTokenFromPreferences(): String {
-        val sharedPref = getSharedPreferences("auth", MODE_PRIVATE)
-        // 토큰이 없으면 빈 문자열 반환
-        return sharedPref.getString("jwt_token", "") ?: ""
+        return App.prefs.token ?: ""
     }
-
 }

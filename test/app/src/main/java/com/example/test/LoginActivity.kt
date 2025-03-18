@@ -2,7 +2,6 @@ package com.example.test
 
 import Prefs
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -28,27 +27,31 @@ class LoginActivity : AppCompatActivity() {
         val loginPassword = findViewById<EditText>(R.id.etLoginPassword)
         val tvSignUp = findViewById<TextView>(R.id.tvSignUp)
 
-        // 로그인 기능
         loginButton.setOnClickListener {
-            val username = loginId.text.toString()
-            val password = loginPassword.text.toString()
+            val username = loginId.text.toString().trim()
+            val password = loginPassword.text.toString().trim()
+
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "아이디와 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val loginRequest = LoginRequest(username, password)
-            Log.e("LoginActivity", "Request: ${loginRequest}")  // 요청 본문 확인용 로그
-            Log.e("LoginActivity", "회원가입 요청 - username: $username, password: $password")
+            Log.e("LoginActivity", "Request: $loginRequest")
+            Log.e("LoginActivity", "로그인 요청 - username: $username, password: $password")
 
             RetrofitInstance.apiService.login(loginRequest).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful) {
                         val loginResponse = response.body()
                         if (loginResponse != null && loginResponse.message == "Login successful") {
-                            // 로그인 성공, 토큰 저장
-                            saveToken(loginResponse.token)
-                            Log.e("LoginActivity", "저장된 토큰================= : ${App.prefs.token}")
-
+                            // 로그인 성공: 서버에서 받은 사용자 ID와 JWT 토큰 저장
+                            saveAuthData(loginResponse.userId, loginResponse.token)
+                            Log.e("LoginActivity", "저장된 토큰: ${App.prefs.token}")
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
 
+                            // 로그인 성공 후 LoginInfoActivity 또는 메인 화면으로 이동
                             val intent = Intent(this@LoginActivity, LoginInfoActivity::class.java)
-                            // 로그인 성공시 loginInfoActivity로 이동
                             startActivity(intent)
                             finish()
                         } else {
@@ -61,7 +64,6 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                    // 로그캣에 오류 메시지 출력
                     Log.e("LoginActivity", "네트워크 오류: ${t.message}", t)
                 }
             })
@@ -73,9 +75,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToken(token: String) {
+    // 로그인 성공 시 SharedPreferences에 사용자 ID와 JWT 토큰 저장
+    private fun saveAuthData(userId: Long, token: String) {
         val prefs = Prefs(this)
+        prefs.userId = userId
         prefs.token = token
-        Log.e("LoginActivity", "토큰 저장 성공: $token")
+        Log.e("LoginActivity", "토큰 저장 성공: $token, userId: $userId")
     }
 }
