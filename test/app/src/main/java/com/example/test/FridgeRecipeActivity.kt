@@ -203,7 +203,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
 
         val fridgeRecipe1: LinearLayout = findViewById(R.id.fridgeRecipe1)
         fridgeRecipe1.setOnClickListener {
-            val intent = Intent(this, RecipeMainOne::class.java)
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
             startActivity(intent)
         }
 
