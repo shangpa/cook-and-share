@@ -21,10 +21,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // searchIcon 클릭했을 때 SearchMain 이동
+        // searchIcon 클릭했을 때 RecipeSeeMainActivity 이동
         val searchIcon: ImageView = findViewById(R.id.searchIcon)
         searchIcon.setOnClickListener {
-            val intent = Intent(this, SearchMain::class.java)
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
             startActivity(intent)
         }
 
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         // interestRecipeVideoList 클릭했을 때 NoticeActivity 이동
         val interestRecipeVideoList: LinearLayout = findViewById(R.id.interestRecipeVideoList)
         interestRecipeVideoList.setOnClickListener {
-            val intent = Intent(this, VideoSee::class.java)
+            val intent = Intent(this, RecipeSeeVideoActivity::class.java)
             startActivity(intent)
         }
 
