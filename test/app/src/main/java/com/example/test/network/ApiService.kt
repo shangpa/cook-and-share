@@ -9,6 +9,7 @@ import com.example.test.model.LoginResponse
 import com.example.test.model.RecipeRequest
 import com.example.test.model.RecipeResponse
 import com.example.test.model.SignUpRequest
+import com.example.test.model.recipeDetail.RecipeDetailResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -21,6 +22,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
 import retrofit2.Response
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -42,6 +44,13 @@ interface ApiService {
         @Body recipeRequest: RecipeRequest
     ): Call<RecipeResponse>
 
+    // 레시피 조회
+    @GET("api/recipes/{id}")
+    fun getRecipeById(
+        @Header("Authorization") token: String,
+        @Path("id") recipeId: Long
+    ): Call<RecipeDetailResponse>
+
     @Multipart
     @POST("api/upload-image")
     fun uploadImage(
@@ -62,4 +71,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("userId") userId: Long
     ): Response<List<FridgeResponse>>
+
+
 }
