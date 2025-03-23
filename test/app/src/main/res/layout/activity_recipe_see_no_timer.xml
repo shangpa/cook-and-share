@@ -624,6 +624,7 @@
                 app:layout_constraintStart_toStartOf="@id/divideRectangleBarOne"
                 app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
 
+
             <!-- 재료 아래 바 -->
             <View
                 android:id="@+id/divideRectangleBarTewleve"

@@ -17,6 +17,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.test.model.Ingredient
+import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.network.RetrofitInstance
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class RecipeSeeNoTimerActivity : AppCompatActivity() {
@@ -160,6 +168,61 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
             popup.show()
         }
+        
+        // 레시피 조회 기능 추가
+        val recipeId = 46L // 테스트용
+        val token = App.prefs.token.toString()
+
+        RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
+            .enqueue(object : Callback<RecipeDetailResponse> {
+                override fun onResponse(call: Call<RecipeDetailResponse>, response: Response<RecipeDetailResponse>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val recipe = response.body()!!
+                        val gson = Gson()
+
+                        // 📌 이 아래에 추가해줘!
+                        val ingredientContainer = findViewById<LinearLayout>(R.id.ingredientContainer)
+
+                        val ingredients = gson.fromJson<List<Ingredient>>(
+                            recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
+                        )
+
+                        ingredientContainer.removeAllViews()
+
+                        ingredients.forEach { ingredient ->
+                            val itemLayout = LinearLayout(this@RecipeSeeNoTimerActivity).apply {
+                                orientation = LinearLayout.HORIZONTAL
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    setMargins(20, 10, 20, 10)
+                                }
+                            }
+
+                            val nameText = TextView(this@RecipeSeeNoTimerActivity).apply {
+                                text = ingredient.name
+                                textSize = 13f
+                                setTextColor(Color.parseColor("#2B2B2B"))
+                            }
+
+                            val amountText = TextView(this@RecipeSeeNoTimerActivity).apply {
+                                text = ingredient.amount
+                                textSize = 13f
+                                setTextColor(Color.parseColor("#2B2B2B"))
+                                setPadding(100, 0, 0, 0)
+                            }
+
+                            itemLayout.addView(nameText)
+                            itemLayout.addView(amountText)
+                            ingredientContainer.addView(itemLayout)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<RecipeDetailResponse>, t: Throwable) {
+                    Toast.makeText(this@RecipeSeeNoTimerActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
 
 
     }
