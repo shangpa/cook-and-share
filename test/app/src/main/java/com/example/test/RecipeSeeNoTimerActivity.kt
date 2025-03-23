@@ -1,11 +1,14 @@
 package com.example.test
 
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -180,14 +183,34 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         val recipe = response.body()!!
                         val gson = Gson()
 
-                        // 📌 이 아래에 추가해줘!
                         val ingredientContainer = findViewById<LinearLayout>(R.id.ingredientContainer)
+                        ingredientContainer.removeAllViews()
 
+                        // 1. 레시피 제목 + " 재료" 텍스트
+                        val titleText = TextView(this@RecipeSeeNoTimerActivity).apply {
+                            text = "${recipe.title} 재료"
+                            textSize = 15f
+                            setTextColor(Color.parseColor("#2B2B2B"))
+                            setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
+                        }
+                        ingredientContainer.addView(titleText)
+
+                        // 2. 굵은 바
+                        val thickDivider = View(this@RecipeSeeNoTimerActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                2.dpToPx()
+                            ).apply {
+                                setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                            }
+                            setBackgroundResource(R.drawable.bar_recipe_see)
+                        }
+                        ingredientContainer.addView(thickDivider)
+
+                        // 3. 재료 반복
                         val ingredients = gson.fromJson<List<Ingredient>>(
                             recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
                         )
-
-                        ingredientContainer.removeAllViews()
 
                         ingredients.forEach { ingredient ->
                             val itemLayout = LinearLayout(this@RecipeSeeNoTimerActivity).apply {
@@ -196,7 +219,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                                 ).apply {
-                                    setMargins(20, 10, 20, 10)
+                                    setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
                                 }
                             }
 
@@ -204,25 +227,45 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                 text = ingredient.name
                                 textSize = 13f
                                 setTextColor(Color.parseColor("#2B2B2B"))
+                                layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val amountText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = ingredient.amount
                                 textSize = 13f
                                 setTextColor(Color.parseColor("#2B2B2B"))
-                                setPadding(100, 0, 0, 0)
+                                gravity = Gravity.END
+                                layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             itemLayout.addView(nameText)
                             itemLayout.addView(amountText)
                             ingredientContainer.addView(itemLayout)
+
+                            // 얇은 바
+                            val thinDivider = View(this@RecipeSeeNoTimerActivity).apply {
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    2.dpToPx()
+                                ).apply {
+                                    setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                                }
+                                setBackgroundResource(R.drawable.bar_recipe_see_material)
+                            }
+                            ingredientContainer.addView(thinDivider)
                         }
                     }
                 }
+
+                fun Int.dpToPx(): Int {
+                    return (this * Resources.getSystem().displayMetrics.density).toInt()
+                }
+
                 override fun onFailure(call: Call<RecipeDetailResponse>, t: Throwable) {
                     Toast.makeText(this@RecipeSeeNoTimerActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
                 }
             })
+
 
 
     }
