@@ -14,5 +14,6 @@ data class RecipeDetailResponse(
     val cookingTime: Int,
     val servings: Int,
     val createdAt: String,
-    val isPublic: Boolean
+    val isPublic: Boolean,
+    val writer: String
 )

@@ -28,6 +28,8 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class RecipeSeeNoTimerActivity : AppCompatActivity() {
@@ -183,6 +185,24 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         val recipe = response.body()!!
                         val gson = Gson()
 
+                        // 작성자, 제목, 카테고리, 난이도, 시간, 태그
+                        findViewById<TextView>(R.id.saltShow).text = recipe.writer
+                        println("아니 왜 writer안주냐"+recipe.writer)
+                        findViewById<TextView>(R.id.vegetarianDietName).text = recipe.title
+                        findViewById<TextView>(R.id.vegetarianDiet).text = recipe.category
+                        findViewById<TextView>(R.id.elementaryLevel).text = recipe.difficulty
+                        findViewById<TextView>(R.id.halfHour).text = "${recipe.cookingTime}분"
+
+                        //날짜
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                        val outputFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
+                        try {
+                            val parsedDate = inputFormat.parse(recipe.createdAt)
+                            val formattedDate = outputFormat.format(parsedDate!!)
+                            findViewById<TextView>(R.id.date).text = formattedDate // 예: 03.23
+                        } catch (e: Exception) {
+                            findViewById<TextView>(R.id.date).text = "-" // 에러 발생 시 예외 처리
+                        }
                         val ingredientContainer = findViewById<LinearLayout>(R.id.ingredientContainer)
                         ingredientContainer.removeAllViews()
 
