@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.model.Ingredient
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
+import com.google.android.flexbox.FlexboxLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -187,7 +188,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
                         // 작성자, 제목, 카테고리, 난이도, 시간, 태그
                         findViewById<TextView>(R.id.saltShow).text = recipe.writer
-                        println("아니 왜 writer안주냐"+recipe.writer)
                         findViewById<TextView>(R.id.vegetarianDietName).text = recipe.title
                         findViewById<TextView>(R.id.vegetarianDiet).text = recipe.category
                         findViewById<TextView>(R.id.elementaryLevel).text = recipe.difficulty
@@ -205,6 +205,30 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         }
                         val ingredientContainer = findViewById<LinearLayout>(R.id.ingredientContainer)
                         ingredientContainer.removeAllViews()
+
+                        //태그
+                        val tagContainer = findViewById<FlexboxLayout>(R.id.tagContainer)
+                        tagContainer.removeAllViews()
+
+                        val tagList = recipe.tags.split(",").map { it.trim() }
+
+                        tagList.forEach { tag ->
+                            val tagView = TextView(this@RecipeSeeNoTimerActivity) // ← Activity의 Context 명확히 지정
+                                .apply {
+                                text = "# $tag"
+                                textSize = 10f
+                                setTextColor(Color.parseColor("#747474"))
+                                setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
+                                setPadding(20, 4, 20, 4) // 태그 내부 여백
+                                layoutParams = FlexboxLayout.LayoutParams(
+                                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                                    FlexboxLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    setMargins(6.dpToPx(), 6.dpToPx(), 6.dpToPx(), 6.dpToPx())
+                                }
+                            }
+                            tagContainer.addView(tagView)
+                        }
 
                         // 1. 레시피 제목 + " 재료" 텍스트
                         val titleText = TextView(this@RecipeSeeNoTimerActivity).apply {
