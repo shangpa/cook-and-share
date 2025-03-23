@@ -3,5 +3,5 @@
     <item android:id="@+id/item_all" android:title="전체"/>
     <item android:id="@+id/item_refrigerated" android:title="냉장"/>
     <item android:id="@+id/item_frozen" android:title="냉동"/>
-    <item android:id="@+id/item_outdoor" android:title="실외"/>
+    <item android:id="@+id/item_outdoor" android:title="실온"/>
 </menu>
