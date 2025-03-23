@@ -1,6 +1,5 @@
 package com.example.test.model
 
-// FridgeResponse.kt
 data class FridgeResponse(
     val id: Long,
     val ingredientName: String,
@@ -11,7 +10,7 @@ data class FridgeResponse(
     val price: Double,
     val unitCategory: String,
     val unitDetail: String,
-    val userId: Long,
-    val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
+    val userId: Long
 )
+
