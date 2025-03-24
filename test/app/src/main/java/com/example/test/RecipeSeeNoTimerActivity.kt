@@ -3,8 +3,10 @@ package com.example.test
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -20,7 +22,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
 import com.example.test.model.Ingredient
+import com.example.test.model.recipeDetail.CookingStep
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
 import com.google.android.flexbox.FlexboxLayout
@@ -176,7 +180,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         }
         
         // 레시피 조회 기능 추가
-        val recipeId = 46L // 테스트용
+        val recipeId = 47L // 테스트용
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
@@ -297,6 +301,65 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
                             }
                             ingredientContainer.addView(thinDivider)
+                        }
+                        val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
+                        stepContainer.removeAllViews()
+
+                        val steps = gson.fromJson<List<CookingStep>>(
+                            recipe.cookingSteps, object : TypeToken<List<CookingStep>>() {}.type
+                        ).map { step ->
+                            step.copy(mediaUrl = RetrofitInstance.BASE_URL + step.mediaUrl.trim())
+                        }
+                        steps.forEach { step ->
+                            // STEP 타이틀
+                            val stepTitle = TextView(this@RecipeSeeNoTimerActivity).apply {
+                                text = "STEP ${step.step}"
+                                textSize = 14f
+                                setTextColor(Color.BLACK)
+                                setPadding(0, 12.dpToPx(), 0, 4.dpToPx())
+                                setTypeface(null, Typeface.BOLD)
+                            }
+
+                            // 설명
+                            val description = TextView(this@RecipeSeeNoTimerActivity).apply {
+                                text = step.description
+                                textSize = 13f
+                                setTextColor(Color.DKGRAY)
+                                setPadding(0, 0, 0, 6.dpToPx())
+                            }
+
+                            // 이미지
+                            val imageView = ImageView(this@RecipeSeeNoTimerActivity).apply {
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    200.dpToPx()
+                                ).apply {
+                                    bottomMargin = 12.dpToPx()
+                                }
+                                scaleType = ImageView.ScaleType.CENTER_CROP
+                                visibility = if (step.mediaUrl.isNullOrBlank()) View.GONE else View.VISIBLE
+                                if (!step.mediaUrl.isNullOrBlank()) {
+                                    Glide.with(this@RecipeSeeNoTimerActivity).load(step.mediaUrl).into(this)
+                                    Log.d("mediaUrl", step.mediaUrl)
+                                }
+                            }
+
+                            // 구분선
+                            val divider = View(this@RecipeSeeNoTimerActivity).apply {
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    2.dpToPx()
+                                ).apply {
+                                    topMargin = 12.dpToPx()
+                                }
+                                setBackgroundResource(R.drawable.bar_recipe_see_material)
+                            }
+
+                            // 전체 묶기
+                            stepContainer.addView(stepTitle)
+                            stepContainer.addView(description)
+                            stepContainer.addView(imageView)
+                            stepContainer.addView(divider)
                         }
                     }
                 }
