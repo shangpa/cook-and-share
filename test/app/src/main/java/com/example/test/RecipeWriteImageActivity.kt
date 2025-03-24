@@ -598,13 +598,28 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 레시피 조리순서 타이머 버튼 클릭시
         timerAdd.setOnClickListener {
-            // 버튼들 사라지게 하기
-            cookOrderAddButton.visibility = View.GONE
+            val timerLayout = LayoutInflater.from(this).inflate(R.layout.timer_step_layout, stepContainer, false)
 
-            // 타이머 관련 요소들 나타나게 하기
-            linearLayout2.visibility = View.VISIBLE
-            cookOrderStoreButton.visibility = View.VISIBLE
+            val hourPicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker1)
+            val minutePicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker2)
+            val storeBtn = timerLayout.findViewById<Button>(R.id.storeBtn)
+
+            hourPicker.minValue = 0
+            hourPicker.maxValue = 24
+            minutePicker.minValue = 0
+            minutePicker.maxValue = 59
+            minutePicker.setFormatter { i -> String.format("%02d", i) }
+
+            storeBtn.setOnClickListener {
+                val hour = hourPicker.value
+                val minute = minutePicker.value
+                stepTimerMap[currentStep] = hour to minute
+                Toast.makeText(this, "STEP $currentStep 타이머 저장됨 ($hour:$minute)", Toast.LENGTH_SHORT).show()
+            }
+
+            stepContainer.addView(timerLayout)
         }
+
 
         // NumberPicker 초기화
         val hourPicker = findViewById<NumberPicker>(R.id.numberPicker1)
@@ -810,19 +825,16 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                         Ingredient(parts[0], parts[1])
                     }),
                 handlingMethods = gson.toJson(handlingMethods),
-                cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, step ->
-                    val hours = parseEditText(hourEditText)
-                    val minutes = parseEditText(minuteEditText)
-                    val totalSeconds = (hours * 3600) + (minutes * 60) // 초 단위 변환
+                cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, stepText ->
+                    val step = index + 1
+                    val (hour, minute) = stepTimerMap[step] ?: (0 to 0)
+                    val totalSeconds = hour * 3600 + minute * 60
 
-                    // stepImages에서 현재 step의 index에 맞는 이미지 URL 가져오기 (없으면 빈 값)
-                    val imageUrl = stepImages[index + 1] ?: ""
-
-                    Log.d("StepMapping", "STEP ${index + 1} -> Image URL: $imageUrl")
+                    val imageUrl = stepImages[step] ?: ""
 
                     CookingStep(
-                        step = index + 1,
-                        description = step,
+                        step = step,
+                        description = stepText,
                         mediaUrl = imageUrl,
                         mediaType = "IMAGE",
                         timeInSeconds = totalSeconds
@@ -1493,6 +1505,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
     // 조리순서 step 추가 후 내용 추가하기
     val stepRecipeCountMap = mutableMapOf<Int, Int>()
+    val stepTimerMap = mutableMapOf<Int, Pair<Int, Int>>()
 
     private fun addNewStep(step: Int) {
         for (i in 0 until stepContainer.childCount) {
@@ -1518,6 +1531,57 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val contentAddTwo = newStepLayout.findViewById<Button>(R.id.contentAddTwo)
 
         val timerAddTwo = newStepLayout.findViewById<Button>(R.id.timerAddTwo)
+        timerAddTwo.setOnClickListener {
+            val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
+
+            // 🔁 기존 타이머가 있다면 제거 (중복 방지)
+            for (i in 0 until dynamicRecipeInputContainer.childCount) {
+                val child = dynamicRecipeInputContainer.getChildAt(i)
+                if (child.tag == "timer_$step") {
+                    dynamicRecipeInputContainer.removeView(child)
+                    break
+                }
+            }
+
+            // 🔧 새 타이머 뷰 생성
+            val timerLayout = LayoutInflater.from(this).inflate(R.layout.timer_step_layout, null).apply {
+                tag = "timer_$step" // 태그로 중복 방지
+            }
+
+            val hourPicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker1)
+            val minutePicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker2)
+            val storeBtn = timerLayout.findViewById<Button>(R.id.storeBtn)
+
+            hourPicker.minValue = 0
+            hourPicker.maxValue = 24
+            minutePicker.minValue = 0
+            minutePicker.maxValue = 59
+            minutePicker.setFormatter { i -> String.format("%02d", i) }
+
+            storeBtn.setOnClickListener {
+                val hour = hourPicker.value
+                val minute = minutePicker.value
+                stepTimerMap[step] = hour to minute
+                Toast.makeText(this, "STEP $step 타이머 저장됨 (${hour}시간 ${minute}분)", Toast.LENGTH_SHORT).show()
+            }
+
+            // 타이머 뷰 추가
+            dynamicRecipeInputContainer.addView(timerLayout)
+
+            timerLayout.post {
+                val baseMarginDp = 32
+
+                val layoutParamsContent = contentAddTwo.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParamsContent.topMargin = baseMarginDp.dpToPx() + timerLayout.height + 15.dpToPx()
+                contentAddTwo.layoutParams = layoutParamsContent
+
+                val layoutParamsTimer = timerAddTwo.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParamsTimer.topMargin = baseMarginDp.dpToPx() + timerLayout.height + 15.dpToPx()
+                timerAddTwo.layoutParams = layoutParamsTimer
+            }
+
+
+        }
 
         // 버튼이 보이도록 설정
         stepCamera.visibility = View.VISIBLE
@@ -1611,30 +1675,31 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 if (view is EditText) {
                     val tag = view.tag?.toString()
                     val text = view.text.toString().trim()
-                    if (!tag.isNullOrEmpty() && text.isNotEmpty()) {
+                    if (!tag.isNullOrEmpty() && tag.contains("-") && text.isNotEmpty()) {
                         stepTextMap[tag] = text
                     }
                 }
             }
         }
 
-        // 🔽 step-subStep 형태로 정렬
-        val sortedKeys = stepTextMap.keys.sortedWith(compareBy(
-            { it.split("-")[0].toIntOrNull() ?: 0 },
-            { it.split("-")[1].toIntOrNull() ?: 0 }
-        ))
+        val sortedKeys = stepTextMap.keys
+            .filter { it.contains("-") && it.split("-").size == 2 }
+            .sortedWith(compareBy(
+                { it.split("-")[0].toIntOrNull() ?: 0 },
+                { it.split("-")[1].toIntOrNull() ?: 0 }
+            ))
 
         var currentStep = ""
         val stepBuffer = mutableListOf<String>()
+        val resultSteps = mutableListOf<String>()
 
         for (key in sortedKeys) {
             val step = key.split("-")[0]
             val text = stepTextMap[key] ?: continue
 
             if (currentStep != step) {
-                // 이전 step이 있다면 저장
                 if (stepBuffer.isNotEmpty()) {
-                    recipeSteps.add("STEP $currentStep: ${stepBuffer.joinToString(" → ")}")
+                    resultSteps.add("STEP $currentStep: ${stepBuffer.joinToString(" → ")}")
                     stepBuffer.clear()
                 }
                 currentStep = step
@@ -1645,15 +1710,15 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 마지막 step 저장
         if (stepBuffer.isNotEmpty()) {
-            recipeSteps.add("STEP $currentStep: ${stepBuffer.joinToString(" → ")}")
+            resultSteps.add("STEP $currentStep: ${stepBuffer.joinToString(" → ")}")
         }
 
         // 디버깅 로그
-        recipeSteps.forEachIndexed { index, step ->
+        resultSteps.forEachIndexed { index, step ->
             Log.d("RecipeStep", "Step ${index + 1}: $step")
         }
 
-        return recipeSteps
+        return resultSteps
     }
 
     // 뷰를 재귀적으로 탐색하는 함수
