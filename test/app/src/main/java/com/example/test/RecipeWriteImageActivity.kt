@@ -1448,15 +1448,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private fun addRecipeStep(step: Int, subStep: Int) {
         val editText = EditText(this).apply {
             id = View.generateViewId()
-            tag = "$step"
+            tag = "$step-$subStep"
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply {
                 setMargins(45, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
             }
-            setText("$step-$subStep")
-            hint = "레시피를 입력해주세요."
+            hint = "$step-${subStep} 레시피를 입력해주세요."
             textSize = 13f
             backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#A1A9AD"))// Step 번호에 따라 텍스트 설정 (예: 2-2, 2-3)
@@ -1503,7 +1502,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
         // 기존에 XML에 있던 cookOrderRecipeWrite도 매번 태그 업데이트
         val cookOrderRecipeWrite = newStepLayout.findViewById<EditText>(R.id.cookOrderRecipeWrite)
-        cookOrderRecipeWrite.tag = "$step"
+        cookOrderRecipeWrite.tag = "$step-1"
         // Step 번호 설정
         val stepTextView = newStepLayout.findViewById<TextView>(R.id.stepOne)
         stepTextView.text = "STEP $step"
@@ -1537,7 +1536,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             // 동적으로 EditText 생성
             val editText = EditText(this).apply {
                 id = View.generateViewId()
-                tag = "$step"
+                tag = "$step-$currentRecipeStepCount"
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -1545,8 +1544,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     setMargins(51, 38, 45, 0) // 기존처럼 38dp 상단 마진 설정
                 }
                 // stepCount와 recipeStepCount로 초기화
-                setText("$step-${currentRecipeStepCount}")
-                hint = "레시피를 입력해주세요."
+                hint = "$step-${currentRecipeStepCount} 레시피를 입력해주세요."
                 textSize = 13f
                 backgroundTintList =
                     ColorStateList.valueOf(Color.parseColor("#A1A9AD")) // 배경 색상 설정
@@ -1604,29 +1602,53 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     // 레시피 조리순서 입력 데이터를 추출하고 저장하는 함수
     private fun saveRecipeSteps(): List<String> {
         val recipeSteps = mutableListOf<String>()
-        val stepMap = mutableMapOf<Int, MutableList<String>>()
+        val stepTextMap = mutableMapOf<String, String>()
 
         val containers = listOf(cookOrderRecipeContainer, stepContainer)
 
         containers.forEach { container ->
             traverseViews(container) { view ->
                 if (view is EditText) {
-                    val stepTag = view.tag?.toString()?.toIntOrNull()
+                    val tag = view.tag?.toString()
                     val text = view.text.toString().trim()
-                    if (stepTag != null && text.isNotEmpty()) {
-                        stepMap.getOrPut(stepTag) { mutableListOf() }.add(text)
+                    if (!tag.isNullOrEmpty() && text.isNotEmpty()) {
+                        stepTextMap[tag] = text
                     }
                 }
             }
         }
 
-        // step 번호별로 정렬해서 "→"로 구분하여 저장
-        stepMap.toSortedMap().forEach { (step, texts) ->
-            val joinedTexts = texts.joinToString(" → ")
-            recipeSteps.add("STEP $step: $joinedTexts")
+        // 🔽 step-subStep 형태로 정렬
+        val sortedKeys = stepTextMap.keys.sortedWith(compareBy(
+            { it.split("-")[0].toIntOrNull() ?: 0 },
+            { it.split("-")[1].toIntOrNull() ?: 0 }
+        ))
+
+        var currentStep = ""
+        val stepBuffer = mutableListOf<String>()
+
+        for (key in sortedKeys) {
+            val step = key.split("-")[0]
+            val text = stepTextMap[key] ?: continue
+
+            if (currentStep != step) {
+                // 이전 step이 있다면 저장
+                if (stepBuffer.isNotEmpty()) {
+                    recipeSteps.add("STEP $currentStep: ${stepBuffer.joinToString(" → ")}")
+                    stepBuffer.clear()
+                }
+                currentStep = step
+            }
+
+            stepBuffer.add(text)
         }
 
-        // 디버깅 로그 추가
+        // 마지막 step 저장
+        if (stepBuffer.isNotEmpty()) {
+            recipeSteps.add("STEP $currentStep: ${stepBuffer.joinToString(" → ")}")
+        }
+
+        // 디버깅 로그
         recipeSteps.forEachIndexed { index, step ->
             Log.d("RecipeStep", "Step ${index + 1}: $step")
         }
