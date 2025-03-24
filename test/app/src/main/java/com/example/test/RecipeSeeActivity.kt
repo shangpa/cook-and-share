@@ -2,6 +2,7 @@ package com.example.test
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -14,6 +15,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.test.model.Ingredient
+import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.network.RetrofitInstance
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 private lateinit var steps: List<View>
 private var currentStep = 0
 private lateinit var hourText: TextView
@@ -181,8 +193,88 @@ class RecipeSeeActivity : AppCompatActivity() {
         stopButton.setOnClickListener {
             stopTimer()
         }
+        // 레시피 조회 기능 추가
+        val recipeId = 47L // 테스트용
+        val token = App.prefs.token.toString()
 
+        RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
+            .enqueue(object : Callback<RecipeDetailResponse> {
+                override fun onResponse(call: Call<RecipeDetailResponse>, response: Response<RecipeDetailResponse>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val recipe = response.body()!!
+                        val gson = Gson()
+
+                        findViewById<TextView>(R.id.saltShow).text = recipe.writer
+                        findViewById<TextView>(R.id.vegetarianDietName).text = recipe.title
+                        findViewById<TextView>(R.id.registerRecipeSeeVegetarianDiet).text = recipe.category
+                        findViewById<TextView>(R.id.registerRecipeSeeElementaryLevel).text = recipe.difficulty
+                        findViewById<TextView>(R.id.registerRecipeSeeHalfHour).text = "${recipe.cookingTime}분"
+
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                        val outputFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
+                        try {
+                            val parsedDate = inputFormat.parse(recipe.createdAt)
+                            val formattedDate = outputFormat.format(parsedDate!!)
+                            findViewById<TextView>(R.id.date).text = formattedDate
+                        } catch (e: Exception) {
+                            findViewById<TextView>(R.id.date).text = "-"
+                        }
+
+                        val tagList = recipe.tags.split(",").map { it.trim() }
+                        val tagTextViews = listOf(
+                            R.id.chineseCabbage, R.id.tofu, R.id.mushroom, R.id.salad, R.id.jeongol
+                        )
+                        tagList.take(tagTextViews.size).forEachIndexed { i, tag ->
+                            findViewById<TextView>(tagTextViews[i]).text = tag
+                        }
+
+                        // 재료 바인딩
+                        val ingredients = gson.fromJson<List<Ingredient>>(
+                            recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
+                        )
+
+                        val ingredientNames = listOf(
+                            R.id.materialNameOne, R.id.materialNameTwo, R.id.materialNameThree,
+                            R.id.materialNameFour, R.id.materialNameFive, R.id.materialNameSix,
+                            R.id.materialNameSeven, R.id.materialNameEight, R.id.materialNameNine,
+                            R.id.materialNameTen, R.id.materialNameEleven, R.id.materialNameTweleve,
+                            R.id.materialNameThirteen, R.id.materialNameFourteen, R.id.materialNameFifteen,
+                            R.id.materialNameSixteen, R.id.materialNameSeventeen, R.id.materialNameEighteen,
+                            R.id.materialNameNineteen, R.id.materialNameTwenty, R.id.materialNameTwentyOne,
+                            R.id.materialNameTwentyTwo, R.id.materialNameTwentyThree, R.id.materialNameTwentyFour,
+                            R.id.materialNameTwentyFive
+                        )
+
+                        val ingredientAmounts = listOf(
+                            R.id.quantityOne, R.id.quantityTwo, R.id.quantityThree,
+                            R.id.quantityFour, R.id.quantityFive, R.id.quantitySix,
+                            R.id.quantitySeven, R.id.quantityEight, R.id.quantityNine,
+                            R.id.quantityTen, R.id.quantityEleven, R.id.quantityTweleve,
+                            R.id.quantityThirteen, R.id.quantityFourteen, R.id.quantityFifteen,
+                            R.id.quantitySixteen, R.id.quantitySeventeen, R.id.quantityEighteen,
+                            R.id.quantityNineteen, R.id.quantityTwenty, R.id.quantityTwentyOne,
+                            R.id.quantityTwentyTwo, R.id.quantityTwentyThree, R.id.quantityTwentyFour,
+                            R.id.quantityTwentyFive
+                        )
+
+                        ingredients.take(ingredientNames.size).forEachIndexed { i, ingredient ->
+                            findViewById<TextView>(ingredientNames[i]).text = ingredient.name
+                            findViewById<TextView>(ingredientAmounts[i]).text = ingredient.amount
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<RecipeDetailResponse>, t: Throwable) {
+                    Toast.makeText(this@RecipeSeeActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+        // dp 변환 함수 추가
+        fun Int.dpToPx(): Int {
+            return (this * Resources.getSystem().displayMetrics.density).toInt()
         }
+
+    }
 
     private fun startTimer() {
         // 매번 버튼 누를 때 시간 텍스트 기준으로 다시 계산
