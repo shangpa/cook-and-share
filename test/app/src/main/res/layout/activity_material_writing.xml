@@ -1,368 +1,780 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- 상단 바 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp">
-
-            <ImageView
-                android:id="@+id/senddReviewBack"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_back"
-                android:contentDescription="뒤로가기 아이콘"
-                android:layout_marginRight="120dp"
-                android:layout_marginLeft="15dp"/>
-
-            <TextView
-                android:id="@+id/fridgeMainTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="새로운 거래글"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- 구분선 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"/>
-
-    <!-- 사진 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp">
-
-        <ImageView
-            android:id="@+id/ic_camera"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_camera"
-            android:contentDescription="카메라 아이콘"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
-
-        <TextView
-            android:id="@+id/camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="0/10"
-            android:textSize="12sp"
-            android:textColor="#8A8A8A"/>
-    </LinearLayout>
-
-    <!-- 카테고리 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="25dp">
-
-        <TextView
-            android:id="@+id/category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카테고리"
-            android:textSize="13sp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"/>
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/linearLayoutTmap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+        <!-- 거래규칙 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/exchangeRule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:visibility="gone">
 
-            <!-- 입력 필드 -->
-            <EditText
-                android:id="@+id/categoryText"
-                android:layout_width="340dp"
-                android:layout_height="wrap_content"
-                android:hint="카테고리를 선택해주세요."
-                android:background="@null"
-                android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp" />
-
-            <ImageView
-                android:id="@+id/ic_arrow_down"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_down"
-                android:contentDescription="화살표 아이콘"
-                android:layout_marginRight="10dp"
-                app:tint="#8A8A8E"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="370dp"
-            android:layout_height="1dp"
-            android:background="#CCCCCC"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
-
-        <!-- 제목 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="제목"
-                android:textSize="13sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- 입력 필드 -->
-            <EditText
-                android:id="@+id/titleText"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="글 제목"
-                android:background="@null"
-                android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp" />
+                android:layout_height="match_parent">
 
-            <View
-                android:layout_width="370dp"
-                android:layout_height="1dp"
-                android:background="#CCCCCC"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-
-        <!-- 수량 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="수량"
-                android:textSize="13sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- 입력 필드 -->
-            <EditText
-                android:id="@+id/quantityText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="수량을 입력해주세요.(단위를 포함해서 적어주세요)"
-                android:background="@null"
-                android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="370dp"
-                android:layout_height="1dp"
-                android:background="#CCCCCC"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-
-        <!-- 거래 가격 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/transactionPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="거래 가격"
-                android:textSize="13sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- 입력 필드 -->
-            <EditText
-                android:id="@+id/transactionPriceText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="가격을 입력해주세요.(0을 입력 시 나눔으로 표시됩니다.)"
-                android:background="@null"
-                android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="370dp"
-                android:layout_height="1dp"
-                android:background="#CCCCCC"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-
-        <!-- 구매 날짜 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/purchaseDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="구매 날짜"
-                android:textSize="13sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- 입력 필드 -->
-            <EditText
-                android:id="@+id/purchaseDateText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="구매 날짜를 입력해주세요."
-                android:background="@null"
-                android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="370dp"
-                android:layout_height="1dp"
-                android:background="#CCCCCC"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-
-        <!-- 설명 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="설명"
-                android:textSize="13sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- 입력 필드 -->
-            <EditText
-                android:id="@+id/descriptionText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="거래글의 내용을 작성해주세요.(판매 금지 물품은 게시가 제한될 수 있어\n요.)
-\n\n 욕설, 비방 등 불건전한 내용을 작성한 경우, 앱 사용에 제한이 있을 수 있습\n니다. "
-                android:background="@null"
-                android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="370dp"
-                android:layout_height="1dp"
-                android:background="#CCCCCC"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-
-        <!-- 거래 희망 장소 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/wishPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="거래 희망 장소"
-                android:textSize="13sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <LinearLayout
-                android:layout_width="390dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- 입력 필드 -->
-                <EditText
-                    android:id="@+id/wishPlaceText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="거래 희망 장소를 간단히 작성해주세요."
-                    android:background="@null"
-                    android:layout_gravity="start"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="12sp" />
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/ic_rigth_arrow"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginRight="10dp"
-                    android:contentDescription="화살표 아이콘"
-                    android:src="@drawable/ic_rigth_arrow"
-                    app:tint="#8A8A8E"
-                    android:layout_gravity="center"/>
+                    <!-- 상단 바 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp">
 
-            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/senddReviewBack"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_back"
+                            android:contentDescription="뒤로가기 아이콘"
+                            android:layout_marginRight="120dp"
+                            android:layout_marginLeft="15dp"/>
 
-            <View
-                android:layout_width="370dp"
-                android:layout_height="1dp"
-                android:background="#CCCCCC"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/fridgeMainTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래 규칙"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
 
-        <Button
-            android:id="@+id/continueButton"
-            android:layout_width="370dp"
-            android:layout_height="55dp"
-            android:text="게시하기"
-            android:backgroundTint="#E7E7E7"
-            android:textColor="#A1A9AD"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="17dp"/>
+                    <!-- 구분선 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"/>
 
-    </LinearLayout>
-</ScrollView>
+                    <!-- 개인정보 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/personalInformation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="개인정보"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!-- 개인정보 내용 -->
+                            <TextView
+                                android:id="@+id/personalInformationText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="· 주방용품을 판매할 때도 개인정보 노출을 최소화한다."
+                                android:textSize="13sp"
+                                android:layout_gravity="start"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginBottom="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 채팅 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/chat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="채팅"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 채팅 내용 -->
+                        <TextView
+                            android:id="@+id/chatText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 카카오톡 거래는 피하고, 가급적 쿡앤쉐어 채팅을 활용한다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+                    </LinearLayout>
+
+                    <!-- 거래장소 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/exchangePlace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래장소"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 거래장소 내용 -->
+                        <TextView
+                            android:id="@+id/exchangePlaceText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 거래장소는 지하철역이나 버스정류장 등 사람이 많은 곳에서 한다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+                    </LinearLayout>
+
+                    <!-- 거래글 작성 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/exchangeWrite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래글 작성"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 거래글 작성 내용 -->
+                        <TextView
+                            android:id="@+id/exchangeWriteText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 주방용품 사진을 촬영할 때는 불필요한 배경이나 개인 정보가 포함되지 \n  않도록 한다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <!-- 거래글 작성 내용2 -->
+                        <TextView
+                            android:id="@+id/exchangeWriteTextTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 닉네임을 적은 메모지는 함께 찍는 것이 좋다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <!-- 거래글 작성 내용3 -->
+                        <TextView
+                            android:id="@+id/exchangeWriteTextThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 거래글에는 시,군,구,동까지만 위치를 작성한다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <!-- 거래글 작성 내용4 -->
+                        <TextView
+                            android:id="@+id/exchangeWriteTextFour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 외부 링크(제품 설명, 제조사 사이트, 카페/블로그 링크 포함)는 금지된다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+                    </LinearLayout>
+
+                    <!-- 거래금지용품 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/exchangeProhibitionProduct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래금지용품"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 거래금지용품 내용 -->
+                        <TextView
+                            android:id="@+id/exchangeProhibitionProductText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 전자기능이 있는 주방기기의 경우, 국내 인증을 받지 않은 제품은 판매\n  하면 안 된다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <!-- 거래금지용품 내용2 -->
+                        <TextView
+                            android:id="@+id/exchangeProhibitionProductTextTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="· 임직원가로 구매한 제품(사내용 등외급 제품)은 판매하면 안 된다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+                    </LinearLayout>
+
+                    <!-- 제한 안내 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <!-- 제한 안내 내용 -->
+                        <TextView
+                            android:id="@+id/limitGuideText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="위 사항을 위반한 거래글을 작성한 경우, 앱 사용에 제한이 있을 수 \n있습니다."
+                            android:textSize="13sp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="8dp"/>
+                    </LinearLayout>
+
+                    <!-- 글 작성 여부 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/exchangeWriteQuestion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="위 사항을 지켜 거래글을 작성하시겠습니까?"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="150dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- 하단 고정 바 -->
+            <ImageView
+                android:id="@+id/tapFixBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bar_tap_bg"
+                android:layout_marginBottom="0dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <Button
+                android:id="@+id/continueButton"
+                android:layout_width="352dp"
+                android:layout_height="55dp"
+                android:text="위 사항에 동의합니다"
+                android:backgroundTint="#E7E7E7"
+                android:textColor="#A1A9AD"
+                app:layout_constraintTop_toTopOf="@id/tapFixBar"
+                app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
+                app:layout_constraintStart_toStartOf="@id/tapFixBar"
+                app:layout_constraintEnd_toEndOf="@id/tapFixBar"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 새로운 거래글 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/newExchangeWrite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- 상단 바 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp">
+
+                        <ImageView
+                            android:id="@+id/senddReviewBackTwo"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_back"
+                            android:contentDescription="뒤로가기 아이콘"
+                            android:layout_marginRight="120dp"
+                            android:layout_marginLeft="15dp"/>
+
+                        <TextView
+                            android:id="@+id/fridgeMainTitleTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="새로운 거래글"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- 구분선 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"/>
+
+                <!-- 사진 넣는곳 -->
+                <LinearLayout
+                    android:id="@+id/photoContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="25dp"
+                    android:visibility="gone">
+                </LinearLayout>
+
+                    <!-- 사진 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp">
+
+                        <ImageView
+                            android:id="@+id/ic_camera"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_camera"
+                            android:contentDescription="카메라 아이콘"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="10dp"/>
+
+                        <TextView
+                            android:id="@+id/camera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="0/10"
+                            android:textSize="12sp"
+                            android:textColor="#8A8A8A"/>
+                    </LinearLayout>
+
+                    <!-- 카테고리 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="카테고리"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!-- 입력 필드 -->
+                            <EditText
+                                android:id="@+id/categoryText"
+                                android:layout_width="340dp"
+                                android:layout_height="wrap_content"
+                                android:hint="카테고리를 선택해주세요."
+                                android:background="@null"
+                                android:layout_gravity="start"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginBottom="8dp"
+                                android:textSize="12sp" />
+
+                            <ImageView
+                                android:id="@+id/ic_arrow_down"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_arrow_down"
+                                android:contentDescription="화살표 아이콘"
+                                android:layout_marginRight="10dp"
+                                app:tint="#8A8A8E"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"/>
+
+                        <!-- 제목 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="25dp">
+
+                            <View
+                                android:layout_width="370dp"
+                                android:layout_height="102dp"
+                                android:background="@drawable/ic_material_writing_rect"
+                                android:layout_marginLeft="20dp"/>
+
+                            <!-- 첫 번째 카테고리 컨테이너 -->
+                            <LinearLayout
+                                android:id="@+id/materialFilter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="@drawable/rounded_rectangle_background"
+                                android:padding="4dp"
+                                android:gravity="center"
+                                android:strokeColor="#D2D5D6"
+                                android:layout_marginRight="11dp"
+                                android:layout_marginLeft="170dp">
+
+                                <!-- 조리도구 텍스트 -->
+                                <TextView
+                                    android:id="@+id/materialText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="조리도구"
+                                    android:textSize="11sp"
+                                    android:textColor="#8A8F9C"
+                                    android:layout_marginEnd="4dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 제목 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="제목"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 입력 필드 -->
+                        <EditText
+                            android:id="@+id/titleText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="글 제목"
+                            android:background="@null"
+                            android:layout_gravity="start"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="12sp"
+                            android:textColor="#2B2B2B" />
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"/>
+                    </LinearLayout>
+
+                    <!-- 수량 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/quantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="수량"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 입력 필드 -->
+                        <EditText
+                            android:id="@+id/quantityText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="수량을 입력해주세요.(단위를 포함해서 적어주세요)"
+                            android:background="@null"
+                            android:layout_gravity="start"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="12sp"
+                            android:textColor="#2B2B2B" />
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"/>
+                    </LinearLayout>
+
+                    <!-- 거래 가격 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/transactionPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래 가격"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 입력 필드 -->
+                        <EditText
+                            android:id="@+id/transactionPriceText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="가격을 입력해주세요.(0을 입력 시 나눔으로 표시됩니다.)"
+                            android:background="@null"
+                            android:layout_gravity="start"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="12sp"
+                            android:textColor="#2B2B2B"/>
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"/>
+                    </LinearLayout>
+
+                    <!-- 구매 날짜 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/purchaseDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="구매 날짜"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 입력 필드 -->
+                        <EditText
+                            android:id="@+id/purchaseDateText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="구매 날짜를 입력해주세요."
+                            android:background="@null"
+                            android:layout_gravity="start"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="12sp"
+                            android:textColor="#2B2B2B" />
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"/>
+                    </LinearLayout>
+
+                    <!-- 설명 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="설명"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <!-- 입력 필드 -->
+                        <EditText
+                            android:id="@+id/descriptionText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="거래글의 내용을 작성해주세요.(판매 금지 물품은 게시가 제한될 수 있어\n요.)
+\n\n 욕설, 비방 등 불건전한 내용을 작성한 경우, 앱 사용에 제한이 있을 수 있습\n니다. "
+                            android:background="@null"
+                            android:layout_gravity="start"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="12sp"
+                            android:textColor="#2B2B2B" />
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"/>
+                    </LinearLayout>
+
+                    <!-- 거래 희망 장소 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="25dp">
+
+                        <TextView
+                            android:id="@+id/wishPlace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="거래 희망 장소"
+                            android:textSize="13sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="390dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!-- 입력 필드 -->
+                            <EditText
+                                android:id="@+id/wishPlaceText"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:hint="거래 희망 장소를 간단히 작성해주세요."
+                                android:background="@null"
+                                android:layout_gravity="start"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginBottom="8dp"
+                                android:textSize="12sp"
+                                android:textColor="#2B2B2B"/>
+
+                            <ImageView
+                                android:id="@+id/ic_rigth_arrow"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginRight="10dp"
+                                android:contentDescription="화살표 아이콘"
+                                android:src="@drawable/ic_rigth_arrow"
+                                app:tint="#8A8A8E"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="370dp"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="300dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- 하단 고정 바 -->
+            <ImageView
+                android:id="@+id/tapFixBarTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bar_tap_bg"
+                android:layout_marginBottom="0dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <Button
+                android:id="@+id/post"
+                android:layout_width="352dp"
+                android:layout_height="55dp"
+                android:text="게시하기"
+                android:backgroundTint="#E7E7E7"
+                android:textColor="#A1A9AD"
+                app:layout_constraintTop_toTopOf="@id/tapFixBarTwo"
+                app:layout_constraintBottom_toBottomOf="@id/tapFixBarTwo"
+                app:layout_constraintStart_toStartOf="@id/tapFixBarTwo"
+                app:layout_constraintEnd_toEndOf="@id/tapFixBarTwo"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,11 +44,12 @@
 
             <!-- 전체 텍스트 -->
             <LinearLayout
+                android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@drawable/rounded_rectangle_background"
-                android:padding="2dp"
+                android:padding="3dp"
                 android:gravity="center"
                 android:strokeColor="#D2D5D6"
                 android:layout_marginLeft="20dp"
@@ -64,6 +65,7 @@
 
             <!-- 판매 텍스트 -->
             <LinearLayout
+                android:id="@+id/sale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -84,6 +86,7 @@
 
             <!-- 구매 텍스트 -->
             <LinearLayout
+                android:id="@+id/purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -104,6 +107,7 @@
 
             <!-- 안 읽은 채팅방 텍스트 -->
             <LinearLayout
+                android:id="@+id/unread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -131,146 +135,373 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"/>
 
-        <!-- 채팅1 텍스트 -->
+        <!-- 전체 채팅1,2 -->
         <LinearLayout
-            android:id="@+id/chat1"
+            android:id="@+id/totalListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_background"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="15dp"
-                android:contentDescription="프로필 아이콘"
-                android:src="@drawable/ic_cicrle_profile" />
-
+            <!-- 전체 채팅1 텍스트 -->
             <LinearLayout
+                android:id="@+id/totalChat1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="프로필 아이콘"
+                    android:src="@drawable/ic_cicrle_profile" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="소금시러설탕시러"
+                            android:textStyle="bold"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="오전 10:10"
+                            android:textColor="#8A8A8E"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="읽지않음"
+                            android:textColor="#8A8A8E"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="120dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="소금시러설탕시러"
-                        android:textStyle="bold"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="오전 10:10"
-                        android:textColor="#8A8A8E"
+                        android:text="거래희망하시는 걸까요?"
+                        android:textColor="#2B2B2B"
                         android:textSize="12sp"
                         android:layout_marginLeft="5dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="읽지않음"
-                        android:textColor="#8A8A8E"
-                        android:textSize="10sp"
-                        android:layout_marginLeft="120dp"/>
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="거래희망하시는 걸까요?"
-                    android:textColor="#2B2B2B"
-                    android:textSize="12sp"
-                    android:layout_marginLeft="5dp"/>
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- 구분선 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginTop="12dp"/>
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginTop="12dp"/>
 
-        <!-- 채팅1 텍스트 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_background"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/chat2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="15dp"
-                android:contentDescription="프로필 아이콘"
-                android:src="@drawable/ic_cicrle_profile" />
-
+            <!-- 전체 채팅2 텍스트 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/chat2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="프로필 아이콘"
+                    android:src="@drawable/ic_cicrle_profile" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="그거아세요"
+                            android:textStyle="bold"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="3달 전"
+                            android:textColor="#8A8A8E"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="5dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="그거아세요"
-                        android:textStyle="bold"
-                        android:textSize="13sp" />
+                        android:text="좋은 거래 감사합니다!"
+                        android:textColor="#2B2B2B"
+                        android:textSize="12sp"
+                        android:layout_marginLeft="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 판매 채팅 -->
+        <LinearLayout
+            android:id="@+id/saleListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- 판매 채팅 텍스트 -->
+            <LinearLayout
+                android:id="@+id/saleChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="프로필 아이콘"
+                    android:src="@drawable/ic_cicrle_profile" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="그거아세요"
+                            android:textStyle="bold"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="3달전"
+                            android:textColor="#8A8A8E"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="5dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="3달 전"
-                        android:textColor="#8A8A8E"
+                        android:layout_marginEnd="4dp"
+                        android:text="좋은 거래 감사합니다!"
+                        android:textColor="#2B2B2B"
                         android:textSize="12sp"
                         android:layout_marginLeft="5dp"/>
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="좋은 거래 감사합니다!"
-                    android:textColor="#2B2B2B"
-                    android:textSize="12sp"
-                    android:layout_marginLeft="5dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
-        <!-- 구분선 -->
-        <View
+        <!-- 구매 채팅 -->
+        <LinearLayout
+            android:id="@+id/purchaseListContainer"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginTop="12dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- 구매 채팅 텍스트 -->
+            <LinearLayout
+                android:id="@+id/purchaseChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="프로필 아이콘"
+                    android:src="@drawable/ic_cicrle_profile" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="소금시러설탕시러"
+                            android:textStyle="bold"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="오전 10:10"
+                            android:textColor="#8A8A8E"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="읽지않음"
+                            android:textColor="#8A8A8E"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="120dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="거래희망하시는 걸까요?"
+                        android:textColor="#2B2B2B"
+                        android:textSize="12sp"
+                        android:layout_marginLeft="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 안 읽은 채팅방 채팅 -->
+        <LinearLayout
+            android:id="@+id/unreadListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- 안 읽은 채팅방 채팅 텍스트 -->
+            <LinearLayout
+                android:id="@+id/unreadChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="프로필 아이콘"
+                    android:src="@drawable/ic_cicrle_profile" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="귤락"
+                            android:textStyle="bold"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="오전 10:10"
+                            android:textColor="#8A8A8E"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="5dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="읽지않음"
+                            android:textColor="#8A8A8E"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="120dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="거래희망하시는 걸까요?"
+                        android:textColor="#2B2B2B"
+                        android:textSize="12sp"
+                        android:layout_marginLeft="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

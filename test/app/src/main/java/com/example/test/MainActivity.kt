@@ -21,10 +21,67 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // searchIcon 클릭했을 때 RecipeSeeMainActivity 이동
+
+        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIcon: ImageButton = findViewById(R.id.tapVillageKitchenIcon)
+        tapVillageKitchenIcon.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // nowTapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+        val nowTapVillageKitchenText: TextView = findViewById(R.id.nowTapVillageKitchenText)
+        nowTapVillageKitchenText.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIcon: ImageButton = findViewById(R.id.tapRecipeIcon)
+        tapRecipeIcon.setOnClickListener {
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+        tapRecipeText.setOnClickListener {
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIcon 클릭했을 때 CommunityMain 이동
+        val tapCommunityIcon: ImageButton = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMain::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMain 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMain::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIcon: ImageButton = findViewById(R.id.tapFridgeIcon)
+        tapFridgeIcon.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+        tapFridgeText.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // searchIcon 클릭했을 때 SearchMain 이동
         val searchIcon: ImageView = findViewById(R.id.searchIcon)
         searchIcon.setOnClickListener {
-            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            val intent = Intent(this, SearchMain::class.java)
             startActivity(intent)
         }
 
