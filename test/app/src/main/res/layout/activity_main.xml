@@ -570,4 +570,182 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <!-- 탭바 배경 하얀색 사각형 -->
+    <ImageView
+        android:id="@+id/mainTapBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/bar_tap_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 탭바 동네주방 배경 하얀색 사각형 -->
+    <ImageView
+        android:id="@+id/villageKitchenRectangleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        android:src="@drawable/bar_tap_regtangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 동네주방 아이콘 -->
+    <ImageButton
+        android:id="@+id/tapVillageKitchenIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/ic_village_kitchen"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@id/villageKitchenRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/villageKitchenRectangleBar"
+        app:layout_constraintTop_toTopOf="@id/villageKitchenRectangleBar" />
+
+    <!-- 동네주방 텍스트 -->
+    <TextView
+        android:id="@+id/nowTapVillageKitchenText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="동네주방"
+        android:textSize="10sp"
+        android:textColor="#B9BEC1"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="@id/villageKitchenRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/villageKitchenRectangleBar"
+        app:layout_constraintBottom_toBottomOf="@id/villageKitchenRectangleBar" />
+
+    <!-- 탭바 레시피 배경 하얀색 사각형 -->
+    <ImageView
+        android:id="@+id/recipeRectangleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        android:src="@drawable/bar_tap_regtangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/villageKitchenRectangleBar" />
+
+    <!-- 레시피 아이콘 -->
+    <ImageButton
+        android:id="@+id/tapRecipeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ic_recipe"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@id/recipeRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/recipeRectangleBar"
+        app:layout_constraintTop_toTopOf="@id/recipeRectangleBar" />
+
+    <!-- 레시피 텍스트 -->
+    <TextView
+        android:id="@+id/tapRecipeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="레시피"
+        android:textSize="10sp"
+        android:textColor="#B9BEC1"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="@id/recipeRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/recipeRectangleBar"
+        app:layout_constraintBottom_toBottomOf="@id/recipeRectangleBar" />
+
+    <!-- 탭바 홈 배경 하얀색 사각형 -->
+    <ImageView
+        android:id="@+id/homeRectangleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        android:src="@drawable/bar_tap_regtangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/recipeRectangleBar" />
+
+    <!-- 홈 아이콘 -->
+    <ImageButton
+        android:id="@+id/tapHomeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_home"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@id/homeRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/homeRectangleBar"
+        app:layout_constraintTop_toTopOf="@id/homeRectangleBar" />
+
+    <!-- 탭바 커뮤니티 배경 하얀색 사각형 -->
+    <ImageView
+        android:id="@+id/communityRectangleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        android:src="@drawable/bar_tap_regtangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/homeRectangleBar" />
+
+    <!-- 커뮤니티 아이콘 -->
+    <ImageButton
+        android:id="@+id/tapCommunityIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_community"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@id/communityRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/communityRectangleBar"
+        app:layout_constraintTop_toTopOf="@id/communityRectangleBar" />
+
+    <!-- 커뮤니티 텍스트 -->
+    <TextView
+        android:id="@+id/tapCommunityText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="커뮤니티"
+        android:textSize="10sp"
+        android:textColor="#B9BEC1"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="@id/communityRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/communityRectangleBar"
+        app:layout_constraintBottom_toBottomOf="@id/communityRectangleBar" />
+
+    <!-- 탭바 냉장고 배경 하얀색 사각형 -->
+    <ImageView
+        android:id="@+id/fridgeRectangleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        android:src="@drawable/bar_tap_regtangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/communityRectangleBar" />
+
+    <!-- 냉장고 아이콘 -->
+    <ImageButton
+        android:id="@+id/tapFridgeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ic_refrigerator"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@id/fridgeRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/fridgeRectangleBar"
+        app:layout_constraintTop_toTopOf="@id/fridgeRectangleBar" />
+
+    <!-- 냉장고 텍스트 -->
+    <TextView
+        android:id="@+id/tapFridgeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="냉장고"
+        android:textColor="#B9BEC1"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/fridgeRectangleBar"
+        app:layout_constraintEnd_toEndOf="@id/fridgeRectangleBar"
+        app:layout_constraintStart_toStartOf="@id/fridgeRectangleBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
