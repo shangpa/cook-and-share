@@ -302,6 +302,8 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             }
                             ingredientContainer.addView(thinDivider)
                         }
+
+                        //조리순서
                         val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
                         stepContainer.removeAllViews()
 
