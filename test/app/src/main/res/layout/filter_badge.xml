@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_rectangle_background"
+    android:layout_marginEnd="8dp"
+    android:gravity="center"
+    android:paddingHorizontal="8dp">
+
+    <TextView
+        android:id="@+id/filterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="조리기구"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"/>
+
+    <ImageView
+        android:id="@+id/filterClose"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/ic_close"
+        android:contentDescription="닫기" />
+</LinearLayout>
