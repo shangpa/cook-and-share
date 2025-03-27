@@ -151,6 +151,15 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/selectedFilterLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:padding="4dp"/>
+
             <!-- 구분선 -->
             <View
                 android:layout_width="match_parent"
