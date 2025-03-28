@@ -197,7 +197,7 @@ class RecipeSeeActivity : AppCompatActivity() {
             stopTimer()
         }
         // 레시피 조회 기능 추가
-        val recipeId = 47L // 테스트용
+        val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
