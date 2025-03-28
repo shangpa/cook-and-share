@@ -21,6 +21,7 @@ import android.view.View.FIND_VIEWS_WITH_TEXT
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.GridLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -33,12 +34,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.test.Repository.RecipeRepository
 import com.example.test.model.CookingStep
 import com.example.test.model.Ingredient
 import com.example.test.model.RecipeRequest
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -718,7 +721,10 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
-
+            //대표이미지 가져오기
+            val representativeImage = findViewById<ImageView>(R.id.representativeImage)
+            val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
+            Glide.with(this).load(fullImageUrl).into(representativeImage)
             // 선택된 카테고리 가져오기
             val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
             // 레시피 제목 가져오기
@@ -807,8 +813,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             // Gson 인스턴스 생성
             val gson = Gson()
 
-            // 로그 출력 (디버깅용)
-            Log.d("CATEGORY", "사용자가 선택한 카테고리: $categoryText -> 변환된 값: $categoryEnum")
             // RecipeRequest 객체 생성
             val recipe = RecipeRequest(
                 title = recipeTitle,
@@ -847,7 +851,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 servings = 2,
                 isPublic = true
             )
-
             fun sendRecipeToServer(recipe: RecipeRequest) {
                 val token = App.prefs.token
                 RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
@@ -861,6 +864,15 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
             Log.d("RecipeRequest", gson.toJson(recipe))
             sendRecipeToServer(recipe)
+            updateMaterialListView(
+                findViewById(R.id.materialList),
+                filteredIngredients,
+                replaceIngredients.map { it.split(" → ")[0] to it.split(" → ")[1] },
+                handlingMethods.map { it.split(" : ")[0] to it.split(" : ")[1] }
+            )
+            val type = object : TypeToken<List<CookingStep>>() {}.type
+            val cookingStepList: List<CookingStep> = gson.fromJson(recipe.cookingSteps, type)
+            addCookingSteps(this, cookingStepList)
         }
 
         // 레시피 조리순서 다른 레이아웃 목록을 먼저 선언
@@ -982,6 +994,187 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             recipeRegister.visibility = View.GONE
             contentCheckLayout.visibility = View.GONE
             recipeWrite.visibility = View.GONE
+        }
+    }
+    //재료, 대체 재료, 재료 처리 방법 추가
+    private fun updateMaterialListView(materialView: View, ingredients: List<Pair<String, String>>, alternatives: List<Pair<String, String>>, handling: List<Pair<String, String>>) {
+        val categoryGroup = materialView.findViewById<GridLayout>(R.id.categoryGroup)
+        categoryGroup.removeAllViews() // 기존 뷰 제거
+
+        // 공통으로 쓰이는 구분선 뷰 생성 함수
+        fun createDivider(drawableId: Int): View {
+            return View(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 2.dpToPx()
+                ).apply {
+                    topMargin = 12.dpToPx()
+                }
+                setBackgroundResource(drawableId)
+            }
+        }
+
+        // 중간 제목 추가 함수
+        fun addSectionTitle(title: String) {
+            val titleLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = 33.dpToPx()
+                }
+            }
+
+            val titleText = TextView(this).apply {
+                text = title
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+                setTextColor(Color.parseColor("#2B2B2B"))
+            }
+
+            titleLayout.addView(titleText)
+            categoryGroup.addView(titleLayout)
+            categoryGroup.addView(createDivider(R.drawable.bar_recipe_see))
+        }
+
+        // 재료 항목 추가 함수
+        fun addMaterialItem(name: String, amount: String) {
+            val rowLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = 10.dpToPx()
+                    leftMargin = 15.dpToPx()
+                }
+            }
+
+            val nameText = TextView(this).apply {
+                text = name
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+                setTextColor(Color.parseColor("#2B2B2B"))
+            }
+
+            val amountText = TextView(this).apply {
+                text = amount
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+                setTextColor(Color.parseColor("#2B2B2B"))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    leftMargin = 140.dpToPx()
+                }
+            }
+
+            rowLayout.addView(nameText)
+            rowLayout.addView(amountText)
+
+            categoryGroup.addView(rowLayout)
+            categoryGroup.addView(createDivider(R.drawable.bar_recipe_see_material))
+        }
+
+        // 🔽 섹션별로 추가
+        if (ingredients.isNotEmpty()) {
+            addSectionTitle("기본 재료")
+            ingredients.forEach { (name, amount) ->
+                addMaterialItem(name, amount)
+            }
+        }
+
+        if (alternatives.isNotEmpty()) {
+            addSectionTitle("대체 가능한 재료")
+            alternatives.forEach { (original, replace) ->
+                addMaterialItem(original, replace)
+            }
+        }
+
+        if (handling.isNotEmpty()) {
+            addSectionTitle("사용된 재료 처리 방법")
+            handling.forEach { (ingredient, method) ->
+                addMaterialItem(ingredient, method)
+            }
+        }
+    }
+    //조리 순서 추가
+    private fun addCookingSteps(context: Context, steps: List<CookingStep>)  {
+        val container = findViewById<LinearLayout>(R.id.stepSeeContainer)
+
+        steps.forEachIndexed { index, step ->
+            val context = this
+
+            // STEP 제목
+            val stepTitle = TextView(context).apply {
+                text = "STEP ${index + 1}"
+                textSize = 15f
+                setTextColor(Color.BLACK)
+                setPadding(20, 26, 0, 0)
+            }
+
+            container.addView(stepTitle)
+
+            // 이미지 (URL 있을 경우에만)
+            if (!step.mediaUrl.isNullOrBlank()) {
+                val imageView = ImageView(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(20, 15, 20, 0)
+                    }
+                    scaleType = ImageView.ScaleType.FIT_CENTER
+                }
+
+                Glide.with(context)
+                    .load(RetrofitInstance.BASE_URL + step.mediaUrl.trim())
+                    .into(imageView)
+
+                container.addView(imageView)
+            }
+
+            // 설명 텍스트
+            val description = TextView(context).apply {
+                text = step.description
+                textSize = 13f
+                setTextColor(Color.BLACK)
+                setPadding(20, 26, 20, 0)
+            }
+
+            container.addView(description)
+
+            // 타이머 (있을 경우)
+            if (step.timeInSeconds > 0) {
+                val timerText = TextView(context).apply {
+                    text = "타이머"
+                    textSize = 15f
+                    setTextColor(Color.BLACK)
+                    setPadding(20, 20, 0, 0)
+                }
+                val timeFormatted = String.format(
+                    "%02d:%02d",
+                    step.timeInSeconds / 60,
+                    step.timeInSeconds % 60
+                )
+                val timeValue = TextView(context).apply {
+                    text = timeFormatted
+                    textSize = 32f
+                    setTextColor(Color.parseColor("#2B2B2B"))
+                    setPadding(0, 10, 30, 0)
+                    gravity = Gravity.END
+                }
+
+                container.addView(timerText)
+                container.addView(timeValue)
+            }
+
+            // 아래 구분선
+            val divider = View(context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    1.dpToPx()
+                ).apply {
+                    setMargins(20, 20, 20, 0)
+                }
+                setBackgroundResource(R.drawable.bar_rectangle)
+            }
+            container.addView(divider)
         }
     }
 
