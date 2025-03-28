@@ -66,6 +66,7 @@ private lateinit var minuteEditText: EditText
 private lateinit var startTextView: TextView
 private lateinit var timeSeparator: TextView
 private lateinit var deleteTextView: TextView
+private var createdRecipeId: Long? = null
 private var itemCount = 0 // 추가된 개수 추적
 private val maxItems = 10 // 최대 10개 제한
 private val buttonMarginIncrease = 130 // 버튼을 아래로 내릴 거리 (px)
@@ -856,6 +857,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
                     if (response != null) {
                         Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
+                        createdRecipeId = response.recipeId?.toLong()
                     } else {
                         Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
 
@@ -977,23 +979,25 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
 
         // 레시피 등록한 레시피 확인 (작은 등록하기 클릭시 화면 이동)
-        register.setOnClickListener {
-            registerRecipeUpLayout.visibility = View.VISIBLE
-            registerRecipeSeeLayout.visibility = View.VISIBLE
-            contentCheckTapBar.visibility = View.GONE
-            recipeRegister.visibility = View.GONE
-            contentCheckLayout.visibility = View.GONE
-            recipeWrite.visibility = View.GONE
+        registerFixButton.setOnClickListener {
+            if (createdRecipeId != null) {
+                val intent = Intent(this, RecipeSeeActivity::class.java)
+                intent.putExtra("RECIPE_ID", createdRecipeId!!)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)
         registerFixButton.setOnClickListener {
-            registerRecipeUpLayout.visibility = View.VISIBLE
-            registerRecipeSeeLayout.visibility = View.VISIBLE
-            contentCheckTapBar.visibility = View.GONE
-            recipeRegister.visibility = View.GONE
-            contentCheckLayout.visibility = View.GONE
-            recipeWrite.visibility = View.GONE
+            if (createdRecipeId != null) {
+                val intent = Intent(this, RecipeSeeActivity::class.java)
+                intent.putExtra("RECIPE_ID", createdRecipeId!!)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     //재료, 대체 재료, 재료 처리 방법 추가
