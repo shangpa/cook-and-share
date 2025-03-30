@@ -2,6 +2,7 @@
 
 <!-- 냉장고 재료 관리 메인 -->
 
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -116,7 +117,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:backgroundTint="#9B9B9B"
-            android:hint="냉장고 속 재료를 요리해볼까요?"
+            android:hint="냉장고 속 재료를 검색해보세요"
             android:textSize="13sp"
             android:textStyle="bold"
             android:textColor="#8A8F9C"
@@ -129,7 +130,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_search_fridge"
             android:contentDescription="검색 아이콘"
-            android:layout_marginStart="105dp" />
+            android:layout_marginStart="110dp" />
     </LinearLayout>
 
 
@@ -302,21 +303,27 @@
             android:textSize="13sp"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/rootLayout"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/container"
+            android:id="@+id/rootLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            </LinearLayout>
+
         </LinearLayout>
-
-    </LinearLayout>
-
+    </ScrollView>
 
     <!-- 레시피 추천받기 버튼 -->
     <LinearLayout

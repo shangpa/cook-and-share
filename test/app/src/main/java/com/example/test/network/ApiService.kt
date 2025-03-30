@@ -1,26 +1,13 @@
 package com.example.test.network
 
-import com.example.test.model.ApiResponse
-import com.example.test.model.FridgeRequest
-import com.example.test.model.FridgeResponse
-import com.example.test.model.LoginInfoResponse
-import com.example.test.model.LoginRequest
-import com.example.test.model.LoginResponse
-import com.example.test.model.RecipeRequest
-import com.example.test.model.RecipeResponse
-import com.example.test.model.SignUpRequest
+import com.example.test.model.*
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Query
 import retrofit2.Response
+import retrofit2.http.*
+import com.example.test.model.recipeDetail.RecipeDetailResponse
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -32,6 +19,7 @@ interface ApiService {
     @POST("join")
     fun signUp(@Body signUpRequest: SignUpRequest): Call<ApiResponse>
 
+    // 사용자 정보 조회
     @GET("user/info")
     fun getUserInfo(@Header("Authorization") token: String): Call<LoginInfoResponse>
 
@@ -42,6 +30,14 @@ interface ApiService {
         @Body recipeRequest: RecipeRequest
     ): Call<RecipeResponse>
 
+    // 레시피 조회
+    @GET("api/recipes/{id}")
+    fun getRecipeById(
+        @Header("Authorization") token: String,
+        @Path("id") recipeId: Long
+    ): Call<RecipeDetailResponse>
+
+    // 이미지 업로드
     @Multipart
     @POST("api/upload-image")
     fun uploadImage(
@@ -49,7 +45,7 @@ interface ApiService {
         @Part image: MultipartBody.Part
     ): Call<ResponseBody>
 
-    // 냉장고 재료 저장
+    // 냉장고 재료 추가
     @POST("api/fridges")
     suspend fun createFridge(
         @Header("Authorization") token: String,
@@ -59,7 +55,21 @@ interface ApiService {
     // 냉장고 재료 조회
     @GET("api/fridges/my")
     suspend fun getMyFridges(
-        @Header("Authorization") token: String,
-        @Query("userId") userId: Long
+        @Header("Authorization") token: String
     ): Response<List<FridgeResponse>>
+
+    // 냉장고 재료 수정
+    @PUT("api/fridges/{id}")
+    suspend fun updateFridge(
+        @Path("id") fridgeId: Long,
+        @Header("Authorization") token: String,
+        @Body fridgeRequest: FridgeRequest
+    ): Response<Void>
+
+    // 냉장고 재료 삭제
+    @DELETE("api/fridges/{id}")
+    suspend fun deleteFridge(
+        @Path("id") id: Long,
+        @Header("Authorization") token: String
+    ): Response<Void>
 }

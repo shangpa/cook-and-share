@@ -51,4 +51,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson 변환기 추가
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3") // 로깅 인터셉터 추가
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
