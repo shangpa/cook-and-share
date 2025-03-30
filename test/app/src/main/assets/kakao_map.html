@@ -3,7 +3,7 @@ val htmlData = """
 <head>
     <meta charset="utf-8">
     <title>카카오 지도</title>
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=87c521209afc17360a11c89dcb5a9bc4"></script>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=87c521209afc17360a11c89dcb5a9bc4&autoload=false&libraries=services"></script>
     <style>
         html, body, #map {
             width: 100%;
@@ -16,29 +16,27 @@ val htmlData = """
 <body>
 <div id="map"></div>
 <script>
-    var mapContainer = document.getElementById('map');
-    var mapOption = {
-        center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울
-        level: 3
-    };
+    kakao.maps.load(function () {
+        var mapContainer = document.getElementById('map');
+        var mapOption = {
+            center: new kakao.maps.LatLng(37.5665, 126.9780),
+            level: 3
+        };
 
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-    var marker = new kakao.maps.Marker();
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+        var marker = new kakao.maps.Marker();
 
-    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-        var latlng = mouseEvent.latLng;
-        marker.setPosition(latlng);
-        marker.setMap(map);
+        kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+            var latlng = mouseEvent.latLng;
+            marker.setPosition(latlng);
+            marker.setMap(map);
 
-        // Kotlin으로 위치 전달
-        if (window.AndroidBridge) {
-            window.AndroidBridge.sendLocation(latlng.getLat(), latlng.getLng());
-        }
+            if (window.AndroidBridge) {
+                window.AndroidBridge.sendLocation(latlng.getLat(), latlng.getLng());
+            }
+        });
     });
 </script>
 </body>
 </html>
 """.trimIndent()
-
-// WebView에서 HTML을 외부 URL로 로드
-webView.loadDataWithBaseURL("https://dapi.kakao.com", htmlData, "text/html", "UTF-8", null)
