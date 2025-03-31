@@ -31,13 +31,6 @@ import java.util.Locale
 
 private lateinit var steps: List<View>
 private var currentStep = 0
-private lateinit var hourText: TextView
-private lateinit var minuteText: TextView
-private lateinit var startButton: Button
-private lateinit var stopButton: Button
-
-private var timer: CountDownTimer? = null
-private var timeLeftInMillis: Long = 0L // 남은 시간 (밀리초)
 
 class RecipeSeeActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -64,12 +57,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         steps = listOf(
             findViewById(R.id.recipeSeeMain),
             findViewById(R.id.recipeSeeOne),
-            findViewById(R.id.recipeSeeTwo),
-            findViewById(R.id.recipeSeeThree),
-            findViewById(R.id.recipeSeeFour),
-            findViewById(R.id.recipeSeeFive),
-            findViewById(R.id.recipeSeeSix),
-            findViewById(R.id.recipeSeeSeven)
         )
 
         // 다음으로 버튼 클릭시 다음 화면으로 이동
@@ -92,12 +79,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         val heartButtons = listOf(
             findViewById<ImageButton>(R.id.heartButton),
             findViewById(R.id.heartButtonTwo),
-            findViewById(R.id.heartButtonThree),
-            findViewById(R.id.heartButtonFour),
-            findViewById(R.id.heartButtonFive),
-            findViewById(R.id.heartButtonSix),
-            findViewById(R.id.heartButtonSeven),
-            findViewById(R.id.heartButtonEight)
         )
 
         // 하트버튼 클릭시 채워진 하트로 바뀜
@@ -125,12 +106,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         val goodButtons = listOf(
             findViewById<ImageButton>(R.id.goodButton),
             findViewById(R.id.goodButtonTwo),
-            findViewById(R.id.goodButtonThree),
-            findViewById(R.id.goodButtonFour),
-            findViewById(R.id.goodButtonFive),
-            findViewById(R.id.goodButtonSix),
-            findViewById(R.id.goodButtonSeven),
-            findViewById(R.id.goodButtonEight)
         )
 
         // 좋아요 버튼 클릭시 채워진 좋아요로 바뀜
@@ -157,12 +132,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         val shareButtons = listOf(
             findViewById<ImageButton>(R.id.shareButton),
             findViewById(R.id.shareButtonTwo),
-            findViewById(R.id.shareButtonThree),
-            findViewById(R.id.shareButtonFour),
-            findViewById(R.id.shareButtonFive),
-            findViewById(R.id.shareButtonSix),
-            findViewById(R.id.shareButtonSeven),
-            findViewById(R.id.shareButtonEight)
         )
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -179,25 +148,10 @@ class RecipeSeeActivity : AppCompatActivity() {
             }
         }
 
-        hourText = findViewById(R.id.hour)
-        minuteText = findViewById(R.id.minute)
-        startButton = findViewById(R.id.start)
-        stopButton = findViewById(R.id.stop)
-
-        // 텍스트뷰에서 초기 시간 불러오기 (예: 15시간 00분 → 밀리초로)
-        val hour = hourText.text.toString().toInt()
-        val minute = minuteText.text.toString().toInt()
-        timeLeftInMillis = ((hour * 60 + minute) * 60 * 1000).toLong()
-
-        startButton.setOnClickListener {
-            startTimer()
-        }
-
-        stopButton.setOnClickListener {
-            stopTimer()
-        }
+        // val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
         // 레시피 조회 기능 추가
-        val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
+        val recipeId=77L // 테스트 하드코딩
+
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
@@ -329,43 +283,5 @@ class RecipeSeeActivity : AppCompatActivity() {
                     Toast.makeText(this@RecipeSeeActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
                 }
             })
-
-
-
     }
-
-    private fun startTimer() {
-        // 매번 버튼 누를 때 시간 텍스트 기준으로 다시 계산
-        val hour = hourText.text.toString().toIntOrNull() ?: 0
-        val minute = minuteText.text.toString().toIntOrNull() ?: 0
-        timeLeftInMillis = ((hour * 60 + minute) * 60 * 1000).toLong()
-
-        if (timeLeftInMillis <= 0) return // 0이면 실행 X
-
-        timer = object : CountDownTimer(timeLeftInMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                timeLeftInMillis = millisUntilFinished
-                updateTimerText()
-            }
-
-            override fun onFinish() {
-                // 필요 시 동작
-            }
-        }.start()
-    }
-
-
-    private fun stopTimer() {
-        timer?.cancel()
-        timer = null
-    }
-
-    private fun updateTimerText() {
-        val totalMinutes = (timeLeftInMillis / 1000) / 60
-        val hours = totalMinutes / 60
-        val minutes = totalMinutes % 60
-
-        hourText.text = String.format("%02d", hours)
-        minuteText.text = String.format("%02d", minutes)
-    }
-    }
+}
