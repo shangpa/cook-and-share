@@ -334,6 +334,40 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 val sec = step.timeInSeconds % 60
                                 stepView.findViewById<TextView>(R.id.hour).text = String.format("%02d", min)
                                 stepView.findViewById<TextView>(R.id.minute).text = String.format("%02d", sec)
+                                // 타이머 동작 추가
+                                val hourText = stepView.findViewById<TextView>(R.id.hour)
+                                val minuteText = stepView.findViewById<TextView>(R.id.minute)
+                                val startButton = stepView.findViewById<Button>(R.id.start)
+                                val stopButton = stepView.findViewById<Button>(R.id.stop)
+
+                                var timeLeft = step.timeInSeconds * 1000L
+                                var timer: CountDownTimer? = null
+                                var isTimerRunning = false
+
+                                startButton.setOnClickListener {
+                                    if (!isTimerRunning) {
+                                        timer = object : CountDownTimer(timeLeft, 1000) {
+                                            override fun onTick(millisUntilFinished: Long) {
+                                                timeLeft = millisUntilFinished
+                                                val minutes = (millisUntilFinished / 1000) / 60
+                                                val seconds = (millisUntilFinished / 1000) % 60
+                                                hourText.text = String.format("%02d", minutes)
+                                                minuteText.text = String.format("%02d", seconds)
+                                            }
+
+                                            override fun onFinish() {
+                                                isTimerRunning = false
+                                                Toast.makeText(this@RecipeSeeActivity, "타이머 종료!", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }.start()
+                                        isTimerRunning = true
+                                    }
+                                }
+
+                                stopButton.setOnClickListener {
+                                    timer?.cancel()
+                                    isTimerRunning = false
+                                }
                             } else {
                                 stepView.findViewById<View>(R.id.timerBar).visibility = View.GONE
                                 stepView.findViewById<TextView>(R.id.hour).visibility = View.GONE
