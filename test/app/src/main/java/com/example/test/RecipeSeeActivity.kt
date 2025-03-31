@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -17,7 +18,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
 import com.example.test.model.Ingredient
+import com.example.test.model.recipeDetail.CookingStep
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
 import com.google.android.flexbox.FlexboxLayout
@@ -61,18 +64,34 @@ class RecipeSeeActivity : AppCompatActivity() {
 
         // 다음으로 버튼 클릭시 다음 화면으로 이동
         nextFixButton.setOnClickListener {
+            if (!::steps.isInitialized || steps.isEmpty()) return@setOnClickListener
+
             if (currentStep < steps.size - 1) {
                 steps[currentStep].visibility = View.GONE
                 currentStep++
+
+                Log.d("NEXT_STEP", "currentStep: $currentStep, view id: ${steps[currentStep].id}")
+
+                // 재료화면이면 stepContainer 숨기고, 조리 순서 시작되면 보여주기
+                if (steps[currentStep].id == R.id.recipeSeeMain) {
+                    findViewById<LinearLayout>(R.id.stepContainer).visibility = View.GONE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeMain).visibility = View.VISIBLE
+                } else {
+                    findViewById<LinearLayout>(R.id.stepContainer).visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeMain).visibility = View.GONE
+                }
+
                 steps[currentStep].visibility = View.VISIBLE
             }
         }
+
 
         // 조리하기 버튼 클릭시 상자 보이기
         cookButton.setOnClickListener {
             peopleChoice.visibility = View.GONE
             recipeSeeMain.visibility = View.VISIBLE
             tapBar.visibility = View.VISIBLE
+            steps[currentStep].visibility = View.VISIBLE
         }
 
         // 하트버튼 선언
@@ -231,6 +250,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                             recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
                         )
 
+                        // 4. 재료 추가
                         ingredients.forEach { ingredient ->
                             val itemLayout = LinearLayout(this@RecipeSeeActivity).apply {
                                 orientation = LinearLayout.HORIZONTAL
@@ -273,6 +293,56 @@ class RecipeSeeActivity : AppCompatActivity() {
                             }
                             ingredientContainer.addView(thinDivider)
                         }
+                        // 조리 순서
+                        val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
+                        val inflater = layoutInflater
+                        val stepViewList = mutableListOf<View>()
+
+                        // 1. 조리순서 JSON 파싱
+                        val stepsFromJson = gson.fromJson<List<CookingStep>>(
+                            recipe.cookingSteps, object : TypeToken<List<CookingStep>>() {}.type
+                        ).map { step ->
+                            step.copy(mediaUrl = RetrofitInstance.BASE_URL + step.mediaUrl.trim())
+                        }
+
+                        // 3. 각 조리 순서 View 동적 생성
+                        stepsFromJson.forEachIndexed { index, step ->
+                            val stepView = inflater.inflate(R.layout.recipe_see_step_item, stepContainer, false)
+                            // 제목 & 설명
+                            stepView.findViewById<TextView>(R.id.cookNameFive).text = recipe.title
+                            stepView.findViewById<TextView>(R.id.stepOne).text = "STEP ${index + 1}"
+                            stepView.findViewById<TextView>(R.id.explainOne).text = step.description
+                            Log.d("STEP_CHECK", "Step ${index + 1} desc: ${step.description}, image: ${step.mediaUrl}")
+                            stepView.findViewById<TextView>(R.id.explainTwo).visibility = View.GONE
+                            stepView.findViewById<TextView>(R.id.explainThree).visibility = View.GONE
+
+                            // 이미지
+                            if (step.mediaUrl.isNotBlank()) {
+                                Glide.with(this@RecipeSeeActivity)
+                                    .load(step.mediaUrl)
+                                    .into(stepView.findViewById(R.id.imageTwo))
+                            }
+
+                            // 타이머 표시
+                            if (step.timeInSeconds > 0) {
+                                val min = step.timeInSeconds / 60
+                                val sec = step.timeInSeconds % 60
+                                stepView.findViewById<TextView>(R.id.hour).text = String.format("%02d", min)
+                                stepView.findViewById<TextView>(R.id.minute).text = String.format("%02d", sec)
+                            } else {
+                                stepView.findViewById<View>(R.id.timerBar).visibility = View.GONE
+                            }
+
+                            stepView.visibility = View.GONE
+                            stepContainer.addView(stepView)
+                            stepViewList.add(stepView)
+                        }
+
+                        // 4. steps 리스트 초기화 (재료 화면 + 조리 순서 화면들)
+                        steps = listOf<View>(
+                            findViewById(R.id.recipeSeeMain)
+                        ) + stepViewList
+                        currentStep = 0
                     }
                 }
                 // dp 변환 함수 추가
@@ -283,5 +353,6 @@ class RecipeSeeActivity : AppCompatActivity() {
                     Toast.makeText(this@RecipeSeeActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
                 }
             })
+
     }
 }

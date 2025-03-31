@@ -17,13 +17,14 @@
             android:id="@+id/linearLayoutTmap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal" />
 
         <!-- 인원수 선택 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/peopleChoice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
             <!-- 로고, 검색, 알림, 마이페이지 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -536,7 +537,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recipeSeeOne"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:visibility="gone">
 
             <!-- 뒤로가기, 찜, 좋아요, 공유 -->
@@ -595,17 +596,26 @@
                     app:layout_constraintTop_toTopOf="@id/heartButtonTwo" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <ScrollView
+                android:id="@+id/scrollStepView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="80dp"
+                app:layout_constraintTop_toBottomOf="@id/recipeSeeTapTwo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:fillViewport="true">
         <!-- 조리순서 들어가야함 -->
             <LinearLayout
                 android:id="@+id/stepContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="60dp"
                 android:layout_marginBottom="80dp"
                 app:layout_constraintTop_toBottomOf="@id/recipeSeeTapTwo" />
+            </ScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
