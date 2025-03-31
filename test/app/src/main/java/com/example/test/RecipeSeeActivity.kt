@@ -76,9 +76,11 @@ class RecipeSeeActivity : AppCompatActivity() {
                 if (steps[currentStep].id == R.id.recipeSeeMain) {
                     findViewById<LinearLayout>(R.id.stepContainer).visibility = View.GONE
                     findViewById<ConstraintLayout>(R.id.recipeSeeMain).visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeOne).visibility = View.GONE
                 } else {
                     findViewById<LinearLayout>(R.id.stepContainer).visibility = View.VISIBLE
                     findViewById<ConstraintLayout>(R.id.recipeSeeMain).visibility = View.GONE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeOne).visibility = View.VISIBLE
                 }
 
                 steps[currentStep].visibility = View.VISIBLE
