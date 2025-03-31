@@ -13,6 +13,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -171,7 +172,7 @@ class RecipeSeeActivity : AppCompatActivity() {
 
         // val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
         // 레시피 조회 기능 추가
-        val recipeId=77L // 테스트 하드코딩
+        val recipeId=85L // 테스트 하드코딩
 
         val token = App.prefs.token.toString()
 
@@ -304,7 +305,9 @@ class RecipeSeeActivity : AppCompatActivity() {
                         val stepsFromJson = gson.fromJson<List<CookingStep>>(
                             recipe.cookingSteps, object : TypeToken<List<CookingStep>>() {}.type
                         ).map { step ->
-                            step.copy(mediaUrl = RetrofitInstance.BASE_URL + step.mediaUrl.trim())
+                            val cleanedUrl = step.mediaUrl.trim()
+                            val fullUrl = if (cleanedUrl.isNotEmpty()) RetrofitInstance.BASE_URL + cleanedUrl else ""
+                            step.copy(mediaUrl = fullUrl)
                         }
 
                         // 3. 각 조리 순서 View 동적 생성
@@ -315,14 +318,14 @@ class RecipeSeeActivity : AppCompatActivity() {
                             stepView.findViewById<TextView>(R.id.stepOne).text = "STEP ${index + 1}"
                             stepView.findViewById<TextView>(R.id.explainOne).text = step.description
                             Log.d("STEP_CHECK", "Step ${index + 1} desc: ${step.description}, image: ${step.mediaUrl}")
-                            stepView.findViewById<TextView>(R.id.explainTwo).visibility = View.GONE
-                            stepView.findViewById<TextView>(R.id.explainThree).visibility = View.GONE
-
-                            // 이미지
-                            if (step.mediaUrl.isNotBlank()) {
+                            val imageView = stepView.findViewById<ImageView>(R.id.imageTwo)
+                            if (step.mediaUrl.isNullOrBlank()) {
+                                imageView.visibility = View.GONE
+                            } else {
+                                imageView.visibility = View.VISIBLE
                                 Glide.with(this@RecipeSeeActivity)
                                     .load(step.mediaUrl)
-                                    .into(stepView.findViewById(R.id.imageTwo))
+                                    .into(imageView)
                             }
 
                             // 타이머 표시
@@ -333,6 +336,19 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 stepView.findViewById<TextView>(R.id.minute).text = String.format("%02d", sec)
                             } else {
                                 stepView.findViewById<View>(R.id.timerBar).visibility = View.GONE
+                                stepView.findViewById<TextView>(R.id.hour).visibility = View.GONE
+                                stepView.findViewById<TextView>(R.id.colon).visibility = View.GONE
+                                stepView.findViewById<TextView>(R.id.minute).visibility = View.GONE
+                                stepView.findViewById<Button>(R.id.start).visibility = View.GONE
+                                stepView.findViewById<Button>(R.id.stop).visibility = View.GONE
+
+                                // 설명의 아래 마진이 충분한지 확인하거나 추가
+                                val explainOne = stepView.findViewById<TextView>(R.id.explainOne)
+                                val params = explainOne.layoutParams as ConstraintLayout.LayoutParams
+                                params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                                params.bottomMargin = 40.dpToPx()
+                                explainOne.layoutParams = params
+
                             }
 
                             stepView.visibility = View.GONE

@@ -5,7 +5,6 @@
     android:id="@+id/stepRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="30dp"
     android:paddingBottom="30dp">
 
     <!-- 레시피 제목 -->
@@ -51,25 +50,14 @@
     <ImageView
         android:id="@+id/imageTwo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_height="400dp"
         android:src="@drawable/image_step_recipe_see_one"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTag"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 비디오 재생 아이콘 -->
-    <ImageView
-        android:id="@+id/videoPlay"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_video_play"
-        app:layout_constraintStart_toStartOf="@id/imageTwo"
-        app:layout_constraintEnd_toEndOf="@id/imageTwo"
-        app:layout_constraintTop_toTopOf="@id/imageTwo"
-        app:layout_constraintBottom_toBottomOf="@id/imageTwo"/>
-
-    <!-- 설명 1 -->
+    <!-- 설명 -->
     <TextView
         android:id="@+id/explainOne"
         android:layout_width="wrap_content"
@@ -82,32 +70,6 @@
         app:layout_constraintTop_toBottomOf="@id/imageTwo"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- 설명 2 -->
-    <TextView
-        android:id="@+id/explainTwo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:layout_marginStart="20dp"
-        android:text="2. 설명 문장입니다."
-        android:textColor="#000000"
-        android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/explainOne"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <!-- 설명 3 -->
-    <TextView
-        android:id="@+id/explainThree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:layout_marginStart="20dp"
-        android:text="3. 설명 문장입니다."
-        android:textColor="#000000"
-        android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/explainTwo"
-        app:layout_constraintStart_toStartOf="parent"/>
-
     <!-- 타이머 배경 -->
     <View
         android:id="@+id/timerBar"
@@ -117,7 +79,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/ic_step_recipe_see_five_rect"
-        app:layout_constraintTop_toBottomOf="@id/explainThree"
+        app:layout_constraintTop_toBottomOf="@id/explainOne"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
