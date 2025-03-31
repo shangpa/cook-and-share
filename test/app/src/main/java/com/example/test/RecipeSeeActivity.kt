@@ -6,18 +6,22 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
 import com.example.test.model.Ingredient
+import com.example.test.model.recipeDetail.CookingStep
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
 import com.google.android.flexbox.FlexboxLayout
@@ -31,13 +35,6 @@ import java.util.Locale
 
 private lateinit var steps: List<View>
 private var currentStep = 0
-private lateinit var hourText: TextView
-private lateinit var minuteText: TextView
-private lateinit var startButton: Button
-private lateinit var stopButton: Button
-
-private var timer: CountDownTimer? = null
-private var timeLeftInMillis: Long = 0L // 남은 시간 (밀리초)
 
 class RecipeSeeActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -64,40 +61,46 @@ class RecipeSeeActivity : AppCompatActivity() {
         steps = listOf(
             findViewById(R.id.recipeSeeMain),
             findViewById(R.id.recipeSeeOne),
-            findViewById(R.id.recipeSeeTwo),
-            findViewById(R.id.recipeSeeThree),
-            findViewById(R.id.recipeSeeFour),
-            findViewById(R.id.recipeSeeFive),
-            findViewById(R.id.recipeSeeSix),
-            findViewById(R.id.recipeSeeSeven)
         )
 
         // 다음으로 버튼 클릭시 다음 화면으로 이동
         nextFixButton.setOnClickListener {
+            if (!::steps.isInitialized || steps.isEmpty()) return@setOnClickListener
+
             if (currentStep < steps.size - 1) {
                 steps[currentStep].visibility = View.GONE
                 currentStep++
+
+                Log.d("NEXT_STEP", "currentStep: $currentStep, view id: ${steps[currentStep].id}")
+
+                // 재료화면이면 stepContainer 숨기고, 조리 순서 시작되면 보여주기
+                if (steps[currentStep].id == R.id.recipeSeeMain) {
+                    findViewById<LinearLayout>(R.id.stepContainer).visibility = View.GONE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeMain).visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeOne).visibility = View.GONE
+                } else {
+                    findViewById<LinearLayout>(R.id.stepContainer).visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeMain).visibility = View.GONE
+                    findViewById<ConstraintLayout>(R.id.recipeSeeOne).visibility = View.VISIBLE
+                }
+
                 steps[currentStep].visibility = View.VISIBLE
             }
         }
+
 
         // 조리하기 버튼 클릭시 상자 보이기
         cookButton.setOnClickListener {
             peopleChoice.visibility = View.GONE
             recipeSeeMain.visibility = View.VISIBLE
             tapBar.visibility = View.VISIBLE
+            steps[currentStep].visibility = View.VISIBLE
         }
 
         // 하트버튼 선언
         val heartButtons = listOf(
             findViewById<ImageButton>(R.id.heartButton),
             findViewById(R.id.heartButtonTwo),
-            findViewById(R.id.heartButtonThree),
-            findViewById(R.id.heartButtonFour),
-            findViewById(R.id.heartButtonFive),
-            findViewById(R.id.heartButtonSix),
-            findViewById(R.id.heartButtonSeven),
-            findViewById(R.id.heartButtonEight)
         )
 
         // 하트버튼 클릭시 채워진 하트로 바뀜
@@ -125,12 +128,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         val goodButtons = listOf(
             findViewById<ImageButton>(R.id.goodButton),
             findViewById(R.id.goodButtonTwo),
-            findViewById(R.id.goodButtonThree),
-            findViewById(R.id.goodButtonFour),
-            findViewById(R.id.goodButtonFive),
-            findViewById(R.id.goodButtonSix),
-            findViewById(R.id.goodButtonSeven),
-            findViewById(R.id.goodButtonEight)
         )
 
         // 좋아요 버튼 클릭시 채워진 좋아요로 바뀜
@@ -157,12 +154,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         val shareButtons = listOf(
             findViewById<ImageButton>(R.id.shareButton),
             findViewById(R.id.shareButtonTwo),
-            findViewById(R.id.shareButtonThree),
-            findViewById(R.id.shareButtonFour),
-            findViewById(R.id.shareButtonFive),
-            findViewById(R.id.shareButtonSix),
-            findViewById(R.id.shareButtonSeven),
-            findViewById(R.id.shareButtonEight)
         )
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -179,25 +170,10 @@ class RecipeSeeActivity : AppCompatActivity() {
             }
         }
 
-        hourText = findViewById(R.id.hour)
-        minuteText = findViewById(R.id.minute)
-        startButton = findViewById(R.id.start)
-        stopButton = findViewById(R.id.stop)
-
-        // 텍스트뷰에서 초기 시간 불러오기 (예: 15시간 00분 → 밀리초로)
-        val hour = hourText.text.toString().toInt()
-        val minute = minuteText.text.toString().toInt()
-        timeLeftInMillis = ((hour * 60 + minute) * 60 * 1000).toLong()
-
-        startButton.setOnClickListener {
-            startTimer()
-        }
-
-        stopButton.setOnClickListener {
-            stopTimer()
-        }
+        // val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
         // 레시피 조회 기능 추가
-        val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
+        val recipeId=85L // 테스트 하드코딩
+
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
@@ -277,6 +253,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                             recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
                         )
 
+                        // 4. 재료 추가
                         ingredients.forEach { ingredient ->
                             val itemLayout = LinearLayout(this@RecipeSeeActivity).apply {
                                 orientation = LinearLayout.HORIZONTAL
@@ -319,6 +296,105 @@ class RecipeSeeActivity : AppCompatActivity() {
                             }
                             ingredientContainer.addView(thinDivider)
                         }
+                        // 조리 순서
+                        val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
+                        val inflater = layoutInflater
+                        val stepViewList = mutableListOf<View>()
+
+                        // 1. 조리순서 JSON 파싱
+                        val stepsFromJson = gson.fromJson<List<CookingStep>>(
+                            recipe.cookingSteps, object : TypeToken<List<CookingStep>>() {}.type
+                        ).map { step ->
+                            val cleanedUrl = step.mediaUrl.trim()
+                            val fullUrl = if (cleanedUrl.isNotEmpty()) RetrofitInstance.BASE_URL + cleanedUrl else ""
+                            step.copy(mediaUrl = fullUrl)
+                        }
+
+                        // 3. 각 조리 순서 View 동적 생성
+                        stepsFromJson.forEachIndexed { index, step ->
+                            val stepView = inflater.inflate(R.layout.recipe_see_step_item, stepContainer, false)
+                            // 제목 & 설명
+                            stepView.findViewById<TextView>(R.id.cookNameFive).text = recipe.title
+                            stepView.findViewById<TextView>(R.id.stepOne).text = "STEP ${index + 1}"
+                            stepView.findViewById<TextView>(R.id.explainOne).text = step.description
+                            Log.d("STEP_CHECK", "Step ${index + 1} desc: ${step.description}, image: ${step.mediaUrl}")
+                            val imageView = stepView.findViewById<ImageView>(R.id.imageTwo)
+                            if (step.mediaUrl.isNullOrBlank()) {
+                                imageView.visibility = View.GONE
+                            } else {
+                                imageView.visibility = View.VISIBLE
+                                Glide.with(this@RecipeSeeActivity)
+                                    .load(step.mediaUrl)
+                                    .into(imageView)
+                            }
+
+                            // 타이머 표시
+                            if (step.timeInSeconds > 0) {
+                                val min = step.timeInSeconds / 60
+                                val sec = step.timeInSeconds % 60
+                                stepView.findViewById<TextView>(R.id.hour).text = String.format("%02d", min)
+                                stepView.findViewById<TextView>(R.id.minute).text = String.format("%02d", sec)
+                                // 타이머 동작 추가
+                                val hourText = stepView.findViewById<TextView>(R.id.hour)
+                                val minuteText = stepView.findViewById<TextView>(R.id.minute)
+                                val startButton = stepView.findViewById<Button>(R.id.start)
+                                val stopButton = stepView.findViewById<Button>(R.id.stop)
+
+                                var timeLeft = step.timeInSeconds * 1000L
+                                var timer: CountDownTimer? = null
+                                var isTimerRunning = false
+
+                                startButton.setOnClickListener {
+                                    if (!isTimerRunning) {
+                                        timer = object : CountDownTimer(timeLeft, 1000) {
+                                            override fun onTick(millisUntilFinished: Long) {
+                                                timeLeft = millisUntilFinished
+                                                val minutes = (millisUntilFinished / 1000) / 60
+                                                val seconds = (millisUntilFinished / 1000) % 60
+                                                hourText.text = String.format("%02d", minutes)
+                                                minuteText.text = String.format("%02d", seconds)
+                                            }
+
+                                            override fun onFinish() {
+                                                isTimerRunning = false
+                                                Toast.makeText(this@RecipeSeeActivity, "타이머 종료!", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }.start()
+                                        isTimerRunning = true
+                                    }
+                                }
+
+                                stopButton.setOnClickListener {
+                                    timer?.cancel()
+                                    isTimerRunning = false
+                                }
+                            } else {
+                                stepView.findViewById<View>(R.id.timerBar).visibility = View.GONE
+                                stepView.findViewById<TextView>(R.id.hour).visibility = View.GONE
+                                stepView.findViewById<TextView>(R.id.colon).visibility = View.GONE
+                                stepView.findViewById<TextView>(R.id.minute).visibility = View.GONE
+                                stepView.findViewById<Button>(R.id.start).visibility = View.GONE
+                                stepView.findViewById<Button>(R.id.stop).visibility = View.GONE
+
+                                // 설명의 아래 마진이 충분한지 확인하거나 추가
+                                val explainOne = stepView.findViewById<TextView>(R.id.explainOne)
+                                val params = explainOne.layoutParams as ConstraintLayout.LayoutParams
+                                params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                                params.bottomMargin = 40.dpToPx()
+                                explainOne.layoutParams = params
+
+                            }
+
+                            stepView.visibility = View.GONE
+                            stepContainer.addView(stepView)
+                            stepViewList.add(stepView)
+                        }
+
+                        // 4. steps 리스트 초기화 (재료 화면 + 조리 순서 화면들)
+                        steps = listOf<View>(
+                            findViewById(R.id.recipeSeeMain)
+                        ) + stepViewList
+                        currentStep = 0
                     }
                 }
                 // dp 변환 함수 추가
@@ -330,42 +406,5 @@ class RecipeSeeActivity : AppCompatActivity() {
                 }
             })
 
-
-
     }
-
-    private fun startTimer() {
-        // 매번 버튼 누를 때 시간 텍스트 기준으로 다시 계산
-        val hour = hourText.text.toString().toIntOrNull() ?: 0
-        val minute = minuteText.text.toString().toIntOrNull() ?: 0
-        timeLeftInMillis = ((hour * 60 + minute) * 60 * 1000).toLong()
-
-        if (timeLeftInMillis <= 0) return // 0이면 실행 X
-
-        timer = object : CountDownTimer(timeLeftInMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                timeLeftInMillis = millisUntilFinished
-                updateTimerText()
-            }
-
-            override fun onFinish() {
-                // 필요 시 동작
-            }
-        }.start()
-    }
-
-
-    private fun stopTimer() {
-        timer?.cancel()
-        timer = null
-    }
-
-    private fun updateTimerText() {
-        val totalMinutes = (timeLeftInMillis / 1000) / 60
-        val hours = totalMinutes / 60
-        val minutes = totalMinutes % 60
-
-        hourText.text = String.format("%02d", hours)
-        minuteText.text = String.format("%02d", minutes)
-    }
-    }
+}

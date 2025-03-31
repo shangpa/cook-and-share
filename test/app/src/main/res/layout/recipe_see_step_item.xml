@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stepRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="30dp">
+
+    <!-- 레시피 제목 -->
+    <TextView
+        android:id="@+id/cookNameFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="레시피 이름"
+        android:textColor="#2B2B2B"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- STEP 제목 -->
+    <TextView
+        android:id="@+id/stepOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="STEP 1"
+        android:textColor="#2B2B2B"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cookNameFive" />
+
+    <!-- 구분 바 -->
+    <View
+        android:id="@+id/divideRectangleBarTag"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bar_rectangle"
+        app:layout_constraintTop_toBottomOf="@id/stepOne"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 이미지 -->
+    <ImageView
+        android:id="@+id/imageTwo"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_height="400dp"
+        android:src="@drawable/image_step_recipe_see_one"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 설명 -->
+    <TextView
+        android:id="@+id/explainOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginStart="20dp"
+        android:text="1. 설명 문장입니다."
+        android:textColor="#000000"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/imageTwo"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 타이머 배경 -->
+    <View
+        android:id="@+id/timerBar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_step_recipe_see_five_rect"
+        app:layout_constraintTop_toBottomOf="@id/explainOne"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 타이머 시 -->
+    <TextView
+        android:id="@+id/hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="28dp"
+        android:text="00"
+        android:textColor="#3F3F3F"
+        android:textSize="64sp"
+        app:layout_constraintStart_toStartOf="@id/timerBar"
+        app:layout_constraintTop_toTopOf="@id/timerBar"/>
+
+    <!-- 콜론 : -->
+    <TextView
+        android:id="@+id/colon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text=":"
+        android:textColor="#3F3F3F"
+        android:textSize="64sp"
+        app:layout_constraintTop_toTopOf="@id/timerBar"
+        app:layout_constraintStart_toEndOf="@id/hour"/>
+
+    <!-- 타이머 분 -->
+    <TextView
+        android:id="@+id/minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text="00"
+        android:textColor="#3F3F3F"
+        android:textSize="64sp"
+        app:layout_constraintTop_toTopOf="@id/timerBar"
+        app:layout_constraintStart_toEndOf="@id/colon"/>
+
+    <!-- 정지 버튼 -->
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="86dp"
+        android:layout_height="38dp"
+        android:text="정지"
+        android:textSize="14sp"
+        android:textColor="#35A825"
+        android:textStyle="bold"
+        android:layout_marginStart="110dp"
+        android:layout_marginBottom="27dp"
+        android:background="@drawable/ic_step_recipe_see_five_stop"
+        app:layout_constraintBottom_toBottomOf="@id/timerBar"
+        app:layout_constraintStart_toStartOf="@id/timerBar" />
+
+    <!-- 시작 버튼 -->
+    <Button
+        android:id="@+id/start"
+        android:layout_width="86dp"
+        android:layout_height="38dp"
+        android:text="시작"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="27dp"
+        android:background="@drawable/ic_step_recipe_see_five_start"
+        app:layout_constraintBottom_toBottomOf="@id/timerBar"
+        app:layout_constraintEnd_toEndOf="@id/timerBar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
