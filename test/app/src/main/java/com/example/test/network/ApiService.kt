@@ -37,6 +37,12 @@ interface ApiService {
         @Path("id") recipeId: Long
     ): Call<RecipeDetailResponse>
 
+    // 레시피 검색
+    @GET("api/recipes/search")
+    fun searchRecipes(
+        @Query("title") title: String?
+    ): Call<List<Recipe>>
+
     // 이미지 업로드
     @Multipart
     @POST("api/upload-image")
