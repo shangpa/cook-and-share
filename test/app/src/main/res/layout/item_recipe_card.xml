@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <!-- 대표 이미지 -->
+    <ImageView
+        android:id="@+id/recipeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_search_result_list_one" />
+
+    <!-- 텍스트 정보들 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1">
+
+        <!-- 레시피 제목 + 하트 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/recipeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닭곰탕"
+                android:textSize="13sp"
+                android:textColor="#2B2B2B"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/heartIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="228dp"
+                android:src="@drawable/image_search_result_list_heart" />
+        </LinearLayout>
+
+        <!-- 난이도 + 시간 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/image_recently_stored_materials_step" />
+
+            <TextView
+                android:id="@+id/recipeLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="중급"
+                android:textSize="11sp"
+                android:textColor="#9B9B9B"
+                android:layout_marginStart="4dp" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/image_recently_stored_materials_time" />
+
+            <TextView
+                android:id="@+id/recipeTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1시간 30분"
+                android:textSize="11sp"
+                android:textColor="#9B9B9B"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- 별점 + 작성자 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/image_review_list_star" />
+
+            <TextView
+                android:id="@+id/recipeRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5.0"
+                android:textSize="11sp"
+                android:textColor="#454A52"
+                android:layout_marginStart="4dp" />
+
+            <TextView
+                android:id="@+id/reviewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(6)"
+                android:textSize="11sp"
+                android:textColor="#747474"
+                android:layout_marginStart="2dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_search_result_list"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="9dp"/>
+
+            <TextView
+                android:id="@+id/recipeAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="신유신아맘"
+                android:textSize="11sp"
+                android:textColor="#35A825"
+                android:layout_marginStart="9dp"
+                android:layout_gravity="center_vertical"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image_search_result_list_cap"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="2dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

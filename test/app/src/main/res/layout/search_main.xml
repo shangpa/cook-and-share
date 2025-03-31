@@ -31,12 +31,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 검색어를 입력해주세요 -->
-    <TextView
+    <EditText
         android:id="@+id/writeReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
-        android:text="검색어를 입력해주세요"
+        android:hint="검색어를 입력해주세요"
+        android:background="@android:color/transparent"
         android:textColor="#9B9B9B"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/searchRect"
