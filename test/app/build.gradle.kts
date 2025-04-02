@@ -13,7 +13,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,31 +25,46 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    // ✅ Tmap SDK에서 JNI 접근 필요할 수 있음
+    sourceSets["main"].jniLibs.srcDir("libs")
 }
 
 dependencies {
-
+    // 공식 라이브러리
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
+
+    // 네트워크 라이브러리
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // 기타
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // ✅ Tmap SDK V1, V2 (로컬 aar 파일)
+    implementation(files("libs/tmap-sdk-1.9.aar"))
+    implementation(files("libs/vsm-tmap-sdk-v2-android-1.7.23.aar"))
+
+    // 테스트
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation("com.squareup.retrofit2:retrofit:2.9.0") // Retrofit2
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson 변환기 추가
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3") // 로깅 인터셉터 추가
-    implementation("com.google.android.flexbox:flexbox:3.0.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
+
