@@ -2681,17 +2681,17 @@
 
                     <!-- 썸네일 이미지 -->
                     <ImageView
-                        android:id="@+id/thumbnailImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/image_interest_recipe_video_five"
-                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:id="@+id/representativeImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="44dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginTop="15dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        app:layout_constraintTop_toBottomOf="@id/thumbnail"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/thumbnail"/>
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <!-- 카테고리 -->
                     <TextView
@@ -2704,7 +2704,7 @@
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/thumbnailImage" />
+                        app:layout_constraintTop_toBottomOf="@id/representativeImage" />
 
                     <!-- 채식 -->
                     <TextView
@@ -2716,8 +2716,8 @@
                         android:text="채식"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
-                        app:layout_constraintTop_toBottomOf="@id/thumbnailImage" />
+                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                        app:layout_constraintTop_toBottomOf="@id/representativeImage" />
 
                     <!-- 한식 아래 바 -->
                     <View
@@ -2753,7 +2753,7 @@
                         android:text="그릴드 벨 페퍼 샌드위치"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
+                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
                         app:layout_constraintTop_toTopOf="@id/checkRecipeTitle" />
 
                     <!-- 소세지야채볶음 아래 바 -->
@@ -2790,7 +2790,7 @@
                         android:text="중급"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
+                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
                         app:layout_constraintTop_toTopOf="@id/checkLevel" />
 
                     <!-- 초급 아래 바 -->
@@ -2914,7 +2914,7 @@
                         android:text="치즈, 샌드위치, 빵"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/thumbnailImage"
+                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
                         app:layout_constraintTop_toTopOf="@id/tag" />
 
                     <!-- 소세지, 야채 아래 바 -->
