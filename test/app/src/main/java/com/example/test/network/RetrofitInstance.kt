@@ -10,7 +10,7 @@ object RetrofitInstance {
 
     // 로깅 인터셉터 (필요에 따라 설정, 디버깅 용도)
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        level = HttpLoggingInterceptor.Level.HEADERS // 로그 출력 중단으로 OOM 방지
     }
 
     // OkHttpClient 생성 (로깅 인터셉터 포함)

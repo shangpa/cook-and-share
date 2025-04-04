@@ -50,7 +50,15 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
     ): Call<ResponseBody>
-
+    
+    //동영상 업로드
+    @Multipart
+    @POST("/api/upload-video")
+    fun uploadVideo(
+        @Part video: MultipartBody.Part,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+    
     // 냉장고 재료 추가
     @POST("api/fridges")
     suspend fun createFridge(
