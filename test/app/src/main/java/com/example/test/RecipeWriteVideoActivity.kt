@@ -13,6 +13,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +25,22 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.doOnLayout
+import com.example.test.network.RetrofitInstance
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -51,16 +63,16 @@ private lateinit var root: ConstraintLayout  // 전체 레이아웃
 class RecipeWriteVideoActivity : AppCompatActivity() {
 
     private var targetContainer: LinearLayout? = null  // 선택한 이미지가 추가될 컨테이너 저장
-
-    // 갤러리에서 선택한 이미지를 처리하는 콜백
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            targetContainer?.let { container ->
-                addImageToContainer(it, container)  // 선택한 컨테이너에 이미지 추가
-                moveLayoutsDown(265) // 이미지 추가 시 레이아웃 이동
-            }
+    private var selectedVideoUri: Uri? = null
+    private var recipeVideoUrl: String? = null  // 서버에 업로드된 영상 URL 저장용
+    private val videoPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            selectedVideoUri = uri
+            showVideoInfo(uri)         // 파일명 표시
+            uploadVideoToServer(uri)   // 서버 업로드
         }
     }
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -442,12 +454,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // 레시피 조리영상 갤러리 불러오기
         cookVideoCamera.setOnClickListener {
             targetContainer = imageContainer  // 이 버튼을 누르면 imageContainer에 추가
-            pickImageLauncher.launch("image/*")
+            videoPickerLauncher.launch("video/*")
         }
 
         detailSettleCamera.setOnClickListener {
             targetContainer = representImageContainer  // 이 버튼을 누르면 representImageContainer에 추가
-            pickImageLauncher.launch("image/*")
         }
 
         // 레시피 세부설정 드롭다운 버튼 클릭 시 열기/닫기 토글
@@ -496,6 +507,54 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             contentCheckLayout.visibility = View.GONE
             recipeWrite.visibility = View.GONE
         }
+    }
+    private fun showVideoInfo(uri: Uri) {
+        val fileName = contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            cursor.moveToFirst()
+            cursor.getString(nameIndex)
+        } ?: "이름 없음"
+
+        val container = findViewById<LinearLayout>(R.id.imageContainer)
+        container.removeAllViews()
+
+        val textView = TextView(this).apply {
+            text = "선택한 동영상: $fileName"
+            textSize = 16f
+            setTextColor(Color.BLACK)
+        }
+        container.addView(textView)
+    }
+    private fun uploadVideoToServer(uri: Uri) {
+        Log.d("Upload", "영상 업로드 시작")
+
+        val inputStream = contentResolver.openInputStream(uri) ?: return
+        val file = File(cacheDir, "upload_video.mp4")
+        file.outputStream().use { inputStream.copyTo(it) }
+
+        val requestFile = file.asRequestBody("video/*".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("video", file.name, requestFile)
+
+        val token = App.prefs.token ?: ""
+        Log.d("JWT", "보내는 토큰: Bearer $token")
+
+        RetrofitInstance.apiService.uploadVideo(body, "Bearer $token")
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val responseBody = response.body()!!
+                        val videoUrl = responseBody.string()  // 문자열 직접 파싱
+                        Log.d("Upload", "영상 업로드 성공: $videoUrl")
+                        recipeVideoUrl = videoUrl
+                    } else {
+                        Log.e("Upload", "업로드 실패 - 응답 없음 또는 실패 응답: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("Upload", "업로드 실패: ${t.message}")
+                }
+            })
     }
 
     // 레시피 타이틀 드롭다운 열기

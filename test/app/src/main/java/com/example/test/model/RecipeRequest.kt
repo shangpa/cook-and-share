@@ -12,5 +12,6 @@ data class RecipeRequest(
     val tags: String,
     val cookingTime: Int,
     val servings: Int,
-    val isPublic: Boolean
+    val isPublic: Boolean,
+    val videoUrl: String = ""
 )
