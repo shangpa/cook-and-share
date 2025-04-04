@@ -2,20 +2,20 @@ package com.example.test
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.skt.tmap.TMapView
-import com.skt.tmap.overlay.TMapMarkerItem
 
 class MaterialMyLocationActivity : AppCompatActivity() {
 
     private lateinit var tmapView: TMapView
     private var selectedLat: Double? = null
     private var selectedLng: Double? = null
-    private val markerId = "selected_marker"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,17 +23,40 @@ class MaterialMyLocationActivity : AppCompatActivity() {
 
         val mapContainer = findViewById<FrameLayout>(R.id.mapContainer)
 
-        // TMapView 객체 생성
         tmapView = TMapView(this)
         tmapView.setSKTMapApiKey("5p5MIj0ajg149wOnUX3Ui5WfNBUnZngt5kCE8TMc")
-        mapContainer.addView(tmapView)
+        mapContainer.addView(tmapView, 0)
 
-        val selectBtn = findViewById<Button>(R.id.btn_select)
-        val closeBtn = findViewById<ImageView>(R.id.btn_close)
+        Handler(Looper.getMainLooper()).postDelayed({
+            selectedLat = 37.49054682674008
+            selectedLng = 126.77845157600154
 
+            try {
+                tmapView.setZoomLevel(15)
+                tmapView.setCenterPoint(selectedLat!!, selectedLng!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
+            findViewById<Button>(R.id.btn_zoom_in).setOnClickListener {
+                val currentZoom = tmapView.zoomLevel
+                tmapView.zoomLevel = (currentZoom + 1).coerceAtMost(20)
+            }
 
-        selectBtn.setOnClickListener {
+            findViewById<Button>(R.id.btn_zoom_out).setOnClickListener {
+                val currentZoom = tmapView.zoomLevel
+                tmapView.zoomLevel = (currentZoom - 1).coerceAtLeast(1)
+            }
+
+        }, 1500)
+
+        // 🔥 지도 이동시 항상 중심좌표 업데이트
+        tmapView.setOnDisableScrollWithZoomLevelListener { _, centerPoint ->
+            selectedLat = centerPoint.latitude
+            selectedLng = centerPoint.longitude
+        }
+
+        findViewById<Button>(R.id.btn_select).setOnClickListener {
             if (selectedLat != null && selectedLng != null) {
                 val intent = Intent(this, MaterialActivity::class.java).apply {
                     putExtra("latitude", selectedLat)
@@ -41,11 +64,11 @@ class MaterialMyLocationActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "지도를 클릭해 위치를 선택해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "지도를 움직여 위치를 선택해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        closeBtn.setOnClickListener {
+        findViewById<ImageView>(R.id.btn_close).setOnClickListener {
             finish()
         }
     }

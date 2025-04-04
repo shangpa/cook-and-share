@@ -37,7 +37,21 @@ android {
 
     // ✅ Tmap SDK에서 JNI 접근 필요할 수 있음
     sourceSets["main"].jniLibs.srcDir("libs")
+
+    sourceSets {
+        getByName("main").jniLibs.srcDirs("libs")
+        getByName("main").resources.srcDirs("libs")
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+
+    sourceSets["main"].jniLibs.srcDir("libs")
+    sourceSets["main"].resources.srcDirs("libs")
+    sourceSets["main"].assets.srcDirs("libs")
 }
+
 
 dependencies {
     // 공식 라이브러리
@@ -59,8 +73,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // ✅ Tmap SDK V1, V2 (로컬 aar 파일)
-    implementation(files("libs/tmap-sdk-1.9.aar"))
-    implementation(files("libs/vsm-tmap-sdk-v2-android-1.7.23.aar"))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
 
     // 테스트
     testImplementation(libs.junit)
