@@ -441,7 +441,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
                 findViewById<TextView>(R.id.checkFoodName).text = recipeTitle
                 findViewById<TextView>(R.id.checkKoreanFood).text = categoryText
-                findViewById<TextView>(R.id.registerRecipeSeeElementaryLevel).text = elementaryLevel.text
                 findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
                 findViewById<TextView>(R.id.checkZero).text = cookingHour.toString()
                 findViewById<TextView>(R.id.checkHalfHour).text = cookingMinute.toString()
@@ -1408,16 +1407,18 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
 
-        if (alternatives.isNotEmpty()) {
+        val filteredAlternatives = alternatives.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+        if (filteredAlternatives.isNotEmpty()) {
             addSectionTitle("대체 가능한 재료")
-            alternatives.forEach { (original, replace) ->
+            filteredAlternatives.forEach { (original, replace) ->
                 addMaterialItem(original, replace)
             }
         }
 
-        if (handling.isNotEmpty()) {
+        val filteredHandling = handling.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+        if (filteredHandling.isNotEmpty()) {
             addSectionTitle("사용된 재료 처리 방법")
-            handling.forEach { (ingredient, method) ->
+            filteredHandling.forEach { (ingredient, method) ->
                 addMaterialItem(ingredient, method)
             }
         }
