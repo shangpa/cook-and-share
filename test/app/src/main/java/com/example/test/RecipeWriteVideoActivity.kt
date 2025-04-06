@@ -484,14 +484,18 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                     tags = recipeTag,
                     cookingTime = totalCookingTime,
                     servings = 2,
-                    isPublic = true
+                    isPublic = true,
+                    videoUrl = recipeVideoUrl ?: ""
                 )
+                Log.d("RecipeRequest", "최종 videoUrl 값: ${recipe.videoUrl}")
+                Log.d("RecipeRequest", "전체 객체: ${gson.toJson(recipe)}")
                 fun sendRecipeToServer(recipe: RecipeRequest) {
                     val token = App.prefs.token
                     RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
                         if (response != null) {
                             Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
                             createdRecipeId = response.recipeId?.toLong()
+
                         } else {
                             Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
 
@@ -759,9 +763,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful && response.body() != null) {
                         val responseBody = response.body()!!
-                        val videoUrl = responseBody.string()  // 문자열 직접 파싱
+                        val videoUrl = responseBody.string()
                         Log.d("Upload", "영상 업로드 성공: $videoUrl")
                         recipeVideoUrl = videoUrl
+                        Log.d("Upload", "recipeVideoUrl 저장됨: $recipeVideoUrl")
+
                     } else {
                         Log.e("Upload", "업로드 실패 - 응답 없음 또는 실패 응답: ${response.code()}")
                     }
