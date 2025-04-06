@@ -197,10 +197,11 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                         val recipe = response.body()!!
                         val gson = Gson()
 
+                        var isFullScreen = false
                         val fullVideoUrl = RetrofitInstance.BASE_URL + (recipe.videoUrl?.trim() ?: "")
                         val imageView = findViewById<ImageView>(R.id.image)
                         val imageUrl = recipe.mainImageUrl?.trim()
-
+                        val fullScreenButton = findViewById<ImageButton>(R.id.fullScreenButton)
                         if (imageUrl.isNullOrBlank()) {
                             // mainImageUrl이 없으면 → 영상 첫 프레임 썸네일
                             Glide.with(this@RecipeSeeVideoActivity)

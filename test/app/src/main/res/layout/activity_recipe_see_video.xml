@@ -294,6 +294,17 @@
                 app:layout_constraintBottom_toBottomOf="@id/image"
                 app:layout_constraintStart_toStartOf="@id/image"
                 app:layout_constraintEnd_toEndOf="@id/image"/>
+            <ImageButton
+                android:id="@+id/fullScreenButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="12dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_full_screen"
+                android:contentDescription="전체화면"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="@id/videoPlayerView"
+                app:layout_constraintEnd_toEndOf="@id/videoPlayerView" />
 
             <!-- 재생 버튼 -->
             <ImageButton
