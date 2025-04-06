@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity() {
         // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
         val tapRecipeIcon: ImageButton = findViewById(R.id.tapRecipeIcon)
         tapRecipeIcon.setOnClickListener {
-            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            val intent = Intent(this, RecipeActivity::class.java)
             startActivity(intent)
         }
 
         // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
         val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
         tapRecipeText.setOnClickListener {
-            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            val intent = Intent(this, RecipeActivity::class.java)
             startActivity(intent)
         }
 
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         // searchIcon 클릭했을 때 SearchMain 이동
         val searchIcon: ImageView = findViewById(R.id.searchIcon)
         searchIcon.setOnClickListener {
-            val intent = Intent(this, SearchMain::class.java)
+            val intent = Intent(this, SearchMainActivity::class.java)
             startActivity(intent)
         }
 
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         // moreSeeRecipe 클릭했을 때 NoticeActivity 이동
         val moreSeeRecipe: LinearLayout = findViewById(R.id.moreSeeRecipe)
         moreSeeRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeTotal::class.java)
+            val intent = Intent(this, RecipeActivity::class.java)
             startActivity(intent)
         }
 
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         // themeRecipe 클릭했을 때 NoticeActivity 이동
         val themeRecipe: TextView = findViewById(R.id.themeRecipe)
         themeRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeTotal::class.java)
+            val intent = Intent(this, RecipeActivity::class.java)
             startActivity(intent)
         }
 
