@@ -35,7 +35,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Locale
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 
+private lateinit var player: ExoPlayer
+private lateinit var playerView: PlayerView
 
 class RecipeSeeVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,6 +196,37 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val recipe = response.body()!!
                         val gson = Gson()
+
+                        val fullVideoUrl = RetrofitInstance.BASE_URL + (recipe.videoUrl?.trim() ?: "")
+                        val imageView = findViewById<ImageView>(R.id.image)
+                        val imageUrl = recipe.mainImageUrl?.trim()
+
+                        if (imageUrl.isNullOrBlank()) {
+                            // mainImageUrl이 없으면 → 영상 첫 프레임 썸네일
+                            Glide.with(this@RecipeSeeVideoActivity)
+                                .load(fullVideoUrl)
+                                .frame(0) // 1초 지점 프레임, 필요시 0으로 변경 가능
+                                .into(imageView)
+                        } else {
+                            // mainImageUrl이 있으면 → 이미지 썸네일 사용
+                            Glide.with(this@RecipeSeeVideoActivity)
+                                .load(RetrofitInstance.BASE_URL + imageUrl)
+                                .into(imageView)
+                        }
+
+
+                        // 동영상
+                        val playButton = findViewById<ImageButton>(R.id.btnVideo)
+                        val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+
+                        // 버튼 클릭 시 영상 재생
+                        playButton.setOnClickListener {
+                            initializePlayer(fullVideoUrl)
+                            playerView.visibility = View.VISIBLE
+                            findViewById<ImageView>(R.id.image).alpha = 0f
+                            playButton.visibility = View.GONE
+                        }
+
 
                         // 작성자, 제목, 카테고리, 난이도, 시간, 태그
                         findViewById<TextView>(R.id.saltShow).text = recipe.writer
@@ -520,6 +556,16 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                 }
             })
 
+    }
+    private fun initializePlayer(videoUrl: String) {
+        val player = ExoPlayer.Builder(this).build()
+        val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+        playerView.player = player
+
+        val mediaItem = MediaItem.fromUri(videoUrl)
+        player.setMediaItem(mediaItem)
+        player.prepare()
+        player.play()
     }
 
 }
