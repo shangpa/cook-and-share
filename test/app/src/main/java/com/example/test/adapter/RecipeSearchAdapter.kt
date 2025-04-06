@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test.R
 import com.example.test.model.Recipe
 
-class RecipeSearchAdapter(private val recipeList: List<Recipe>) :
+class RecipeSearchAdapter(private var recipeList: List<Recipe>) :
     RecyclerView.Adapter<RecipeSearchAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,18 +32,21 @@ class RecipeSearchAdapter(private val recipeList: List<Recipe>) :
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipeList[position]
 
-        // 실제 서버에서 받은 데이터를 여기에 바인딩
         holder.recipeTitle.text = recipe.title
         holder.recipeLevel.text = recipe.difficulty
         holder.recipeTime.text = "${recipe.cookingTime}분"
-        holder.recipeRating.text = "5.0" // 별점은 아직 구현 안 되어 있다면 고정
-        holder.reviewCount.text = "(6)" // 리뷰 수도 마찬가지
+        holder.recipeRating.text = "5.0"
+        holder.reviewCount.text = "(6)"
         holder.recipeAuthor.text = recipe.user.name ?: "작성자"
 
-        // 이미지, 하트 아이콘은 나중에 Glide 등으로 적용
         holder.recipeImage.setImageResource(R.drawable.image_search_result_list_one)
         holder.heartIcon.setImageResource(R.drawable.image_search_result_list_heart)
     }
 
     override fun getItemCount(): Int = recipeList.size
+
+    fun updateData(newList: List<Recipe>) {
+        recipeList = newList
+        notifyDataSetChanged()
+    }
 }

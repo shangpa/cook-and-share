@@ -4,7 +4,6 @@ package com.example.test
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,7 +15,7 @@ class RecipeWriteMain : AppCompatActivity() {
         // searchIcon 클릭했을 때 SearchMain 이동
         val searchIcon: View = findViewById(R.id.searchIcon)
         searchIcon.setOnClickListener {
-            val intent = Intent(this, SearchMain::class.java)
+            val intent = Intent(this, SearchMainActivity::class.java)
             startActivity(intent)
         }
 

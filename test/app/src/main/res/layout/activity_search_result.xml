@@ -31,12 +31,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 검색어를 입력해주세요 -->
-    <TextView
-        android:id="@+id/writeReview"
+    <EditText
+        android:id="@+id/writeSearchTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
-        android:text="검색어를 입력해주세요"
+        android:hint="검색어를 입력해주세요"
+        android:background="@android:color/transparent"
         android:textColor="#9B9B9B"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/searchRect"
@@ -215,9 +216,9 @@
         android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="35dp"
-        android:text="150"
+        android:text=""
         android:textColor="#35A825"
         android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/total"
@@ -228,7 +229,7 @@
         android:id="@+id/searchResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="35dp"
         android:text="개 검색결과"
         android:textColor="#2B2B2B"
@@ -272,5 +273,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_recipe_card" />
+
+    <ImageView
+        android:id="@+id/searchEmptyImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_search_no_search"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/searchEmptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="해당되는 결과가\n      없습니다"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/searchEmptyImage"
+        app:layout_constraintEnd_toEndOf="@id/searchEmptyImage"
+        app:layout_constraintTop_toBottomOf="@id/searchEmptyImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

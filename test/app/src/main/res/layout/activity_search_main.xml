@@ -32,7 +32,7 @@
 
     <!-- 검색어를 입력해주세요 -->
     <EditText
-        android:id="@+id/writeReview"
+        android:id="@+id/writeSearchTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
@@ -206,7 +206,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
-        android:text="1.  달걀"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/popularSearch"
@@ -219,7 +219,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="14dp"
-        android:text="2.  샐러드"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/popularSearch"
@@ -232,7 +232,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="14dp"
-        android:text="3.  두부"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/popularSearch"
@@ -245,7 +245,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="14dp"
-        android:text="4.  닭"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/popularSearch"
@@ -258,7 +258,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="14dp"
-        android:text="5.  고기"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@id/popularSearch"
@@ -269,12 +269,12 @@
         android:id="@+id/Six"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="230dp"
         android:layout_marginTop="0dp"
-        android:text="6.  감자"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/One"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/One" />
 
     <!-- 7.  음료 -->
@@ -282,12 +282,12 @@
         android:id="@+id/Seven"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="137dp"
+        android:layout_marginStart="230dp"
         android:layout_marginTop="0dp"
-        android:text="7.  음료"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/Two"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/Two" />
 
     <!-- 8.  치즈 -->
@@ -295,12 +295,12 @@
         android:id="@+id/Eight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="147dp"
+        android:layout_marginStart="230dp"
         android:layout_marginTop="0dp"
-        android:text="8.  치즈"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/Three"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/Three" />
 
     <!-- 9.  전골 -->
@@ -308,12 +308,12 @@
         android:id="@+id/Nine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
+        android:layout_marginStart="230dp"
         android:layout_marginTop="0dp"
-        android:text="9.  전골"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/Four"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/Four" />
 
     <!-- 10.  알배추 -->
@@ -321,12 +321,12 @@
         android:id="@+id/Ten"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="147dp"
+        android:layout_marginStart="230dp"
         android:layout_marginTop="0dp"
-        android:text="10.  알배추"
+        android:text=""
         android:textColor="#63411C"
         android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/Five"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/Five" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
