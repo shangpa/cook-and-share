@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -34,7 +35,7 @@ class MaterialWritingActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 photoContainer.visibility = View.VISIBLE
-
+                findViewById<HorizontalScrollView>(R.id.photoScrollView).visibility = View.VISIBLE
                 val imageView = ImageView(this).apply {
                     val sizeInPx = TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
@@ -101,7 +102,6 @@ class MaterialWritingActivity : AppCompatActivity() {
         // 새로운 거래글 선언
         val newExchangeWrite = findViewById<ConstraintLayout>(R.id.newExchangeWrite)
         val exchangeWishPlaceChoice = findViewById<ConstraintLayout>(R.id.exchangeWishPlaceChoice)
-        val photoContainer = findViewById<LinearLayout>(R.id.photoContainer)
         val registerChoice = findViewById<ConstraintLayout>(R.id.registerChoice)
         val categoryBox = findViewById<FrameLayout>(R.id.categoryBox)
         val cameraIcon = findViewById<ImageView>(R.id.ic_camera)
@@ -118,6 +118,9 @@ class MaterialWritingActivity : AppCompatActivity() {
         val wishPlaceText = findViewById<TextView>(R.id.wishPlaceText)
         val cancel = findViewById<Button>(R.id.cancel)
         val register = findViewById<Button>(R.id.register)
+        // 이미지 컨테이너 뷰 초기화
+        photoContainer = findViewById<LinearLayout>(R.id.photoContainer)
+        cameraCountText = findViewById<TextView>(R.id.camera)
 
         // 등록한 거래글 보기 선언
         val postSee = findViewById<ConstraintLayout>(R.id.postSee)
