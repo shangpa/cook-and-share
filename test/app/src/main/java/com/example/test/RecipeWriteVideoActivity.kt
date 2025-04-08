@@ -710,22 +710,24 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // 레시피 등록한 레시피 확인 (작은 등록하기 클릭시 화면 이동)
         register.setOnClickListener {
-            registerRecipeUpLayout.visibility = View.VISIBLE
-            registerRecipeSeeLayout.visibility = View.VISIBLE
-            contentCheckTapBar.visibility = View.GONE
-            recipeRegister.visibility = View.GONE
-            contentCheckLayout.visibility = View.GONE
-            recipeWrite.visibility = View.GONE
+            if (createdRecipeId != null) {
+                val intent = Intent(this, RecipeSeeActivity::class.java)
+                intent.putExtra("recipeId", createdRecipeId!!)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)
         registerFixButton.setOnClickListener {
-            registerRecipeUpLayout.visibility = View.VISIBLE
-            registerRecipeSeeLayout.visibility = View.VISIBLE
-            contentCheckTapBar.visibility = View.GONE
-            recipeRegister.visibility = View.GONE
-            contentCheckLayout.visibility = View.GONE
-            recipeWrite.visibility = View.GONE
+            if (createdRecipeId != null) {
+                val intent = Intent(this, RecipeSeeActivity::class.java)
+                intent.putExtra("recipeId", createdRecipeId!!)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     private fun showVideoInfo(uri: Uri) {

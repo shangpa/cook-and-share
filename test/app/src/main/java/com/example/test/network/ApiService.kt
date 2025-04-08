@@ -1,6 +1,8 @@
 package com.example.test.network
 
 import com.example.test.model.*
+import com.example.test.model.TradePost.TradePostRequest
+import com.example.test.model.TradePost.TradePostResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -101,4 +103,11 @@ interface ApiService {
         @Path("id") id: Long,
         @Header("Authorization") token: String
     ): Response<Void>
+
+    //동네재료 게시글
+    @POST("/api/trade-posts")
+    fun createTradePost(
+        @Header("Authorization") token: String,
+        @Body request: TradePostRequest
+    ): Call<TradePostResponse>
 }

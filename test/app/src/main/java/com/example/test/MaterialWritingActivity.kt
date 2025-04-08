@@ -1,9 +1,11 @@
 package com.example.test
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +14,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -21,18 +24,33 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.test.model.TradePost.TradePostRepository
+import com.example.test.model.TradePost.TradePostRequest
+import com.example.test.network.RetrofitInstance
+import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 import java.util.Stack
 
 class MaterialWritingActivity : AppCompatActivity() {
 
     private lateinit var photoContainer: LinearLayout
     private lateinit var cameraCountText: TextView
+    private val imageUrlList = mutableListOf<String>() // 여러 이미지 URL 저장용
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 photoContainer.visibility = View.VISIBLE
-
+                findViewById<HorizontalScrollView>(R.id.photoScrollView).visibility = View.VISIBLE
                 val imageView = ImageView(this).apply {
                     val sizeInPx = TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
@@ -60,7 +78,15 @@ class MaterialWritingActivity : AppCompatActivity() {
                 }
 
                 photoContainer.addView(imageView)
-
+                //이미지 업로드
+                uploadImageToServer(uri) { imageUrl ->
+                    if (imageUrl != null) {
+                        imageUrlList.add(imageUrl)
+                        Log.d("Upload", "업로드된 URL: $imageUrl")
+                    } else {
+                        Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
                 // 사진 개수 텍스트 업데이트
                 val count = photoContainer.childCount
                 cameraCountText.text = "$count/10"
@@ -99,7 +125,6 @@ class MaterialWritingActivity : AppCompatActivity() {
         // 새로운 거래글 선언
         val newExchangeWrite = findViewById<ConstraintLayout>(R.id.newExchangeWrite)
         val exchangeWishPlaceChoice = findViewById<ConstraintLayout>(R.id.exchangeWishPlaceChoice)
-        val photoContainer = findViewById<LinearLayout>(R.id.photoContainer)
         val registerChoice = findViewById<ConstraintLayout>(R.id.registerChoice)
         val categoryBox = findViewById<FrameLayout>(R.id.categoryBox)
         val cameraIcon = findViewById<ImageView>(R.id.ic_camera)
@@ -116,6 +141,9 @@ class MaterialWritingActivity : AppCompatActivity() {
         val wishPlaceText = findViewById<TextView>(R.id.wishPlaceText)
         val cancel = findViewById<Button>(R.id.cancel)
         val register = findViewById<Button>(R.id.register)
+        // 이미지 컨테이너 뷰 초기화
+        photoContainer = findViewById<LinearLayout>(R.id.photoContainer)
+        cameraCountText = findViewById<TextView>(R.id.camera)
 
         // 등록한 거래글 보기 선언
         val postSee = findViewById<ConstraintLayout>(R.id.postSee)
@@ -252,10 +280,46 @@ class MaterialWritingActivity : AppCompatActivity() {
 
         // 등록 여부에서 등록 클릭시 등록한 거래글 보기로 화면 넘어감
         register.setOnClickListener {
-            registerChoice.visibility = View.GONE
-            newExchangeWrite.visibility = View.GONE
-            postSee.visibility = View.VISIBLE
+            val category = categoryText.text.toString().trim()
+            val title = titleText.text.toString().trim()
+            val quantity = quantityText.text.toString().toIntOrNull() ?: 0
+            val price = transactionPriceText.text.toString().toIntOrNull() ?: 0
+            val purchaseDate = purchaseDateText.text.toString().trim() // yyyy-MM-dd
+            val description = descriptionText.text.toString().trim()
+            // todo 지도 위치 받아와야함
+            // val location = wishPlaceText.text.toString().trim()
+            val gson = Gson() // 이거 꼭 선언해야 함
+
+            val request = TradePostRequest(
+                category = category,
+                title = title,
+                quantity = quantity,
+                price = price,
+                purchaseDate = purchaseDate,
+                description = description,
+                location = "location",
+                imageUrls = gson.toJson(imageUrlList)
+            )
+
+            val token = App.prefs.token.toString()
+            Log.d("TradePostRequest", "category=$category, title=$title, quantity=$quantity, price=$price, date=$purchaseDate, description=$description,imageUrls=$imageUrlList")
+            TradePostRepository.uploadTradePost(token, request) { response ->
+                if (response != null) {
+                    Toast.makeText(this, "거래글 업로드 성공!", Toast.LENGTH_SHORT).show()
+
+                    //todo 등록한 거래글 정보 화면에 표시
+
+                    // 화면 전환
+                    registerChoice.visibility = View.GONE
+                    newExchangeWrite.visibility = View.GONE
+                    postSee.visibility = View.VISIBLE
+
+                } else {
+                    Toast.makeText(this, "거래글 업로드 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
 
         // 등록한 거래글 보기 더하기 버튼 클릭시 수정, 삭제 나타남
         val moreButtons = listOf(itemMore)
@@ -321,6 +385,65 @@ class MaterialWritingActivity : AppCompatActivity() {
                 // 상태 반전해서 저장
                 it.setTag(R.id.heartIcon, !isLiked)
             }
+        }
+    }
+    fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
+        val file = uriToFile(this, uri) ?: return
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        val token = App.prefs.token ?: ""
+        if (token.isEmpty()) {
+            Log.e("Upload", "토큰 없음")
+            callback(null)
+            return
+        }
+
+        RetrofitInstance.apiService.uploadImage("Bearer $token", body)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        val imageUrl = response.body()?.string()
+                        callback(imageUrl)
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    callback(null)
+                }
+            })
+    }
+    fun uriToFile(context: Context, uri: Uri): File? {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        var fileName: String? = null
+
+        cursor?.use {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex != -1) {
+                it.moveToFirst()
+                fileName = it.getString(nameIndex)
+            }
+        }
+
+        // 파일명이 비어있으면 기본 파일명 설정
+        if (fileName.isNullOrEmpty()) {
+            fileName = "temp_image_${System.currentTimeMillis()}.jpg"
+        }
+
+        val file = File(context.cacheDir, fileName)
+
+        return try {
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }

@@ -25,6 +25,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
+import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RecipeSeeMainActivity : AppCompatActivity() {
 
@@ -32,40 +37,48 @@ class RecipeSeeMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_main)
+        val recipeId = intent.getLongExtra("recipeId", -1L)
+        Log.d("RecipeSeeMain", "받은 recipeId: $recipeId")
 
         val viewWithTimer: TextView = findViewById(R.id.viewWithTimer)
         viewWithTimer.setOnClickListener {
             val intent = Intent(this, RecipeSeeActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
         val rigthArrow: ImageButton = findViewById(R.id.rigthArrow)
         rigthArrow.setOnClickListener {
             val intent = Intent(this, RecipeSeeActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
         val viewWithoutTimer: TextView = findViewById(R.id.viewWithoutTimer)
         viewWithoutTimer.setOnClickListener {
             val intent = Intent(this, RecipeSeeNoTimerActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
         val rigthArrowTwo: ImageButton = findViewById(R.id.rigthArrowTwo)
         rigthArrowTwo.setOnClickListener {
             val intent = Intent(this, RecipeSeeNoTimerActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
         val videoSee: TextView = findViewById(R.id.videoSee)
         videoSee.setOnClickListener {
             val intent = Intent(this, RecipeSeeVideoActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
         val rigthArrowThree: ImageButton = findViewById(R.id.rigthArrowThree)
         rigthArrowThree.setOnClickListener {
             val intent = Intent(this, RecipeSeeVideoActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
@@ -116,6 +129,25 @@ class RecipeSeeMainActivity : AppCompatActivity() {
 
             popup.show()
         }
+        val token = App.prefs.token.toString()
 
+        if (recipeId != -1L && token.isNotEmpty()) {
+            RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
+                .enqueue(object : Callback<RecipeDetailResponse> {
+                    override fun onResponse(call: Call<RecipeDetailResponse>, response: Response<RecipeDetailResponse>) {
+                        if (response.isSuccessful) {
+                            val recipe = response.body()
+                            val recipeTitleTextView = findViewById<TextView>(R.id.cookname)
+                            recipeTitleTextView.text = recipe?.title ?: "제목 없음"
+                        } else {
+                            Log.e("RecipeSeeMain", "레시피 조회 실패: ${response.code()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<RecipeDetailResponse>, t: Throwable) {
+                        Log.e("RecipeSeeMain", "네트워크 오류: ${t.message}")
+                    }
+                })
+        }
     }
 }

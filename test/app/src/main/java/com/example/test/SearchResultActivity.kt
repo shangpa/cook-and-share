@@ -89,7 +89,11 @@ class SearchResultActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         emptyImage = findViewById(R.id.searchEmptyImage)
         emptyText = findViewById(R.id.searchEmptyText)
-        adapter = RecipeSearchAdapter(emptyList())
+        adapter = RecipeSearchAdapter(emptyList()) { recipe ->
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            intent.putExtra("recipeId", recipe.recipeId)
+            startActivity(intent)
+        }
         recyclerView.adapter = adapter
 
         val allBtn = findViewById<AppCompatButton>(R.id.allBtn)
