@@ -68,6 +68,10 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
+    //동영상 플레이어
+    implementation("androidx.media3:media3-exoplayer:1.3.1") //동영상 플레이어
+    implementation("androidx.media3:media3-ui:1.3.1")
+
     // 기타
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -79,19 +83,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-<<<<<<< HEAD
-=======
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0") // Retrofit2
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson 변환기 추가
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3") // 로깅 인터셉터 추가
-    implementation("com.google.android.flexbox:flexbox:3.0.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    implementation("androidx.media3:media3-exoplayer:1.3.1") //동영상 플레이어
-    implementation("androidx.media3:media3-ui:1.3.1")
-
->>>>>>> 2a54679db4aed8650d3a251ceefbe1addc7dc44a
 }
 
