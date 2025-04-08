@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test.R
 import com.example.test.model.Recipe
 
-class RecipeSearchAdapter(private var recipeList: List<Recipe>) :
+class RecipeSearchAdapter(private var recipeList: List<Recipe>,
+                          private val onItemClick: (Recipe) -> Unit) :
     RecyclerView.Adapter<RecipeSearchAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,6 +42,9 @@ class RecipeSearchAdapter(private var recipeList: List<Recipe>) :
 
         holder.recipeImage.setImageResource(R.drawable.image_search_result_list_one)
         holder.heartIcon.setImageResource(R.drawable.image_search_result_list_heart)
+        holder.itemView.setOnClickListener {
+            onItemClick(recipe)
+        }
     }
 
     override fun getItemCount(): Int = recipeList.size

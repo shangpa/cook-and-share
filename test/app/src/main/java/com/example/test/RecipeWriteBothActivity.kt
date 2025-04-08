@@ -51,6 +51,7 @@ private lateinit var minuteEditText: EditText
 private lateinit var startTextView: TextView
 private lateinit var timeSeparator: TextView
 private lateinit var deleteTextView: TextView
+private var createdRecipeId: Long? = null
 private var itemCount = 0 // 추가된 개수 추적
 private val maxItems = 10 // 최대 10개 제한
 private val buttonMarginIncrease = 130 // 버튼을 아래로 내릴 거리 (px)
@@ -760,18 +761,24 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 레시피 작성내용 취소 버튼 클릭 시 shareSettle을 숨김
         cancelTwo.setOnClickListener {
-            recipeRegister.visibility = View.GONE
+            if (createdRecipeId != null) {
+                val intent = Intent(this, RecipeSeeActivity::class.java)
+                intent.putExtra("recipeId", createdRecipeId!!)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 레시피 등록한 레시피 확인 (작은 등록하기 클릭시 화면 이동)
         register.setOnClickListener {
-            registerRecipeUpLayout.visibility = View.VISIBLE
-            registerRecipeSeeLayout.visibility = View.VISIBLE
-            tapBar.visibility = View.GONE
-            contentCheckTapBar.visibility = View.GONE
-            recipeRegister.visibility = View.GONE
-            contentCheckLayout.visibility = View.GONE
-            recipeWrite.visibility = View.GONE
+            if (createdRecipeId != null) {
+                val intent = Intent(this, RecipeSeeActivity::class.java)
+                intent.putExtra("recipeId", createdRecipeId!!)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)

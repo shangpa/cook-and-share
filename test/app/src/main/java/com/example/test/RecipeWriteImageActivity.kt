@@ -979,10 +979,10 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
 
         // 레시피 등록한 레시피 확인 (작은 등록하기 클릭시 화면 이동)
-        registerFixButton.setOnClickListener {
+        register.setOnClickListener {
             if (createdRecipeId != null) {
                 val intent = Intent(this, RecipeSeeActivity::class.java)
-                intent.putExtra("RECIPE_ID", createdRecipeId!!)
+                intent.putExtra("recipeId", createdRecipeId!!)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -993,7 +993,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         registerFixButton.setOnClickListener {
             if (createdRecipeId != null) {
                 val intent = Intent(this, RecipeSeeActivity::class.java)
-                intent.putExtra("RECIPE_ID", createdRecipeId!!)
+                intent.putExtra("recipeId", createdRecipeId!!)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()

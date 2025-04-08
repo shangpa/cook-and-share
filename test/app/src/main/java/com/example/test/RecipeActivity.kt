@@ -59,7 +59,11 @@ class RecipeActivity : AppCompatActivity() {
         // 리사이클러뷰 세팅
         recyclerView = findViewById(R.id.searchResultRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = RecipeSearchAdapter(emptyList())
+        adapter = RecipeSearchAdapter(emptyList()) { recipe ->
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            intent.putExtra("recipeId", recipe.recipeId)
+            startActivity(intent)
+        }
         recyclerView.adapter = adapter
 
         // 갯수 텍스트뷰

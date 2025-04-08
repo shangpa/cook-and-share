@@ -172,7 +172,7 @@ class RecipeSeeActivity : AppCompatActivity() {
 
         // val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
         // 레시피 조회 기능 추가
-        val recipeId=15L // 테스트 하드코딩
+        val recipeId = intent.getLongExtra("recipeId", -1L)
 
         val token = App.prefs.token.toString()
 
