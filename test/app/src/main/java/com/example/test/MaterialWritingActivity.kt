@@ -21,6 +21,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.test.model.TradePost.TradePostRepository
+import com.example.test.model.TradePost.TradePostRequest
 import java.util.Stack
 
 class MaterialWritingActivity : AppCompatActivity() {
@@ -252,10 +254,44 @@ class MaterialWritingActivity : AppCompatActivity() {
 
         // 등록 여부에서 등록 클릭시 등록한 거래글 보기로 화면 넘어감
         register.setOnClickListener {
-            registerChoice.visibility = View.GONE
-            newExchangeWrite.visibility = View.GONE
-            postSee.visibility = View.VISIBLE
+            val category = categoryText.text.toString().trim()
+            val title = titleText.text.toString().trim()
+            val quantity = quantityText.text.toString().toIntOrNull() ?: 0
+            val price = transactionPriceText.text.toString().toIntOrNull() ?: 0
+            val purchaseDate = purchaseDateText.text.toString().trim() // yyyy-MM-dd
+            val description = descriptionText.text.toString().trim()
+            // todo 지도 위치 받아와야함
+            // val location = wishPlaceText.text.toString().trim()
+
+            val request = TradePostRequest(
+                category = category,
+                title = title,
+                quantity = quantity,
+                price = price,
+                purchaseDate = purchaseDate,
+                description = description,
+                location = "location"
+            )
+
+            val token = App.prefs.token.toString()
+            Log.d("TradePostRequest", "category=$category, title=$title, quantity=$quantity, price=$price, date=$purchaseDate, description=$description")
+            TradePostRepository.uploadTradePost(token, request) { response ->
+                if (response != null) {
+                    Toast.makeText(this, "거래글 업로드 성공!", Toast.LENGTH_SHORT).show()
+
+                    //todo 등록한 거래글 정보 화면에 표시
+
+                    // 화면 전환
+                    registerChoice.visibility = View.GONE
+                    newExchangeWrite.visibility = View.GONE
+                    postSee.visibility = View.VISIBLE
+
+                } else {
+                    Toast.makeText(this, "거래글 업로드 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
 
         // 등록한 거래글 보기 더하기 버튼 클릭시 수정, 삭제 나타남
         val moreButtons = listOf(itemMore)
