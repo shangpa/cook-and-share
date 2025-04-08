@@ -7,5 +7,6 @@ data class TradePostRequest(
     val price: Int,
     val purchaseDate: String, // "yyyy-MM-dd" 형식
     val description: String,
-    val location: String
+    val location: String,
+    val imageUrls: String
 )

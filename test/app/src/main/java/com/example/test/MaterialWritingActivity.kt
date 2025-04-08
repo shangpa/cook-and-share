@@ -1,9 +1,11 @@
 package com.example.test
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -24,12 +26,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.model.TradePost.TradePostRepository
 import com.example.test.model.TradePost.TradePostRequest
+import com.example.test.network.RetrofitInstance
+import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 import java.util.Stack
 
 class MaterialWritingActivity : AppCompatActivity() {
 
     private lateinit var photoContainer: LinearLayout
     private lateinit var cameraCountText: TextView
+    private val imageUrlList = mutableListOf<String>() // 여러 이미지 URL 저장용
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -63,7 +78,15 @@ class MaterialWritingActivity : AppCompatActivity() {
                 }
 
                 photoContainer.addView(imageView)
-
+                //이미지 업로드
+                uploadImageToServer(uri) { imageUrl ->
+                    if (imageUrl != null) {
+                        imageUrlList.add(imageUrl)
+                        Log.d("Upload", "업로드된 URL: $imageUrl")
+                    } else {
+                        Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
                 // 사진 개수 텍스트 업데이트
                 val count = photoContainer.childCount
                 cameraCountText.text = "$count/10"
@@ -265,6 +288,7 @@ class MaterialWritingActivity : AppCompatActivity() {
             val description = descriptionText.text.toString().trim()
             // todo 지도 위치 받아와야함
             // val location = wishPlaceText.text.toString().trim()
+            val gson = Gson() // 이거 꼭 선언해야 함
 
             val request = TradePostRequest(
                 category = category,
@@ -273,11 +297,12 @@ class MaterialWritingActivity : AppCompatActivity() {
                 price = price,
                 purchaseDate = purchaseDate,
                 description = description,
-                location = "location"
+                location = "location",
+                imageUrls = gson.toJson(imageUrlList)
             )
 
             val token = App.prefs.token.toString()
-            Log.d("TradePostRequest", "category=$category, title=$title, quantity=$quantity, price=$price, date=$purchaseDate, description=$description")
+            Log.d("TradePostRequest", "category=$category, title=$title, quantity=$quantity, price=$price, date=$purchaseDate, description=$description,imageUrls=$imageUrlList")
             TradePostRepository.uploadTradePost(token, request) { response ->
                 if (response != null) {
                     Toast.makeText(this, "거래글 업로드 성공!", Toast.LENGTH_SHORT).show()
@@ -360,6 +385,65 @@ class MaterialWritingActivity : AppCompatActivity() {
                 // 상태 반전해서 저장
                 it.setTag(R.id.heartIcon, !isLiked)
             }
+        }
+    }
+    fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
+        val file = uriToFile(this, uri) ?: return
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        val token = App.prefs.token ?: ""
+        if (token.isEmpty()) {
+            Log.e("Upload", "토큰 없음")
+            callback(null)
+            return
+        }
+
+        RetrofitInstance.apiService.uploadImage("Bearer $token", body)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        val imageUrl = response.body()?.string()
+                        callback(imageUrl)
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    callback(null)
+                }
+            })
+    }
+    fun uriToFile(context: Context, uri: Uri): File? {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        var fileName: String? = null
+
+        cursor?.use {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex != -1) {
+                it.moveToFirst()
+                fileName = it.getString(nameIndex)
+            }
+        }
+
+        // 파일명이 비어있으면 기본 파일명 설정
+        if (fileName.isNullOrEmpty()) {
+            fileName = "temp_image_${System.currentTimeMillis()}.jpg"
+        }
+
+        val file = File(context.cacheDir, fileName)
+
+        return try {
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }
