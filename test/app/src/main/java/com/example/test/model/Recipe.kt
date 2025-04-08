@@ -15,7 +15,8 @@ data class Recipe(
     val alternativeIngredients: String?,
     val handlingMethods: String?,
     val cookingSteps: String?,
-    val isPublic: Boolean
+    val isPublic: Boolean,
+    val videoUrl: String?
 )
 
 data class User(

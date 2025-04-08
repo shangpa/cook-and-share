@@ -7,7 +7,7 @@ data class RecipeDetailResponse(
     val ingredients: String,
     val alternativeIngredients: String,
     val handlingMethods: String,
-    val cookingSteps: String,
+    val cookingSteps: String?,
     val mainImageUrl: String,
     val difficulty: String,
     val tags: String,
@@ -15,5 +15,6 @@ data class RecipeDetailResponse(
     val servings: Int,
     val createdAt: String,
     val isPublic: Boolean,
-    val writer: String
+    val writer: String,
+    val videoUrl: String?
 )

@@ -23,6 +23,12 @@ interface ApiService {
     @GET("user/info")
     fun getUserInfo(@Header("Authorization") token: String): Call<LoginInfoResponse>
 
+    // 레시피 탭
+    @GET("api/recipes/public")
+    fun getAllPublicRecipes(
+        @Query("sort") sort: String? = null
+    ): Call<List<Recipe>>
+
     // 레시피 작성 요청 (토큰 필요)
     @POST("api/recipes")
     fun createRecipe(
@@ -40,8 +46,17 @@ interface ApiService {
     // 레시피 검색
     @GET("api/recipes/search")
     fun searchRecipes(
-        @Query("title") title: String?
+        @Query("title") title: String,
+        @Query("sort") sort: String? = null
     ): Call<List<Recipe>>
+
+    // 인기 검색어
+    @GET("api/search/popular-keywords")
+    fun getPopularKeywords(): Call<List<String>>
+
+    // 검색어 저장
+    @POST("/api/search/save")
+    fun saveSearchKeyword(@Query("keyword") keyword: String): Call<Void>
 
     // 이미지 업로드
     @Multipart
@@ -50,7 +65,15 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
     ): Call<ResponseBody>
-
+    
+    //동영상 업로드
+    @Multipart
+    @POST("/api/upload-video")
+    fun uploadVideo(
+        @Part video: MultipartBody.Part,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+    
     // 냉장고 재료 추가
     @POST("api/fridges")
     suspend fun createFridge(

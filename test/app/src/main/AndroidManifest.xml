@@ -584,9 +584,9 @@
             </intent-filter>
         </activity>
 
-        <!-- RecipeTotal -->
+        <!-- RecipeActivity -->
         <activity
-            android:name=".RecipeTotal"
+            android:name=".RecipeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -597,7 +597,7 @@
 
         <!-- SearchMain -->
         <activity
-            android:name=".SearchMain"
+            android:name=".SearchMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -608,18 +608,7 @@
 
         <!-- SearchResult -->
         <activity
-            android:name=".SearchResult"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- SearchNo -->
-        <activity
-            android:name=".SearchNo"
+            android:name=".SearchResultActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

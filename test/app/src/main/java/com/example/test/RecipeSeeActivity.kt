@@ -172,7 +172,7 @@ class RecipeSeeActivity : AppCompatActivity() {
 
         // val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
         // 레시피 조회 기능 추가
-        val recipeId=85L // 테스트 하드코딩
+        val recipeId=15L // 테스트 하드코딩
 
         val token = App.prefs.token.toString()
 
@@ -227,7 +227,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                             tagContainer.addView(tagView)
                         }
 
-                        // 1. 레시피 제목 + " 재료" 텍스트
+                        // 재료 탭
                         val titleText = TextView(this@RecipeSeeActivity).apply {
                             text = "${recipe.title} 재료"
                             textSize = 15f
@@ -236,7 +236,6 @@ class RecipeSeeActivity : AppCompatActivity() {
                         }
                         ingredientContainer.addView(titleText)
 
-                        // 2. 굵은 바
                         val thickDivider = View(this@RecipeSeeActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -248,12 +247,10 @@ class RecipeSeeActivity : AppCompatActivity() {
                         }
                         ingredientContainer.addView(thickDivider)
 
-                        // 3. 재료 반복
                         val ingredients = gson.fromJson<List<Ingredient>>(
                             recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
                         )
 
-                        // 4. 재료 추가
                         ingredients.forEach { ingredient ->
                             val itemLayout = LinearLayout(this@RecipeSeeActivity).apply {
                                 orientation = LinearLayout.HORIZONTAL
@@ -284,7 +281,151 @@ class RecipeSeeActivity : AppCompatActivity() {
                             itemLayout.addView(amountText)
                             ingredientContainer.addView(itemLayout)
 
-                            // 얇은 바
+                            // 얇은 구분선
+                            val thinDivider = View(this@RecipeSeeActivity).apply {
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    2.dpToPx()
+                                ).apply {
+                                    setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                                }
+                                setBackgroundResource(R.drawable.bar_recipe_see_material)
+                            }
+                            ingredientContainer.addView(thinDivider)
+                        }
+                        // 재료 끝난 후 여백
+                        ingredientContainer.addView(View(this@RecipeSeeActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                16.dpToPx()
+                            )
+                        })
+                        //대체 재료탭
+                        val altTitleText = TextView(this@RecipeSeeActivity).apply {
+                            text = "대체 재료"
+                            textSize = 15f
+                            setTextColor(Color.parseColor("#2B2B2B"))
+                            setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
+                        }
+                        ingredientContainer.addView(altTitleText)
+
+                        val altTitleDivider = View(this@RecipeSeeActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                2.dpToPx()
+                            ).apply {
+                                setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                            }
+                            setBackgroundResource(R.drawable.bar_recipe_see)
+                        }
+                        ingredientContainer.addView(altTitleDivider)
+
+                        // 대체 재료 표시
+                        val alternativeIngredients = gson.fromJson<List<Ingredient>>(
+                            recipe.alternativeIngredients, object : TypeToken<List<Ingredient>>() {}.type
+                        )
+
+                        alternativeIngredients.forEach { ingredient ->
+                            val itemLayout = LinearLayout(this@RecipeSeeActivity).apply {
+                                orientation = LinearLayout.HORIZONTAL
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
+                                }
+                            }
+
+                            val nameText = TextView(this@RecipeSeeActivity).apply {
+                                text = "${ingredient.name}"
+                                textSize = 13f
+                                layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+                            }
+
+                            val amountText = TextView(this@RecipeSeeActivity).apply {
+                                text = ingredient.amount
+                                textSize = 13f
+                                gravity = Gravity.END
+                                layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+                            }
+
+                            itemLayout.addView(nameText)
+                            itemLayout.addView(amountText)
+                            ingredientContainer.addView(itemLayout)
+
+                            val thinDivider = View(this@RecipeSeeActivity).apply {
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    2.dpToPx()
+                                ).apply {
+                                    setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                                }
+                                setBackgroundResource(R.drawable.bar_recipe_see_material)
+                            }
+                            ingredientContainer.addView(thinDivider)
+                        }
+                        // 대체 재료 끝난 후 여백
+                        ingredientContainer.addView(View(this@RecipeSeeActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                16.dpToPx()
+                            )
+                        })
+                        //재료 처리 방법 탭
+                        val handlingTitleText = TextView(this@RecipeSeeActivity).apply {
+                            text = "재료 처리 방법"
+                            textSize = 15f
+                            setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
+                        }
+                        ingredientContainer.addView(handlingTitleText)
+
+                        val handlingTitleDivider = View(this@RecipeSeeActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                2.dpToPx()
+                            ).apply {
+                                setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                            }
+                            setBackgroundResource(R.drawable.bar_recipe_see)
+                        }
+                        ingredientContainer.addView(handlingTitleDivider)
+
+                        val handlingMethods = gson.fromJson<List<String>>(
+                            recipe.handlingMethods, object : TypeToken<List<String>>() {}.type
+                        )
+
+                        handlingMethods.forEach { method ->
+                            val parts = method.split(" : ")
+                            val name = parts.getOrNull(0) ?: ""
+                            val handling = parts.getOrNull(1) ?: ""
+
+                            val itemLayout = LinearLayout(this@RecipeSeeActivity).apply {
+                                orientation = LinearLayout.HORIZONTAL
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
+                                }
+                            }
+
+                            val nameText = TextView(this@RecipeSeeActivity).apply {
+                                text = "$name"
+                                textSize = 13f
+                                layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+                            }
+
+                            val handlingText = TextView(this@RecipeSeeActivity).apply {
+                                text = handling
+                                textSize = 13f
+                                gravity = Gravity.END
+                                layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+                            }
+
+                            itemLayout.addView(nameText)
+                            itemLayout.addView(handlingText)
+                            ingredientContainer.addView(itemLayout)
+
                             val thinDivider = View(this@RecipeSeeActivity).apply {
                                 layoutParams = LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
