@@ -88,6 +88,8 @@ class RecipeSeeMainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val recipeVideoBar = findViewById<View>(R.id.divideRectangleBarFour)
+
         //레시피 메인 선언
         val manageButton = findViewById<Button>(R.id.manageButton)
         val dimView = findViewById<View>(R.id.dimView)
@@ -139,6 +141,19 @@ class RecipeSeeMainActivity : AppCompatActivity() {
                             val recipe = response.body()
                             val recipeTitleTextView = findViewById<TextView>(R.id.cookname)
                             recipeTitleTextView.text = recipe?.title ?: "제목 없음"
+                            if (recipe?.cookingSteps.isNullOrBlank() || recipe?.cookingSteps == "[]") {
+                                viewWithTimer.visibility = View.GONE
+                                rigthArrow.visibility = View.GONE
+                                viewWithoutTimer.visibility = View.GONE
+                                rigthArrowTwo.visibility = View.GONE
+                                Log.d("RecipeSeeMain", "cookingSteps 비어있어서 타이머 보기 숨김 처리됨")
+                            }
+                            // videoUrl이 null이거나 빈 문자열이면 관련 뷰 숨기기
+                            if (recipe?.videoUrl.isNullOrBlank()) {
+                                videoSee.visibility = View.GONE
+                                rigthArrowThree.visibility = View.GONE
+                                recipeVideoBar.visibility = View.GONE
+                            }
                         } else {
                             Log.e("RecipeSeeMain", "레시피 조회 실패: ${response.code()}")
                         }
