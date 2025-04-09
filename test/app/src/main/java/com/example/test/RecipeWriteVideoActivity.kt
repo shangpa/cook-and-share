@@ -513,8 +513,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
 
-
-
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
             val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)

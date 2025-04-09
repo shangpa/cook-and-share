@@ -52,6 +52,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.util.Stack
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -123,8 +124,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 }
             }
         }
+
     private lateinit var stepContainer: LinearLayout // STEP을 추가할 컨테이너
     private lateinit var pickImageLauncherForStepCamera: ActivityResultLauncher<String>
+    private lateinit var layoutList: List<ConstraintLayout>
+    private lateinit var textViewList: List<TextView>
+    private lateinit var underlineBar: View
+    private val layoutHistory = Stack<ConstraintLayout>() // ← 이전 레이아웃 저장용
+    private lateinit var currentLayout: ConstraintLayout
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -268,7 +275,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val middle = findViewById<TextView>(R.id.middle)
         val timerDelete = findViewById<TextView>(R.id.timerDelete)
         val stepOne = findViewById<TextView>(R.id.stepOne)
-        val five = findViewById<TextView>(R.id.five)
         hourEditText = findViewById(R.id.hour)
         minuteEditText = findViewById(R.id.minute)
         startTextView = findViewById(R.id.start)
@@ -306,107 +312,109 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val registerRecipeUpLayout = findViewById<ConstraintLayout>(R.id.registerRecipeUpLayout)
         val registerRecipeSeeLayout = findViewById<ConstraintLayout>(R.id.registerRecipeSeeLayout)
 
-        // 카테고리 TextView 리스트
-        val textViews = listOf(
-            findViewById<TextView>(R.id.one),
-            findViewById<TextView>(R.id.two),
-            findViewById<TextView>(R.id.three),
-            findViewById<TextView>(R.id.four),
-            findViewById<TextView>(R.id.five),
-            findViewById<TextView>(R.id.six)
+        // 레시피 위 탭바 선언
+        val one = findViewById<TextView>(R.id.one)
+        val two = findViewById<TextView>(R.id.two)
+        val three = findViewById<TextView>(R.id.three)
+        val four = findViewById<TextView>(R.id.four)
+        val five = findViewById<TextView>(R.id.five)
+        val six = findViewById<TextView>(R.id.six)
+
+        // 레시피 레이아웃 선언
+        layoutList = listOf(
+            recipeWriteTitleLayout,
+            recipeWriteMaterialLayout,
+            recipeWriteReplaceMaterialLayout,
+            recipeWriteHandlingMethodLayout,
+            recipeWriteCookOrderLayout,
+            recipeWriteDetailSettleLayout
         )
 
-        // ConstraintLayout 리스트 (TextView와 1:1 매칭)
-        val layouts = listOf(
-            findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteReplaceMaterialLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteHandlingMethodLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteCookOrderLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
-        )
+        currentLayout = recipeWriteTitleLayout
+        showOnlyLayout(currentLayout)
 
-        // 카테고리 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
-        textViews.forEachIndexed { index, textView ->
-            textView.setOnClickListener {
-                // 모든 ConstraintLayout 숨김
-                layouts.forEach { it.visibility = View.GONE }
+        // 레시피 탭바와 레이아웃 1:1
+        one.setOnClickListener { changeLayout(recipeWriteTitleLayout) }
+        two.setOnClickListener { changeLayout(recipeWriteMaterialLayout) }
+        three.setOnClickListener { changeLayout(recipeWriteReplaceMaterialLayout) }
+        four.setOnClickListener { changeLayout(recipeWriteHandlingMethodLayout) }
+        five.setOnClickListener { changeLayout(recipeWriteCookOrderLayout) }
+        six.setOnClickListener { changeLayout(recipeWriteDetailSettleLayout) }
 
-                // 클릭된 TextView에 해당하는 ConstraintLayout만 표시
-                layouts[index].visibility = View.VISIBLE
-
-                // 모든 TextView 색상 초기화
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-
-                // 클릭된 TextView만 색상 변경 (#2B2B2B)
-                textView.setTextColor(Color.parseColor("#2B2B2B"))
-
-                // 바(View)의 위치를 클릭한 TextView의 중앙으로 이동
-                val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
-            }
-        }
-        // 현재 활성화된 화면 인덱스 추적 변수
-        var currentIndex = 0
-
-        // "계속하기" 버튼 클릭 시 화면 이동
-        continueButton.setOnClickListener {
-            if (currentIndex < layouts.size - 1) {
-                // 현재 화면 숨기기
-                layouts[currentIndex].visibility = View.GONE
-                // 다음 화면 표시
-                currentIndex++
-                layouts[currentIndex].visibility = View.VISIBLE
-
-                // 해당 TextView 색상 변경
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
-
-                // 바(View)의 위치 변경
-                val targetX =
-                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
-            } else {
-                // 마지막 화면이면 contentCheckLayout 이동
-                layouts[currentIndex].visibility = View.GONE
-                findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
-                findViewById<ConstraintLayout>(R.id.contentCheckTapFix).visibility = View.VISIBLE
-                findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
-                findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
-                findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
-                findViewById<View>(R.id.tapBar).visibility = View.GONE
-            }
-        }
-
-        // "이전으로" 버튼 클릭 시 화면 이동
+        // 레시피 이전으로 버튼 클릭시 이전 화면으로 이동
         beforeButton.setOnClickListener {
-            val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
-
-            // 현재 화면이 recipeWriteTitleLayout이면 RecipeWriteMain.kt로 이동
-            if (recipeWriteTitleLayout.visibility == View.VISIBLE) {
+            // 타이틀 화면일 때 → RecipeWriteMainActivity로 이동
+            if (currentLayout.id == R.id.recipeWriteTitleLayout) {
                 val intent = Intent(this, RecipeWriteMain::class.java)
                 startActivity(intent)
-                finish()  // 현재 액티비티 종료 (선택 사항)
-            } else {
-                // 현재 보이는 레이아웃 찾기
-                val currentIndex = layouts.indexOfFirst { it.visibility == View.VISIBLE }
+                finish() // 현재 액티비티 종료
+                return@setOnClickListener
+            }
 
-                // 현재 화면이 첫 번째가 아니라면 이전 화면으로 이동
-                if (currentIndex > 0) {
-                    layouts[currentIndex].visibility = View.GONE  // 현재 화면 숨기기
-                    layouts[currentIndex - 1].visibility = View.VISIBLE  // 이전 화면 보이기
+            // 일반적인 이전 이동 처리
+            if (layoutHistory.isNotEmpty()) {
+                val previousLayout = layoutHistory.pop()
+                showOnlyLayout(previousLayout)
 
-                    // TextView 색상 변경
-                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                    textViews[currentIndex - 1].setTextColor(Color.parseColor("#2B2B2B"))
-
-                    // 바(View)의 위치 변경
-                    val targetX =
-                        textViews[currentIndex - 1].x + (textViews[currentIndex - 1].width / 2) - (indicatorBar.width / 2)
-                    indicatorBar.x = targetX
+                val index = layoutList.indexOf(previousLayout)
+                if (index != -1) {
+                    val correspondingTab = textViewList[index]
+                    updateSelectedTab(correspondingTab)
+                    moveUnderlineBar(correspondingTab)
                 }
             }
         }
+
+        // 계속하기 버튼 클릭시 다음 화면으로 이동
+        continueButton.setOnClickListener {
+            val currentIndex = layoutList.indexOf(currentLayout)
+
+            // 마지막 화면이 detailSettle이면 contentCheck로 이동
+            if (currentLayout.id == R.id.recipeWriteDetailSettleLayout) {
+                layoutHistory.push(currentLayout) // 현재 레이아웃 저장
+                val contentCheckLayout = findViewById<ConstraintLayout>(R.id.contentCheckLayout)
+                showOnlyLayout(contentCheckLayout)
+
+                // 추가로 보여줄 뷰
+                findViewById<ConstraintLayout>(R.id.contentCheckTapBar).visibility = View.VISIBLE
+
+                // 추가로 숨길 뷰들
+                findViewById<View>(R.id.recipeWriteCategory).visibility = View.GONE
+                findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
+                findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
+                findViewById<View>(R.id.tapBar).visibility = View.GONE
+
+                return@setOnClickListener
+            }
+
+            // 기본 흐름: 다음 인덱스가 존재할 때만
+            if (currentIndex in 0 until layoutList.size - 1) {
+                val nextIndex = currentIndex + 1
+                val nextLayout = layoutList[nextIndex]
+                val correspondingTab = textViewList[nextIndex]
+
+                layoutHistory.push(currentLayout)
+                showOnlyLayout(nextLayout)
+                updateSelectedTab(correspondingTab)
+                moveUnderlineBar(correspondingTab)
+            }
+        }
+
+        // 레시피 탭바와 바 선언
+        textViewList = listOf(one, two, three, four, five, six)
+        underlineBar = findViewById(R.id.divideRectangleBarTwentythree)
+
+        // 레시피 탭바 텍스트 클릭시 해당 텍스트 색 바뀌고 바 아래로 움직임
+        textViewList.forEachIndexed { index, textView ->
+            textView.setOnClickListener {
+                updateSelectedTab(textView)
+                moveUnderlineBar(textView)
+                changeLayout(layoutList[index]) // 🔥 중요: 히스토리 스택에 push
+            }
+        }
+
+        updateSelectedTab(one)
+        moveUnderlineBar(one)
 
         // 레시피 타이틀 드롭다운 버튼 클릭 시 열기/닫기 토글
         downArrow.setOnClickListener {
@@ -720,8 +728,10 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 else -> "etc" // 예외 처리
             }
         }
+
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
+
             //대표이미지 가져오기
             val representativeImage = findViewById<ImageView>(R.id.representativeImage)
             val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
@@ -888,16 +898,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 레시피 조리순서 초기 상태: cookOrderTapBar 숨김
         cookOrderTapBar.visibility = View.GONE
-
-        // 레시피 조리순서 "five" 버튼 클릭 시 조리순서 화면을 표시하고, 다른 화면은 숨김
-        findViewById<TextView>(R.id.five).setOnClickListener {
-            // 다른 화면 숨기기
-            otherLayouts.forEach { it.visibility = View.GONE }
-
-            // 조리순서 화면만 보이게 설정
-            recipeWriteCookOrderLayout.visibility = View.VISIBLE
-            cookOrderTapBar.visibility = View.VISIBLE
-        }
 
         // 레시피 조리순서 조리순서 화면이 나타날 때 cookOrderTapBar 보이게 설정
         recipeWriteCookOrderLayout.viewTreeObserver.addOnGlobalLayoutListener {
@@ -1179,6 +1179,37 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 setBackgroundResource(R.drawable.bar_rectangle)
             }
             container.addView(divider)
+        }
+    }
+
+    // 이전으로 버튼 기능을 위해 현재 화면 저장
+    private fun changeLayout(newLayout: ConstraintLayout) {
+        if (newLayout != currentLayout) {
+            layoutHistory.push(currentLayout)
+            showOnlyLayout(newLayout)
+        }
+    }
+
+    //다른 레이아웃은 숨기고 target 화면만 보여줌
+    private fun showOnlyLayout(target: ConstraintLayout) {
+        layoutList.forEach { it.visibility = View.GONE }
+        target.visibility = View.VISIBLE
+        currentLayout = target
+    }
+
+    // 탭바 선택한 해당 텍스트 색 바뀜
+    private fun updateSelectedTab(selected: TextView) {
+        textViewList.forEach {
+            it.setTextColor(Color.parseColor("#A1A9AD"))
+        }
+        selected.setTextColor(Color.parseColor("#2B2B2B"))
+    }
+
+    // 탭바 선택한 텍스트 아래로 바 이동
+    private fun moveUnderlineBar(target: TextView) {
+        underlineBar.post {
+            val targetX = target.x + target.width / 2f - underlineBar.width / 2f
+            underlineBar.animate().x(targetX).setDuration(200).start()
         }
     }
 
