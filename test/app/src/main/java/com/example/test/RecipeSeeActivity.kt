@@ -41,10 +41,11 @@ class RecipeSeeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see)
-
+        val recipeId = intent.getLongExtra("recipeId", -1L)
         val endFixButton: Button = findViewById(R.id.endFixButton)
         endFixButton.setOnClickListener {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
@@ -170,10 +171,8 @@ class RecipeSeeActivity : AppCompatActivity() {
             }
         }
 
-        // val recipeId = intent.getLongExtra("RECIPE_ID", -1L)
-        // 레시피 조회 기능 추가
-        val recipeId = intent.getLongExtra("recipeId", -1L)
 
+        // 레시피 조회 기능 추가
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
