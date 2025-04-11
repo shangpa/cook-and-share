@@ -29,6 +29,7 @@ object RetrofitInstance {
             .build()
     }
 
+
     // ApiService 싱글톤 객체
     val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)

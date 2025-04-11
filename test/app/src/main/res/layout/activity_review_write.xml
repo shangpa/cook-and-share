@@ -479,8 +479,28 @@
                 android:src="@drawable/ic_camera"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <!-- 이미지 스크롤 영역 -->
+            <HorizontalScrollView
+                android:id="@+id/photoScrollView"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="0dp"
+                android:scrollbars="none"
+                app:layout_constraintStart_toEndOf="@id/cameraBtn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
+                <LinearLayout
+                    android:id="@+id/photoContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical" />
+            </HorizontalScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
