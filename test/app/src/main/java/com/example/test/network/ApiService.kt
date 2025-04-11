@@ -119,4 +119,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: ReviewRequestDTO
     ): Call<ReviewResponseDTO>
+
+    //리뷰조회
+    @GET("api/reviews/{recipeId}")
+    fun getReviews(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Long
+    ): Call<List<ReviewResponseDTO>>
 }

@@ -22,10 +22,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.test.adapter.ReviewAdapter
 import com.example.test.model.Ingredient
 import com.example.test.model.recipeDetail.CookingStep
 import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.network.RetrofitInstance
 import com.google.android.flexbox.FlexboxLayout
 import com.google.gson.Gson
@@ -57,6 +61,12 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         val indicatorBar = findViewById<View>(R.id.divideRectangleBarTewleve)
         val downArrow = findViewById<ImageButton>(R.id.downArrow)
         val latest = findViewById<TextView>(R.id.latest)
+
+        //리뷰
+        val reviewRecyclerView = findViewById<RecyclerView>(R.id.reviewRecyclerView)
+        val reviewAdapter = ReviewAdapter(emptyList())
+        reviewRecyclerView.layoutManager = LinearLayoutManager(this)
+        reviewRecyclerView.adapter = reviewAdapter
 
         // 조리하기 버튼 클릭시 상자 보이기
         nextFixButton.setOnClickListener {
@@ -517,6 +527,25 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                     Toast.makeText(this@RecipeSeeNoTimerActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
                 }
             })
+        //리뷰
+        RetrofitInstance.apiService.getReviews("Bearer $token", recipeId).enqueue(object : Callback<List<ReviewResponseDTO>> {
+            override fun onResponse(call: Call<List<ReviewResponseDTO>>, response: Response<List<ReviewResponseDTO>>) {
+                Log.d("리뷰응답", "성공 여부: ${response.isSuccessful}")
+                Log.d("리뷰응답", "내용: ${response.body()}")
+                if (response.isSuccessful && response.body() != null) {
+                    val reviews = response.body()!!
+                    Log.d("리뷰응답", "리뷰 개수: ${reviews.size}")
+                    reviews.forEach {
+                        Log.d("리뷰내용", "작성자=${it.username}, 평점=${it.rating}, 내용=${it.content}")
+                    }
+                    reviewAdapter.updateData(reviews)
+                }
+            }
+
+            override fun onFailure(call: Call<List<ReviewResponseDTO>>, t: Throwable) {
+                Toast.makeText(this@RecipeSeeNoTimerActivity, "리뷰 불러오기 실패", Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
 
