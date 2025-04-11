@@ -41,10 +41,12 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_no_timer)
+        val recipeId = intent.getLongExtra("recipeId", -1L)
 
         val reviewWriteButton: Button = findViewById(R.id.reviewWriteButton)
         reviewWriteButton.setOnClickListener {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
+            intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
 
@@ -180,7 +182,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         }
         
         // 레시피 조회 기능 추가
-        val recipeId = intent.getLongExtra("recipeId", -1L)
+
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)

@@ -13,9 +13,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
+import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.network.RetrofitInstance
+import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 private lateinit var imageContainer: LinearLayout
 private lateinit var representImageContainer: LinearLayout
 private var isHeartFilled = false // 하트 상태 저장
@@ -43,7 +52,15 @@ class ReveiwWriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_write)
-
+        //토큰
+        val token = App.prefs.token.toString()
+        //레시피 id 불러오기
+        val recipeId = intent.getLongExtra("recipeId", -1L)
+        val recipeTitle = findViewById<TextView>(R.id.foodName)
+        val recipeDifficulty= findViewById<TextView>(R.id.elementary)
+        val recipeTime = findViewById<TextView>(R.id.halfTime)
+        val recipeWriter = findViewById<TextView>(R.id.name)
+        val recipeImage = findViewById<ImageView>(R.id.Image)
         // 리뷰 작성 권유하기 선언
         val reviewWriteSuggestion = findViewById<ConstraintLayout>(R.id.reviewWriteSuggestion)
         val reviewWriteBtn = findViewById<Button>(R.id.reviewWriteBtn)
@@ -58,14 +75,30 @@ class ReveiwWriteActivity : AppCompatActivity() {
         val cameraBtn = findViewById<ImageButton>(R.id.cameraBtn)
         val registerButton = findViewById<Button>(R.id.registerButton)
 
-        // 작성한 리뷰 보기 선언
-        val writeReviewCheck = findViewById<ConstraintLayout>(R.id.writeReviewCheck)
-        val heartIcon: ImageButton = findViewById(R.id.heartIcon)
-        val goodButton: ImageButton = findViewById(R.id.goodButton)
-        val shareButton: ImageButton = findViewById(R.id.shareButton)
-        val downArrow = findViewById<ImageButton>(R.id.downArrow)
-        val latest = findViewById<TextView>(R.id.latest)
-        val indicatorBar = findViewById<View>(R.id.divideRectangleBarTewleve)
+        RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
+            .enqueue(object : Callback<RecipeDetailResponse> {
+                override fun onResponse(call: Call<RecipeDetailResponse>, response: Response<RecipeDetailResponse>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val recipe = response.body()!!
+
+                        recipeTitle.text = recipe.title
+                        recipeDifficulty.text = recipe.difficulty
+                        recipeTime.text = "${recipe.cookingTime}분"
+                        recipeWriter.text = recipe.writer
+
+                        if (recipe.mainImageUrl.isNotBlank()) {
+                            val imageUrl = RetrofitInstance.BASE_URL + recipe.mainImageUrl.trim()
+                            Glide.with(this@ReveiwWriteActivity).load(imageUrl).into(recipeImage)
+                        }
+                    } else {
+                        Toast.makeText(this@ReveiwWriteActivity, "레시피 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<RecipeDetailResponse>, t: Throwable) {
+                    Toast.makeText(this@ReveiwWriteActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
 
         // 리뷰 작성하러 가기 버튼 클릭 시
         reviewWriteBtn.setOnClickListener {
@@ -76,12 +109,10 @@ class ReveiwWriteActivity : AppCompatActivity() {
         }
 
 
-        // 리뷰 작성하러 가기 버튼 클릭시
+        // 등록하기 버튼 클릭시
         registerButton.setOnClickListener {
             writeReview.visibility = View.GONE
             tapBar.visibility = View.GONE
-
-            writeReviewCheck.visibility = View.VISIBLE
 
         }
 
@@ -105,89 +136,6 @@ class ReveiwWriteActivity : AppCompatActivity() {
             pickImageLauncherForCamera.launch("image/*")
         }
 
-        // 찜 클릭시 채워진 하트로 바뀜
-        heartIcon.setOnClickListener {
-            com.example.test.isHeartFilled = !com.example.test.isHeartFilled // 상태 변경
-            if (com.example.test.isHeartFilled) {
-                heartIcon.setImageResource(R.drawable.ic_heart_fill) // 채워진 하트
-            } else {
-                heartIcon.setImageResource(R.drawable.ic_recipe_heart) // 빈 하트
-            }
-        }
-
-        // 좋아요 클릭시 채워진 좋아요로 바뀜
-        goodButton.setOnClickListener {
-            com.example.test.isGoodFilled = !com.example.test.isGoodFilled // 상태 변경
-            if (com.example.test.isGoodFilled) {
-                goodButton.setImageResource(R.drawable.ic_good_fill) // 채워진 좋아요
-            } else {
-                goodButton.setImageResource(R.drawable.ic_good) // 빈 좋아요
-            }
-        }
-
-        // 공유 버튼 클릭 시 공유 인텐트 실행
-        shareButton.setOnClickListener {
-            val blogUrl = "https://tekken5953.tistory.com/" // 공유할 링크
-            val content = "링크를 공유했어요!\n어떤 링크인지 들어가서 확인해볼까요?" // 공유할 메시지
-
-            val shareIntent = Intent().apply {
-                action = Intent.ACTION_SEND // 공유 액션 설정
-                putExtra(Intent.EXTRA_TEXT, "$content\n\n$blogUrl") // 공유할 텍스트 & 링크
-                type = "text/plain" // 공유할 데이터 유형 (텍스트)
-            }
-
-            startActivity(Intent.createChooser(shareIntent, "공유하기")) // 공유 다이얼로그 띄우기
-        }
-
-        // 재료, 조리순서, 리뷰 TextView 리스트
-        val textViews = listOf(
-            findViewById<TextView>(R.id.material),
-            findViewById<TextView>(R.id.cookOrder),
-            findViewById<TextView>(R.id.review)
-        )
-
-        // ConstraintLayout 리스트 (TextView와 1:1 매칭)
-        val layouts = listOf(
-            findViewById<ConstraintLayout>(R.id.materialTap),
-            findViewById<ConstraintLayout>(R.id.cookOrderTap),
-            findViewById<ConstraintLayout>(R.id.reviewTap)
-        )
-
-        // 재료, 조리순서, 리뷰 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
-        textViews.forEachIndexed { index, textView ->
-            textView.setOnClickListener {
-                // 모든 ConstraintLayout 숨김
-                layouts.forEach { it.visibility = View.GONE }
-
-                // 클릭된 TextView에 해당하는 ConstraintLayout만 표시
-                layouts[index].visibility = View.VISIBLE
-
-                // 모든 TextView 색상 초기화
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-
-                // 클릭된 TextView만 색상 변경 (#2B2B2B)
-                textView.setTextColor(Color.parseColor("#2B2B2B"))
-
-                // 바(View)의 위치를 클릭한 TextView의 중앙으로 이동
-                val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
-            }
-        }
-
-        //리뷰 드롭다운 버튼 클릭
-        downArrow.setOnClickListener {
-            val popup = PopupMenu(this, downArrow)
-            val items = listOf("최신순", "인기순", "추천순")
-
-            items.forEach { popup.menu.add(it) }
-
-            popup.setOnMenuItemClickListener { item: MenuItem ->
-                latest.text = item.title // 선택된 텍스트 적용!
-                true
-            }
-
-            popup.show()
-        }
 
     }
 
