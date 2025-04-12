@@ -126,4 +126,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("recipeId") recipeId: Long
     ): Call<List<ReviewResponseDTO>>
+
+    @GET("api/trade-posts/{tradePostId}")
+    fun getTradePostById(
+        @Header("Authorization") token: String,
+        @Path("tradePostId") tradePostId: Long
+    ): Call<TradePostResponse>
 }
