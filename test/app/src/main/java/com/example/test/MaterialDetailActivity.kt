@@ -1,22 +1,110 @@
 package com.example.test
-
+//todo 상단에 거리 가져와야함
+//todo 당연히 지도도 가져와야함 
+//todo 하단에 프로필 정보 가져와야함
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.viewpager2.widget.ViewPager2
+import com.example.test.adapter.ImagePagerAdapter
+import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.network.RetrofitInstance
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDate
 
 class MaterialDetailActivity : AppCompatActivity() {
+
+    private lateinit var imagePager: ViewPager2
+    private lateinit var imageCount: TextView
+    private lateinit var imageCountTwo: TextView
+
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_detail) // MaterialDetailActivity의 레이아웃 파일 연결
+        val tradePostId = intent.getLongExtra("tradePostId", -1L)
+
+        //테스트 중 val tradePostId =3L
+        val token = "Bearer ${App.prefs.token}"
+
+        val itemTitle = findViewById<TextView>(R.id.itemTitle)
+        val category1 = findViewById<TextView>(R.id.category1)
+        val quantity2 = findViewById<TextView>(R.id.quantity2)
+        val itemSub = findViewById<TextView>(R.id.itemSub)
+        val locationText = findViewById<TextView>(R.id.transactionPlace2)
+        val itemPrice = findViewById<TextView>(R.id.itemPrice)
+        val userName = findViewById<TextView>(R.id.userName)
+        val dateText = findViewById<TextView>(R.id.dateText)
+        val distance = findViewById<TextView>(R.id.distanceOnly)
+        imagePager = findViewById<ViewPager2>(R.id.imagePager)
+        imageCount = findViewById(R.id.imageCount)
+        imageCountTwo = findViewById(R.id.imageCountTwo)
+
+        if (tradePostId != -1L) {
+            RetrofitInstance.apiService.getTradePostById(token, tradePostId)
+                .enqueue(object : Callback<TradePostResponse> {
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun onResponse(
+                        call: Call<TradePostResponse>,
+                        response: Response<TradePostResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { post ->
+                                itemTitle.text = post.title
+                                category1.text = post.category
+                                quantity2.text = "${post.quantity}개"
+                                itemSub.text = post.description
+                                locationText.text = post.location
+                                itemPrice.text =
+                                    if (post.price == 0) "나눔" else "${post.price} P"
+                                userName.text = post.writer
+
+                                val original = post.purchaseDate  // 예: "2024-04-12"
+                                val formattedDate = try {
+                                    val parsed = LocalDate.parse(original)
+                                    "${parsed.monthValue.toString().padStart(2, '0')}.${parsed.dayOfMonth.toString().padStart(2, '0')}"
+                                } catch (e: Exception) {
+                                    "날짜 오류"
+                                }
+                                dateText.text = formattedDate
+                                val images = parseImageUrls(post.imageUrls)
+                                imageCountTwo.text = "/${images.size}"
+
+                                val adapter = ImagePagerAdapter(this@MaterialDetailActivity, images)
+                                imagePager.adapter = adapter
+
+                                imagePager.registerOnPageChangeCallback(object :
+                                    ViewPager2.OnPageChangeCallback() {
+                                    override fun onPageSelected(position: Int) {
+                                        imageCount.text = "${position + 1}"
+                                    }
+                                })
+                            }
+                        } else {
+                            Toast.makeText(this@MaterialDetailActivity, "조회 실패", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TradePostResponse>, t: Throwable) {
+                        Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
+
 
         // detailViewIcon 클릭했을 때 MaterialOtherProfileActivity 이동
         val detailViewIcon: ImageView = findViewById(R.id.detailViewIcon)
@@ -89,6 +177,15 @@ class MaterialDetailActivity : AppCompatActivity() {
                 // 상태 반전해서 저장
                 it.setTag(R.id.heartIcon, !isLiked)
             }
+        }
+    }
+    private fun parseImageUrls(json: String): List<String> {
+        return try {
+            val gson = Gson()
+            val urls = gson.fromJson(json, Array<String>::class.java).toList()
+            urls.map { RetrofitInstance.BASE_URL + it.trim() }  // 🔥 앞에 BASE_URL 붙이기
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 }

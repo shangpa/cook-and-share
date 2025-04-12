@@ -9,6 +9,8 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.model.review.ReviewRequestDTO
+import com.example.test.model.review.ReviewResponseDTO
 import retrofit2.http.Path
 
 interface ApiService {
@@ -109,5 +111,25 @@ interface ApiService {
     fun createTradePost(
         @Header("Authorization") token: String,
         @Body request: TradePostRequest
+    ): Call<TradePostResponse>
+
+    //리뷰 작성
+    @POST("/api/reviews")
+    fun submitReview(
+        @Header("Authorization") token: String,
+        @Body request: ReviewRequestDTO
+    ): Call<ReviewResponseDTO>
+
+    //리뷰조회
+    @GET("api/reviews/{recipeId}")
+    fun getReviews(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Long
+    ): Call<List<ReviewResponseDTO>>
+
+    @GET("api/trade-posts/{tradePostId}")
+    fun getTradePostById(
+        @Header("Authorization") token: String,
+        @Path("tradePostId") tradePostId: Long
     ): Call<TradePostResponse>
 }
