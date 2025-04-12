@@ -9,5 +9,6 @@ data class TradePostResponse(
     val price: Int,
     val purchaseDate: String, // yyyy-MM-dd
     val description: String,
-    val location: String
+    val location: String,
+    val imageUrls: String
 )

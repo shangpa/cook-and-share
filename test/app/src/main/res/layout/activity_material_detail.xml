@@ -21,13 +21,15 @@
                 android:layout_height="wrap_content">
 
                 <!-- 사진 -->
-                <ImageView
-                    android:id="@+id/itemImage"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/imagePager"
                     android:layout_width="match_parent"
                     android:layout_height="386dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_material_detail"
-                    android:contentDescription="아이템 사진" />
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:overScrollMode="never"/>
 
                 <!-- 겹쳐지는 요소들 -->
                 <ImageView
@@ -122,10 +124,28 @@
                         android:src="@drawable/ic_location" />
 
                     <TextView
-                        android:id="@+id/distanceText"
+                        android:id="@+id/distanceOnly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="500m | 01.16"
+                        android:text="거리가 들어와야함"
+                    android:textColor="#8A8A8A"
+                    android:textSize="12sp" />
+
+                    <!-- 구분선 -->
+                    <TextView
+                        android:id="@+id/barDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  |  "
+                        android:textColor="#8A8A8A"
+                        android:textSize="12sp" />
+
+                    <!-- 날짜 -->
+                    <TextView
+                        android:id="@+id/dateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="01.16"
                         android:textColor="#8A8A8A"
                         android:textSize="12sp" />
                 </LinearLayout>
