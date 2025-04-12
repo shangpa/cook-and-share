@@ -36,9 +36,9 @@ class MaterialDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_detail) // MaterialDetailActivity의 레이아웃 파일 연결
-        // val tradePostId = intent.getLongExtra("tradePostId", -1L)
-        //테스트 중
-        val tradePostId =3L
+        val tradePostId = intent.getLongExtra("tradePostId", -1L)
+
+        //테스트 중 val tradePostId =3L
         val token = "Bearer ${App.prefs.token}"
 
         val itemTitle = findViewById<TextView>(R.id.itemTitle)
