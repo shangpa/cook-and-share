@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,6 +30,7 @@ import com.example.test.model.TradePost.TradePostRepository
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
+import com.skt.tmap.TMapView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -276,6 +279,54 @@ class MaterialWritingActivity : AppCompatActivity() {
         // 등록 여부에서 취소 클릭시 등록 여부 화면 사라짐
         cancel.setOnClickListener {
             registerChoice.visibility = View.GONE
+        }
+
+        lateinit var tmapView: TMapView
+        var selectedLat: Double? = null
+        var selectedLng: Double? = null
+
+        val mapContainer = findViewById<FrameLayout>(R.id.mapContainer)
+
+        tmapView = TMapView(this)
+        tmapView.setSKTMapApiKey("5p5MIj0ajg149wOnUX3Ui5WfNBUnZngt5kCE8TMc")
+        mapContainer.addView(tmapView, 0)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            selectedLat = 37.49054682674008
+            selectedLng = 126.77845157600154
+
+            try {
+                tmapView.setZoomLevel(15)
+                tmapView.setCenterPoint(selectedLat!!, selectedLng!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            findViewById<Button>(R.id.btn_zoom_in).setOnClickListener {
+                val currentZoom = tmapView.zoomLevel
+                tmapView.zoomLevel = (currentZoom + 1).coerceAtMost(20)
+            }
+
+            findViewById<Button>(R.id.btn_zoom_out).setOnClickListener {
+                val currentZoom = tmapView.zoomLevel
+                tmapView.zoomLevel = (currentZoom - 1).coerceAtLeast(1)
+            }
+
+        }, 1500)
+
+        tmapView.setOnDisableScrollWithZoomLevelListener { _, centerPoint ->
+            selectedLat = centerPoint.latitude
+            selectedLng = centerPoint.longitude
+        }
+
+        findViewById<Button>(R.id.btn_select).setOnClickListener {
+            if (selectedLat != null && selectedLng != null) {
+                wishPlaceText.text = "(${selectedLat}, ${selectedLng})"
+                exchangeWishPlaceChoice.visibility = View.GONE
+                newExchangeWrite.visibility = View.VISIBLE
+            } else {
+                Toast.makeText(this, "지도를 움직여 위치를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 등록 여부에서 등록 클릭시 등록한 거래글 보기로 화면 넘어감

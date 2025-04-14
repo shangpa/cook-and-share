@@ -127,6 +127,13 @@ class MaterialDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // img_m 클릭했을 때 MaterialDetailMapActivity 이동
+        val img_m: ImageView = findViewById(R.id.img_m)
+        img_m.setOnClickListener {
+            val intent = Intent(this, MaterialDetailMapActivity::class.java)
+            startActivity(intent)
+        }
+
         //뒤로가기 클릭시 이전화면으로 화면 이동
         val imageBack = findViewById<ImageView>(R.id.imageBack)
         imageBack.setOnClickListener {

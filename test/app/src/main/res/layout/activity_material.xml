@@ -192,7 +192,7 @@
                     <!-- 거리순 텍스트 -->
                     <TextView
                         android:id="@+id/w"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="거리순"
@@ -298,7 +298,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:paddingTop="8dp">
+                            android:paddingTop="3dp">
 
                             <TextView
                                 android:id="@+id/itemPrice"
@@ -325,6 +325,33 @@
                                 android:text="1"
                                 android:textSize="14sp" />
                         </LinearLayout>
+
+                        <!-- 온도 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginRight="7dp"
+                                android:text="판매자 온도"
+                                android:textSize="11sp"
+                                android:textColor="#8A8A8A"/>
+
+                            <TextView
+                                android:id="@+id/temperature1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="70도"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -421,7 +448,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:paddingTop="8dp">
+                            android:paddingTop="3dp">
 
                             <TextView
                                 android:id="@+id/itemPrice2"
@@ -447,6 +474,32 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <!-- 온도 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginRight="7dp"
+                                android:text="판매자 온도"
+                                android:textSize="11sp"
+                                android:textColor="#8A8A8A"/>
+
+                            <TextView
+                                android:id="@+id/temperature2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="70도"
+                                android:textSize="14sp" />
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -545,7 +598,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:paddingTop="8dp">
+                            android:paddingTop="3dp">
 
                             <TextView
                                 android:id="@+id/itemPrice3"
@@ -571,6 +624,32 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <!-- 온도 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginRight="7dp"
+                                android:text="판매자 온도"
+                                android:textSize="11sp"
+                                android:textColor="#8A8A8A"/>
+
+                            <TextView
+                                android:id="@+id/temperature3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="70도"
+                                android:textSize="14sp"/>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -668,7 +747,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:paddingTop="8dp">
+                            android:paddingTop="3dp">
 
                             <TextView
                                 android:id="@+id/itemPrice5"
@@ -694,6 +773,32 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <!-- 온도 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginRight="7dp"
+                                android:text="판매자 온도"
+                                android:textSize="11sp"
+                                android:textColor="#8A8A8A"/>
+
+                            <TextView
+                                android:id="@+id/temperature4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="70도"
+                                android:textSize="14sp"/>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -791,7 +896,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:paddingTop="8dp">
+                            android:paddingTop="3dp">
 
                             <TextView
                                 android:id="@+id/itemPrice6"
@@ -817,6 +922,32 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <!-- 온도 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginRight="7dp"
+                                android:text="판매자 온도"
+                                android:textSize="11sp"
+                                android:textColor="#8A8A8A"/>
+
+                            <TextView
+                                android:id="@+id/temperature5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="70도"
+                                android:textSize="14sp"/>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -854,7 +985,7 @@
         android:layout_marginTop="15dp">
 
         <!-- 전체 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/all"
             android:layout_width="50dp"
             android:layout_height="25dp"
@@ -868,7 +999,7 @@
 
 
         <!-- 조리기구 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cookware"
             android:layout_width="63dp"
             android:layout_height="25dp"
@@ -881,7 +1012,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 팬/냄비류 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/fans_pots"
             android:layout_width="67dp"
             android:layout_height="25dp"
@@ -894,7 +1025,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 용기 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/containers"
             android:layout_width="55dp"
             android:layout_height="25dp"
@@ -907,7 +1038,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 식기 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/tableware"
             android:layout_width="55dp"
             android:layout_height="25dp"
@@ -928,7 +1059,7 @@
         android:layout_marginTop="15dp">
 
         <!-- 수납용품 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/storageSupplies"
             android:layout_width="63dp"
             android:layout_height="25dp"
@@ -941,7 +1072,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 위생용품 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sanitaryProducts"
             android:layout_width="63dp"
             android:layout_height="25dp"
@@ -954,7 +1085,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 소형가전 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/smallAppliances"
             android:layout_width="63dp"
             android:layout_height="25dp"
@@ -967,7 +1098,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 일회용품 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/disposableProducts"
             android:layout_width="63dp"
             android:layout_height="25dp"
@@ -980,7 +1111,7 @@
             android:layout_marginLeft="10dp"/>
 
         <!-- 기타 선택 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/etc"
             android:layout_width="50dp"
             android:layout_height="25dp"
@@ -1018,7 +1149,7 @@
             android:layout_marginTop="15dp">
 
             <!-- 전체 선택 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/alll"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
@@ -1031,7 +1162,7 @@
                 android:layout_marginLeft="10dp"/>
 
             <!-- 300m 선택 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/threeHundred"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
@@ -1044,7 +1175,7 @@
                 android:layout_marginLeft="10dp"/>
 
             <!-- 500m 선택 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/fiveHundred"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
@@ -1057,7 +1188,7 @@
                 android:layout_marginLeft="10dp"/>
 
             <!-- 1km 선택 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/oneThousand"
                 android:layout_width="75dp"
                 android:layout_height="25dp"
@@ -1078,7 +1209,7 @@
             android:layout_marginTop="10dp">
 
             <!-- 1.5km 선택 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/onefiveThousand"
                 android:layout_width="85dp"
                 android:layout_height="25dp"
@@ -1091,7 +1222,7 @@
                 android:layout_marginLeft="10dp"/>
 
             <!-- 2km 선택 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/twoThousand"
                 android:layout_width="75dp"
                 android:layout_height="25dp"
@@ -1138,4 +1269,61 @@
         android:layout_marginBottom="250dp"
         android:backgroundTint="#35A825"
         android:elevation="6dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sortDropdown"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:elevation="10dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@android:color/white"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <TextView
+                android:id="@+id/sortByDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="거리순"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="#2B2B2B" />
+
+            <TextView
+                android:id="@+id/sortByLatest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="최신순"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="#2B2B2B" />
+
+            <TextView
+                android:id="@+id/sortByPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가격순"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="#2B2B2B" />
+
+            <TextView
+                android:id="@+id/sortByDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="구입 날짜순"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="#2B2B2B" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </FrameLayout>
+

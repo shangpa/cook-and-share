@@ -426,6 +426,17 @@
             </intent-filter>
         </activity>
 
+        <!-- MaterialDetailMapActivity -->
+        <activity
+            android:name=".MaterialDetailMapActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- MaterialChatDetailActivity -->
         <activity
             android:name=".MaterialChatDetailActivity"/>
