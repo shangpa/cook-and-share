@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test.model.LoginInfoResponse
@@ -37,6 +38,26 @@ class MypageActivity : AppCompatActivity() {
         logoutText.setOnClickListener {
             App.prefs.token = ""
             val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+        // 작성한 레시피로 이동
+        val writeRecipeText: LinearLayout = findViewById(R.id.recipeWrite)
+        writeRecipeText.setOnClickListener {
+            val intent = Intent(this, MypageWriteRecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+          // 레시피 리뷰 내역으로 이동
+        val recipeReviewListText: LinearLayout = findViewById(R.id.recipeReview)
+        recipeReviewListText.setOnClickListener {
+            val intent = Intent(this, MypageRecipeReviewActivity::class.java)
+            startActivity(intent)
+        }
+
+         // 찜한 레시피로 이동
+        val likeRecipeText: LinearLayout = findViewById(R.id.recipeLike)
+        likeRecipeText.setOnClickListener {
+            val intent = Intent(this, MypageLoveRecipeActivity::class.java)
             startActivity(intent)
         }
         // 사용자 이름 텍스트뷰
