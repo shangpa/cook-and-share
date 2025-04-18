@@ -30,6 +30,7 @@ class Prefs(context: Context) {
 
 class App : Application() {
     companion object {
+        lateinit var context: Context
         lateinit var prefs: Prefs
     }
 
