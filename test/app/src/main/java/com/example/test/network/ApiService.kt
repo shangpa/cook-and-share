@@ -132,4 +132,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("tradePostId") tradePostId: Long
     ): Call<TradePostResponse>
+
+    // 레시피 좋아요 토글 (좋아요 또는 취소)
+    @POST("api/recipes/{recipeId}/like-toggle")
+    fun toggleLike(
+        @Path("recipeId") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
 }

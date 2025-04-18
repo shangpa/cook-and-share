@@ -25,7 +25,7 @@ class SearchResultActivity : AppCompatActivity() {
     private lateinit var adapter: RecipeSearchAdapter
     private lateinit var number: TextView
     private lateinit var emptyImage: ImageView
-    private lateinit var emptyText: ImageView
+    private lateinit var emptyText: TextView
     private lateinit var searchKeyword: String
     private lateinit var categoryButtons: List<AppCompatButton>
     private var sortOrder: String? = null
