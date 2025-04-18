@@ -142,6 +142,7 @@
 
         <!-- 찜한 레시피 -->
         <LinearLayout
+            android:id="@+id/recipeLike"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -170,6 +171,7 @@
 
         <!-- 작성한 레시피 -->
         <LinearLayout
+            android:id="@+id/recipeWrite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -198,6 +200,7 @@
 
         <!-- 레시피 리뷰 내역 -->
         <LinearLayout
+            android:id="@+id/recipeReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

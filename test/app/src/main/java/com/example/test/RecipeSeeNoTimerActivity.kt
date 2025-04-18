@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.test.Utils.LikeUtils
 import com.example.test.adapter.ReviewAdapter
 import com.example.test.model.Ingredient
 import com.example.test.model.recipeDetail.CookingStep
@@ -114,24 +115,12 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
             findViewById<ImageButton>(R.id.heartButton)
         )
 
-        // 하트버튼 클릭시 채워진 하트로 바뀜
+        // 각 버튼에 대해 좋아요 기능 설정
         heartButtons.forEach { button ->
-            // 초기 상태를 태그로 저장
-            button.setTag(R.id.heartButton, false) // false: 좋아요 안 누름
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.heartButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_recipe_heart)
-                } else {
-                    button.setImageResource(R.drawable.ic_heart_fill)
-                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                // 상태 반전해서 저장
-                it.setTag(R.id.heartButton, !isLiked)
-            }
+            // 초기 상태를 false로 태그 저장
+            button.setTag(R.id.heartButton, false)
+            // 서버 연동 + 토글 UI
+            LikeUtils.setupLikeButton(button, recipeId)
         }
 
         // 좋아요 버튼 선언
