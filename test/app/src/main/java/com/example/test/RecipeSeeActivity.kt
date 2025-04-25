@@ -58,6 +58,10 @@ class RecipeSeeActivity : AppCompatActivity() {
         val shareButton = findViewById<ImageButton>(R.id.shareButton)
         val cookButton = findViewById<Button>(R.id.cookButton)
         val nextFixButton = findViewById<Button>(R.id.nextFixButton)
+        val voice = findViewById<ImageButton>(R.id.voice)
+        val voiceBubble = findViewById<View>(R.id.voiceBubble)
+        val beforeStep = findViewById<TextView>(R.id.beforeStep)
+        val before = findViewById<TextView>(R.id.before)
 
         // 다음으로 버튼 선언
         steps = listOf(
@@ -89,7 +93,6 @@ class RecipeSeeActivity : AppCompatActivity() {
                 steps[currentStep].visibility = View.VISIBLE
             }
         }
-
 
         // 조리하기 버튼 클릭시 상자 보이기
         cookButton.setOnClickListener {
@@ -160,6 +163,18 @@ class RecipeSeeActivity : AppCompatActivity() {
             }
         }
 
+        // 음성 버튼 클릭시 상자 보이기
+        voice.setOnClickListener {
+            if (voiceBubble.visibility == View.VISIBLE) {
+                voiceBubble.visibility = View.GONE
+                beforeStep.visibility = View.GONE
+                before.visibility = View.GONE
+            } else {
+                voiceBubble.visibility = View.VISIBLE
+                beforeStep.visibility = View.VISIBLE
+                before.visibility = View.VISIBLE
+            }
+        }
 
         // 레시피 조회 기능 추가
         val token = App.prefs.token.toString()
@@ -524,6 +539,46 @@ class RecipeSeeActivity : AppCompatActivity() {
                             findViewById(R.id.recipeSeeMain)
                         ) + stepViewList
                         currentStep = 0
+
+                        //음성
+                        stepsFromJson.forEachIndexed { index, step ->
+                            val stepView = inflater.inflate(R.layout.recipe_see_step_item, stepContainer, false)
+
+                            // 기존 코드들
+                            stepView.findViewById<TextView>(R.id.stepOne).text = "STEP ${index + 1}"
+                            stepView.findViewById<TextView>(R.id.explainOne).text = step.description
+
+                            // 음성 버튼 및 말풍선 toggle
+                            val voiceBtn = stepView.findViewById<ImageButton>(R.id.voice)
+                            val voiceBubble = stepView.findViewById<View>(R.id.voiceBubble)
+
+                            voiceBtn.setOnClickListener {
+                                voiceBubble.visibility = if (voiceBubble.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                            }
+
+                            // 이전 스텝으로 가기
+                            stepView.findViewById<TextView>(R.id.before).setOnClickListener {
+                                if (currentStep > 0) {
+                                    steps[currentStep].visibility = View.GONE
+                                    currentStep--
+                                    steps[currentStep].visibility = View.VISIBLE
+                                }
+                            }
+
+                            // 다음 스텝으로 가기
+                            stepView.findViewById<TextView>(R.id.next).setOnClickListener {
+                                if (currentStep < steps.size - 1) {
+                                    steps[currentStep].visibility = View.GONE
+                                    currentStep++
+                                    steps[currentStep].visibility = View.VISIBLE
+                                }
+                            }
+
+                            // step 추가
+                            stepView.visibility = View.GONE
+                            stepContainer.addView(stepView)
+                            stepViewList.add(stepView)
+                        }
                     }
                 }
                 // dp 변환 함수 추가
