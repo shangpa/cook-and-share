@@ -179,7 +179,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
             popup.show()
         }
-        
+
         // 레시피 조회 기능 추가
 
         val token = App.prefs.token.toString()
@@ -220,18 +220,18 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         tagList.forEach { tag ->
                             val tagView = TextView(this@RecipeSeeNoTimerActivity) // ← Activity의 Context 명확히 지정
                                 .apply {
-                                text = "# $tag"
-                                textSize = 10f
-                                setTextColor(Color.parseColor("#747474"))
-                                setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
-                                setPadding(20, 4, 20, 4) // 태그 내부 여백
-                                layoutParams = FlexboxLayout.LayoutParams(
-                                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
-                                    FlexboxLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    setMargins(6.dpToPx(), 6.dpToPx(), 6.dpToPx(), 6.dpToPx())
+                                    text = "# $tag"
+                                    textSize = 10f
+                                    setTextColor(Color.parseColor("#747474"))
+                                    setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
+                                    setPadding(20, 4, 20, 4) // 태그 내부 여백
+                                    layoutParams = FlexboxLayout.LayoutParams(
+                                        FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                                        FlexboxLayout.LayoutParams.WRAP_CONTENT
+                                    ).apply {
+                                        setMargins(6.dpToPx(), 6.dpToPx(), 6.dpToPx(), 6.dpToPx())
+                                    }
                                 }
-                            }
                             tagContainer.addView(tagView)
                         }
 
@@ -444,6 +444,20 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
                             }
                             ingredientContainer.addView(thinDivider)
+
+                            // 음성 버튼
+                            val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
+                                setImageResource(R.drawable.ic_voice)
+                                background = null
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    gravity = Gravity.END
+                                    topMargin = 20.dpToPx()
+                                }
+                            }
+
                         }
                         //조리순서
                         val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
@@ -497,6 +511,19 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     topMargin = 12.dpToPx()
                                 }
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
+                            }
+
+                            // 음성 버튼
+                            val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
+                                setImageResource(R.drawable.ic_voice)
+                                background = null
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    gravity = Gravity.END
+                                    topMargin = 20.dpToPx()
+                                }
                             }
 
                             // 전체 묶기
