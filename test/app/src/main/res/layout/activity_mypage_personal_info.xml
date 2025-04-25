@@ -130,6 +130,7 @@
 
             <!-- Input 텍스트 -->
             <EditText
+                android:id="@+id/passwordInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -145,9 +146,23 @@
 
             <!-- 밑줄 -->
             <View
+                android:id="@+id/passwordUnderline"
                 android:layout_width="352dp"
                 android:layout_height="2dp"
                 android:background="#D2D5D6" />
+
+            <!-- 밑줄 아래에 추가 -->
+            <TextView
+                android:id="@+id/passwordErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="영문 대소문자, 숫자, 특수문자 8~15자리를 입력해주세요"
+                android:textColor="#FF0000"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"/>
+
 
         </LinearLayout>
 
@@ -163,6 +178,7 @@
 
             <!-- Input 텍스트 -->
             <EditText
+                android:id="@+id/confirmPasswordInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -178,9 +194,22 @@
 
             <!-- 밑줄 -->
             <View
+                android:id="@+id/confirmUnderline"
                 android:layout_width="352dp"
                 android:layout_height="2dp"
                 android:background="#D2D5D6" />
+
+            <TextView
+                android:id="@+id/passwordMismatchText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="비밀번호가 일치하지 않습니다"
+                android:textColor="#FF0000"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"/>
+
 
         </LinearLayout>
 

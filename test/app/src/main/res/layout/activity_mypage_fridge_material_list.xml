@@ -66,6 +66,7 @@
 
             <!-- 카테고리 컨테이너 ( 음식 전체 ) -->
             <LinearLayout
+                android:id="@+id/category_all"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -74,6 +75,7 @@
 
                 <!-- 전체 텍스트 -->
                 <TextView
+                    android:id="@+id/text_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체"
@@ -83,6 +85,7 @@
 
             <!-- 카테고리 컨테이너 (냉장) -->
             <LinearLayout
+                android:id="@+id/category_cold"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -92,6 +95,7 @@
 
                 <!-- 냉장 텍스트 -->
                 <TextView
+                    android:id="@+id/text_cold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="냉장"
@@ -101,6 +105,7 @@
 
             <!-- 카테고리 컨테이너 (냉동) -->
             <LinearLayout
+                android:id="@+id/category_freeze"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -110,6 +115,7 @@
 
                 <!-- 냉동 텍스트 -->
                 <TextView
+                    android:id="@+id/text_freeze"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="냉동"
@@ -119,6 +125,7 @@
 
             <!-- 카테고리 컨테이너 (실외) -->
             <LinearLayout
+                android:id="@+id/category_outside"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -128,6 +135,7 @@
 
                 <!-- 실외 텍스트 -->
                 <TextView
+                    android:id="@+id/text_outside"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="실외"
