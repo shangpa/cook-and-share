@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
+import com.example.test.model.Fridge.SelectedIngredient
 import com.example.test.model.FridgeResponse
 import com.example.test.network.ApiService
 import com.example.test.network.RetrofitInstance
@@ -68,21 +69,43 @@ class FridgeActivity : AppCompatActivity() {
 
         findViewById<LinearLayout>(R.id.recipeRecommendBtn).setOnClickListener {
             val selectedIngredients = selectedLayouts.map { layout ->
-                val row1 = layout.getChildAt(0) as? LinearLayout
-                (row1?.getChildAt(0) as? TextView)?.text.toString()
+                val row1 = layout.getChildAt(0) as LinearLayout
+                val ingredientName = (row1.getChildAt(0) as TextView).text.toString()
+                val quantityAndUnit = (row1.getChildAt(1) as TextView).text.toString()
+
+                val parts = quantityAndUnit.split(" ")
+                val quantity = parts.getOrNull(0)?.toDoubleOrNull()
+                val unit = parts.getOrNull(1) ?: ""
+
+                val row2 = layout.getChildAt(1) as LinearLayout
+                val storageAreaLabel = (row2.getChildAt(0) as TextView).text.toString()
+                val storageArea = (row2.getChildAt(1) as TextView).text.toString()
+
+                val row3 = layout.getChildAt(2) as LinearLayout
+                val dateLabel = (row3.getChildAt(0) as TextView).text.toString().removeSuffix(" : ")
+                val dateText = (row3.getChildAt(1) as TextView).text.toString()
+
+                SelectedIngredient(
+                    name = ingredientName,
+                    quantity = quantity,
+                    unit = unit,
+                    dateLabel = dateLabel,
+                    dateText = dateText
+                )
             }
+
             Log.d("선택한재료", "선택한 재료 리스트: $selectedIngredients")
 
-            val intent = Intent(this, FridgeRecipeActivity::class.java).apply {
-                putStringArrayListExtra("selectedIngredients", ArrayList(selectedIngredients))
-            }
             if (selectedIngredients.isEmpty()) {
                 Toast.makeText(this, "추천할 재료를 선택해주세요!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            val intent = Intent(this, FridgeRecipeActivity::class.java).apply {
+                putParcelableArrayListExtra("selectedIngredients", ArrayList(selectedIngredients))
+            }
             startActivity(intent)
         }
-
         findViewById<TextView>(R.id.fridgeDeleteText).setOnClickListener {
             if (selectedLayouts.isEmpty()) {
                 Toast.makeText(this, "삭제할 항목을 선택해 주세요.", Toast.LENGTH_SHORT).show()
