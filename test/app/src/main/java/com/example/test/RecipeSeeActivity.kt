@@ -2,10 +2,12 @@ package com.example.test
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.speech.SpeechRecognizer
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -19,6 +21,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.example.test.Utils.LikeUtils
 import com.example.test.model.Ingredient
@@ -33,9 +36,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Locale
+import android.Manifest
+import android.speech.RecognizerIntent
+import android.speech.RecognitionListener
 
 private lateinit var steps: List<View>
 private var currentStep = 0
+private lateinit var speechRecognizer: SpeechRecognizer
 
 class RecipeSeeActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -49,6 +56,12 @@ class RecipeSeeActivity : AppCompatActivity() {
             intent.putExtra("recipeId", recipeId)
             startActivity(intent)
         }
+        // 음성 인식 초기화
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
+        }
+        initSpeechRecognizer()
+        
 
         // 리뷰 작성하기 선언
         val peopleChoice = findViewById<ConstraintLayout>(R.id.peopleChoice)
@@ -221,8 +234,8 @@ class RecipeSeeActivity : AppCompatActivity() {
                                     setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
                                     setPadding(20, 4, 20, 4) // 태그 내부 여백
                                     layoutParams = FlexboxLayout.LayoutParams(
-                                        FlexboxLayout.LayoutParams.WRAP_CONTENT,
-                                        FlexboxLayout.LayoutParams.WRAP_CONTENT
+                                        WRAP_CONTENT,
+                                        WRAP_CONTENT
                                     ).apply {
                                         setMargins(6.dpToPx(), 6.dpToPx(), 6.dpToPx(), 6.dpToPx())
                                     }
@@ -259,7 +272,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 orientation = LinearLayout.HORIZONTAL
                                 layoutParams = LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                    WRAP_CONTENT
                                 ).apply {
                                     setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
                                 }
@@ -333,7 +346,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 orientation = LinearLayout.HORIZONTAL
                                 layoutParams = LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                    WRAP_CONTENT
                                 ).apply {
                                     setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
                                 }
@@ -406,7 +419,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 orientation = LinearLayout.HORIZONTAL
                                 layoutParams = LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                    WRAP_CONTENT
                                 ).apply {
                                     setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
                                 }
@@ -590,5 +603,78 @@ class RecipeSeeActivity : AppCompatActivity() {
                 }
             })
 
+    }
+
+    private fun initSpeechRecognizer() {
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+
+        val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        }
+
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {}
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onError(error: Int) {
+                startListening() // 에러나도 다시 듣기
+            }
+
+            override fun onResults(results: Bundle?) {
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                matches?.let {
+                    for (result in it) {
+                        if (result.contains("다음")) {
+                            moveNext()
+                        } else if (result.contains("이전")) {
+                            movePrevious()
+                        }
+                    }
+                }
+                startListening() // 결과 처리 후 계속 듣기
+            }
+
+            override fun onPartialResults(partialResults: Bundle?) {}
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+    }
+
+    private fun startListening() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        speechRecognizer.startListening(intent)
+    }
+
+    private fun moveNext() {
+        if (currentStep < steps.size - 1) {
+            steps[currentStep].visibility = View.GONE
+            currentStep++
+            steps[currentStep].visibility = View.VISIBLE
+        } else {
+            Toast.makeText(this, "마지막 스텝입니다!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun movePrevious() {
+        if (currentStep > 0) {
+            steps[currentStep].visibility = View.GONE
+            currentStep--
+            steps[currentStep].visibility = View.VISIBLE
+        } else {
+            Toast.makeText(this, "첫 화면입니다!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        speechRecognizer.destroy()
+    }
+
+    private fun Int.dpToPx(): Int {
+        return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
 }
