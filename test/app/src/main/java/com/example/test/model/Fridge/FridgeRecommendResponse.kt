@@ -9,5 +9,8 @@ data class FridgeRecommendResponse(
     val cookingTime: Int,
     val reviewAverage: Double,
     val reviewCount: Int,
-    val writerNickname: String
+    val writerNickname: String,
+    val viewCount: Int,
+    val likeCount: Int,
+    val createdAt: String
 )
