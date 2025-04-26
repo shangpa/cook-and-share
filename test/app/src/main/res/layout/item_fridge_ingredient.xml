@@ -28,13 +28,13 @@
                 android:text="소세지"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="#454A52" />
+                android:textColor="#8b8f9b" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="30dp">
+                android:layout_marginStart="60dp">
 
                 <!-- 수량 -->
                 <TextView
@@ -44,7 +44,7 @@
                     android:text="3"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="#454A52" />
+                    android:textColor="#8b8f9b" />
 
                 <!-- 단위 -->
                 <TextView
@@ -54,7 +54,7 @@
                     android:text="개"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="#454A52"
+                    android:textColor="#8b8f9b"
                     android:layout_marginStart="2dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:text="구매일자 : "
                 android:textSize="11sp"
-                android:textColor="#747474" />
+                android:textColor="#8b8f9b" />
 
             <TextView
                 android:id="@+id/fridgeIngredientDateText"
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:text="2025.04.26"
                 android:textSize="11sp"
-                android:textColor="#747474" />
+                android:textColor="#8b8f9b" />
         </LinearLayout>
 
     </LinearLayout>

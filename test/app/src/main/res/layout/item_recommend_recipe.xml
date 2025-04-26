@@ -26,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="소세지김치볶음밥"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:textSize="13sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <!-- 난이도 + 시간 -->
@@ -37,13 +37,20 @@
             android:orientation="horizontal"
             android:layout_marginTop="5dp">
 
+            <!-- 난이도 아이콘 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_recipe_level"/>
+
             <TextView
                 android:id="@+id/recipeDifficulty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="초급"
-                android:textSize="12sp"
-                android:textColor="#7A7A7A" />
+                android:textSize="11sp"
+                android:textColor="#9B9B9B"
+                android:layout_marginStart="1dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,13 +61,22 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp" />
 
+            <!-- 시간 아이콘 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_recipe_time"
+                android:contentDescription="시간 아이콘"
+                android:layout_marginTop="2dp"/>
+
             <TextView
                 android:id="@+id/recipeTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30분"
-                android:textSize="12sp"
-                android:textColor="#7A7A7A" />
+                android:textSize="11sp"
+                android:textColor="#9B9B9B"
+                android:layout_marginStart="1dp"/>
         </LinearLayout>
 
         <!-- 별점 + 작성자 -->
