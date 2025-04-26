@@ -23,7 +23,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/peopleChoice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
             <!-- 로고, 검색, 알림, 마이페이지 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -445,7 +446,6 @@
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@id/divideRectangleBarOne"
                 app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
-
 
             <!-- 재료 아래 바 -->
             <View

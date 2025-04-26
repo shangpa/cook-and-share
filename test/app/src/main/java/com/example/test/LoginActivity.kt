@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
 
                             // 로그인 성공 후 LoginInfoActivity 또는 메인 화면으로 이동
-                            val intent = Intent(this@LoginActivity, LoginInfoActivity::class.java)
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {
