@@ -1,6 +1,8 @@
 package com.example.test.network
 
 import com.example.test.model.*
+import com.example.test.model.Fridge.FridgeRecommendRequest
+import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import okhttp3.MultipartBody
@@ -139,4 +141,11 @@ interface ApiService {
         @Path("recipeId") recipeId: Long,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    // 냉장고 재료 기반 레시피 추천
+    @POST("/api/fridge/recommend")
+    suspend fun recommendRecipes(
+        @Header("Authorization") token: String,
+        @Body request: FridgeRecommendRequest
+    ): Response<List<FridgeRecommendResponse>>
 }
