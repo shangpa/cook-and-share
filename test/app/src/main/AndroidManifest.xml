@@ -165,16 +165,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- MaterialActivity 추가 -->
-        <activity
-            android:name=".LoginInfoActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- MaterialDetailActivity 추가 -->
         <activity

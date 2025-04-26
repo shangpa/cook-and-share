@@ -51,7 +51,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
             }
         }
     }
-
+    private var recommendList: List<FridgeRecommendResponse> = listOf()
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -228,23 +228,33 @@ class FridgeRecipeActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.menu_view_count -> {
                         RecipeResultFilterText.text = "조회수순"
-                        return@setOnMenuItemClickListener true
+                        val sortedList = recommendList.sortedByDescending { it.viewCount }
+                        updateRecipeList(sortedList)
+                        true
                     }
                     R.id.menu_likes -> {
                         RecipeResultFilterText.text = "찜순"
-                        return@setOnMenuItemClickListener true
+                        val sortedList = recommendList.sortedByDescending { it.likeCount }
+                        updateRecipeList(sortedList)
+                        true
                     }
                     R.id.menu_latest -> {
                         RecipeResultFilterText.text = "최신순"
-                        return@setOnMenuItemClickListener true
+                        val sortedList = recommendList.sortedByDescending { it.createdAt }
+                        updateRecipeList(sortedList)
+                        true
                     }
                     R.id.menu_cooking_time_short -> {
                         RecipeResultFilterText.text = "요리시간\n짧은순"
-                        return@setOnMenuItemClickListener true
+                        val sortedList = recommendList.sortedBy { it.cookingTime }
+                        updateRecipeList(sortedList)
+                        true
                     }
                     R.id.menu_cooking_time_long -> {
                         RecipeResultFilterText.text = "요리시간\n긴순"
-                        return@setOnMenuItemClickListener true
+                        val sortedList = recommendList.sortedByDescending { it.cookingTime }
+                        updateRecipeList(sortedList)
+                        true
                     }
                     else -> false
                 }
@@ -252,6 +262,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
             popupMenu.show()
         }
     }
+    //재료추가
     private fun addFridgeIngredientView(ingredient: SelectedIngredient) {
         val inflater = LayoutInflater.from(this)
         val itemView = inflater.inflate(R.layout.item_fridge_ingredient, findViewById(R.id.fridgeRecipeItem), false)
@@ -270,6 +281,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
 
         findViewById<LinearLayout>(R.id.fridgeRecipeItem).addView(itemView)
     }
+    //추천레시피 받아오기
     private fun recommendRecipes(selectedIngredients: List<String>) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
@@ -278,11 +290,9 @@ class FridgeRecipeActivity : AppCompatActivity() {
                 val response = RetrofitInstance.apiService.recommendRecipes("Bearer $token", request)
 
                 if (response.isSuccessful) {
-                    val recommendList = response.body() ?: emptyList()
+                    recommendList = response.body() ?: emptyList()
 
-                    recommendList.forEach { recipe ->
-                        addRecipeView(recipe)
-                    }
+                    updateRecipeList(recommendList)
 
                     findViewById<TextView>(R.id.recipeSearchResultNum).text = recommendList.size.toString()
                 } else {
@@ -293,6 +303,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
             }
         }
     }
+    //레시피 리스트에 추가
     private fun addRecipeView(recipe: FridgeRecommendResponse) {
         val inflater = LayoutInflater.from(this)
         val itemView = inflater.inflate(R.layout.item_recommend_recipe, findViewById(R.id.fridgeRecipeList), false)
@@ -315,10 +326,21 @@ class FridgeRecipeActivity : AppCompatActivity() {
         Glide.with(this)
             .load(fullImageUrl)
             .into(recipeImage)
-
+        itemView.setOnClickListener {
+            val intent = Intent(this, RecipeSeeMainActivity::class.java)
+            intent.putExtra("recipeId", recipe.recipeId) // id 함께 보내기
+            startActivity(intent)
+        }
         findViewById<LinearLayout>(R.id.fridgeRecipeList).addView(itemView)
     }
+    //레시피 정렬
+    private fun updateRecipeList(list: List<FridgeRecommendResponse>) {
+        val fridgeRecipeList = findViewById<LinearLayout>(R.id.fridgeRecipeList)
+        fridgeRecipeList.removeAllViews()  // 기존 레시피 뷰들 삭제
 
-
+        list.forEach { recipe ->
+            addRecipeView(recipe)
+        }
+    }
 
 }
