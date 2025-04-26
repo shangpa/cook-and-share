@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import android.widget.Toast
 
 class FridgeRecipeActivity : AppCompatActivity() {
-
     // 재귀 함수를 통해 모든 하위 TextView의 글자색을 변경하는 함수
     private fun setTextColorRecursively(view: View, color: Int) {
         if (view is TextView) {
@@ -45,6 +44,8 @@ class FridgeRecipeActivity : AppCompatActivity() {
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        //재료 가져오기
+        val selectedIngredients = intent.getStringArrayListExtra("selectedIngredients") ?: arrayListOf()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge_recipe)
 

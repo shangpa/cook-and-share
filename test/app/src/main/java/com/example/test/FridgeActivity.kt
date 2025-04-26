@@ -67,7 +67,20 @@ class FridgeActivity : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.recipeRecommendBtn).setOnClickListener {
-            startActivity(Intent(this, FridgeRecipeActivity::class.java))
+            val selectedIngredients = selectedLayouts.map { layout ->
+                val row1 = layout.getChildAt(0) as? LinearLayout
+                (row1?.getChildAt(0) as? TextView)?.text.toString()
+            }
+            Log.d("선택한재료", "선택한 재료 리스트: $selectedIngredients")
+
+            val intent = Intent(this, FridgeRecipeActivity::class.java).apply {
+                putStringArrayListExtra("selectedIngredients", ArrayList(selectedIngredients))
+            }
+            if (selectedIngredients.isEmpty()) {
+                Toast.makeText(this, "추천할 재료를 선택해주세요!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            startActivity(intent)
         }
 
         findViewById<TextView>(R.id.fridgeDeleteText).setOnClickListener {
