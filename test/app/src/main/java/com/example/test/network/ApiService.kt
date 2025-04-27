@@ -116,6 +116,24 @@ interface ApiService {
         @Body request: TradePostRequest
     ): Call<TradePostResponse>
 
+    //동네재료 메인 거래글 조회
+    @GET("/api/trade-posts")
+    fun getAllTradePosts(@Header("Authorization") token: String? = null
+    ): Call<List<TradePostResponse>>
+
+    //동네재료 메인 카테고리 필터링
+    @GET("/api/trade-posts/category")
+    fun getTradePostsByCategory(
+        @Query("category") category: String
+    ): Call<List<TradePostResponse>>
+
+    // 동네재료 거래글 검색 (키워드로 검색)
+    @GET("/api/trade-posts/search")
+    fun searchTradePosts(
+        @Header("Authorization") token: String,
+        @Query("keyword") keyword: String
+    ): Call<List<TradePostResponse>>
+
     //거래글조회
     @GET("api/trade-posts/{tradePostId}")
     fun getTradePostById(
@@ -128,6 +146,7 @@ interface ApiService {
     fun getMyTradePosts(
         @Header("Authorization") token: String
     ): Call<List<TradePostSimpleResponse>>
+
     //거래완료
     @PATCH("/api/trade-posts/{id}/complete")
     fun completeTradePost(
