@@ -39,12 +39,22 @@ class MaterialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_material)
 
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
-        val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         numberTextView = findViewById(R.id.number)
         sortText = findViewById(R.id.w)
         sortArrow = findViewById(R.id.sortArrow)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val materialFilter = findViewById<LinearLayout>(R.id.materialFilter)
+        val materialText = findViewById<TextView>(R.id.materialText)
+        val materialIcon = findViewById<ImageView>(R.id.materialIcon)
+        val materialLayout = findViewById<LinearLayout>(R.id.material)
+
+        val distanceFilter = findViewById<LinearLayout>(R.id.distanceFilter)
+        val distanceText = findViewById<TextView>(R.id.distanceText)
+        val distanceIcon = findViewById<ImageView>(R.id.distanceIcon)
+        val distanceLayout = findViewById<LinearLayout>(R.id.distance)
 
         val materialButtons = listOf(
             findViewById<Button>(R.id.all),
@@ -59,7 +69,16 @@ class MaterialActivity : AppCompatActivity() {
             findViewById(R.id.etc)
         )
 
-        // 🔥 정렬 팝업
+        buttons = listOf(
+            findViewById(R.id.alll),
+            findViewById(R.id.threeHundred),
+            findViewById(R.id.fiveHundred),
+            findViewById(R.id.oneThousand),
+            findViewById(R.id.onefiveThousand),
+            findViewById(R.id.twoThousand)
+        )
+
+        // 정렬 기능
         sortArrow.setOnClickListener {
             val popupMenu = PopupMenu(this, sortArrow)
             popupMenu.menu.add("최신순")
@@ -72,9 +91,7 @@ class MaterialActivity : AppCompatActivity() {
                 when (item.title) {
                     "최신순" -> {
                         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                        val sortedList = tradePosts.sortedByDescending {
-                            it.createdAt?.let { createdAt -> sdf.parse(createdAt) }
-                        }
+                        val sortedList = tradePosts.sortedByDescending { it.createdAt?.let { createdAt -> sdf.parse(createdAt) } }
                         setRecyclerViewAdapter(sortedList)
                     }
                     "가격순" -> {
@@ -83,36 +100,35 @@ class MaterialActivity : AppCompatActivity() {
                     }
                     "구입 날짜순" -> {
                         val sdf = SimpleDateFormat("yyyy-MM-dd")
-                        val sortedList = tradePosts.sortedByDescending {
-                            sdf.parse(it.purchaseDate)
-                        }
+                        val sortedList = tradePosts.sortedByDescending { sdf.parse(it.purchaseDate) }
                         setRecyclerViewAdapter(sortedList)
                     }
                 }
                 true
             }
-
             popupMenu.show()
         }
 
-        // 🔥 카테고리 버튼 클릭
+        // 카테고리 버튼 클릭
         materialButtons.forEach { button ->
             button.setOnClickListener {
-                setSelectedMaterialButton(button, findViewById(R.id.materialFilter), findViewById(R.id.materialText))
-                showSelectedFilterBadge(button.text.toString(), findViewById(R.id.materialFilter), findViewById(R.id.materialText))
+                setSelectedMaterialButton(button, materialFilter, materialText)
+                showSelectedFilterBadge(button.text.toString(), materialFilter, materialText)
+                materialLayout.visibility = View.GONE
+                isMaterialVisible = false
 
                 val selectedCategory = button.text.toString()
                 if (selectedCategory == "전체") {
                     TradePostRepository.getAllTradePosts(null) { posts ->
-                        if (posts != null) {
-                            tradePosts = posts
+                        posts?.let {
+                            tradePosts = it
                             setRecyclerViewAdapter(tradePosts)
                         }
                     }
                 } else {
                     TradePostRepository.getTradePostsByCategory(selectedCategory) { posts ->
-                        if (posts != null) {
-                            tradePosts = posts
+                        posts?.let {
+                            tradePosts = it
                             setRecyclerViewAdapter(tradePosts)
                         }
                     }
@@ -120,15 +136,32 @@ class MaterialActivity : AppCompatActivity() {
             }
         }
 
-        // 🔥 초기 거래글 로드
+        // 거리 필터 버튼 클릭
+        buttons.forEach {
+            it.setOnClickListener { button -> setSelectedDistanceButton(button as Button) }
+        }
+
+        materialFilter.setOnClickListener {
+            isMaterialVisible = !isMaterialVisible
+            materialLayout.visibility = if (isMaterialVisible) View.VISIBLE else View.GONE
+            updateFilterStyle(materialFilter, materialText, materialIcon, isMaterialVisible)
+        }
+
+        distanceFilter.setOnClickListener {
+            isDistanceVisible = !isDistanceVisible
+            distanceLayout.visibility = if (isDistanceVisible) View.VISIBLE else View.GONE
+            updateFilterStyle(distanceFilter, distanceText, distanceIcon, isDistanceVisible)
+        }
+
+        // 초기 전체 거래글 불러오기
         TradePostRepository.getAllTradePosts(null) { posts ->
-            if (posts != null) {
-                tradePosts = posts
+            posts?.let {
+                tradePosts = it
                 setRecyclerViewAdapter(tradePosts)
             }
         }
 
-        // 하단 네비게이션
+        // 하단바 이동
         findViewById<ImageView>(R.id.searchIcon).setOnClickListener { startActivity(Intent(this, MaterialSearchActivity::class.java)) }
         findViewById<LinearLayout>(R.id.myLocation).setOnClickListener { startActivity(Intent(this, MaterialMyLocationActivity::class.java)) }
         findViewById<ImageView>(R.id.profileIcon).setOnClickListener { startActivity(Intent(this, MaterialMyProfileActivity::class.java)) }
@@ -189,16 +222,35 @@ class MaterialActivity : AppCompatActivity() {
             if (selectedFilterLayout.children.none { it.tag.toString().startsWith("material-") }) {
                 materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
                 materialText.setTextColor(Color.parseColor("#8A8F9C"))
-
                 TradePostRepository.getAllTradePosts(null) { posts ->
-                    if (posts != null) {
-                        tradePosts = posts
+                    posts?.let {
+                        tradePosts = it
                         setRecyclerViewAdapter(tradePosts)
                     }
                 }
             }
         }
-
         selectedFilterLayout.addView(badge)
+    }
+
+    private fun setSelectedDistanceButton(button: Button) {
+        buttons.forEach {
+            it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            it.setTextColor(Color.parseColor("#8A8F9C"))
+        }
+        button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+        button.setTextColor(Color.WHITE)
+    }
+
+    private fun updateFilterStyle(layout: LinearLayout, text: TextView, icon: ImageView, expanded: Boolean) {
+        if (expanded) {
+            layout.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+            text.setTextColor(Color.WHITE)
+            icon.setImageResource(R.drawable.ic_arrow_up)
+        } else {
+            layout.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            text.setTextColor(Color.parseColor("#8A8F9C"))
+            icon.setImageResource(R.drawable.ic_arrow_down)
+        }
     }
 }
