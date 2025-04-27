@@ -19,7 +19,7 @@ object RetrofitInstance {
         }
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(context)) // 안전하게 context 전달
+            //.addInterceptor(AuthInterceptor(context)) 주석처리된거 중요한거에요ㅠㅠ
             .addInterceptor(loggingInterceptor)
             .build()
 
