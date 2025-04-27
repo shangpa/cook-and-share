@@ -34,7 +34,6 @@ class FridgeIngredientActivity : AppCompatActivity() {
         val dateDropBtn: ImageView = findViewById(R.id.DateDropBtn)
         val fridgeIngredientInput: EditText = findViewById(R.id.fridgeIngredientInput)
         val fridgeIngredientNumInput: EditText = findViewById(R.id.fridgeIngredientNumInput)
-        val fridgePriceInput: EditText = findViewById(R.id.fridgePriceInput)
         val fridgeAddButton: LinearLayout = findViewById(R.id.fridgeAddButton)
         val backBtn: ImageView = findViewById(R.id.backBtn)
 
@@ -100,7 +99,6 @@ class FridgeIngredientActivity : AppCompatActivity() {
             val fridgeDate = fridgeDateInput.text.toString().trim()
             val dateOption = fridgeDateDropText.text.toString().trim()
             val quantity = fridgeIngredientNumInput.text.toString().toDoubleOrNull() ?: 0.0
-            val price = fridgePriceInput.text.toString().toDoubleOrNull() ?: 0.0
 
             val unitCategoryMap = mapOf(
                 "무게" to "WEIGHT",
@@ -130,7 +128,6 @@ class FridgeIngredientActivity : AppCompatActivity() {
                 fridgeDate = fridgeDate,
                 dateOption = dateOption,
                 quantity = quantity,
-                price = price,
                 unitCategory = unitCategory,
                 unitDetail = unitDetail,
                 userId = userId
