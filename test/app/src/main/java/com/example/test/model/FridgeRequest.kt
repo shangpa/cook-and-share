@@ -6,7 +6,6 @@ data class FridgeRequest(
     val fridgeDate: String,
     val dateOption: String,
     val quantity: Double,
-    val price: Double,
     val unitCategory: String,
     val unitDetail: String,
     val userId: Long
