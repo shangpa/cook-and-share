@@ -253,4 +253,14 @@ class MaterialActivity : AppCompatActivity() {
             icon.setImageResource(R.drawable.ic_arrow_down)
         }
     }
+    override fun onResume() {
+        super.onResume()
+        // 화면에 다시 나타날 때 거래글 새로고침
+        TradePostRepository.getAllTradePosts(null) { posts ->
+            posts?.let {
+                tradePosts = it
+                setRecyclerViewAdapter(tradePosts)
+            }
+        }
+    }
 }

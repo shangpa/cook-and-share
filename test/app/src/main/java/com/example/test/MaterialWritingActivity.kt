@@ -363,15 +363,11 @@ class MaterialWritingActivity : AppCompatActivity() {
             Log.d("TradePostRequest", "category=$category, title=$title, quantity=$quantity, price=$price, date=$purchaseDate, description=$description,imageUrls=$imageUrlList")
             TradePostRepository.uploadTradePost(token, request) { response ->
                 if (response != null) {
+                    val intent = Intent(this, MaterialDetailActivity::class.java)
+                    intent.putExtra("tradePostId",response.tradePostId)
+                    startActivity(intent)
                     Toast.makeText(this, "거래글 업로드 성공!", Toast.LENGTH_SHORT).show()
-
-                    //todo 등록한 거래글 정보 화면에 표시
-
-                    // 화면 전환
-                    registerChoice.visibility = View.GONE
-                    newExchangeWrite.visibility = View.GONE
-                    postSee.visibility = View.VISIBLE
-
+                    finish()
                 } else {
                     Toast.makeText(this, "거래글 업로드 실패", Toast.LENGTH_SHORT).show()
                 }

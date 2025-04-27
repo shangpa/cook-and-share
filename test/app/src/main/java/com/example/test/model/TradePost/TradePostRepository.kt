@@ -31,7 +31,7 @@ object TradePostRepository {
         val call = if (token != null) {
             RetrofitInstance.apiService.getAllTradePosts("Bearer $token")
         } else {
-            RetrofitInstance.apiService.getAllTradePosts(null)
+            RetrofitInstance.apiService.getAllTradePosts()
         }
         call.enqueue(object : Callback<List<TradePostResponse>> {
             override fun onResponse(
