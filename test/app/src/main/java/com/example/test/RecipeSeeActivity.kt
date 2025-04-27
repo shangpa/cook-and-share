@@ -48,6 +48,7 @@ class RecipeSeeActivity : AppCompatActivity() {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
             intent.putExtra("recipeId", recipeId)
             startActivity(intent)
+            finish()
         }
 
         // 리뷰 작성하기 선언
@@ -56,7 +57,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         val recipeSeeMain = findViewById<ConstraintLayout>(R.id.recipeSeeMain)
         val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
         val shareButton = findViewById<ImageButton>(R.id.shareButton)
-        val cookButton = findViewById<Button>(R.id.cookButton)
         val nextFixButton = findViewById<Button>(R.id.nextFixButton)
         val voice = findViewById<ImageButton>(R.id.voice)
         val voiceBubble = findViewById<View>(R.id.voiceBubble)
@@ -94,13 +94,11 @@ class RecipeSeeActivity : AppCompatActivity() {
             }
         }
 
-        // 조리하기 버튼 클릭시 상자 보이기
-        cookButton.setOnClickListener {
-            peopleChoice.visibility = View.GONE
-            recipeSeeMain.visibility = View.VISIBLE
-            tapBar.visibility = View.VISIBLE
-            steps[currentStep].visibility = View.VISIBLE
-        }
+
+        recipeSeeMain.visibility = View.VISIBLE
+        tapBar.visibility = View.VISIBLE
+        steps[currentStep].visibility = View.VISIBLE
+
 
         // 하트버튼 선언
         val heartButtons = listOf(

@@ -55,19 +55,11 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val peopleChoice = findViewById<ConstraintLayout>(R.id.peopleChoice)
-        val zero = findViewById<EditText>(R.id.zero)
-        val nextFixButton = findViewById<Button>(R.id.nextFixButton)
         val recipeSee = findViewById<ConstraintLayout>(R.id.recipeSee)
         val indicatorBar = findViewById<View>(R.id.divideRectangleBarTewleve)
         val downArrow = findViewById<ImageButton>(R.id.downArrow)
         val latest = findViewById<TextView>(R.id.latest)
 
-        // 조리하기 버튼 클릭시 상자 보이기
-        nextFixButton.setOnClickListener {
-            peopleChoice.visibility = View.GONE
-            recipeSee.visibility = View.VISIBLE
-        }
 
         // 재료, 조리순서, 리뷰 TextView 리스트
         val textViews = listOf(

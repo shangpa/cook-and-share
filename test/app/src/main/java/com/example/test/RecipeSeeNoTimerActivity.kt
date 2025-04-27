@@ -47,7 +47,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_no_timer)
         val recipeId = intent.getLongExtra("recipeId", -1L)
-
+        val selectedTab = intent.getIntExtra("selectedTab", 0) // 기본은 0(재료)
         val reviewWriteButton: Button = findViewById(R.id.reviewWriteButton)
         reviewWriteButton.setOnClickListener {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
@@ -55,9 +55,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val peopleChoice = findViewById<ConstraintLayout>(R.id.peopleChoice)
-        val zero = findViewById<EditText>(R.id.zero)
-        val nextFixButton = findViewById<Button>(R.id.nextFixButton)
         val recipeSee = findViewById<ConstraintLayout>(R.id.recipeSee)
         val indicatorBar = findViewById<View>(R.id.divideRectangleBarTewleve)
         val downArrow = findViewById<ImageButton>(R.id.downArrow)
@@ -69,11 +66,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         reviewRecyclerView.layoutManager = LinearLayoutManager(this)
         reviewRecyclerView.adapter = reviewAdapter
 
-        // 조리하기 버튼 클릭시 상자 보이기
-        nextFixButton.setOnClickListener {
-            peopleChoice.visibility = View.GONE
-            recipeSee.visibility = View.VISIBLE
-        }
 
         // 재료, 조리순서, 리뷰 TextView 리스트
         val textViews = listOf(
