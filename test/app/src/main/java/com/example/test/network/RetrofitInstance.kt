@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    const val BASE_URL = "http://192.168.0.19:8080"
+    const val BASE_URL = "http://192.168.219.108:8080"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
@@ -19,7 +19,7 @@ object RetrofitInstance {
         }
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(context)) // 안전하게 context 전달
+            // .addInterceptor(AuthInterceptor(context)) 오류나서 나중에수정해야할듯
             .addInterceptor(loggingInterceptor)
             .build()
 
