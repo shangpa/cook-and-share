@@ -548,32 +548,6 @@ class RecipeSeeActivity : AppCompatActivity() {
                             stepView.findViewById<TextView>(R.id.stepOne).text = "STEP ${index + 1}"
                             stepView.findViewById<TextView>(R.id.explainOne).text = step.description
 
-                            // 음성 버튼 및 말풍선 toggle
-                            val voiceBtn = stepView.findViewById<ImageButton>(R.id.voice)
-                            val voiceBubble = stepView.findViewById<View>(R.id.voiceBubble)
-
-                            voiceBtn.setOnClickListener {
-                                voiceBubble.visibility = if (voiceBubble.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                            }
-
-                            // 이전 스텝으로 가기
-                            stepView.findViewById<TextView>(R.id.before).setOnClickListener {
-                                if (currentStep > 0) {
-                                    steps[currentStep].visibility = View.GONE
-                                    currentStep--
-                                    steps[currentStep].visibility = View.VISIBLE
-                                }
-                            }
-
-                            // 다음 스텝으로 가기
-                            stepView.findViewById<TextView>(R.id.next).setOnClickListener {
-                                if (currentStep < steps.size - 1) {
-                                    steps[currentStep].visibility = View.GONE
-                                    currentStep++
-                                    steps[currentStep].visibility = View.VISIBLE
-                                }
-                            }
-
                             // step 추가
                             stepView.visibility = View.GONE
                             stepContainer.addView(stepView)

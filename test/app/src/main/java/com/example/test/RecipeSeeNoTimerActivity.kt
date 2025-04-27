@@ -244,6 +244,21 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         }
                         ingredientContainer.addView(titleText)
 
+                        val voiceButtons = ImageButton(this@RecipeSeeNoTimerActivity).apply {
+                            setImageResource(R.drawable.ic_voice)
+                            background = null
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply {
+                                gravity = Gravity.END
+                                topMargin = 12.dpToPx()
+                                marginEnd = 10.dpToPx()
+                            }
+                        }
+
+                        ingredientContainer.addView(voiceButtons)
+
                         val thickDivider = View(this@RecipeSeeNoTimerActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -445,23 +460,26 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             }
                             ingredientContainer.addView(thinDivider)
 
-                            // 음성 버튼
-                            val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
-                                setImageResource(R.drawable.ic_voice)
-                                background = null
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    gravity = Gravity.END
-                                    topMargin = 20.dpToPx()
-                                }
-                            }
-
                         }
+
                         //조리순서
                         val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
                         stepContainer.removeAllViews()
+
+                        val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
+                            setImageResource(R.drawable.ic_voice)
+                            background = null
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply {
+                                gravity = Gravity.END
+                                topMargin = 12.dpToPx()
+                                marginEnd = 10.dpToPx()
+                            }
+                        }
+
+                        stepContainer.addView(voiceButton)
 
                         val steps = gson.fromJson<List<CookingStep>>(
                             recipe.cookingSteps, object : TypeToken<List<CookingStep>>() {}.type
@@ -511,19 +529,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     topMargin = 12.dpToPx()
                                 }
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
-                            }
-
-                            // 음성 버튼
-                            val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
-                                setImageResource(R.drawable.ic_voice)
-                                background = null
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    gravity = Gravity.END
-                                    topMargin = 20.dpToPx()
-                                }
                             }
 
                             // 전체 묶기

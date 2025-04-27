@@ -711,7 +711,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -818,7 +818,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1274,7 +1274,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1381,7 +1381,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1466,11 +1466,26 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center">
 
-                    <!-- 이미지 three -->
-                    <ImageView
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/image_the_recipe_saw_recently_three" />
+                        android:layout_height="wrap_content">
+
+                        <!-- 이미지 two -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/image_the_recipe_saw_recently_three" />
+
+                        <!-- 찜 버튼 (오른쪽 아래에 위치) -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_heart_list"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:layout_gravity="end|bottom" />
+
+                    </FrameLayout>
 
                     <!-- 굴버섯전골 -->
                     <TextView
@@ -1573,7 +1588,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1658,11 +1673,26 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center">
 
-                    <!-- 이미지 five -->
-                    <ImageView
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/image_the_recipe_saw_recently_five" />
+                        android:layout_height="wrap_content">
+
+                        <!-- 이미지 two -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/image_the_recipe_saw_recently_five" />
+
+                        <!-- 찜 버튼 (오른쪽 아래에 위치) -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_heart_list"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:layout_gravity="end|bottom" />
+
+                    </FrameLayout>
 
                     <!-- 당근 머핀 -->
                     <TextView
@@ -1765,7 +1795,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1940,7 +1970,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2062,7 +2092,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2184,7 +2214,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2306,7 +2336,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2428,7 +2458,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart"
+                            android:src="@drawable/ic_heart_list"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
