@@ -52,180 +52,137 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#F5F6F7"
-            android:layout_marginBottom="15dp"/>
+            android:background="#F5F6F7"/>
 
-        <!-- 카테고리 (음식)-->
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <!-- 카테고리 버튼들을 가로 스크롤로 감싸기 -->
+        <HorizontalScrollView
+            android:id="@+id/categoryScroll"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="15dp" > <!-- 나란히 배치하기 위해 간격 추가 -->
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="15dp">
 
-            <!-- 카테고리 컨테이너 ( 음식 전체 ) -->
-            <LinearLayout
-                android:layout_width="50dp"
+
+        <LinearLayout
+                android:id="@+id/categoryButtonContainer"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct_ck"
-                android:gravity="center">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
-                <!-- 전체 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 전체 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/allBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="전체"
-                    android:textSize="12sp"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (한식) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 한식 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 한식 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/krBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="한식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (양식) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 양식 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 양식 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/wsBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="양식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (일식) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 일식 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 일식 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/jpBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="일식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (중식) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 중식 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 중식 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cnBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="중식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (채식) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 채식 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 채식 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/vgBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="채식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (간식) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 간식 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 간식 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/snBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="간식"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (안주) -->
-            <LinearLayout
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 안주 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 안주 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/asBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
                     android:text="안주"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-            <!-- 카테고리 컨테이너 (밑반찬) -->
-            <LinearLayout
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/btn_fridge_ct"
-                android:gravity="center"
-                android:layout_marginLeft="7dp">
-
-                <!-- 밑반찬 텍스트 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!-- 밑반찬 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/sdBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
                     android:text="밑반찬"
-                    android:textSize="12sp"
-                    android:textColor="#8A8F9C" />
-            </LinearLayout>
+                    android:textSize="11sp"
+                    android:textColor="#8A8F9C"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
 
-        </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <!-- 구분선 -->
         <View

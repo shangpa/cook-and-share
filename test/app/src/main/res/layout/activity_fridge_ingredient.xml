@@ -138,10 +138,10 @@
         <ImageView
             android:id="@+id/fridgeStorageDropBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_fridge_dropbox"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
             android:contentDescription="드롭박스"
-            android:layout_marginStart="3dp"/>
+            android:src="@drawable/ic_fridge_dropbox" />
 
     </LinearLayout>
 

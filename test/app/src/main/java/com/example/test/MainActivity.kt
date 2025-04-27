@@ -13,8 +13,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.test.databinding.ActivityMainBinding
+import android.os.Handler
+import android.os.Looper
+import androidx.recyclerview.widget.RecyclerView
 
 lateinit var binding: ActivityMainBinding
+private var currentPage = 0
+private lateinit var sliderHandler: Handler
+private lateinit var sliderRunnable: Runnable
+private lateinit var bannerPagerAdapter: BannerPagerAdapter
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +29,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ViewPager 설정
+        // 배너
         val bannerAdapter = BannerViewPagerAdapter(this@MainActivity)
         binding.homeBannerVp.adapter = bannerAdapter
         binding.homeBannerVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        bannerPagerAdapter = BannerPagerAdapter(this)
+
+        setupBanner()
+        setupArrowButtons()
+        setupAutoSlide()
 
         // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
         val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
@@ -138,7 +151,96 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RecipeActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    // 2. 배너 세팅
+    private fun setupBanner() {
+        val fragmentList = listOf(
+            AllBannerFragment(),
+            AllBannerFragment2(),
+            AllBannerFragment3(),
+            AllBannerFragment4(),
+            AllBannerFragment5()
+        )
+
+        bannerPagerAdapter.submitList(fragmentList)
+        binding.homeBannerVp.adapter = bannerPagerAdapter
+    }
 
 
+    // 3. 화살표 버튼 세팅
+    private fun setupArrowButtons() {
+        binding.leftArrow.setOnClickListener {
+            val currentItem = binding.homeBannerVp.currentItem
+            if (currentItem > 0) {
+                binding.homeBannerVp.currentItem = currentItem - 1
+            }
+        }
+
+        binding.rightArrow.setOnClickListener {
+            val currentItem = binding.homeBannerVp.currentItem
+            if (currentItem < (binding.homeBannerVp.adapter?.itemCount ?: 0) - 1) {
+                binding.homeBannerVp.currentItem = currentItem + 1
+            }
+        }
+    }
+
+    // 4. 자동 슬라이드 세팅
+    private fun setupAutoSlide() {
+        val sliderHandler = Handler(Looper.getMainLooper())
+
+        sliderRunnable = object : Runnable {
+            override fun run() {
+                val itemCount = binding.homeBannerVp.adapter?.itemCount ?: 0
+                if (itemCount == 0) return
+
+                if (currentPage == itemCount) {
+                    currentPage = 0
+                }
+
+                binding.homeBannerVp.currentItem = currentPage++
+                sliderHandler.postDelayed(this, 3000)
+            }
+        }
+
+        // 양 옆 배너 간격 추가 (10dp)
+        val space = (5 * resources.displayMetrics.density).toInt()
+        binding.homeBannerVp.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: android.graphics.Rect,
+                view: android.view.View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                outRect.left = space
+                outRect.right = space
+            }
+        })
+
+        binding.homeBannerVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPage = position + 1
+
+                val itemCount = binding.homeBannerVp.adapter?.itemCount ?: 0
+                if (itemCount > 0) {
+                    binding.pageIndicator.text = "${position + 1} / $itemCount"
+                }
+
+                binding.topTextView.text = "Top ${position + 1}"
+            }
+        })
+
+        binding.homeBannerVp.apply {
+            adapter = bannerPagerAdapter
+            offscreenPageLimit = 3 // 주변 배너 미리 로딩
+
+            setPageTransformer { page, position ->
+                val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
+                page.scaleY = scale // 가운데 배너 약간 크게
+            }
+        }
+
+        sliderHandler.postDelayed(sliderRunnable, 3000)
     }
 }

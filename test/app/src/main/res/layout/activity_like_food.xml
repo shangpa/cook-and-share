@@ -53,6 +53,7 @@
 
         <!-- 한식 -->
         <LinearLayout
+            android:id="@+id/koreanFood"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -83,6 +84,7 @@
 
         <!-- 양식 -->
         <LinearLayout
+            android:id="@+id/westernFood"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -114,6 +116,7 @@
 
         <!-- 일식 -->
         <LinearLayout
+            android:id="@+id/japaneseFood"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -157,6 +160,7 @@
 
         <!-- 중식 -->
         <LinearLayout
+            android:id="@+id/chineseFood"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -187,6 +191,7 @@
 
         <!-- 채식 -->
         <LinearLayout
+            android:id="@+id/vegetarianFood"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -218,6 +223,7 @@
 
         <!-- 간식 -->
         <LinearLayout
+            android:id="@+id/snacksFood"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -259,6 +265,7 @@
 
         <!-- 안주 -->
         <LinearLayout
+            android:id="@+id/snacks"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -289,6 +296,7 @@
 
         <!-- 밑반찬 -->
         <LinearLayout
+            android:id="@+id/sideDishes"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="vertical"

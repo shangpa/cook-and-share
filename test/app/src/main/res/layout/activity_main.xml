@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -63,11 +65,78 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/home_banner_vp"
+            <FrameLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="30dp">
+
+                <!-- 배너 슬라이더 -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/homeBannerVp"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:overScrollMode="never" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="40dp"
+                    android:text="이번 달 인기 레시피"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/topTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginStart="40dp"
+                    android:text="Top 1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <!-- 왼쪽 화살표 -->
+                <ImageButton
+                    android:id="@+id/leftArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="15dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_banner_left" />
+
+                <!-- 오른쪽 화살표 -->
+                <ImageButton
+                    android:id="@+id/rightArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_banner_right" />
+
+                <!-- 페이지 인디케이터 -->
+                <TextView
+                    android:id="@+id/pageIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="1/5"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+
+            </FrameLayout>
+
 
             <!-- 카테고리 그룹 -->
             <LinearLayout
@@ -2594,4 +2663,4 @@
         </LinearLayout>
     </FrameLayout>
 
-</LinearLayout>
+</LinearLayout></layout>

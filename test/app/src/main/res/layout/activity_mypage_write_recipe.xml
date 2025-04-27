@@ -2,7 +2,7 @@
 
 <!-- 마이페이지 - 작성한 레시피 -->
 
-<ScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,14 +10,16 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!-- 기존 ScrollView와 내용 포함 -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF">
         <!-- 상단 바 -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -929,3 +931,350 @@
     </LinearLayout>
 
 </ScrollView>
+    <!-- 카테고리 선택 -->
+    <LinearLayout
+        android:id="@+id/cook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/filter_back"
+        android:padding="4dp"
+        android:layout_marginTop="115dp"
+        android:strokeColor="#D2D5D6"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="15dp"
+        android:visibility="gone">
+        <!-- 첫 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <!-- 전체 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/all"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="전체"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+
+            <!-- 한식 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterKorean"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="한식"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 양식 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterWestern"
+                android:layout_width="67dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="양식"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 일식 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterJapanese"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="일식"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 중식 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filteChinese"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="중식"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
+        <!-- 두 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <!-- 채식 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterVegetarian"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="채식"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 간식 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterSnackF"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="간식"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 안주 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterSnack"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="안주"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 밑반찬 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterSideDish"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="밑반찬"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 재료 선택 -->
+    <LinearLayout
+        android:id="@+id/material"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filter_back"
+        android:layout_marginTop="115dp"
+        android:padding="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="15dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <!-- 첫 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <!-- 전체 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/alll"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="전체"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+
+            <!-- 곡물 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/grain"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="곡물"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 과일 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fruit"
+                android:layout_width="67dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="과일"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 채소 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/vegetable"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="채소"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 육류 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/meat"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="육류"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
+        <!-- 두 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <!-- 유제품 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/dairy"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="유제품"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 수산물 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/seafood"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="수산물"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 조미료 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/condiment"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="조미료"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 버섯 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/mushroom"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="버섯"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 첨가물 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/additive"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="첨가물"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+
+        <!-- 세 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <!-- 가공식품 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/processed"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="가공식품"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- 기호식품 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/favorite"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="기호식품"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

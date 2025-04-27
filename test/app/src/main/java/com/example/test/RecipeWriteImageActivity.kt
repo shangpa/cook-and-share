@@ -308,10 +308,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val cancelTwo = findViewById<Button>(R.id.cancelTwo)
         val register = findViewById<Button>(R.id.register)
 
-        // 레시피 등록한 레시피 확인 선언
-        val registerRecipeUpLayout = findViewById<ConstraintLayout>(R.id.registerRecipeUpLayout)
-        val registerRecipeSeeLayout = findViewById<ConstraintLayout>(R.id.registerRecipeSeeLayout)
-
         // 레시피 위 탭바 선언
         val one = findViewById<TextView>(R.id.one)
         val two = findViewById<TextView>(R.id.two)

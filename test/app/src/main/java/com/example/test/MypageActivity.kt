@@ -1,6 +1,7 @@
 /*마이페이지 메인*/
 package com.example.test
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
@@ -15,6 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MypageActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
@@ -83,5 +85,41 @@ class MypageActivity : AppCompatActivity() {
                 }
             })
 
+
+        // editInformation 클릭했을 때 MypagePersonalInfoActivity 이동
+        val editInformation: TextView = findViewById(R.id.editInformation)
+        editInformation.setOnClickListener {
+            val intent = Intent(this, MypagePersonalInfoActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        // fridgeMaterialListText 클릭했을 때 MypageFridgeMaterialListActivity 이동
+        val fridgeMaterialListText: TextView = findViewById(R.id.fridgeMaterialListText)
+        fridgeMaterialListText.setOnClickListener {
+            val intent = Intent(this, MypageFridgeMaterialListActivity::class.java)
+            startActivity(intent)
+        }
+
+        // MaterialListText 클릭했을 때 MaterialMyProfileActivity 이동
+        val MaterialListText: TextView = findViewById(R.id.MaterialListText)
+        MaterialListText.setOnClickListener {
+            val intent = Intent(this, MaterialMyProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        // savePostText 클릭했을 때 MypageSavePostActivity 이동
+        val savePostText: TextView = findViewById(R.id.savePostText)
+        savePostText.setOnClickListener {
+            val intent = Intent(this, MypageSavePostActivity::class.java)
+            startActivity(intent)
+        }
+
+        // writePostText 클릭했을 때 MypageWritePostActivity 이동
+        val writePostText: TextView = findViewById(R.id.writePostText)
+        writePostText.setOnClickListener {
+            val intent = Intent(this, MypageWritePostActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

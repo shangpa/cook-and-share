@@ -257,10 +257,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val registerFixButton = findViewById<Button>(R.id.registerFixButton)
         val register = findViewById<Button>(R.id.register)
 
-        // 완료된 내용 확인 선언
-        val registerRecipeUpLayout = findViewById<ConstraintLayout>(R.id.registerRecipeUpLayout)
-        val registerRecipeSeeLayout = findViewById<ConstraintLayout>(R.id.registerRecipeSeeLayout)
-
         // 카테고리 TextView 리스트
         val textViews = listOf(
             findViewById<TextView>(R.id.one),
