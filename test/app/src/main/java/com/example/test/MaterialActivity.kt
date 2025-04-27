@@ -32,6 +32,15 @@ class MaterialActivity : AppCompatActivity() {
 
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
 
+        //테스트 용 하드코딩
+        val testPost = findViewById<LinearLayout>(R.id.testPost)
+        testPost.setOnClickListener {
+            val intent = Intent(this, MaterialDetailActivity::class.java).apply {
+                putExtra("tradePostId", 1L)
+            }
+            startActivity(intent)
+        }
+
         val item1: LinearLayout = findViewById(R.id.item1)
         val searchIcon: ImageView = findViewById(R.id.searchIcon)
         val myLocation: LinearLayout = findViewById(R.id.myLocation)

@@ -5,6 +5,7 @@ import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.model.TradePost.TradePostSimpleResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -115,6 +116,25 @@ interface ApiService {
         @Body request: TradePostRequest
     ): Call<TradePostResponse>
 
+    //거래글조회
+    @GET("api/trade-posts/{tradePostId}")
+    fun getTradePostById(
+        @Header("Authorization") token: String,
+        @Path("tradePostId") tradePostId: Long
+    ): Call<TradePostResponse>
+
+    //내가쓴 거래글 조회
+    @GET("/api/trade-posts/my-posts")
+    fun getMyTradePosts(
+        @Header("Authorization") token: String
+    ): Call<List<TradePostSimpleResponse>>
+    //거래완료
+    @PATCH("/api/trade-posts/{id}/complete")
+    fun completeTradePost(
+        @Header("Authorization") token: String,
+        @Path("id") tradePostId: Long
+    ): Call<TradePostSimpleResponse>
+    
     //리뷰 작성
     @POST("/api/reviews")
     fun submitReview(
@@ -128,12 +148,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("recipeId") recipeId: Long
     ): Call<List<ReviewResponseDTO>>
-
-    @GET("api/trade-posts/{tradePostId}")
-    fun getTradePostById(
-        @Header("Authorization") token: String,
-        @Path("tradePostId") tradePostId: Long
-    ): Call<TradePostResponse>
 
     // 레시피 좋아요 토글 (좋아요 또는 취소)
     @POST("api/recipes/{recipeId}/like-toggle")
