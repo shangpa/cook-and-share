@@ -173,7 +173,7 @@ class MaterialWritingActivity : AppCompatActivity() {
 
         // 카테고리 박스 선언
         val categoryViews = listOf(
-            Pair(findViewById<LinearLayout>(R.id.categoryOne), "조리도구"),
+            Pair(findViewById<LinearLayout>(R.id.categoryOne), "조리기구"),
             Pair(findViewById<LinearLayout>(R.id.categoryTwo), "팬/냄비류"),
             Pair(findViewById<LinearLayout>(R.id.categoryThree), "용기류"),
             Pair(findViewById<LinearLayout>(R.id.categoryFour), "식기류"),
@@ -341,6 +341,12 @@ class MaterialWritingActivity : AppCompatActivity() {
             // val location = wishPlaceText.text.toString().trim()
             val gson = Gson() // 이거 꼭 선언해야 함
 
+            val locationString = if (selectedLat != null && selectedLng != null) {
+                "${selectedLat},${selectedLng}"
+            } else {
+                ""
+            }
+
             val request = TradePostRequest(
                 category = category,
                 title = title,
@@ -348,9 +354,10 @@ class MaterialWritingActivity : AppCompatActivity() {
                 price = price,
                 purchaseDate = purchaseDate,
                 description = description,
-                location = "location",
+                location = locationString, // ← 여기!!
                 imageUrls = gson.toJson(imageUrlList)
             )
+
 
             val token = App.prefs.token.toString()
             Log.d("TradePostRequest", "category=$category, title=$title, quantity=$quantity, price=$price, date=$purchaseDate, description=$description,imageUrls=$imageUrlList")

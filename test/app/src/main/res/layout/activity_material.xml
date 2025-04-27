@@ -14,8 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <!-- 상단 바 -->
             <LinearLayout
@@ -23,7 +22,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="13dp">
+                android:layout_marginBottom="13dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:id="@+id/fridgeMainTitle"
@@ -58,6 +60,7 @@
                 android:orientation="horizontal"
                 android:padding="4dp"
                 android:gravity="center_vertical"
+                android:layout_marginStart="15dp"
                 android:layout_marginRight="8dp"> <!-- 나란히 배치하기 위해 간격 추가 -->
 
                 <!-- 내 위치 + 화살표 아이콘 -->
@@ -97,7 +100,7 @@
                     android:gravity="center"
                     android:strokeColor="#D2D5D6"
                     android:layout_marginRight="11dp"
-                    android:layout_marginLeft="170dp">
+                    android:layout_marginLeft="175dp">
 
                     <!-- 재료 텍스트 -->
                     <TextView
@@ -173,14 +176,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp">
 
-                <TextView
-                    android:id="@+id/totalResults"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="총 100개 검색결과"
-                    android:textSize="13sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- 총 -->
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="총"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp" />
+
+                    <!-- 150 -->
+                    <TextView
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text=""
+                        android:textColor="#35A825"
+                        android:textSize="13sp" />
+
+                    <!-- 개 검색결과 -->
+                    <TextView
+                        android:id="@+id/searchResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="개 레시피"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -189,14 +225,14 @@
                     android:gravity="center_vertical"
                     android:layout_marginLeft="240dp">
 
-                    <!-- 거리순 텍스트 -->
+                    <!-- 최신순 텍스트 -->
                     <TextView
                         android:id="@+id/w"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="거리순"
-                        android:textSize="10sp"
+                        android:text="최신순"
+                        android:textSize="12sp"
                         android:textColor="#2B2B2B"/>
 
                     <!-- 화살표 -->
@@ -211,755 +247,12 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/item1"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tradePostRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                <!-- 사진, 제목 및 정보 그룹 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:layout_marginTop="18dp">
-
-                    <!-- 사진 -->
-                    <ImageView
-                        android:id="@+id/image"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/img_kitchen1"
-                        android:contentDescription="아이템 사진"
-                        android:layout_marginEnd="8dp" />
-
-                    <!-- 제목 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/itemTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="다이소 채소 다지기 팝니다"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginRight="130dp"/>
-
-                            <ImageView
-                                android:id="@+id/itemMore"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_more"
-                                android:contentDescription="더보기 아이콘"
-                                android:layout_marginEnd="4dp" />
-                        </LinearLayout>
-
-
-                        <!-- 거리 아이콘, 거리 -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp">
-
-                            <ImageView
-                                android:id="@+id/distanceIcon1"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_location"
-                                android:contentDescription="거리 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/distanceText1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="500m | 1.06km"
-                                android:textSize="12sp"
-                                android:textColor="#8A8A8A"/>
-                        </LinearLayout>
-
-                        <!-- 가격 및 댓글 그룹 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingTop="3dp">
-
-                            <TextView
-                                android:id="@+id/itemPrice"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="500P"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="#35A825" />
-
-                            <ImageView
-                                android:id="@+id/commentIcon"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_comment"
-                                android:contentDescription="댓글 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/commentCount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <!-- 온도 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:layout_marginRight="7dp"
-                                android:text="판매자 온도"
-                                android:textSize="11sp"
-                                android:textColor="#8A8A8A"/>
-
-                            <TextView
-                                android:id="@+id/temperature1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="70도"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 구분선 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="1dp" />
-
-            <LinearLayout
-                android:id="@+id/testPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
-
-                <!-- 사진, 제목 및 정보 그룹 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:layout_marginTop="10dp">
-
-                    <!-- 사진 -->
-                    <ImageView
-                        android:id="@+id/itemImage1"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/img_kitchen2"
-                        android:contentDescription="아이템 사진"
-                        android:layout_marginEnd="8dp" />
-
-                    <!-- 제목 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/itemTitle2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="사용 안 한 믹서기 팔아요"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginRight="130dp"/>
-
-                            <ImageView
-                                android:id="@+id/itemMore2"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_more"
-                                android:contentDescription="더보기 아이콘"
-                                android:layout_marginEnd="4dp" />
-                        </LinearLayout>
-
-                        <!-- 거리 아이콘, 거리 -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp">
-
-                            <ImageView
-                                android:id="@+id/distanceIcon2"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_location"
-                                android:contentDescription="거리 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/distanceText2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="500m | 1.06km"
-                                android:textSize="12sp"
-                                android:textColor="#8A8A8A"/>
-                        </LinearLayout>
-
-                        <!-- 가격 및 댓글 그룹 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingTop="3dp">
-
-                            <TextView
-                                android:id="@+id/itemPrice2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="6,000P"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="#35A825" />
-
-                            <ImageView
-                                android:id="@+id/commentIcon2"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_comment"
-                                android:contentDescription="댓글 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/commentCount2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <!-- 온도 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:layout_marginRight="7dp"
-                                android:text="판매자 온도"
-                                android:textSize="11sp"
-                                android:textColor="#8A8A8A"/>
-
-                            <TextView
-                                android:id="@+id/temperature2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="70도"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 구분선 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="8dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
-
-                <!-- 사진, 제목 및 정보 그룹 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:layout_marginTop="10dp">
-
-                    <!-- 사진 -->
-                    <ImageView
-                        android:id="@+id/itemImage3"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/img_kitchen3"
-                        android:contentDescription="아이템 사진"
-                        android:layout_marginEnd="8dp" />
-
-                    <!-- 제목 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/itemTitle3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="일주일 쓴 에어프라이어 팝니다"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginRight="130dp"/>
-
-                            <ImageView
-                                android:id="@+id/itemMore3"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_more"
-                                android:contentDescription="더보기 아이콘"
-                                android:layout_marginEnd="4dp" />
-                        </LinearLayout>
-
-
-                        <!-- 거리 아이콘, 거리 -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp">
-
-                            <ImageView
-                                android:id="@+id/distanceIcon3"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_location"
-                                android:contentDescription="거리 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/distanceText3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="500m | 1.06km"
-                                android:textSize="12sp"
-                                android:textColor="#8A8A8A"/>
-                        </LinearLayout>
-
-                        <!-- 가격 및 댓글 그룹 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingTop="3dp">
-
-                            <TextView
-                                android:id="@+id/itemPrice3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="5,000P"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="#35A825" />
-
-                            <ImageView
-                                android:id="@+id/commentIcon3"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_comment"
-                                android:contentDescription="댓글 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/commentCount3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <!-- 온도 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:layout_marginRight="7dp"
-                                android:text="판매자 온도"
-                                android:textSize="11sp"
-                                android:textColor="#8A8A8A"/>
-
-                            <TextView
-                                android:id="@+id/temperature3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="70도"
-                                android:textSize="14sp"/>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 구분선 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="8dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
-
-                <!-- 사진, 제목 및 정보 그룹 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:layout_marginTop="10dp">
-
-                    <!-- 사진 -->
-                    <ImageView
-                        android:id="@+id/itemImage5"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/img_kitchen4"
-                        android:contentDescription="아이템 사진"
-                        android:layout_marginEnd="8dp" />
-
-                    <!-- 제목 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/itemTitl5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="개봉만 한 커트커리 나눔"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginRight="130dp"/>
-
-                            <ImageView
-                                android:id="@+id/itemMore5"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_more"
-                                android:contentDescription="더보기 아이콘"
-                                android:layout_marginEnd="4dp" />
-                        </LinearLayout>
-
-                        <!-- 거리 아이콘, 거리 -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp">
-
-                            <ImageView
-                                android:id="@+id/distanceIcon5"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_location"
-                                android:contentDescription="거리 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/distanceText5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="500m | 1.06km"
-                                android:textSize="12sp"
-                                android:textColor="#8A8A8A"/>
-                        </LinearLayout>
-
-                        <!-- 가격 및 댓글 그룹 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingTop="3dp">
-
-                            <TextView
-                                android:id="@+id/itemPrice5"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="나눔"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="#35A825" />
-
-                            <ImageView
-                                android:id="@+id/commentIcon5"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_comment"
-                                android:contentDescription="댓글 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/commentCount5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <!-- 온도 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:layout_marginRight="7dp"
-                                android:text="판매자 온도"
-                                android:textSize="11sp"
-                                android:textColor="#8A8A8A"/>
-
-                            <TextView
-                                android:id="@+id/temperature4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="70도"
-                                android:textSize="14sp"/>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 구분선 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="8dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
-
-                <!-- 사진, 제목 및 정보 그룹 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:layout_marginTop="10dp">
-
-                    <!-- 사진 -->
-                    <ImageView
-                        android:id="@+id/itemImage6"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/img_kitchen5"
-                        android:contentDescription="아이템 사진"
-                        android:layout_marginEnd="8dp" />
-
-                    <!-- 제목 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/itemTitl6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="사용 안 한 식기건조대 팔아요"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginRight="130dp"/>
-
-                            <ImageView
-                                android:id="@+id/itemMore6"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_more"
-                                android:contentDescription="더보기 아이콘"
-                                android:layout_marginEnd="4dp" />
-                        </LinearLayout>
-
-                        <!-- 거리 아이콘, 거리 -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp">
-
-                            <ImageView
-                                android:id="@+id/distanceIcon6"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_location"
-                                android:contentDescription="거리 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/distanceText6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="500m | 1.06km"
-                                android:textSize="12sp"
-                                android:textColor="#8A8A8A"/>
-                        </LinearLayout>
-
-                        <!-- 가격 및 댓글 그룹 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingTop="3dp">
-
-                            <TextView
-                                android:id="@+id/itemPrice6"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="2,500P"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="#35A825" />
-
-                            <ImageView
-                                android:id="@+id/commentIcon6"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_comment"
-                                android:contentDescription="댓글 아이콘"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/commentCount6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <!-- 온도 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:layout_marginRight="7dp"
-                                android:text="판매자 온도"
-                                android:textSize="11sp"
-                                android:textColor="#8A8A8A"/>
-
-                            <TextView
-                                android:id="@+id/temperature5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="70도"
-                                android:textSize="14sp"/>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 구분선 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="8dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -978,153 +271,153 @@
         android:elevation="15dp"
         android:visibility="gone">
 
-    <!-- 첫 번째 줄 -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp">
+        <!-- 첫 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
 
-        <!-- 전체 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/all"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="전체"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 전체 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/all"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="전체"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
 
-        <!-- 조리기구 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cookware"
-            android:layout_width="63dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="조리기구"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 조리기구 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cookware"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="조리기구"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 팬/냄비류 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/fans_pots"
-            android:layout_width="67dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="팬/냄비류"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 팬/냄비류 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fans_pots"
+                android:layout_width="67dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="팬/냄비류"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 용기 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/containers"
-            android:layout_width="55dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="용기류"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 용기 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/containers"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="용기류"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 식기 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/tableware"
-            android:layout_width="55dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="식기류"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
-    </LinearLayout>
+            <!-- 식기 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tableware"
+                android:layout_width="55dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="식기류"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
 
-    <!-- 두 번째 줄 -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp">
+        <!-- 두 번째 줄 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
 
-        <!-- 수납용품 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/storageSupplies"
-            android:layout_width="63dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="수납용품"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 수납용품 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/storageSupplies"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="수납용품"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 위생용품 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/sanitaryProducts"
-            android:layout_width="63dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="위생용품"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 위생용품 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sanitaryProducts"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="위생용품"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 소형가전 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/smallAppliances"
-            android:layout_width="63dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="소형가전"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 소형가전 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/smallAppliances"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="소형가전"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 일회용품 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/disposableProducts"
-            android:layout_width="63dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="일회용품"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 일회용품 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/disposableProducts"
+                android:layout_width="63dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="일회용품"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-        <!-- 기타 선택 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/etc"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:padding="2dp"
-            android:gravity="center"
-            android:text="기타"
-            android:textSize="11sp"
-            android:textColor="#8A8F9C"
-            android:layout_marginLeft="10dp"/>
+            <!-- 기타 선택 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/etc"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@drawable/rounded_rectangle_background"
+                android:padding="2dp"
+                android:gravity="center"
+                android:text="기타"
+                android:textSize="11sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginLeft="10dp"/>
 
-    </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -1282,7 +575,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginStart="0dp">
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
