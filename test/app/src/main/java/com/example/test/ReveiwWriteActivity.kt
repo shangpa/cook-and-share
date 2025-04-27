@@ -1,6 +1,7 @@
 package com.example.test
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -204,6 +205,10 @@ class ReveiwWriteActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<ReviewResponseDTO>, response: Response<ReviewResponseDTO>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@ReveiwWriteActivity, "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@ReveiwWriteActivity, RecipeSeeNoTimerActivity::class.java)
+                            intent.putExtra("recipeId", recipeId)
+                            intent.putExtra("selectedTab", 2) // 0: 재료, 1: 조리순서, 2: 리뷰
+                            startActivity(intent)
                             finish() // 또는 작성 완료 UI로 이동
                         } else {
                             Toast.makeText(this@ReveiwWriteActivity, "리뷰 등록 실패", Toast.LENGTH_SHORT).show()

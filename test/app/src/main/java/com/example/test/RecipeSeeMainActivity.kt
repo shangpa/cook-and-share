@@ -45,6 +45,7 @@ class RecipeSeeMainActivity : AppCompatActivity() {
             val intent = Intent(this, RecipeSeeActivity::class.java)
             intent.putExtra("recipeId", recipeId)
             startActivity(intent)
+
         }
 
         val rigthArrow: ImageButton = findViewById(R.id.rigthArrow)
