@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.test.MaterialDetailActivity
 import com.example.test.R
 import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.network.RetrofitInstance
 
 class TradePostAdapter(
     private val tradePosts: List<TradePostResponse>,
@@ -44,7 +45,7 @@ class TradePostAdapter(
         }
         holder.temperatureText.text = "70도"
         holder.commentCount.text = "1"
-
+        val baseUrl =RetrofitInstance.BASE_URL
         if (!tradePost.imageUrls.isNullOrEmpty()) {
             val urls = tradePost.imageUrls.replace("[", "")
                 .replace("]", "")
@@ -53,8 +54,9 @@ class TradePostAdapter(
                 .map { it.trim() }
 
             if (urls.isNotEmpty() && urls[0].isNotBlank()) {
+                val fullImageUrl = baseUrl + urls[0] // ✅ 여기서 baseUrl + 상대 경로
                 Glide.with(holder.itemView.context)
-                    .load(urls[0])
+                    .load(fullImageUrl)
                     .placeholder(R.drawable.img_kitchen1)
                     .into(holder.itemImage)
             }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -24,6 +25,7 @@ import androidx.core.view.forEach
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.adapter.SaleHistoryAdapter
+import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradeItem
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import com.example.test.network.RetrofitInstance
@@ -68,7 +70,8 @@ class MaterialMyProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_material_my_profile)
         val token = "Bearer ${App.prefs.token.toString()}"
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
-
+        loadReceivedReviews()
+        loadWrittenReviews()
         profile = findViewById(R.id.profile)
         saleHistory = findViewById(R.id.saleHistory)
         purchaseHistory = findViewById(R.id.purchaseHistory)
@@ -884,8 +887,77 @@ class MaterialMyProfileActivity : AppCompatActivity() {
             findViewById<TextView>(it).setTextColor(Color.parseColor("#000000"))
         }
     }
+    private fun loadReceivedReviews() {
+        val token = App.prefs.token.toString()
 
+        RetrofitInstance.apiService.getReviewsOnMyTradePosts("Bearer $token")
+            .enqueue(object : retrofit2.Callback<List<TpReviewResponseDTO>> {
+                override fun onResponse(
+                    call: retrofit2.Call<List<TpReviewResponseDTO>>,
+                    response: retrofit2.Response<List<TpReviewResponseDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { reviews ->
+                            addReviewsToLayout(reviews, findViewById(R.id.receiveReview))
+                        }
+                    }
+                }
 
+                override fun onFailure(call: retrofit2.Call<List<TpReviewResponseDTO>>, t: Throwable) {
+                    Log.e("MaterialMyProfile", "받은 거래 후기 불러오기 실패: ${t.message}")
+                }
+            })
+    }
+
+    private fun loadWrittenReviews() {
+        val token = App.prefs.token.toString()
+
+        RetrofitInstance.apiService.getMyTpReviews("Bearer $token")
+            .enqueue(object : retrofit2.Callback<List<TpReviewResponseDTO>> {
+                override fun onResponse(
+                    call: retrofit2.Call<List<TpReviewResponseDTO>>,
+                    response: retrofit2.Response<List<TpReviewResponseDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { reviews ->
+                            addReviewsToLayout(reviews, findViewById(R.id.writtenReview))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: retrofit2.Call<List<TpReviewResponseDTO>>, t: Throwable) {
+                    Log.e("MaterialMyProfile", "작성한 거래 후기 불러오기 실패: ${t.message}")
+                }
+            })
+    }
+    private fun addReviewsToLayout(reviews: List<TpReviewResponseDTO>, parentLayout: LinearLayout) {
+        parentLayout.removeAllViews() // 기존 뷰 초기화
+
+        for (review in reviews) {
+            val reviewView = LayoutInflater.from(this).inflate(R.layout.item_trade_review, parentLayout, false)
+
+            // 뷰 아이디 찾아서 데이터 넣기
+            val itemImage = reviewView.findViewById<ImageView>(R.id.itemImage) // 기본 썸네일
+            val itemTitle = reviewView.findViewById<TextView>(R.id.itemTitle)
+            val itemSubTitle = reviewView.findViewById<TextView>(R.id.itemSubTitle)
+            val reviewRating = reviewView.findViewById<TextView>(R.id.reviewRating)
+            val reviewDate = reviewView.findViewById<TextView>(R.id.reviewDate)
+            val buyerName = reviewView.findViewById<TextView>(R.id.buyerName)
+            val buyerRole = reviewView.findViewById<TextView>(R.id.buyerRole)
+            val reviewContent = reviewView.findViewById<TextView>(R.id.reviewContent)
+
+            // 데이터 바인딩
+            itemTitle.text = "거래한 재료" // 서버에서 제목 안오니까 고정값
+            itemSubTitle.text = "거래 아이템 설명" // 이것도 나중에 추가 가능
+            reviewRating.text = "${review.rating}.0 |"
+            reviewDate.text = review.createdAt.substring(0, 10) // yyyy-MM-dd
+            buyerName.text = review.username
+            buyerRole.text = " | 구매자" // 고정
+            reviewContent.text = review.content
+
+            parentLayout.addView(reviewView)
+        }
+    }
 }
 
 

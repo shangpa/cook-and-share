@@ -3,6 +3,7 @@ package com.example.test.network
 import com.example.test.model.*
 import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
+import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
@@ -134,6 +135,18 @@ interface ApiService {
         @Query("keyword") keyword: String
     ): Call<List<TradePostResponse>>
 
+    // 내가 쓴 거래 후기 리스트
+    @GET("/api/tp-reviews/my-reviews")
+    fun getMyTpReviews(
+        @Header("Authorization") token: String
+    ): Call<List<TpReviewResponseDTO>>
+
+    // 내 거래글에 달린 거래 후기 리스트
+    @GET("/api/tp-reviews/reviews-on-my-posts")
+    fun getReviewsOnMyTradePosts(
+        @Header("Authorization") token: String
+    ): Call<List<TpReviewResponseDTO>>
+
     //거래글조회
     @GET("api/trade-posts/{tradePostId}")
     fun getTradePostById(
@@ -181,4 +194,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: FridgeRecommendRequest
     ): Response<List<FridgeRecommendResponse>>
+
+    //포인트조회
+    @GET("/api/point/my-point")
+    fun getMyPoint(
+        @Header("Authorization") token: String
+    ): Call<Int>
 }

@@ -67,24 +67,48 @@ class MypageActivity : AppCompatActivity() {
 
         // 토큰 가져오기
         val token = App.prefs.token.toString()
-
+        val userPointText: TextView = findViewById(R.id.myPoint) //포인트 표시할 TextView
         // 사용자 정보 요청
-        RetrofitInstance.apiService.getUserInfo("Bearer $token")
-            .enqueue(object : Callback<LoginInfoResponse> {
-                override fun onResponse(call: Call<LoginInfoResponse>, response: Response<LoginInfoResponse>) {
-                    if (response.isSuccessful) {
-                        val userInfo = response.body()
-                        userInfo?.let {
-                            userNameText.text = "${it.userName}" // 여기서 필드명(username)을 실제 API 응답 필드에 맞게 바꿔줘
+        // 1. 사용자 이름 불러오기
+        if (token.isNotEmpty()) {
+            RetrofitInstance.apiService.getUserInfo("Bearer $token")
+                .enqueue(object : Callback<LoginInfoResponse> {
+                    override fun onResponse(call: Call<LoginInfoResponse>, response: Response<LoginInfoResponse>) {
+                        if (response.isSuccessful) {
+                            val userInfo = response.body()
+                            userInfo?.let {
+                                userNameText.text = it.userName
+                            }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
-                    userNameText.text = "사용자님" // 실패 시 기본값
-                }
-            })
+                    override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
+                        userNameText.text = "사용자님"
+                    }
+                })
 
+            // 2. 🔥 사용자 포인트 불러오기
+            RetrofitInstance.apiService.getMyPoint("Bearer $token")
+                .enqueue(object : Callback<Int> {
+                    override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                        if (response.isSuccessful) {
+                            val point = response.body() ?: 0
+                            userPointText.text = "${point}P"
+                        } else {
+                            userPointText.text = "?"
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Int>, t: Throwable) {
+                        userPointText.text = "?"
+                    }
+                })
+
+        } else {
+            // 로그인 안 되어있을 때
+            userNameText.text = "사용자님"
+            userPointText.text = "?"
+        }
 
         // editInformation 클릭했을 때 MypagePersonalInfoActivity 이동
         val editInformation: TextView = findViewById(R.id.editInformation)
