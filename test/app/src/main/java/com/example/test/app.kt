@@ -19,3 +19,4 @@ class App : Application() {
         RetrofitInstance.init(context)
     }
 }
+

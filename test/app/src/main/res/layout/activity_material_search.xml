@@ -42,10 +42,11 @@
                     android:id="@+id/nameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="필요한 재료를 검색해보세요"
+                    android:hint="필요한 용품을 검색해보세요"
                     android:background="@null"
                     android:layout_gravity="center"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:layout_marginStart="5dp"/>
             </LinearLayout>
 
             <ImageView

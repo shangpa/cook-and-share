@@ -38,6 +38,7 @@ class RecipeWriteMain : AppCompatActivity() {
         bothWrite.setOnClickListener {
             val intent = Intent(this, RecipeWriteBothActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         // imageWrite 클릭했을 때 RecipeWriteImageActivity 이동
@@ -45,6 +46,7 @@ class RecipeWriteMain : AppCompatActivity() {
         imageWrite.setOnClickListener {
             val intent = Intent(this, RecipeWriteImageActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         // videoWrite 클릭했을 때 RecipeWriteVideoActivity 이동
@@ -52,6 +54,7 @@ class RecipeWriteMain : AppCompatActivity() {
         videoWrite.setOnClickListener {
             val intent = Intent(this, RecipeWriteVideoActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         // rigthArrow 클릭했을 때 RecipeWriteVideoActivity 이동
@@ -59,6 +62,7 @@ class RecipeWriteMain : AppCompatActivity() {
         rigthArrow.setOnClickListener {
             val intent = Intent(this, RecipeWriteBothActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         // rigthArrowTwo 클릭했을 때 RecipeWriteImageActivity 이동
@@ -66,6 +70,7 @@ class RecipeWriteMain : AppCompatActivity() {
         rigthArrowTwo.setOnClickListener {
             val intent = Intent(this, RecipeWriteImageActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         // rigthArrowThree 클릭했을 때 RecipeWriteVideoActivity 이동
@@ -73,6 +78,7 @@ class RecipeWriteMain : AppCompatActivity() {
         rigthArrowThree.setOnClickListener {
             val intent = Intent(this, RecipeWriteVideoActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
 

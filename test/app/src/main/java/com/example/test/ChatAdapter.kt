@@ -1,4 +1,3 @@
-/*채팅*/
 package com.example.test
 
 import android.view.LayoutInflater
@@ -6,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.test.R
 import com.example.test.model.ChatItem
 import com.example.test.model.ChatType
 
@@ -21,17 +19,17 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position].type) {
-            ChatType.LEFT_CONTENT -> 0
-            ChatType.RIGHT_CONTENT -> 1
-            ChatType.CENTER_CONTENT -> 2
+            ChatType.LEFT_CONTENT -> 0    // 상대방 메시지
+            ChatType.RIGHT_CONTENT -> 1   // 내 메시지
+            ChatType.CENTER_CONTENT -> 2  // 입장/퇴장 알림
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val layout = when (viewType) {
-            0 -> R.layout.chat_left
-            1 -> R.layout.chat_right
-            else -> R.layout.chat_center
+            0 -> R.layout.chat_left       // 상대방 말풍선
+            1 -> R.layout.chat_right      // 내 말풍선
+            else -> R.layout.chat_center   // 가운데 입장/퇴장
         }
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ChatViewHolder(view)
@@ -44,10 +42,13 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
-    class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ChatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val contentText: TextView = view.findViewById(R.id.chatContent)
+        private val timeText: TextView? = view.findViewById(R.id.chatTime) // center 레이아웃은 시간 없을 수도 있음
+
         fun bind(item: ChatItem) {
-            itemView.findViewById<TextView>(R.id.chatContent).text = item.content
-            itemView.findViewById<TextView?>(R.id.chatTime)?.text = item.time
+            contentText.text = item.content
+            timeText?.text = item.time
         }
     }
 }

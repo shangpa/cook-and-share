@@ -21,13 +21,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.test.adapter.SaleHistoryAdapter
+import com.example.test.model.TradePost.TradeItem
+import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.network.RetrofitInstance
+import com.example.test.network.RetrofitInstance.BASE_URL
 import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Stack
 
 var lastEnteredFrom: String? = null
 
 
 class MaterialMyProfileActivity : AppCompatActivity() {
+    
+    private lateinit var saleHistoryAdapter: SaleHistoryAdapter //어댑터
+    private var allTradeList = mutableListOf<TradeItem>()  // 전체 판매내역
 
     private var isMaterialVisible = false
     private var isdistanceVisible = false
@@ -53,7 +66,7 @@ class MaterialMyProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_my_profile)
-
+        val token = "Bearer ${App.prefs.token.toString()}"
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
 
         profile = findViewById(R.id.profile)
@@ -80,28 +93,7 @@ class MaterialMyProfileActivity : AppCompatActivity() {
 
         // 판매내역 선언
         val saleHistoryLayout = findViewById<LinearLayout>(R.id.saleHistory)
-        val profileItem = findViewById<LinearLayout>(R.id.profileItem)
-        val profileItemOne = findViewById<LinearLayout>(R.id.profileItemOne)
-        val profileItemTwo = findViewById<LinearLayout>(R.id.profileItemTwo)
-        val profileItemThree = findViewById<LinearLayout>(R.id.profileItemThree)
-        val profileItemFour = findViewById<LinearLayout>(R.id.profileItemFour)
-        val profileItemFive = findViewById<LinearLayout>(R.id.profileItemFive)
-        val profileItemSix = findViewById<LinearLayout>(R.id.profileItemSix)
         val indicator = findViewById<View>(R.id.indicator)
-        val itemMore = findViewById<ImageView>(R.id.itemMore)
-        val complete = findViewById<LinearLayout>(R.id.complete)
-        val itemMore2 = findViewById<ImageView>(R.id.itemMore2)
-        val profileItem3 = findViewById<LinearLayout>(R.id.profileItem3)
-        val itemMore3 = findViewById<ImageView>(R.id.itemMore3)
-        val completeTwo = findViewById<LinearLayout>(R.id.completeTwo)
-        val itemMore4 = findViewById<ImageView>(R.id.itemMore4)
-        val completeThree = findViewById<LinearLayout>(R.id.completeThree)
-        val profileItem5 = findViewById<LinearLayout>(R.id.profileItem5)
-        val itemMore5 = findViewById<ImageView>(R.id.itemMore5)
-        val itemMore6 = findViewById<ImageView>(R.id.itemMore6)
-        val ic_completedIcon = findViewById<ImageView>(R.id.ic_completedIcon)
-        val ic_completedIconThree = findViewById<ImageView>(R.id.ic_completedIconThree)
-        val ic_completedIconFour = findViewById<ImageView>(R.id.ic_completedIconFour)
 
         // 구매내역 선언
         val purchaseHistoryLayout = findViewById<LinearLayout>(R.id.purchaseHistory)
@@ -163,6 +155,50 @@ class MaterialMyProfileActivity : AppCompatActivity() {
         val recipeRegister = findViewById<ConstraintLayout>(R.id.recipeRegister)
         val cancelTwoBtn = findViewById<Button>(R.id.cancelTwoBtn)
         val registerBtn = findViewById<Button>(R.id.registerBtn)
+
+
+        // saleHistoryAdapter를 먼저 빈 리스트로 초기화
+        saleHistoryAdapter = SaleHistoryAdapter(emptyList(),token)
+
+        // RecyclerView 연결
+        val saleHistoryRecyclerView = findViewById<RecyclerView>(R.id.saleHistoryRecyclerView)
+        saleHistoryRecyclerView.adapter = saleHistoryAdapter
+        saleHistoryRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        val apiService = RetrofitInstance.apiService
+        apiService.getMyTradePosts(token).enqueue(object : Callback<List<TradePostSimpleResponse>> {
+            override fun onResponse(
+                call: Call<List<TradePostSimpleResponse>>,
+                response: Response<List<TradePostSimpleResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    val myPosts = response.body() ?: emptyList()
+
+                    // 변환해서 RecyclerView에 넣기
+                    allTradeList = myPosts.map {
+                        TradeItem(
+                            id = it.tradePostId,
+                            title = it.title,
+                            imageUrl = BASE_URL + it.firstImageUrl,
+                            distance = "거리정보없음", // 거리 필요하면 추후 계산
+                            date = it.createdAt,
+                            price = "${it.price} P",
+                            isCompleted = it.status == 1
+                        )
+                    }.toMutableList()
+
+                    saleHistoryAdapter.updateList(allTradeList)
+                } else {
+                    Log.e("TradePost", "실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<TradePostSimpleResponse>>, t: Throwable) {
+                Log.e("TradePost", "에러: ${t.message}")
+            }
+        })
+
+
 
         // 판매내역 클릭시 나의 동네재료 판매내역으로 화면 이동
         saleIcon.setOnClickListener {
@@ -234,110 +270,28 @@ class MaterialMyProfileActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.deal),
             findViewById<TextView>(R.id.dealComplete)
         )
-
-        // 판매내역 LinearLayout 리스트 (TextView와 1:1 매칭)
-        val layouts = listOf(
-            findViewById<LinearLayout>(R.id.profileItem),
-            findViewById<LinearLayout>(R.id.profileItem3),
-            findViewById<LinearLayout>(R.id.profileItem5)
-        )
-
-        // 판매내역 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
         textViews.forEachIndexed { index, textView ->
             textView.setOnClickListener {
-                // 모든 ConstraintLayout 숨김
-                layouts.forEach { it.visibility = View.GONE }
-
-                // 클릭된 TextView에 해당하는 ConstraintLayout만 표시
-                layouts[index].visibility = View.VISIBLE
-
-                // 모든 TextView 색상 초기화
+                // 탭 색상 변경
                 textViews.forEach { it.setTextColor(Color.parseColor("#B3B3B3")) }
-
-                // 클릭된 TextView만 색상 변경 (#2B2B2B)
                 textView.setTextColor(Color.parseColor("#35A825"))
 
-                // indicator를 클릭된 TextView 아래로 이동
-                val params = indicator.layoutParams as ViewGroup.MarginLayoutParams
+                // 인디케이터 이동
+                val indicator = findViewById<View>(R.id.indicator)
                 indicator.post {
                     val location = IntArray(2)
                     textView.getLocationOnScreen(location)
                     val textViewX = location[0]
-
-                    // 바 위치를 TextView의 x 좌표로 이동
                     indicator.translationX = textViewX.toFloat()
                 }
-            }
-        }
 
-        // 판매내역 더하기 버튼 클릭시 수정, 삭제 나타남
-        val moreButtons = listOf(itemMore, itemMore2, itemMore3, itemMore4, itemMore5, itemMore6)
-        val layoutList = listOf(
-            profileItemOne,
-            profileItemTwo,
-            profileItemThree,
-            profileItemFour,
-            profileItemFive,
-            profileItemSix,
-            profileItemNine,
-            profileItemTen,
-            profileItemEleven,
-            profileItemTweleve
-        ) // 삭제 대상 LinearLayout들
-
-        val popupItems = listOf("수정", "삭제")
-
-        fun showPopup(anchorView: View, targetLayout: LinearLayout) {
-            val popup = PopupMenu(this, anchorView)
-            val popupItems = listOf("수정", "삭제")
-
-            popupItems.forEach { popup.menu.add(it) }
-
-            popup.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.title) {
-                    "수정" -> {
-                        true
-                    }
-
-                    "삭제" -> {
-                        // 삭제 클릭시 해당 레이아웃 없어짐
-                        targetLayout.visibility = View.GONE
-                        true
-                    }
-
-                    else -> false
+                // 리스트 필터링
+                when (index) {
+                    0 -> saleHistoryAdapter.updateList(allTradeList)  // 전체
+                    1 -> saleHistoryAdapter.updateList(allTradeList.filter { !it.isCompleted })  // 거래중
+                    2 -> saleHistoryAdapter.updateList(allTradeList.filter { it.isCompleted })  // 거래완료
                 }
             }
-
-            popup.show()
-        }
-
-        // 버튼과 레이아웃을 1:1 매칭
-        moreButtons.zip(layoutList).forEach { (button, layout) ->
-            button.setOnClickListener {
-                showPopup(it, layout) // View + 대응되는 LinearLayout 넘김
-            }
-        }
-
-        // 거래 완료 버튼 클릭시 거래 완료 나타남
-        val completeButtons = listOf(complete)
-        val completedIcons = listOf(ic_completedIcon)
-
-        completeButtons.zip(completedIcons).forEach { (button, icon) ->
-            button.setOnClickListener {
-                button.visibility = View.GONE
-                icon.visibility = View.VISIBLE
-            }
-        }
-
-        // 거래 완료 버튼 클릭시 사라짐
-        completeTwo.setOnClickListener {
-            profileItemThree.visibility = View.GONE
-        }
-
-        // 거래 완료 버튼 클릭시 사라짐
-        completeThree.setOnClickListener {
-            profileItemFour.visibility = View.GONE
         }
 
         // 구매내역, 저장한 거래글 더하기 버튼 클릭시 신고하기 나타남

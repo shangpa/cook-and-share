@@ -11,18 +11,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 
 class MaterialChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_chat) // 다른 프로필 화면의 레이아웃 파일 연결
-
-        // chat1 클릭했을 때 MaterialChatDetailActivity 이동
-        val chat1: LinearLayout = findViewById(R.id.totalChat1)
-        chat1.setOnClickListener {
-            val intent = Intent(this, MaterialChatDetailActivity::class.java)
-            startActivity(intent)
-        }
 
         // chatBack 클릭했을 때 MainActivity 이동
         val chatBack: ImageView = findViewById(R.id.chatBack)
@@ -36,7 +30,7 @@ class MaterialChatActivity : AppCompatActivity() {
         val sale = findViewById<LinearLayout>(R.id.sale)
         val purchase = findViewById<LinearLayout>(R.id.purchase)
         val unread = findViewById<LinearLayout>(R.id.unread)
-        val totalListContainer = findViewById<LinearLayout>(R.id.totalListContainer)
+        val totalListContainer = findViewById<RecyclerView>(R.id.recyclerView)
         val saleListContainer = findViewById<LinearLayout>(R.id.saleListContainer)
         val purchaseListContainer = findViewById<LinearLayout>(R.id.purchaseListContainer)
         val unreadListContainer = findViewById<LinearLayout>(R.id.unreadListContainer)
@@ -51,7 +45,7 @@ class MaterialChatActivity : AppCompatActivity() {
 
         // LinearLayout 리스트 (위 LinearLayout와 1:1 매칭)
         val layouts = listOf(
-            findViewById<LinearLayout>(R.id.totalListContainer),
+            findViewById<RecyclerView>(R.id.recyclerView),
             findViewById<LinearLayout>(R.id.saleListContainer),
             findViewById<LinearLayout>(R.id.purchaseListContainer),
             findViewById<LinearLayout>(R.id.unreadListContainer)
@@ -80,7 +74,7 @@ class MaterialChatActivity : AppCompatActivity() {
                 selectedTextView?.setTextColor(Color.WHITE)
             }
         }
-        }
+    }
 }
 
 

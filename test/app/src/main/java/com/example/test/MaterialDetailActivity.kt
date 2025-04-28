@@ -32,11 +32,16 @@ class MaterialDetailActivity : AppCompatActivity() {
     private lateinit var imageCount: TextView
     private lateinit var imageCountTwo: TextView
 
+    private var postId: Long = -1L     // ✅ postId는 Long으로 받는다
+    private var titleFromServer: String = ""  // ✅ 서버에서 받아온 제목 저장
+
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_detail) // MaterialDetailActivity의 레이아웃 파일 연결
         val tradePostId = intent.getLongExtra("tradePostId", -1L)
+
+        postId = intent.getLongExtra("tradePostId", -1L)
 
         //테스트 중 val tradePostId =3L
         val token = "Bearer ${App.prefs.token}"
@@ -64,6 +69,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                     ) {
                         if (response.isSuccessful) {
                             response.body()?.let { post ->
+                                titleFromServer = post.title
                                 itemTitle.text = post.title
                                 category1.text = post.category
                                 quantity2.text = "${post.quantity}개"
@@ -110,13 +116,6 @@ class MaterialDetailActivity : AppCompatActivity() {
         val detailViewIcon: ImageView = findViewById(R.id.detailViewIcon)
         detailViewIcon.setOnClickListener {
             val intent = Intent(this, MaterialOtherProfileActivity::class.java)
-            startActivity(intent)
-        }
-
-        // chatButton 클릭했을 때 MaterialChatDetailActivity 이동
-        val chatButton: Button = findViewById(R.id.chatButton)
-        chatButton.setOnClickListener {
-            val intent = Intent(this, MaterialChatDetailActivity::class.java)
             startActivity(intent)
         }
 
@@ -184,6 +183,18 @@ class MaterialDetailActivity : AppCompatActivity() {
                 // 상태 반전해서 저장
                 it.setTag(R.id.heartIcon, !isLiked)
             }
+        }
+
+        val chatButton = findViewById<Button>(R.id.chatButton)
+
+        chatButton.setOnClickListener {
+            val roomId = "post_$postId"  // 🔥 게시글 ID 기반 roomId 생성
+            val roomName = titleFromServer.ifEmpty { "채팅방" } // 🔥 서버에서 받은 제목 사용
+
+            val intent = Intent(this, MaterialChatDetailActivity::class.java)
+            intent.putExtra("roomId", roomId)
+            intent.putExtra("roomName", roomName)
+            startActivity(intent)
         }
     }
     private fun parseImageUrls(json: String): List<String> {

@@ -36,7 +36,7 @@
                 android:id="@+id/chatDetailTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="소금시러설탕시러"
+                android:text="채팅방 이름"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
         </LinearLayout>

@@ -862,10 +862,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 val token = App.prefs.token
                 RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
                     if (response != null) {
-                        Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
                         createdRecipeId = response.recipeId?.toLong()
                     } else {
-                        Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
 
                     }
                 }
@@ -988,9 +986,10 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)
         registerFixButton.setOnClickListener {
             if (createdRecipeId != null) {
-                val intent = Intent(this, RecipeSeeActivity::class.java)
-                intent.putExtra("recipeId", createdRecipeId!!)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                Toast.makeText(this, "레시피가 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                finish()
             } else {
                 Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
