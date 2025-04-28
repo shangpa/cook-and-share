@@ -84,7 +84,8 @@ private var recipeStepCount = 1 // 조리 순서 번호 관리 (1-1, 1-2, ...)
 private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서 개수 저장
 
 class RecipeWriteImageActivity : AppCompatActivity() {
-
+    //조리순서 이미지 선택된거
+    private var selectedContainer: LinearLayout? = null 
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
     // 업로드된 이미지 url
@@ -579,17 +580,17 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         stepContainer = findViewById(R.id.stepContainer) // stepContainer 초기화
 
         // 레시피 조리순서 갤러리에서 이미지 선택하는 런처 초기화
-        pickImageLauncherForStepCamera =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                uri?.let {
+        pickImageLauncherForStepCamera = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                selectedContainer?.let { container ->
                     val imageView = ImageView(this)
-                    imageView.setImageURI(it) // 선택한 이미지 설정
-                    val layoutParams =
-                        LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()) // 크기 설정
+                    imageView.setImageURI(it)
+                    val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
                     imageView.layoutParams = layoutParams
-                    stepContainer.addView(imageView) // 이미지 추가
+                    container.addView(imageView) // 선택된 container에 이미지 추가!!
                 }
             }
+        }
 
         // 레시피 조리순서 새로운 STEP을 담을 ConstraintLayout 생성
         val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
@@ -1809,10 +1810,12 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         // 버튼이 보이도록 설정
         stepCamera.visibility = View.VISIBLE
         stepCamera.isClickable = true
+        val cookOrderRecipeContainerAdd = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
 
         // 카메라 버튼 클릭 시 갤러리 열기
         stepCamera.setOnClickListener {
-            pickImageLauncherForCamera.launch("image/*")
+            selectedContainer = cookOrderRecipeContainerAdd  // 🔥 현재 Step의 container를 기억
+            pickImageLauncherForStepCamera.launch("image/*")
         }
 
         // 내용추가 버튼 클릭 시 내용추가
