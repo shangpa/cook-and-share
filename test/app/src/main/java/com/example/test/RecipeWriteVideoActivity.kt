@@ -127,7 +127,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 moveButtonDown() // 버튼 아래로 이동
             }
         }
-
+        representImageContainer = findViewById(R.id.representImageContainer)
         // 대체 재료
         replaceMaterialContainer = findViewById(R.id.replaceMaterialContainer)
         replaceMaterialAddFixButton = findViewById(R.id.replaceMaterialAddFixButton)
@@ -238,7 +238,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // 레시피 세부설정 선언
         val recipeWriteDetailSettleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
-        val representImageContainer = findViewById<LinearLayout>(R.id.representImageContainer)
         val levelBoxChoice = findViewById<ConstraintLayout>(R.id.levelBoxChoice)
         val requiredTimeAndTag = findViewById<ConstraintLayout>(R.id.requiredTimeAndTag)
         val detailSettleCamera = findViewById<ImageButton>(R.id.detailSettleCamera)
