@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.speech.SpeechRecognizer
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -33,9 +34,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Locale
+import android.Manifest
+import android.speech.RecognizerIntent
+import android.speech.RecognitionListener
+import androidx.core.app.ActivityCompat
+import android.content.pm.PackageManager
+
 
 private lateinit var steps: List<View>
 private var currentStep = 0
+private lateinit var speechRecognizer: SpeechRecognizer
+
 
 class RecipeSeeActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -49,6 +58,14 @@ class RecipeSeeActivity : AppCompatActivity() {
             intent.putExtra("recipeId", recipeId)
             startActivity(intent)
             finish()
+        }
+
+        // 음성 인식 초기화
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
+        } else {
+            initSpeechRecognizer()
+            startListening()
         }
 
         // 리뷰 작성하기 선언
@@ -90,6 +107,14 @@ class RecipeSeeActivity : AppCompatActivity() {
                     findViewById<ConstraintLayout>(R.id.recipeSeeOne).visibility = View.VISIBLE
                 }
 
+                steps[currentStep].visibility = View.VISIBLE
+            }
+        }
+
+        fun moveToPreviousStep() {
+            if (currentStep > 0) {
+                steps[currentStep].visibility = View.GONE
+                currentStep--
                 steps[currentStep].visibility = View.VISIBLE
             }
         }
@@ -537,20 +562,6 @@ class RecipeSeeActivity : AppCompatActivity() {
                             findViewById(R.id.recipeSeeMain)
                         ) + stepViewList
                         currentStep = 0
-
-                        //음성
-                        stepsFromJson.forEachIndexed { index, step ->
-                            val stepView = inflater.inflate(R.layout.recipe_see_step_item, stepContainer, false)
-
-                            // 기존 코드들
-                            stepView.findViewById<TextView>(R.id.stepOne).text = "STEP ${index + 1}"
-                            stepView.findViewById<TextView>(R.id.explainOne).text = step.description
-
-                            // step 추가
-                            stepView.visibility = View.GONE
-                            stepContainer.addView(stepView)
-                            stepViewList.add(stepView)
-                        }
                     }
                 }
                 // dp 변환 함수 추가
@@ -562,5 +573,78 @@ class RecipeSeeActivity : AppCompatActivity() {
                 }
             })
 
+    }
+
+    private fun initSpeechRecognizer() {
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+
+        val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        }
+
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {}
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onError(error: Int) {
+                startListening() // 에러 나도 다시 듣기
+            }
+            override fun onResults(results: Bundle?) {
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                matches?.forEach { result ->
+                    if (result.contains("다음")) {
+                        moveToNextStep()
+                        Toast.makeText(this@RecipeSeeActivity, "다음으로 이동합니다.", Toast.LENGTH_SHORT).show()
+                    } else if (result.contains("이전")) {
+                        moveToPreviousStep()
+                        Toast.makeText(this@RecipeSeeActivity, "이전으로 이동합니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                startListening() // 계속 듣기
+            }
+            override fun onPartialResults(partialResults: Bundle?) {}
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+    }
+
+    private fun startListening() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        speechRecognizer.startListening(intent)
+    }
+
+    // ★ 이동 함수들도 onCreate 밖에 별도로 ★
+    private fun moveToNextStep() {
+        if (currentStep < steps.size - 1) {
+            steps[currentStep].visibility = View.GONE
+            currentStep++
+            steps[currentStep].visibility = View.VISIBLE
+        } else {
+            Toast.makeText(this, "마지막 스텝입니다!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun moveToPreviousStep() {
+        if (currentStep > 0) {
+            steps[currentStep].visibility = View.GONE
+            currentStep--
+            steps[currentStep].visibility = View.VISIBLE
+        } else {
+            Toast.makeText(this, "첫 화면입니다!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Activity 종료될 때 SpeechRecognizer 해제
+    override fun onDestroy() {
+        super.onDestroy()
+        speechRecognizer.destroy()
+    }
+
+    private fun Int.dpToPx(): Int {
+        return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
 }
