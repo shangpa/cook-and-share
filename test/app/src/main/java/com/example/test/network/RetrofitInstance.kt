@@ -1,37 +1,34 @@
 package com.example.test.network
 
+import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    const val BASE_URL = "http://192.168.219.110:8080"
+    const val BASE_URL = "http://192.168.45.50:8080"
 
-    // 로깅 인터셉터 (필요에 따라 설정, 디버깅 용도)
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.HEADERS // 로그 출력 중단으로 OOM 방지
-    }
+    private lateinit var retrofit: Retrofit
+    lateinit var apiService: ApiService
 
-    // OkHttpClient 생성 (로깅 인터셉터 포함)
-    private val client: OkHttpClient by lazy {
-        OkHttpClient.Builder()
+    // 초기화 메서드에서 context 전달받아 처리
+    fun init(context: Context) {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.HEADERS
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(context)) // 안전하게 context 전달
             .addInterceptor(loggingInterceptor)
             .build()
-    }
 
-    // Retrofit 인스턴스 생성
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
+        retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(client)  // OkHttpClient 설정 적용
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
 
-
-    // ApiService 싱글톤 객체
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
+        apiService = retrofit.create(ApiService::class.java)
     }
 }

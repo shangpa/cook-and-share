@@ -38,6 +38,7 @@ import java.util.Locale
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.example.test.Utils.LikeUtils
 
 private lateinit var player: ExoPlayer
 private lateinit var playerView: PlayerView
@@ -46,7 +47,8 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_video)
-
+        val recipeId = intent.getLongExtra("recipeId", -1L)
+        val token = App.prefs.token.toString()
         val reviewWriteButton: Button = findViewById(R.id.reviewWriteButton)
         reviewWriteButton.setOnClickListener {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
@@ -108,23 +110,12 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
         )
 
         // 하트버튼 클릭시 채워진 하트로 바뀜
+        // 각 버튼에 대해 좋아요 기능 설정
         heartButtons.forEach { button ->
-            // 초기 상태를 태그로 저장
-            button.setTag(R.id.heartButton, false) // false: 좋아요 안 누름
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.heartButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_recipe_heart)
-                } else {
-                    button.setImageResource(R.drawable.ic_heart_fill)
-                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                // 상태 반전해서 저장
-                it.setTag(R.id.heartButton, !isLiked)
-            }
+            // 초기 상태를 false로 태그 저장
+            button.setTag(R.id.heartButton, false)
+            // 서버 연동 + 토글 UI
+            LikeUtils.setupLikeButton(button, recipeId)
         }
 
         // 좋아요 버튼 선언
@@ -187,8 +178,8 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
         }
 
         // 레시피 조회 기능 추가
-        val recipeId = intent.getLongExtra("recipeId", -1L)
-        val token = App.prefs.token.toString()
+
+
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
             .enqueue(object : Callback<RecipeDetailResponse> {

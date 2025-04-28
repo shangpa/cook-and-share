@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.test.Utils.LikeUtils
 import com.example.test.adapter.ReviewAdapter
 import com.example.test.model.Ingredient
 import com.example.test.model.recipeDetail.CookingStep
@@ -114,24 +115,12 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
             findViewById<ImageButton>(R.id.heartButton)
         )
 
-        // 하트버튼 클릭시 채워진 하트로 바뀜
+        // 각 버튼에 대해 좋아요 기능 설정
         heartButtons.forEach { button ->
-            // 초기 상태를 태그로 저장
-            button.setTag(R.id.heartButton, false) // false: 좋아요 안 누름
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.heartButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_recipe_heart)
-                } else {
-                    button.setImageResource(R.drawable.ic_heart_fill)
-                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                // 상태 반전해서 저장
-                it.setTag(R.id.heartButton, !isLiked)
-            }
+            // 초기 상태를 false로 태그 저장
+            button.setTag(R.id.heartButton, false)
+            // 서버 연동 + 토글 UI
+            LikeUtils.setupLikeButton(button, recipeId)
         }
 
         // 좋아요 버튼 선언
@@ -190,7 +179,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
             popup.show()
         }
-        
+
         // 레시피 조회 기능 추가
 
         val token = App.prefs.token.toString()
@@ -231,18 +220,18 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         tagList.forEach { tag ->
                             val tagView = TextView(this@RecipeSeeNoTimerActivity) // ← Activity의 Context 명확히 지정
                                 .apply {
-                                text = "# $tag"
-                                textSize = 10f
-                                setTextColor(Color.parseColor("#747474"))
-                                setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
-                                setPadding(20, 4, 20, 4) // 태그 내부 여백
-                                layoutParams = FlexboxLayout.LayoutParams(
-                                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
-                                    FlexboxLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    setMargins(6.dpToPx(), 6.dpToPx(), 6.dpToPx(), 6.dpToPx())
+                                    text = "# $tag"
+                                    textSize = 10f
+                                    setTextColor(Color.parseColor("#747474"))
+                                    setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
+                                    setPadding(20, 4, 20, 4) // 태그 내부 여백
+                                    layoutParams = FlexboxLayout.LayoutParams(
+                                        FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                                        FlexboxLayout.LayoutParams.WRAP_CONTENT
+                                    ).apply {
+                                        setMargins(6.dpToPx(), 6.dpToPx(), 6.dpToPx(), 6.dpToPx())
+                                    }
                                 }
-                            }
                             tagContainer.addView(tagView)
                         }
 
@@ -455,6 +444,20 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
                             }
                             ingredientContainer.addView(thinDivider)
+
+                            // 음성 버튼
+                            val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
+                                setImageResource(R.drawable.ic_voice)
+                                background = null
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    gravity = Gravity.END
+                                    topMargin = 20.dpToPx()
+                                }
+                            }
+
                         }
                         //조리순서
                         val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
@@ -508,6 +511,19 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     topMargin = 12.dpToPx()
                                 }
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
+                            }
+
+                            // 음성 버튼
+                            val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
+                                setImageResource(R.drawable.ic_voice)
+                                background = null
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    gravity = Gravity.END
+                                    topMargin = 20.dpToPx()
+                                }
                             }
 
                             // 전체 묶기

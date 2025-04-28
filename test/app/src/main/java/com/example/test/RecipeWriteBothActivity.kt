@@ -304,9 +304,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val cancelTwo = findViewById<Button>(R.id.cancelTwo)
         val register = findViewById<Button>(R.id.register)
 
-        // 레시피 등록한 레시피 확인 선언
-        val registerRecipeUpLayout = findViewById<ConstraintLayout>(R.id.registerRecipeUpLayout)
-        val registerRecipeSeeLayout = findViewById<ConstraintLayout>(R.id.registerRecipeSeeLayout)
 
         // 레시피 위 탭바 선언
         val one = findViewById<TextView>(R.id.one)
@@ -779,8 +776,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)
         registerFixButton.setOnClickListener {
-            registerRecipeUpLayout.visibility = View.VISIBLE
-            registerRecipeSeeLayout.visibility = View.VISIBLE
             tapBar.visibility = View.GONE
             contentCheckTapBar.visibility = View.GONE
             recipeRegister.visibility = View.GONE

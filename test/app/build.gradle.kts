@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -35,6 +36,9 @@ android {
         jvmTarget = "11"
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
     // ✅ Tmap SDK에서 JNI 접근 필요할 수 있음
     sourceSets["main"].jniLibs.srcDir("libs")
 
@@ -83,6 +87,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("io.socket:socket.io-client:2.0.1") {
+        exclude("org.json", "json")
+    }
 
 
 }
