@@ -194,4 +194,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: FridgeRecommendRequest
     ): Response<List<FridgeRecommendResponse>>
+
+    //포인트조회
+    @GET("/api/point/my-point")
+    fun getMyPoint(
+        @Header("Authorization") token: String
+    ): Call<Int>
 }
