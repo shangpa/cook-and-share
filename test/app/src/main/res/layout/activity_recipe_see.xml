@@ -19,89 +19,12 @@
             android:layout_height="match_parent"
             android:orientation="horizontal" />
 
-        <!-- 인원수 선택 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/peopleChoice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-
-            <!-- 로고, 검색, 알림, 마이페이지 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/peopleChoiceTap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <!-- 로고 -->
-                <ImageButton
-                    android:id="@+id/logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:src="@drawable/image_activity_main_logo"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- 검색 버튼 -->
-                <ImageButton
-                    android:id="@+id/searchIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="18dp"
-                    android:src="@drawable/ic_search"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:layout_constraintEnd_toStartOf="@id/bellIcon"
-                    app:layout_constraintTop_toTopOf="@id/logo"
-                    app:layout_constraintBottom_toBottomOf="@id/logo" />
-
-                <!-- 알림 버튼 -->
-                <ImageButton
-                    android:id="@+id/bellIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_bell"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:layout_constraintEnd_toStartOf="@id/person"
-                    app:layout_constraintTop_toTopOf="@id/logo"
-                    app:layout_constraintBottom_toBottomOf="@id/logo" />
-
-                <!-- 마이페이지 버튼 -->
-                <ImageButton
-                    android:id="@+id/person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_person"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/logo"
-                    app:layout_constraintBottom_toBottomOf="@id/logo" />
-
-                <!-- 로고 아래 구분바 -->
-                <View
-                    android:id="@+id/divideRectangleBarZero"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="62dp"
-                    android:background="@drawable/bar_rectangle"
-                    app:layout_constraintTop_toTopOf="@id/logo" />
-
-                <!-- 로고, 검색, 알림, 마이페이지 -->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <!-- Step별로 레시피 보기 메인 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recipeSeeMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <!-- 뒤로가기, 찜, 좋아요, 공유 -->
             <androidx.constraintlayout.widget.ConstraintLayout

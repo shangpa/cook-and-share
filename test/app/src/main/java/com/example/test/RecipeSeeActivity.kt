@@ -60,6 +60,7 @@ class RecipeSeeActivity : AppCompatActivity() {
             finish()
         }
 
+        currentStep = 0
         // 음성 인식 초기화
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
@@ -69,7 +70,6 @@ class RecipeSeeActivity : AppCompatActivity() {
         }
 
         // 리뷰 작성하기 선언
-        val peopleChoice = findViewById<ConstraintLayout>(R.id.peopleChoice)
         val zero = findViewById<EditText>(R.id.zero)
         val recipeSeeMain = findViewById<ConstraintLayout>(R.id.recipeSeeMain)
         val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
@@ -93,7 +93,9 @@ class RecipeSeeActivity : AppCompatActivity() {
             if (currentStep < steps.size - 1) {
                 steps[currentStep].visibility = View.GONE
                 currentStep++
-
+                if (currentStep >= steps.size) {
+                    currentStep = steps.size - 1
+                }
                 Log.d("NEXT_STEP", "currentStep: $currentStep, view id: ${steps[currentStep].id}")
 
                 // 재료화면이면 stepContainer 숨기고, 조리 순서 시작되면 보여주기
@@ -619,15 +621,27 @@ class RecipeSeeActivity : AppCompatActivity() {
 
     // ★ 이동 함수들도 onCreate 밖에 별도로 ★
     private fun moveToNextStep() {
-        if (currentStep < steps.size - 1) {
-            steps[currentStep].visibility = View.GONE
-            currentStep++
-            steps[currentStep].visibility = View.VISIBLE
-        } else {
-            Toast.makeText(this, "마지막 스텝입니다!", Toast.LENGTH_SHORT).show()
-        }
-    }
+        if (!::steps.isInitialized || steps.isEmpty()) return
 
+        if (currentStep >= steps.size - 1) {
+            Toast.makeText(this, "마지막 스텝입니다!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // 현재 스텝 숨기고
+        steps[currentStep].visibility = View.GONE
+
+        // 다음 스텝으로 이동
+        currentStep++
+
+        // 범위 체크: 만약 currentStep이 steps.size를 넘어가면 바로 리턴
+        if (currentStep >= steps.size) {
+            currentStep = steps.size - 1
+            return
+        }
+
+        steps[currentStep].visibility = View.VISIBLE
+    }
     private fun moveToPreviousStep() {
         if (currentStep > 0) {
             steps[currentStep].visibility = View.GONE
