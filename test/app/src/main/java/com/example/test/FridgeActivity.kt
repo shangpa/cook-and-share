@@ -93,6 +93,15 @@ class FridgeActivity : AppCompatActivity() {
                     dateText = dateText
                 )
             }
+            val allIngredients = allFridgeList.map {
+                SelectedIngredient(
+                    name = it.ingredientName,
+                    quantity = it.quantity,
+                    unit = it.unitDetail,
+                    dateLabel = it.dateOption ?: "유통기한",
+                    dateText = it.fridgeDate
+                )
+            }
 
             Log.d("선택한재료", "선택한 재료 리스트: $selectedIngredients")
 
@@ -103,6 +112,7 @@ class FridgeActivity : AppCompatActivity() {
 
             val intent = Intent(this, FridgeRecipeActivity::class.java).apply {
                 putParcelableArrayListExtra("selectedIngredients", ArrayList(selectedIngredients))
+                putParcelableArrayListExtra("allIngredients", ArrayList(allIngredients)) // 🔥 추가
             }
             startActivity(intent)
         }

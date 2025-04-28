@@ -58,9 +58,18 @@ class FridgeRecipeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fridge_recipe)
         //재료 가져오기
         val selectedIngredients = intent.getParcelableArrayListExtra<SelectedIngredient>("selectedIngredients") ?: arrayListOf()
-        // 2. 냉장고 재료 UI에 추가
-        selectedIngredients.forEach { ingredient ->
-            addFridgeIngredientView(ingredient)
+        val allIngredients = intent.getParcelableArrayListExtra<SelectedIngredient>("allIngredients") ?: arrayListOf()
+
+        val selectedNames = selectedIngredients.map { it.name }
+
+        // --- 개별 아이템 및 전체 선택 처리 ---
+        val fridgeAllCheckIcon: ImageView = findViewById(R.id.fridgeAllCheckIcon)
+        val fridgeRecipeItem: LinearLayout = findViewById(R.id.fridgeRecipeItem)
+
+        allIngredients.forEach { ingredient ->
+            val isSelected = selectedNames.contains(ingredient.name)
+            val itemView = addFridgeIngredientView(ingredient, isSelected)
+            fridgeRecipeItem.addView(itemView)
         }
         // 3. 서버에 추천 요청 보내기
         recommendRecipes(selectedIngredients.map { it.name })
@@ -94,9 +103,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
             }
         }
 
-        // --- 개별 아이템 및 전체 선택 처리 ---
-        val fridgeAllCheckIcon: ImageView = findViewById(R.id.fridgeAllCheckIcon)
-        val fridgeRecipeItem: LinearLayout = findViewById(R.id.fridgeRecipeItem)
+
 
         // 각 자식 뷰에 대해 초기 선택 상태(false) 및 onClickListener 등록
         for (i in 0 until fridgeRecipeItem.childCount) {
@@ -263,9 +270,10 @@ class FridgeRecipeActivity : AppCompatActivity() {
         }
     }
     //재료추가
-    private fun addFridgeIngredientView(ingredient: SelectedIngredient) {
+    private fun addFridgeIngredientView(ingredient: SelectedIngredient, isSelected: Boolean): View {
+        val parent = findViewById<LinearLayout>(R.id.fridgeRecipeItem)
         val inflater = LayoutInflater.from(this)
-        val itemView = inflater.inflate(R.layout.item_fridge_ingredient, findViewById(R.id.fridgeRecipeItem), false)
+        val itemView = inflater.inflate(R.layout.item_fridge_ingredient, parent, false) // 🔥 parent 지정
 
         val ingredientName = itemView.findViewById<TextView>(R.id.fridgeIngredientName)
         val quantity = itemView.findViewById<TextView>(R.id.fridgeIngredientQuantity)
@@ -279,8 +287,32 @@ class FridgeRecipeActivity : AppCompatActivity() {
         dateLabel.text = ingredient.dateLabel
         dateText.text = ingredient.dateText
 
-        findViewById<LinearLayout>(R.id.fridgeRecipeItem).addView(itemView)
+        if (isSelected) {
+            itemView.setBackgroundResource(R.drawable.rounded_rectangle_fridge_green)
+            setTextColorRecursively(itemView, Color.WHITE)
+            itemView.tag = true
+        } else {
+            itemView.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+            setTextColorRecursively(itemView, Color.parseColor("#8A8F9C"))
+            itemView.tag = false
+        }
+
+        itemView.setOnClickListener {
+            val selected = itemView.tag as Boolean
+            if (!selected) {
+                itemView.setBackgroundResource(R.drawable.rounded_rectangle_fridge_green)
+                setTextColorRecursively(itemView, Color.WHITE)
+                itemView.tag = true
+            } else {
+                itemView.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                setTextColorRecursively(itemView, Color.parseColor("#8A8F9C"))
+                itemView.tag = false
+            }
+        }
+
+        return itemView
     }
+
     //추천레시피 받아오기
     private fun recommendRecipes(selectedIngredients: List<String>) {
         CoroutineScope(Dispatchers.Main).launch {
