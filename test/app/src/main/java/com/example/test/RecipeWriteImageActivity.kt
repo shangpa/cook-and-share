@@ -579,18 +579,23 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         stepContainer = findViewById(R.id.stepContainer) // stepContainer 초기화
 
-        // 레시피 조리순서 갤러리에서 이미지 선택하는 런처 초기화
+        // stepCamera용 런처 (조리 순서 이미지)
         pickImageLauncherForStepCamera = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 selectedContainer?.let { container ->
-                    val imageView = ImageView(this)
-                    imageView.setImageURI(it)
-                    val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
-                    imageView.layoutParams = layoutParams
-                    container.addView(imageView) // 선택된 container에 이미지 추가!!
+                    displaySelectedImage(it, container)
+                    uploadImageToServer(it) { imageUrl ->
+                        if (imageUrl != null) {
+                            stepImages[currentStep] = imageUrl
+                            Log.d("StepImage", "STEP $currentStep -> $imageUrl")
+                        } else {
+                            Log.e("Upload", "이미지 업로드 실패")
+                        }
+                    }
                 }
             }
         }
+
 
         // 레시피 조리순서 새로운 STEP을 담을 ConstraintLayout 생성
         val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
@@ -1814,7 +1819,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 카메라 버튼 클릭 시 갤러리 열기
         stepCamera.setOnClickListener {
-            selectedContainer = cookOrderRecipeContainerAdd  // 🔥 현재 Step의 container를 기억
+            selectedContainer = cookOrderRecipeContainerAdd
             pickImageLauncherForStepCamera.launch("image/*")
         }
 

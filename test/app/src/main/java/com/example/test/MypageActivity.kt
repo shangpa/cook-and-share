@@ -83,7 +83,8 @@ class MypageActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
-                        userNameText.text = "사용자님"
+                        userNameText.text = "사용자"
+                        logoutText.text ="로그인"
                     }
                 })
 
@@ -106,8 +107,9 @@ class MypageActivity : AppCompatActivity() {
 
         } else {
             // 로그인 안 되어있을 때
-            userNameText.text = "사용자님"
+            userNameText.text = "사용자"
             userPointText.text = "?"
+            logoutText.text ="로그인"
         }
 
         // editInformation 클릭했을 때 MypagePersonalInfoActivity 이동
