@@ -93,23 +93,35 @@ class RecipeActivity : AppCompatActivity() {
             popup.show()
         }
 
-        // 초기 검색 - 전체 레시피 표시
-        setCategoryButtonStyle(allBtn)
-        filterByCategory(null)
-
         val pencil = findViewById<ImageButton>(R.id.pencil)
         val recipeWrite = findViewById<TextView>(R.id.recipeWrite)
 
-        val intent = Intent(this, RecipeWriteMain::class.java)
+        val writeIntent = Intent(this, RecipeWriteMain::class.java)
 
         pencil.setOnClickListener {
-            startActivity(intent)
+            startActivity(writeIntent)
         }
 
         recipeWrite.setOnClickListener {
-            startActivity(intent)
+            startActivity(writeIntent)
         }
+        val initialCategory = intent.getStringExtra("selectedCategory")
 
+        val categoryMap = mapOf(
+            null to allBtn,
+            "koreaFood" to krBtn,
+            "westernFood" to wsBtn,
+            "japaneseFood" to jpBtn,
+            "chineseFood" to cnBtn,
+            "vegetarianDiet" to vgBtn,
+            "snack" to snBtn,
+            "alcoholSnack" to asBtn,
+            "sideDish" to sdBtn
+        )
+
+        val selectedBtn = categoryMap[initialCategory] ?: allBtn
+        setCategoryButtonStyle(selectedBtn)
+        filterByCategory(initialCategory)
     }
 
     private fun filterByCategory(category: String?) {

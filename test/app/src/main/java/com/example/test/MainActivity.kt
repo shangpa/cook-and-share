@@ -151,6 +151,26 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RecipeActivity::class.java)
             startActivity(intent)
         }
+        //테마별 레시피
+        val categoryMap = mapOf(
+            R.id.total to null,
+            R.id.koreanFood to "koreaFood",
+            R.id.westernFood to "westernFood",
+            R.id.categoryItem to "japaneseFood",
+            R.id.christmasSale to "chineseFood",
+            R.id.vegetarianDiet to "vegetarianDiet",
+            R.id.snack to "snack",
+            R.id.relish to "alcoholSnack",
+            R.id.sideDish to "sideDish"
+        )
+
+        categoryMap.forEach { (viewId, categoryValue) ->
+            findViewById<LinearLayout>(viewId).setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                intent.putExtra("selectedCategory", categoryValue)
+                startActivity(intent)
+            }
+        }
     }
 
     // 2. 배너 세팅
