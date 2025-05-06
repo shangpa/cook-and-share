@@ -39,11 +39,32 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.test.Utils.LikeUtils
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 
 private lateinit var player: ExoPlayer
 private lateinit var playerView: PlayerView
+private lateinit var speechRecognizer: SpeechRecognizer
 
 class RecipeSeeVideoActivity : AppCompatActivity() {
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 1 && grantResults.isNotEmpty() &&
+            grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+
+        } else {
+            Toast.makeText(this, "음성 인식 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_video)
@@ -53,6 +74,20 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
         reviewWriteButton.setOnClickListener {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
             startActivity(intent)
+        }
+
+        if (androidx.core.content.ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.RECORD_AUDIO
+            ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            androidx.core.app.ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.RECORD_AUDIO),
+                1
+            )
+        } else {
+
         }
 
         val recipeSee = findViewById<ConstraintLayout>(R.id.recipeSee)
@@ -182,6 +217,7 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
 
                         var isFullScreen = false
                         val fullVideoUrl = RetrofitInstance.BASE_URL + (recipe.videoUrl?.trim() ?: "")
+                        initSpeechRecognizer(fullVideoUrl)
                         val imageView = findViewById<ImageView>(R.id.image)
                         val imageUrl = recipe.mainImageUrl?.trim()
                         val fullScreenButton = findViewById<ImageButton>(R.id.fullScreenButton)
@@ -209,6 +245,18 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                             playerView.visibility = View.VISIBLE
                             findViewById<ImageView>(R.id.image).alpha = 0f
                             playButton.visibility = View.GONE
+
+                            // ✅ 이 시점에 음성 인식 시작
+                            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+                            }
+                            speechRecognizer.startListening(intent)
+
+                            // Retrofit 성공 콜백 안에서 ↓↓ 이걸로 교체
+                            initSpeechRecognizer(fullVideoUrl)
+
+
                         }
 
 
@@ -542,14 +590,68 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
 
     }
     private fun initializePlayer(videoUrl: String) {
-        val player = ExoPlayer.Builder(this).build()
-        val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+        player = ExoPlayer.Builder(this).build()
+        playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+
         playerView.player = player
 
         val mediaItem = MediaItem.fromUri(videoUrl)
         player.setMediaItem(mediaItem)
         player.prepare()
         player.play()
+    }
+
+    private fun initSpeechRecognizer(fullVideoUrl: String) {
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Toast.makeText(this, "음성 인식을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+        }
+
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {}
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onError(error: Int) {}
+
+            override fun onResults(results: Bundle?) {
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                matches?.let {
+                    for (command in it) {
+                        if (command.contains("재생")) {
+                            // 플레이어가 아직 준비되지 않았다면 초기화
+                            if (!::player.isInitialized) {
+                                initializePlayer(fullVideoUrl)
+                                findViewById<ImageView>(R.id.image).alpha = 0f
+                                findViewById<ImageButton>(R.id.btnVideo).visibility = View.GONE
+                                findViewById<PlayerView>(R.id.videoPlayerView).visibility = View.VISIBLE
+                            } else {
+                                player.play()
+                            }
+                        } else if (command.contains("정지")) {
+                            if (::player.isInitialized) {
+                                player.pause()
+                            }
+                        }
+                    }
+                }
+
+                // 계속 리스닝
+                speechRecognizer.startListening(intent)
+            }
+
+            override fun onPartialResults(partialResults: Bundle?) {}
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+
+        speechRecognizer.startListening(intent)
     }
 
 }

@@ -597,12 +597,25 @@ class RecipeSeeActivity : AppCompatActivity() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 matches?.forEach { result ->
-                    if (result.contains("다음")) {
-                        moveToNextStep()
-                        Toast.makeText(this@RecipeSeeActivity, "다음으로 이동합니다.", Toast.LENGTH_SHORT).show()
-                    } else if (result.contains("이전")) {
-                        moveToPreviousStep()
-                        Toast.makeText(this@RecipeSeeActivity, "이전으로 이동합니다.", Toast.LENGTH_SHORT).show()
+                    when {
+                        result.contains("다음") -> {
+                            moveToNextStep()
+                            Toast.makeText(this@RecipeSeeActivity, "다음으로 이동합니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        result.contains("이전") -> {
+                            moveToPreviousStep()
+                            Toast.makeText(this@RecipeSeeActivity, "이전으로 이동합니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        result.contains("시작") -> {
+                            val currentView = steps.getOrNull(currentStep)
+                            currentView?.findViewById<Button>(R.id.start)?.performClick()
+                            Toast.makeText(this@RecipeSeeActivity, "타이머 시작", Toast.LENGTH_SHORT).show()
+                        }
+                        result.contains("정지") -> {
+                            val currentView = steps.getOrNull(currentStep)
+                            currentView?.findViewById<Button>(R.id.stop)?.performClick()
+                            Toast.makeText(this@RecipeSeeActivity, "타이머 정지", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 startListening() // 계속 듣기
