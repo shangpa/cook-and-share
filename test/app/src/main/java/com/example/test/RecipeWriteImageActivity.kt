@@ -103,18 +103,13 @@
         private val pickImageLauncherForDetailSettle =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri?.let {
-                    displaySelectedImage(it, representImageContainer) // 대표 이미지 표시
-                    uploadImageToServer(it) { imageUrl ->
-                        if (imageUrl != null) {
-                            Log.d("Upload", "대표 이미지 업로드 성공! URL: $imageUrl")
-                            mainImageUrl = imageUrl // 대표 이미지 저장
-                        } else {
-                            Log.e("Upload", "대표 이미지 업로드 실패")
-                        }
-                    }
+                    val destinationUri = Uri.fromFile(File(cacheDir, "cropped_represent_${System.currentTimeMillis()}.jpg"))
+                    UCrop.of(it, destinationUri)
+                        .withMaxResultSize(800, 800)
+                        .start(this)
                 }
             }
-
+        private var isPickingRepresentImage = false
         private lateinit var stepContainer: LinearLayout // STEP을 추가할 컨테이너
         private lateinit var pickImageLauncherForStepCamera: ActivityResultLauncher<String>
         private lateinit var layoutList: List<ConstraintLayout>
@@ -571,17 +566,10 @@
             // stepCamera용 런처 (조리 순서 이미지)
             pickImageLauncherForStepCamera = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri?.let {
-                    selectedContainer?.let { container ->
-                        displaySelectedImage(it, container)
-                        uploadImageToServer(it) { imageUrl ->
-                            if (imageUrl != null) {
-                                stepImages[currentStep] = imageUrl
-                                Log.d("StepImage", "STEP $currentStep -> $imageUrl")
-                            } else {
-                                Log.e("Upload", "이미지 업로드 실패")
-                            }
-                        }
-                    }
+                    val destinationUri = Uri.fromFile(File(cacheDir, "cropped_step_${System.currentTimeMillis()}.jpg"))
+                    UCrop.of(it, destinationUri)
+                        .withMaxResultSize(800, 800)
+                        .start(this)
                 }
             }
 
@@ -907,6 +895,7 @@
 
             // 레시피 세부설정 카메라 버튼 클릭 시 갤러리 열기
             detailSettleCamera.setOnClickListener {
+                isPickingRepresentImage = true
                 pickImageLauncherForDetailSettle.launch("image/*")
             }
 
@@ -997,14 +986,41 @@
             if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
                 val resultUri = UCrop.getOutput(data!!)
                 resultUri?.let {
-                    // 이미지를 편집 후 업로드
-                    displaySelectedImage(it, imageContainer)
-                    uploadImageToServer(it) { imageUrl ->
-                        if (imageUrl != null) {
-                            stepImages[currentStep] = imageUrl
-                            Log.d("StepImage", "STEP $currentStep -> $imageUrl")
-                        } else {
-                            Log.e("Upload", "이미지 업로드 실패냥")
+                    when {
+                        selectedContainer != null -> {
+                            // ✅ 조리순서 이미지
+                            displaySelectedImage(it, selectedContainer!!)
+                            uploadImageToServer(it) { imageUrl ->
+                                if (imageUrl != null) {
+                                    stepImages[currentStep] = imageUrl
+                                    Log.d("StepImage", "STEP $currentStep -> $imageUrl")
+                                } else {
+                                    Log.e("Upload", "조리순서 이미지 업로드 실패")
+                                }
+                            }
+                            selectedContainer = null
+                        }
+                        isPickingRepresentImage -> {
+                            // ✅ 대표 이미지
+                            displaySelectedImage(it, representImageContainer)
+                            uploadImageToServer(it) { imageUrl ->
+                                if (imageUrl != null) {
+                                    mainImageUrl = imageUrl
+                                    Log.d("Upload", "대표 이미지 업로드 성공! URL: $imageUrl")
+                                } else {
+                                    Log.e("Upload", "대표 이미지 업로드 실패")
+                                }
+                            }
+                            isPickingRepresentImage = false
+                        }
+                        else -> {
+                            // ✅ 일반 이미지 (예비 처리)
+                            displaySelectedImage(it, imageContainer)
+                            uploadImageToServer(it) { imageUrl ->
+                                if (imageUrl != null) {
+                                    stepImages[currentStep] = imageUrl
+                                }
+                            }
                         }
                     }
                 }
