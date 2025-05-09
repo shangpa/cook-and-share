@@ -37,6 +37,11 @@ class FridgeIngredientActivity : AppCompatActivity() {
         val fridgeAddButton: LinearLayout = findViewById(R.id.fridgeAddButton)
         val backBtn: ImageView = findViewById(R.id.backBtn)
 
+        val intentIngredientName = intent.getStringExtra("ingredientName") ?: ""
+        if (intentIngredientName.isNotEmpty()) {
+            fridgeIngredientInput.setText(intentIngredientName)
+        }
+
         // 드롭다운 설정
         fridgeStorageDropBtn.setOnClickListener {
             showPopupMenu(fridgeStorageDropBtn, fridgeStorageText, R.menu.fridge_storage_menu)
@@ -75,7 +80,6 @@ class FridgeIngredientActivity : AppCompatActivity() {
 
         // 수정 데이터 intent로 받기
         val intentFridgeId = intent.getLongExtra("fridgeId", -1L)
-        val intentIngredientName = intent.getStringExtra("ingredientName") ?: ""
         val intentQuantity = intent.getStringExtra("quantity") ?: ""
         val intentUnit = intent.getStringExtra("unit") ?: ""
         val intentStorageArea = intent.getStringExtra("storageArea") ?: ""

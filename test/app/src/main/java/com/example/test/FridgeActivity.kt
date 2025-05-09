@@ -1,6 +1,7 @@
 package com.example.test
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,9 +14,21 @@ import com.example.test.model.Fridge.SelectedIngredient
 import com.example.test.model.FridgeResponse
 import com.example.test.network.ApiService
 import com.example.test.network.RetrofitInstance
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import com.google.mlkit.vision.common.InputImage
+import java.io.File
+import android.Manifest
+
 
 class FridgeActivity : AppCompatActivity() {
 
@@ -26,7 +39,23 @@ class FridgeActivity : AppCompatActivity() {
 
     private lateinit var apiService: ApiService
 
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        if (bitmap != null) {
+            recognizeTextFromImage(bitmap)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.CAMERA),
+                1001
+            )
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge)
 
@@ -62,6 +91,13 @@ class FridgeActivity : AppCompatActivity() {
                 if (isChecked) selectedLayouts.add(layout) else selectedLayouts.remove(layout)
             }
         }
+
+        findViewById<TextView>(R.id.fridegeCameraText).setOnClickListener {
+            val photoFile = File.createTempFile("ocr_", ".jpg", cacheDir)
+            imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", photoFile)
+            takePictureLauncher.launch(imageUri)
+        }
+
 
         findViewById<LinearLayout>(R.id.fridgeAddBtn).setOnClickListener {
             startActivity(Intent(this, FridgeIngredientActivity::class.java))
@@ -239,6 +275,64 @@ class FridgeActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    private lateinit var imageUri: Uri
+
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) {
+            val image = InputImage.fromFilePath(this, imageUri)
+            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+            recognizer.process(image)
+                .addOnSuccessListener { visionText ->
+                    val text = visionText.text
+                    Log.d("OCR_RESULT", "인식된 텍스트: $text")
+                    Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+
+                    val knownIngredients = listOf("복숭아아이스티", "감자", "[포장]복숭아아이스티", "계란", "두부", "당근")
+                    val matched = knownIngredients.firstOrNull { text.contains(it) }
+
+                    if (matched != null) {
+                        val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
+                            putExtra("ingredientName", matched)
+                        }
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "음식 재료를 인식하지 못했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "OCR 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+
+    fun recognizeTextFromImage(bitmap: Bitmap) {
+        val image = InputImage.fromBitmap(bitmap, 0)
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+        recognizer.process(image)
+            .addOnSuccessListener { visionText ->
+                val text = visionText.text
+                Log.d("OCR_RESULT", "인식된 텍스트: $text")
+
+                // 간단한 필터링 예시: "양파", "감자", "소고기" 등 키워드 포함
+                val knownIngredients = listOf("복숭아아이스티", "감자", "소고기", "[포장]복숭아아이스티", "두부", "당근") // 계속 추가 가능
+                val matched = knownIngredients.firstOrNull { text.contains(it) }
+
+                if (matched != null) {
+                    val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
+                        putExtra("ingredientName", matched)
+                    }
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "음식 재료를 인식하지 못했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "OCR 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onResume() {

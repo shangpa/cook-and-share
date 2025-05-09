@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editorRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 이미지 표시 -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
+
+    <!-- 그림 그릴 커스텀 뷰 -->
+    <com.example.test.view.DrawView
+        android:id="@+id/drawView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" />
+
+    <!-- 하단 도구 패널 -->
+    <LinearLayout
+        android:id="@+id/toolsPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="#CCFFFFFF">
+
+        <!-- 색상 선택 -->
+        <Button
+            android:id="@+id/btnColorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="빨강"
+            android:textColor="#FF0000" />
+
+        <Button
+            android:id="@+id/btnColorBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="파랑"
+            android:textColor="#0000FF" />
+
+        <Button
+            android:id="@+id/btnColorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검정"
+            android:textColor="#000000" />
+
+        <!-- 지우개 -->
+        <Button
+            android:id="@+id/btnEraser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지우개" />
+
+        <!-- 되돌리기 -->
+        <Button
+            android:id="@+id/btnUndo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="되돌리기" />
+
+        <!-- 글쓰기 -->
+        <Button
+            android:id="@+id/btnText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="글쓰기" />
+
+        <!-- 완료 -->
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✔ 완료" />
+    </LinearLayout>
+
+</FrameLayout>
