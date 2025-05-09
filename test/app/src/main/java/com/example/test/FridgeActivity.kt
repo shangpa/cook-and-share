@@ -28,6 +28,20 @@ import androidx.core.content.FileProvider
 import com.google.mlkit.vision.common.InputImage
 import java.io.File
 import android.Manifest
+import android.provider.MediaStore
+import androidx.appcompat.app.AlertDialog
+import com.example.test.App.Companion.context
+import com.example.test.model.recipt.Feature
+import com.example.test.model.recipt.Image
+import com.example.test.model.recipt.RequestItem
+import com.example.test.model.recipt.VisionRequest
+import com.example.test.network.GoogleVisionApi
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class FridgeActivity : AppCompatActivity() {
@@ -39,11 +53,6 @@ class FridgeActivity : AppCompatActivity() {
 
     private lateinit var apiService: ApiService
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-        if (bitmap != null) {
-            recognizeTextFromImage(bitmap)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -75,6 +84,23 @@ class FridgeActivity : AppCompatActivity() {
             container.setOnClickListener {
                 setCategorySelected(it as LinearLayout, categoryViews)
             }
+        }
+
+        findViewById<TextView>(R.id.fridegeCameraText).setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("사진 가져오기")
+                .setItems(arrayOf("카메라 촬영", "앨범에서 선택")) { _, which ->
+                    when (which) {
+                        0 -> {
+                            val photoFile = File.createTempFile("ocr_", ".jpg", cacheDir)
+                            imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", photoFile)
+                            takePictureLauncher.launch(imageUri)
+                        }
+                        1 -> {
+                            galleryLauncher.launch("image/*")
+                        }
+                    }
+                }.show()
         }
 
         findViewById<ImageView>(R.id.fridgeAllCheckIcon).setOnClickListener {
@@ -308,6 +334,67 @@ class FridgeActivity : AppCompatActivity() {
     }
 
 
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+            callGoogleVisionAPI(bitmap)
+        }
+    }
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) {
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            callGoogleVisionAPI(bitmap)
+        }
+    }
+
+
+    private fun bitmapToBase64(bitmap: Bitmap): String {
+        val stream = java.io.ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val byteArray = stream.toByteArray()
+        return android.util.Base64.encodeToString(byteArray, android.util.Base64.NO_WRAP)
+    }
+
+    fun callGoogleVisionAPI(bitmap: Bitmap) {
+        val base64Image = bitmapToBase64(bitmap)
+
+        val image = Image(content = base64Image)
+        val feature = Feature()
+        val requestItem = RequestItem(image, listOf(feature))
+        val request = VisionRequest(listOf(requestItem))
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://vision.googleapis.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(GoogleVisionApi::class.java)
+        val call = service.annotateImage("7084aea645e459febffbc05438a642e2680c1460", request) // 👈 또는 JSON 키로 인증
+
+        call.enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if (response.isSuccessful) {
+                    val text = response.body()
+                        ?.getAsJsonArray("responses")
+                        ?.get(0)?.asJsonObject
+                        ?.getAsJsonObject("fullTextAnnotation")
+                        ?.get("text")?.asString ?: "결과 없음"
+
+                    Log.d("VISION_RESULT", text)
+                    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+                } else {
+                    Log.e("VISION_ERROR", "오류 응답: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Log.e("VISION_ERROR", "네트워크 오류", t)
+            }
+        })
+    }
+
+
     fun recognizeTextFromImage(bitmap: Bitmap) {
         val image = InputImage.fromBitmap(bitmap, 0)
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
@@ -515,4 +602,6 @@ class FridgeActivity : AppCompatActivity() {
     private fun getTokenFromPreferences(): String {
         return App.prefs.token ?: ""
     }
+
+
 }

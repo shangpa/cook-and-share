@@ -91,11 +91,15 @@ dependencies {
     //영수증
     implementation ("com.google.mlkit:text-recognition:16.0.0")
 
+    //GCV 영수증
+    implementation("com.google.cloud:google-cloud-vision:3.26.0")
+
     implementation("io.socket:socket.io-client:2.0.1") {
         exclude("org.json", "json")
 
         //이미지
     implementation("com.github.yalantis:ucrop:2.2.8")
+
 
     }
 
