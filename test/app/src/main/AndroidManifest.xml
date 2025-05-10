@@ -667,6 +667,17 @@
             </intent-filter>
         </activity>
 
+        <!-- MyPagePoint -->
+        <activity
+            android:name=".MyPagePoint"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
 <!--        <activity-->
 <!--            android:name=".DrawEditorActivity"-->

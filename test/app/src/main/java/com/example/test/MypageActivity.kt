@@ -147,5 +147,12 @@ class MypageActivity : AppCompatActivity() {
             val intent = Intent(this, MypageWritePostActivity::class.java)
             startActivity(intent)
         }
+
+        // myPoint 클릭했을 때 MypageWritePostActivity 이동
+        val myPoint: TextView = findViewById(R.id.myPoint)
+        myPoint.setOnClickListener {
+            val intent = Intent(this, MyPagePoint::class.java)
+            startActivity(intent)
+        }
     }
 }
