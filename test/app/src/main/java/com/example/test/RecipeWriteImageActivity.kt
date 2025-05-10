@@ -63,7 +63,6 @@
     private lateinit var addFixButton: Button
     private lateinit var replaceMaterialAddFixButton: Button
     private lateinit var handlingMethodAddFixButton: Button
-    private lateinit var contentAdd: Button
     private lateinit var hourEditText: EditText
     private lateinit var minuteEditText: EditText
     private lateinit var startTextView: TextView
@@ -75,15 +74,12 @@
     private val buttonMarginIncrease = 130 // 버튼을 아래로 내릴 거리 (px)
     private var countDownTimer: CountDownTimer? = null
     private var timeInMillis: Long = 0
-    private lateinit var camera: ImageButton
-    private lateinit var detailSettleCamera: ImageButton
     private lateinit var imageContainer: LinearLayout
     private lateinit var representImageContainer: LinearLayout
     private var stepCount = 1 // 1-1부터 시작
     private var currentStep = 1  // 현재 Step 번호 (ex. 1, 2, 3...)
-    var currentSubStep = 1
+    private var currentSubStep = 1
     private var recipeStepCount = 1 // 조리 순서 번호 관리 (1-1, 1-2, ...)
-    private val stepOrderMap = mutableMapOf<Int, Int>()  // 각 STEP의 조리순서 개수 저장
 
     class RecipeWriteImageActivity : AppCompatActivity() {
         //조리순서 이미지 선택된거

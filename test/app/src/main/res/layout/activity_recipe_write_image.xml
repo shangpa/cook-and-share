@@ -577,6 +577,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 탭바 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tapBar"
             android:layout_width="match_parent"
@@ -2506,6 +2507,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 조리순서 생성 바 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cookOrderTapBar"
                 android:layout_width="match_parent"
@@ -3529,6 +3531,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 공개 설정 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/contentCheckTapBar"
             android:layout_width="match_parent"
