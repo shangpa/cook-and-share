@@ -6,7 +6,8 @@ data class VisionRequest(
 
 data class RequestItem(
     val image: Image,
-    val features: List<Feature>
+    val features: List<Feature>,
+    val imageContext: ImageContext
 )
 
 data class Image(
@@ -14,6 +15,6 @@ data class Image(
 )
 
 data class Feature(
-    val type: String = "TEXT_DETECTION",
+    val type: String = "DOCUMENT_TEXT_DETECTION",
     val maxResults: Int = 1
 )
