@@ -33,9 +33,11 @@ import androidx.appcompat.app.AlertDialog
 import com.example.test.App.Companion.context
 import com.example.test.model.recipt.Feature
 import com.example.test.model.recipt.Image
+import com.example.test.model.recipt.ImageContext
 import com.example.test.model.recipt.RequestItem
 import com.example.test.model.recipt.VisionRequest
 import com.example.test.network.GoogleVisionApi
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -118,11 +120,6 @@ class FridgeActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<TextView>(R.id.fridegeCameraText).setOnClickListener {
-            val photoFile = File.createTempFile("ocr_", ".jpg", cacheDir)
-            imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", photoFile)
-            takePictureLauncher.launch(imageUri)
-        }
 
 
         findViewById<LinearLayout>(R.id.fridgeAddBtn).setOnClickListener {
@@ -302,6 +299,32 @@ class FridgeActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
+    private fun handleDetectedText(text: String) {
+        val lines = text.lines()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .filterNot { line ->
+                val ignoreKeywords = listOf("결제", "부가세", "합계", "카드", "현금", "전화", "tel", "매출", "pos", "번호", "wifi")
+                ignoreKeywords.any { keyword -> line.contains(keyword, ignoreCase = true) }
+            }
+
+        if (lines.isEmpty()) {
+            Toast.makeText(this, "인식된 재료가 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("인식된 재료 선택")
+            .setItems(lines.toTypedArray()) { _, which ->
+                val selectedText = lines[which]
+                val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
+                    putExtra("ingredientName", selectedText)
+                }
+                startActivity(intent)
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
 
     private lateinit var imageUri: Uri
 
@@ -358,19 +381,23 @@ class FridgeActivity : AppCompatActivity() {
 
     fun callGoogleVisionAPI(bitmap: Bitmap) {
         val base64Image = bitmapToBase64(bitmap)
-
+        Log.d("OCR_DEBUG", "callGoogleVisionAPI 호출됨")
         val image = Image(content = base64Image)
         val feature = Feature()
-        val requestItem = RequestItem(image, listOf(feature))
+        val context = ImageContext(languageHints = listOf("ko"))
+        val requestItem = RequestItem(image, listOf(feature), context)
         val request = VisionRequest(listOf(requestItem))
-
+        val gson = Gson()
+        Log.d("VisionRequest", gson.toJson(request))
+        Log.d("OCR_DEBUG", "request json 변환 완료")
         val retrofit = Retrofit.Builder()
             .baseUrl("https://vision.googleapis.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service = retrofit.create(GoogleVisionApi::class.java)
-        val call = service.annotateImage("7084aea645e459febffbc05438a642e2680c1460", request) // 👈 또는 JSON 키로 인증
+        val apiKey = getString(R.string.gcp_vision_api_key)
+        val call = service.annotateImage(apiKey, request)
 
         call.enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -382,7 +409,7 @@ class FridgeActivity : AppCompatActivity() {
                         ?.get("text")?.asString ?: "결과 없음"
 
                     Log.d("VISION_RESULT", text)
-                    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+                    handleDetectedText(text) // ✅ 호출됨
                 } else {
                     Log.e("VISION_ERROR", "오류 응답: ${response.errorBody()?.string()}")
                 }
@@ -394,33 +421,6 @@ class FridgeActivity : AppCompatActivity() {
         })
     }
 
-
-    fun recognizeTextFromImage(bitmap: Bitmap) {
-        val image = InputImage.fromBitmap(bitmap, 0)
-        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-
-        recognizer.process(image)
-            .addOnSuccessListener { visionText ->
-                val text = visionText.text
-                Log.d("OCR_RESULT", "인식된 텍스트: $text")
-
-                // 간단한 필터링 예시: "양파", "감자", "소고기" 등 키워드 포함
-                val knownIngredients = listOf("복숭아아이스티", "감자", "소고기", "[포장]복숭아아이스티", "두부", "당근") // 계속 추가 가능
-                val matched = knownIngredients.firstOrNull { text.contains(it) }
-
-                if (matched != null) {
-                    val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
-                        putExtra("ingredientName", matched)
-                    }
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "음식 재료를 인식하지 못했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "OCR 실패: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 
     override fun onResume() {
         super.onResume()
