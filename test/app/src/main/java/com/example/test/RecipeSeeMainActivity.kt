@@ -20,6 +20,7 @@ import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -37,9 +38,17 @@ class RecipeSeeMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_main)
-        val recipeId = intent.getLongExtra("recipeId", -1L)
-        Log.d("RecipeSeeMain", "받은 recipeId: $recipeId")
+        val data: Uri? = intent?.data
+        val recipeId: Long = data?.lastPathSegment?.toLongOrNull()
+            ?: intent.getLongExtra("recipeId", -1L)
 
+        Log.d("RecipeSeeMain", "받은 recipeId: $recipeId")
+        // 유효하지 않은 경우 종료
+        if (recipeId == -1L) {
+            Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
         val viewWithTimer: TextView = findViewById(R.id.viewWithTimer)
         viewWithTimer.setOnClickListener {
             val intent = Intent(this, RecipeSeeActivity::class.java)
