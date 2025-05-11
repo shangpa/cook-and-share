@@ -174,17 +174,27 @@ class RecipeSeeActivity : AppCompatActivity() {
             findViewById(R.id.shareButtonTwo),
         )
 
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain" // 텍스트 공유
-            putExtra(Intent.EXTRA_SUBJECT, "레시피 공유") // 제목 (선택)
-            putExtra(Intent.EXTRA_TEXT, "링크를 공유했어요!\n" + "어떤 링크인지 들어가서 확인해볼까요?!\nhttps://your-recipe-link.com") // 공유할 내용
-        }
-
-        val chooser = Intent.createChooser(shareIntent, "공유할 앱을 선택하세요")
-
         shareButtons.forEach { button ->
             button.setOnClickListener {
-                startActivity(chooser)
+                val recipeId = intent.getLongExtra("recipeId", -1L)
+
+                if (recipeId != -1L) {
+                    val link = "https://shangpa.github.io/open.html?id=$recipeId"
+
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_SUBJECT, "레시피 공유")
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "레시피를 공유했어요!\n👇 아래 링크를 눌러서 바로 확인해보세요!\n$link"
+                        )
+                    }
+
+                    val chooser = Intent.createChooser(shareIntent, "공유할 앱을 선택하세요")
+                    startActivity(chooser)
+                } else {
+                    Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

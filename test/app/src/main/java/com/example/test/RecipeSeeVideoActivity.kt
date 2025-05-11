@@ -178,7 +178,7 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                 val recipeId = intent.getLongExtra("recipeId", -1L)
 
                 if (recipeId != -1L) {
-                    val link = "myapp://recipe/$recipeId" // ← Custom Scheme 딥링크로 연결
+                    val link = "https://shangpa.github.io/open.html?id=$recipeId"
 
                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
