@@ -396,7 +396,8 @@ class FridgeActivity : AppCompatActivity() {
             .build()
 
         val service = retrofit.create(GoogleVisionApi::class.java)
-        val call = service.annotateImage("AIzaSyDCTr2Rafn1x2_LP-eTnTALXXbGU_WFpNQ", request)
+        val apiKey = getString(R.string.gcp_vision_api_key)
+        val call = service.annotateImage(apiKey, request)
 
         call.enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
