@@ -13,8 +13,10 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import com.example.test.model.recipeDetail.RecipeDetailResponse
+//import com.example.test.model.recipt.VisionRequest
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
+import com.google.gson.JsonObject
 import retrofit2.http.Path
 
 interface ApiService {
