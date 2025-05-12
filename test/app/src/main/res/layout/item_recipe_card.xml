@@ -31,18 +31,21 @@
 
             <TextView
                 android:id="@+id/recipeTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="닭곰탕"
                 android:textSize="13sp"
                 android:textColor="#2B2B2B"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:ellipsize="end" />
 
+            <!-- 하트 아이콘 -->
             <ImageView
                 android:id="@+id/heartIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="228dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/image_search_result_list_heart" />
         </LinearLayout>
 

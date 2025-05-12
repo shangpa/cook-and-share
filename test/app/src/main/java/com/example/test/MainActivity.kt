@@ -15,6 +15,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.test.databinding.ActivityMainBinding
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 lateinit var binding: ActivityMainBinding
@@ -171,6 +174,33 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        //좋아요 버튼(안채워진거)
+        setupHeartToggle(
+            listOf(
+                findViewById(R.id.fridgeHeartTwo),
+                findViewById(R.id.saveHeartTwo),
+                findViewById(R.id.saveHeartFive),
+                findViewById(R.id.saveHeartSix)
+            ),
+            initiallyLiked = false
+        )
+
+        //좋아요 버튼(채워진거)
+        setupHeartToggle(
+            listOf(
+                findViewById(R.id.fridgeHeart),
+                findViewById(R.id.saveHeart),
+                findViewById(R.id.saveHeartThree),
+                findViewById(R.id.saveHeartFour),
+                findViewById(R.id.interestHeart),
+                findViewById(R.id.interestHeartTwo),
+                findViewById(R.id.interestHeartThree),
+                findViewById(R.id.interestHeartFour),
+                findViewById(R.id.interestHeartFive)
+            ),
+            initiallyLiked = true
+        )
     }
 
     // 2. 배너 세팅
@@ -263,4 +293,55 @@ class MainActivity : AppCompatActivity() {
 
         sliderHandler.postDelayed(sliderRunnable, 3000)
     }
+
+    //좋아요 버튼
+    private fun setupHeartToggle(buttons: List<ImageView>, initiallyLiked: Boolean) {
+        val TAG_IS_LIKED = R.id.fridgeHeart
+
+        // 버튼 ID → 현재 레이아웃 ID + 다음 레이아웃 ID 매핑
+        val buttonToLayoutMap = mapOf(
+            R.id.interestHeart to Pair(R.id.interestItem1, R.id.interestItem2),
+            R.id.interestHeartTwo to Pair(R.id.interestItem2, R.id.interestItem3),
+            R.id.interestHeartThree to Pair(R.id.interestItem3, R.id.interestItem4),
+            R.id.interestHeartFour to Pair(R.id.interestItem4, R.id.interestItem5),
+            R.id.interestHeartFive to Pair(R.id.interestItem5, null) // 마지막 항목은 다음이 없음
+        )
+
+        buttons.forEach { button ->
+            button.setTag(TAG_IS_LIKED, initiallyLiked)
+
+            button.setOnClickListener {
+                val isLiked = it.getTag(TAG_IS_LIKED) as Boolean
+                val newLiked = !isLiked
+
+                if (newLiked) {
+                    button.setImageResource(R.drawable.ic_heart_fill)
+                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    button.setImageResource(R.drawable.ic_heart_list)
+
+                    // 현재 + 다음 레이아웃 처리
+                    val layoutPair = buttonToLayoutMap[button.id]
+                    layoutPair?.let { (currentId, nextId) ->
+                        // 현재 레이아웃 GONE
+                        findViewById<View>(currentId)?.visibility = View.GONE
+
+                        // 다음 레이아웃 marginTop 제거
+                        nextId?.let { nid ->
+                            val nextLayout = findViewById<View>(nid)
+                            val params = nextLayout.layoutParams as? ViewGroup.MarginLayoutParams
+                            params?.let {
+                                it.topMargin = 0
+                                nextLayout.layoutParams = it
+                            }
+                        }
+                    }
+                }
+
+                it.setTag(TAG_IS_LIKED, newLiked)
+            }
+        }
+    }
+
+
 }

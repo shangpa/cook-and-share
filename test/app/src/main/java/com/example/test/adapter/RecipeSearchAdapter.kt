@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test.R
@@ -49,9 +50,26 @@ class RecipeSearchAdapter(private var recipeList: List<Recipe>,
             .load(imageUrl)
             .into(holder.recipeImage)
         holder.heartIcon.setImageResource(R.drawable.image_search_result_list_heart)
+        var isLiked = false
+
+        // 하트 클릭 리스너 추가
+        holder.heartIcon.setOnClickListener {
+            isLiked = !isLiked
+            if (isLiked) {
+                holder.heartIcon.setImageResource(R.drawable.ic_heart_fill)
+                showToast(holder, "관심 레시피로 저장하였습니다.")
+            } else {
+                holder.heartIcon.setImageResource(R.drawable.image_search_result_list_heart)
+            }
+        }
+
         holder.itemView.setOnClickListener {
             onItemClick(recipe)
         }
+    }
+
+    private fun showToast(holder: RecipeViewHolder, message: String) {
+        Toast.makeText(holder.itemView.context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun getItemCount(): Int = recipeList.size

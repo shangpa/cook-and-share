@@ -709,9 +709,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/fridgeHeart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -816,6 +817,7 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/fridgeHeartTwo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_heart_list"
@@ -1272,9 +1274,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/saveHeart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1379,6 +1382,7 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/saveHeartTwo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_heart_list"
@@ -1478,9 +1482,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/saveHeartThree"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1586,9 +1591,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/saveHeartFour"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -1685,6 +1691,7 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/saveHeartFive"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_heart_list"
@@ -1793,6 +1800,7 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/saveHeartSix"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_heart_list"
@@ -1944,8 +1952,10 @@
 
                 <!-- 콩나물등갈비찜 -->
                 <LinearLayout
+                    android:id="@+id/interestItem1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
                     android:orientation="vertical"
                     android:gravity="center">
 
@@ -1968,9 +1978,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/interestHeart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2065,6 +2076,7 @@
 
                 <!-- 멍게 무침 -->
                 <LinearLayout
+                    android:id="@+id/interestItem2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -2090,9 +2102,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/interestHeartTwo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2187,6 +2200,7 @@
 
                 <!-- 갈치구이와 꽃게된장찌개 -->
                 <LinearLayout
+                    android:id="@+id/interestItem3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -2212,9 +2226,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/interestHeartThree"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2309,6 +2324,7 @@
 
                 <!-- 훈제오리 야채찜 -->
                 <LinearLayout
+                    android:id="@+id/interestItem4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -2334,9 +2350,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/interestHeartFour"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
@@ -2431,6 +2448,7 @@
 
                 <!-- 그릴드 벨 페퍼 샌드위치 -->
                 <LinearLayout
+                    android:id="@+id/interestItem5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -2456,9 +2474,10 @@
 
                         <!-- 찜 버튼 (오른쪽 아래에 위치) -->
                         <ImageView
+                            android:id="@+id/interestHeartFive"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_heart_list"
+                            android:src="@drawable/ic_heart_fill"
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="6dp"
                             android:layout_gravity="end|bottom" />
