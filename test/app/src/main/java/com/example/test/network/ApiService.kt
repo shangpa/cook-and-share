@@ -188,6 +188,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
+    //좋아요한 레시피 조회
+    @GET("/api/recipes/likes")
+    fun getLikedRecipes(
+        @Header("Authorization") token: String
+    ): Call<List<RecipeDetailResponse>>
+
     // 냉장고 재료 기반 레시피 추천
     @POST("/api/fridge/recommend")
     suspend fun recommendRecipes(
