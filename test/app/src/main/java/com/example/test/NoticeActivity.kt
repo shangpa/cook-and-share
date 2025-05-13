@@ -29,7 +29,6 @@ class NoticeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notice)
 
-        // View 초기화
         all = findViewById(R.id.all)
         recipe = findViewById(R.id.recipe)
         fridege = findViewById(R.id.fridege)
@@ -41,24 +40,33 @@ class NoticeActivity : AppCompatActivity() {
         deleteSelectedButton = findViewById(R.id.deleteSelectedBtn)
         noticeBack = findViewById(R.id.noticeBack)
 
-        val allButtons = listOf(all, recipe, fridege, material, community)
+        all.setOnClickListener {
+            updateSelection(all)
+            filterNotificationsByCategory("all")
+        }
 
-        // 카테고리 선택 UI 업데이트
-        fun updateSelection(selected: LinearLayout) {
-            for (button in allButtons) {
-                val textView = button.getChildAt(0) as TextView
-                if (button == selected) {
-                    button.setBackgroundResource(R.drawable.rouned_ractangle_black)
-                    textView.setTextColor(resources.getColor(R.color.white, null))
-                } else {
-                    button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    textView.setTextColor(resources.getColor(R.color.black, null))
-                }
-            }
+        recipe.setOnClickListener {
+            updateSelection(recipe)
+            filterNotificationsByCategory("recipe")
+        }
+
+        fridege.setOnClickListener {
+            updateSelection(fridege)
+            filterNotificationsByCategory("fridege")
+        }
+
+        community.setOnClickListener {
+            updateSelection(community)
+            filterNotificationsByCategory("community")
+        }
+
+        material.setOnClickListener {
+            updateSelection(material)
+            filterNotificationsByCategory("material")
         }
 
         del.setOnClickListener {
-            Log.d("checkIconTest", "👉 isDeleteMode 상태: $isDeleteMode")
+            Log.d("checkIconTest", "\uD83D\uDC49 isDeleteMode 상태: $isDeleteMode")
             toggleDeleteMode()
         }
 
@@ -84,13 +92,22 @@ class NoticeActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        all.setOnClickListener { updateSelection(all) }
-        recipe.setOnClickListener { updateSelection(recipe) }
-        fridege.setOnClickListener { updateSelection(fridege) }
-        material.setOnClickListener { updateSelection(material) }
-        community.setOnClickListener { updateSelection(community) }
-
         updateSelection(all)
+        filterNotificationsByCategory("all")
+    }
+
+    private fun updateSelection(selected: LinearLayout) {
+        val allButtons = listOf(all, recipe, fridege, material, community)
+        for (button in allButtons) {
+            val textView = button.getChildAt(0) as TextView
+            if (button == selected) {
+                button.setBackgroundResource(R.drawable.rouned_ractangle_black)
+                textView.setTextColor(resources.getColor(R.color.white, null))
+            } else {
+                button.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                textView.setTextColor(resources.getColor(R.color.black, null))
+            }
+        }
     }
 
     private fun toggleDeleteMode() {
@@ -101,9 +118,9 @@ class NoticeActivity : AppCompatActivity() {
 
         deleteButtonsContainer.visibility = if (isDeleteMode) View.VISIBLE else View.GONE
 
-        val root = findViewById<View>(R.id.scrollView) // 스크롤뷰 기준으로 탐색
+        val root = findViewById<View>(R.id.scrollView)
         val allCheckIcons = findViewsWithTag(root, "checkIcon")
-        Log.d("checkIconTest", "🟢 checkIcon 개수: ${allCheckIcons.size}")
+        Log.d("checkIconTest", "\uD83D\uDFE2 checkIcon 개수: ${allCheckIcons.size}")
 
         for (icon in allCheckIcons) {
             if (icon is ImageView) {
@@ -126,7 +143,6 @@ class NoticeActivity : AppCompatActivity() {
         }
     }
 
-    // 태그로 뷰 찾기 (재귀 탐색)
     private fun findViewsWithTag(view: View, tag: String): List<View> {
         val result = mutableListOf<View>()
         if (tag == view.tag) result.add(view)
@@ -136,5 +152,34 @@ class NoticeActivity : AppCompatActivity() {
             }
         }
         return result
+    }
+
+    private fun findFirstImageView(view: View): ImageView? {
+        if (view is ImageView) return view
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val child = findFirstImageView(view.getChildAt(i))
+                if (child != null) return child
+            }
+        }
+        return null
+    }
+
+    private fun filterNotificationsByCategory(category: String) {
+        val root = findViewById<View>(R.id.scrollView)
+        val allItems = findViewsWithTag(root, "rounded")
+
+        for (item in allItems) {
+            val imageView = findFirstImageView(item)
+            val drawableId = imageView?.tag as? String
+            item.visibility = when (category) {
+                "all" -> View.VISIBLE
+                "recipe" -> if (drawableId == "ic_book") View.VISIBLE else View.GONE
+                "fridege" -> if (drawableId == "ic_refrigerator") View.VISIBLE else View.GONE
+                "community" -> if (drawableId == "ic_chatt") View.VISIBLE else View.GONE
+                "material" -> if (drawableId == "ic_bell") View.VISIBLE else View.GONE
+                else -> View.VISIBLE
+            }
+        }
     }
 }
