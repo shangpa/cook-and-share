@@ -2,6 +2,7 @@ package com.example.test
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,20 +17,33 @@ class NoticeActivity : AppCompatActivity() {
     private lateinit var fridege: LinearLayout
     private lateinit var material: LinearLayout
     private lateinit var community: LinearLayout
+    private lateinit var del: LinearLayout
+    private lateinit var deleteButtonsContainer: LinearLayout
+    private lateinit var deleteAllButton: TextView
+    private lateinit var deleteSelectedButton: TextView
+    private lateinit var noticeBack: ImageView
+
+    private var isDeleteMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notice)
 
+        // View 초기화
         all = findViewById(R.id.all)
         recipe = findViewById(R.id.recipe)
         fridege = findViewById(R.id.fridege)
         material = findViewById(R.id.material)
         community = findViewById(R.id.community)
+        del = findViewById(R.id.del)
+        deleteButtonsContainer = findViewById(R.id.deleteButtonsContainer)
+        deleteAllButton = findViewById(R.id.deleteAllBtn)
+        deleteSelectedButton = findViewById(R.id.deleteSelectedBtn)
+        noticeBack = findViewById(R.id.noticeBack)
 
         val allButtons = listOf(all, recipe, fridege, material, community)
-        val iconSize = (24 * resources.displayMetrics.density).toInt()
 
+        // 카테고리 선택 UI 업데이트
         fun updateSelection(selected: LinearLayout) {
             for (button in allButtons) {
                 val textView = button.getChildAt(0) as TextView
@@ -43,36 +57,30 @@ class NoticeActivity : AppCompatActivity() {
             }
         }
 
-        fun updateDelIcons() {
-            val root = findViewById<View>(android.R.id.content)
+        del.setOnClickListener {
+            Log.d("checkIconTest", "👉 isDeleteMode 상태: $isDeleteMode")
+            toggleDeleteMode()
+        }
 
-            fun findRoundedFrames(view: View): List<ViewGroup> {
-                val result = mutableListOf<ViewGroup>()
-                if (view is ViewGroup && view.tag == "rounded") {
-                    result.add(view)
-                }
-                if (view is ViewGroup) {
-                    for (i in 0 until view.childCount) {
-                        result.addAll(findRoundedFrames(view.getChildAt(i)))
-                    }
-                }
-                return result
-            }
-
-            val roundedFrames = findRoundedFrames(root)
-
-            for (frame in roundedFrames) {
-                val icon = frame.findViewById<ImageView>(R.id.checkIcon)
-                icon?.visibility = View.VISIBLE
+        deleteAllButton.setOnClickListener {
+            val roundedViews = findViewsWithTag(findViewById(R.id.scrollView), "rounded")
+            for (view in roundedViews) {
+                (view.parent as? ViewGroup)?.removeView(view)
             }
         }
 
-
-        findViewById<LinearLayout>(R.id.del).setOnClickListener {
-            updateDelIcons()
+        deleteSelectedButton.setOnClickListener {
+            val roundedViews = findViewsWithTag(findViewById(R.id.scrollView), "rounded")
+            for (view in roundedViews) {
+                val icon = findViewsWithTag(view, "checkIcon").firstOrNull() as? ImageView
+                val state = icon?.getTag(R.id.check_state_tag)
+                if (state == "checked") {
+                    (view.parent as? ViewGroup)?.removeView(view)
+                }
+            }
         }
 
-        findViewById<ImageView>(R.id.noticeBack).setOnClickListener {
+        noticeBack.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
@@ -83,5 +91,50 @@ class NoticeActivity : AppCompatActivity() {
         community.setOnClickListener { updateSelection(community) }
 
         updateSelection(all)
+    }
+
+    private fun toggleDeleteMode() {
+        isDeleteMode = !isDeleteMode
+
+        val delText = del.getChildAt(0) as? TextView
+        delText?.text = if (isDeleteMode) "취소" else "삭제"
+
+        deleteButtonsContainer.visibility = if (isDeleteMode) View.VISIBLE else View.GONE
+
+        val root = findViewById<View>(R.id.scrollView) // 스크롤뷰 기준으로 탐색
+        val allCheckIcons = findViewsWithTag(root, "checkIcon")
+        Log.d("checkIconTest", "🟢 checkIcon 개수: ${allCheckIcons.size}")
+
+        for (icon in allCheckIcons) {
+            if (icon is ImageView) {
+                if (isDeleteMode) {
+                    icon.visibility = View.VISIBLE
+                    icon.setImageResource(R.drawable.ic_no_check)
+                    icon.setTag(R.id.check_state_tag, "unchecked")
+                    icon.setOnClickListener {
+                        val isChecked = icon.getTag(R.id.check_state_tag) == "checked"
+                        icon.setImageResource(if (isChecked) R.drawable.ic_no_check else R.drawable.ic_check)
+                        icon.setTag(R.id.check_state_tag, if (isChecked) "unchecked" else "checked")
+                    }
+                } else {
+                    icon.visibility = View.GONE
+                    icon.setImageResource(R.drawable.ic_no_check)
+                    icon.setTag(R.id.check_state_tag, "unchecked")
+                    icon.setOnClickListener(null)
+                }
+            }
+        }
+    }
+
+    // 태그로 뷰 찾기 (재귀 탐색)
+    private fun findViewsWithTag(view: View, tag: String): List<View> {
+        val result = mutableListOf<View>()
+        if (tag == view.tag) result.add(view)
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                result.addAll(findViewsWithTag(view.getChildAt(i), tag))
+            }
+        }
+        return result
     }
 }
