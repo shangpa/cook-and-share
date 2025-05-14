@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+
+        <!-- 상단 바 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lelft_arrow"
+                android:layout_gravity="start|center_vertical"/>
+
+            <TextView
+                android:id="@+id/freePost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="자유 게시판"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:paddingVertical="8dp"/>
+
+            <ImageView
+                android:id="@+id/dropDown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_down"
+                android:layout_marginTop="11dp"
+                android:layout_marginStart="232dp"/>
+
+        </FrameLayout>
+
+        <!-- 인기 게시판 아래 구분바 -->
+        <View
+            android:id="@+id/divideRectangleBarOne"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bar_rectangle"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/rootLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- 추천순 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="25dp">
+
+                    <TextView
+                        android:id="@+id/recommend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="추천순"
+                        android:textSize="12sp"
+                        android:textColor="#000000"/>
+
+                    <ImageView
+                        android:id="@+id/dropDownTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="40dp"/>
+
+                </FrameLayout>
+
+                <!-- 최근 저장한 재료 리스트 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <!-- 최근 저장한 재료를 위한 GridLayout -->
+                    <LinearLayout
+                        android:id="@+id/categoryGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="150dp">
+
+                        <!-- 게시물1 -->
+                        <LinearLayout
+                            android:id="@+id/one"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <!-- 아이디, 게시 시간, 저장 버튼 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 아이디 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="소금시러설탕시러"
+                                        android:textSize="13sp"
+                                        android:textColor="#000000"
+                                        android:layout_marginStart="0dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 게시 시간 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginStart="3dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="10일전"
+                                        android:textSize="11sp"
+                                        android:textColor="#A1A9AD"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_gravity="center_vertical"/>
+
+                                </LinearLayout>
+
+                                <!-- 저장 버튼 -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="10dp">
+
+                                        <ImageView
+                                            android:id="@+id/save"
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_store"
+                                            android:layout_gravity="center_vertical"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <!-- 내용 -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="동해바다가 보고싶어서 펜션을 빌렸어요.\n바베큐와 레시피에서 본 삼겹살 배추 술찜 만들어 먹었는데\n술 안주로 딱 좋네요ㅎㅎ\n추천합니다!"
+                                android:textSize="12sp"
+                                android:textColor="#000000"
+                                android:layout_marginStart="0dp"
+                                android:layout_gravity="center_vertical"/>
+
+                            <!-- 이미지 한줄에  -->
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scrollbars="none"
+                                android:layout_marginTop="9dp"
+                                android:clipToPadding="false">
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:layout_width="150dp"
+                                        android:layout_height="170dp"
+                                        android:src="@drawable/image_post_list_one"
+                                        android:layout_marginEnd="10dp" />
+
+                                    <ImageView
+                                        android:layout_width="150dp"
+                                        android:layout_height="170dp"
+                                        android:src="@drawable/image_post_list_two"
+                                        android:layout_marginEnd="10dp" />
+
+                                    <ImageView
+                                        android:layout_width="150dp"
+                                        android:layout_height="170dp"
+                                        android:src="@drawable/image_post_list_three"
+                                        android:layout_marginEnd="16dp" />
+                                </LinearLayout>
+                            </HorizontalScrollView>
+
+
+
+                            <!-- 좋아요, 댓글 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 좋아요 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="9dp">
+
+                                    <ImageView
+                                        android:id="@+id/good"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_good"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="123"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 채팅 이미지와 개수 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="7dp"
+                                    android:layout_marginStart="19dp">
+
+                                    <ImageView
+                                        android:id="@+id/chat"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chatt"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="20"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/bar_rectangle"
+                            android:layout_marginTop="17dp"
+                            android:layout_gravity="center_vertical"/>
+
+                        <!-- 게시물2 -->
+                        <LinearLayout
+                            android:id="@+id/two"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <!-- 아이디 게시 시간 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 아이디 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="추리게임중독자"
+                                        android:textSize="13sp"
+                                        android:textColor="#000000"
+                                        android:layout_marginStart="0dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 게시 시간 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginStart="3dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="1일전"
+                                        android:textSize="11sp"
+                                        android:textColor="#A1A9AD"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_gravity="center_vertical"/>
+
+                                </LinearLayout>
+
+                                <!-- 저장 버튼 -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="10dp">
+
+                                        <ImageView
+                                            android:id="@+id/saveTwo"
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_store"
+                                            android:layout_gravity="center_vertical"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!-- 내용 -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="카레가루를 조금 추가했더니 맛있어요!"
+                                android:textSize="12sp"
+                                android:textColor="#000000"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_gravity="center_vertical"/>
+
+                            <!-- 이미지, 글쓰기 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 이미지 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="9dp">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/image_post_list_four"
+                                        android:layout_gravity="start"
+                                        android:layout_marginTop="10dp"/>
+                                </LinearLayout>
+
+                                <!-- 글쓰기 버튼 -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="67dp">
+
+                                        <ImageView
+                                            android:id="@+id/postWrite"
+                                            android:layout_width="56dp"
+                                            android:layout_height="56dp"
+                                            android:src="@drawable/ic_write"
+                                            android:layout_gravity="center_vertical"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!-- 좋아요, 댓글 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 좋아요 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start">
+
+                                    <ImageView
+                                        android:id="@+id/goodTwo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_good"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="534"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 채팅 이미지와 개수 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginStart="19dp">
+
+                                    <ImageView
+                                        android:id="@+id/chatTwo"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chatt"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="124"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/bar_rectangle"
+                            android:layout_marginTop="17dp"
+                            android:layout_gravity="center_vertical"/>
+
+                        <!-- 게시물3 -->
+                        <LinearLayout
+                            android:id="@+id/three"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <!-- 아이디 게시 시간 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 아이디 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="카레카렝"
+                                        android:textSize="13sp"
+                                        android:textColor="#000000"
+                                        android:layout_marginStart="0dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 게시 시간 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginStart="3dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="1일전"
+                                        android:textSize="11sp"
+                                        android:textColor="#A1A9AD"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_gravity="center_vertical"/>
+
+                                </LinearLayout>
+
+                                <!-- 저장 버튼 -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="10dp">
+
+                                        <ImageView
+                                            android:id="@+id/saveThree"
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_store"
+                                            android:layout_gravity="center_vertical"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!-- 내용 -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="여러분이 가장 좋아하는 카레가 궁금해요!\n다들 댓글로 알려주실래요?"
+                                android:textSize="12sp"
+                                android:textColor="#000000"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_gravity="center_vertical"/>
+
+                            <!-- 좋아요, 댓글 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 좋아요 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="9dp">
+
+                                    <ImageView
+                                        android:id="@+id/goodThree"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_good"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="123"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 채팅 이미지와 개수 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="7dp"
+                                    android:layout_marginStart="19dp">
+
+                                    <ImageView
+                                        android:id="@+id/chatThree"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chatt"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="75"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/bar_rectangle"
+                            android:layout_marginTop="17dp"
+                            android:layout_gravity="center_vertical"/>
+
+                        <!-- 게시물4 -->
+                        <LinearLayout
+                            android:id="@+id/four"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <!-- 아이디 게시 시간 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 아이디 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="요리초보짱짱"
+                                        android:textSize="13sp"
+                                        android:textColor="#000000"
+                                        android:layout_marginStart="0dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 게시 시간 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginStart="3dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="3일전"
+                                        android:textSize="11sp"
+                                        android:textColor="#A1A9AD"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_gravity="center_vertical"/>
+
+                                </LinearLayout>
+
+                                <!-- 저장 버튼 -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="10dp">
+
+                                        <ImageView
+                                            android:id="@+id/saveFour"
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_store"
+                                            android:layout_gravity="center_vertical"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!-- 내용 -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="감자 좋아하는데 사진보다 더 크게 썰어도 되나요?"
+                                android:textSize="12sp"
+                                android:textColor="#000000"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_gravity="center_vertical"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/image_post_list_five"
+                                android:layout_gravity="start"
+                                android:layout_marginTop="10dp"/>
+
+                            <!-- 좋아요, 댓글 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 좋아요 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="9dp">
+
+                                    <ImageView
+                                        android:id="@+id/goodFour"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_good"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="342"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 채팅 이미지와 개수 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="7dp"
+                                    android:layout_marginStart="19dp">
+
+                                    <ImageView
+                                        android:id="@+id/chatFour"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chatt"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="5"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/bar_rectangle"
+                            android:layout_marginTop="17dp"
+                            android:layout_gravity="center_vertical"/>
+
+                        <!-- 게시물5 -->
+                        <LinearLayout
+                            android:id="@+id/five"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <!-- 아이디 게시 시간 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 아이디 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="도깨비123"
+                                        android:textSize="13sp"
+                                        android:textColor="#000000"
+                                        android:layout_marginStart="0dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 게시 시간 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginStart="3dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="3일전"
+                                        android:textSize="11sp"
+                                        android:textColor="#A1A9AD"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_gravity="center_vertical"/>
+
+                                </LinearLayout>
+
+                                <!-- 저장 버튼 -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginTop="10dp">
+
+                                        <ImageView
+                                            android:id="@+id/saveFive"
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_store"
+                                            android:layout_gravity="center_vertical"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!-- 내용 -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="집에 착즙기 없는데 믹서기 써도 되나요?"
+                                android:textSize="12sp"
+                                android:textColor="#000000"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_gravity="center_vertical"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/image_post_list_six"
+                                android:layout_gravity="start"
+                                android:layout_marginTop="10dp"/>
+
+                            <!-- 좋아요, 댓글 한줄에 -->
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp">
+
+                                <!-- 좋아요 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="9dp">
+
+                                    <ImageView
+                                        android:id="@+id/goodFive"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_good"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="86"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+
+                                <!-- 채팅 이미지와 개수 -->
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:layout_marginTop="7dp"
+                                    android:layout_marginStart="19dp">
+
+                                    <ImageView
+                                        android:id="@+id/chatFive"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chatt"
+                                        android:layout_gravity="center_vertical"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="8"
+                                        android:textSize="12sp"
+                                        android:textColor="#2B2B2B"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_gravity="center_vertical"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/bar_rectangle"
+                            android:layout_marginTop="17dp"
+                            android:layout_gravity="center_vertical"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout></layout>

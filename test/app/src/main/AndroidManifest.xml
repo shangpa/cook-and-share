@@ -469,61 +469,6 @@
         <activity
             android:name=".MaterialChatDetailActivity"/>
 
-        <!-- CommunityDetail -->
-        <activity
-            android:name=".CommunityDetail"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- CommunityMain -->
-        <activity
-            android:name=".CommunityMain"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- CookPost -->
-        <activity
-            android:name=".CookPost"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- FreePost -->
-        <activity
-            android:name=".FreePost"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- PopularPost -->
-        <activity
-            android:name=".PopularPost"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <!-- RecipeWriteMain -->
         <activity
             android:name=".RecipeWriteMain"
@@ -657,9 +602,9 @@
             </intent-filter>
         </activity>
 
-        <!-- WritePost -->
+        <!-- MyPagePoint -->
         <activity
-            android:name=".WritePost"
+            android:name=".MyPagePoint"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -668,9 +613,64 @@
             </intent-filter>
         </activity>
 
-        <!-- MyPagePoint -->
+        <!-- CommunityMainActivity -->
         <activity
-            android:name=".MyPagePoint"
+            android:name=".CommunityMainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- CommunityPopularActivity -->
+        <activity
+            android:name=".CommunityPopularActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- CommunityCookActivity -->
+        <activity
+            android:name=".CommunityCookActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- CommunityFreeActivity -->
+        <activity
+            android:name=".CommunityFreeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- CommunityWritePostActivity -->
+        <activity
+            android:name=".CommunityWritePostActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- CommunityDetailActivity -->
+        <activity
+            android:name=".CommunityDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
