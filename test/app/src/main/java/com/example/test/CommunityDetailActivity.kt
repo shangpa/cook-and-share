@@ -2,6 +2,7 @@
 package com.example.test
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -14,12 +15,29 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
+import com.bumptech.glide.Glide
+import com.example.test.model.board.CommentListResponse
+import com.example.test.model.board.CommentRequest
+import com.example.test.model.board.CommentResponse
+import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.network.RetrofitInstance
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CommunityDetailActivity : AppCompatActivity() {
+    private val postId by lazy { intent.getLongExtra("postId", -1) }
+    private val token by lazy { "Bearer ${App.prefs.token}" }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_detail)
 
+        //조회
+        loadPostDetail()
+        loadComments()
+        
         val inflater = LayoutInflater.from(this)
         val add = findViewById<ImageButton>(R.id.add)
         val writeReview = findViewById<EditText>(R.id.writeReview)
@@ -39,40 +57,41 @@ class CommunityDetailActivity : AppCompatActivity() {
             popup.show()
         }
 
-        // 기존 댓글(고정된 댓글)의 add 버튼 처리
-        val commentBlocks = mapOf(
-            R.id.addTwo to R.id.commentBlock,
-            R.id.addThree to R.id.commentBlockTwo,
-            R.id.addFour to R.id.commentBlockThree
-        )
 
-        commentBlocks.forEach { (buttonId, blockId) ->
-            val addButton = findViewById<ImageButton>(buttonId)
-            val commentBlock = findViewById<LinearLayout>(blockId)
-            addButton.setOnClickListener {
-                val popup = PopupMenu(this, addButton)
-                popup.menu.add("신고하기")
-                popup.setOnMenuItemClickListener { item ->
-                    if (item.title == "신고하기") {
-                        Toast.makeText(this, "신고되었습니다.", Toast.LENGTH_SHORT).show()
-                        commentBlock.visibility = View.GONE
+
+
+        val goodButtons = findViewById<ImageView>(R.id.good)
+        val likeCountView = findViewById<TextView>(R.id.goodNumber)
+
+        goodButtons.setTag(R.id.good, false)
+        goodButtons.setOnClickListener {
+
+            val isLiked = it.getTag(R.id.good) as Boolean
+            if (isLiked) {
+                Toast.makeText(this, "이미 추천한 게시글입니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 서버에 좋아요 요청
+            RetrofitInstance.communityApi.likePost(token, postId)
+                .enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            goodButtons.setImageResource(R.drawable.ic_good_fill)
+                            loadPostDetail()
+                            it.setTag(R.id.good, true)
+                            Toast.makeText(this@CommunityDetailActivity, "해당 게시글을 추천했습니다.", Toast.LENGTH_SHORT).show()
+                        } else if (response.code() == 400) {
+                            Toast.makeText(this@CommunityDetailActivity, "이미 추천한 게시글입니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@CommunityDetailActivity, "서버 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    true
-                }
-                popup.show()
-            }
-        }
 
-        // ❤️ 좋아요 버튼 처리
-        val goodButtons = listOf<ImageView>(findViewById(R.id.good))
-        goodButtons.forEach { button ->
-            button.setTag(R.id.good, false)
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.good) as Boolean
-                button.setImageResource(if (isLiked) R.drawable.ic_good else R.drawable.ic_good_fill)
-                if (!isLiked) Toast.makeText(this, "해당 레시피를 추천하였습니다.", Toast.LENGTH_SHORT).show()
-                it.setTag(R.id.good, !isLiked)
-            }
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(this@CommunityDetailActivity, "서버 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
 
         // 📝 댓글 작성 후 추가
@@ -82,46 +101,103 @@ class CommunityDetailActivity : AppCompatActivity() {
                 Toast.makeText(this, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            val newComment = inflater.inflate(R.layout.item_comment, null)
-
-            val nameText = newComment.findViewById<TextView>(R.id.nameFour)
-            val timeText = newComment.findViewById<TextView>(R.id.timeFour)
-            val contentText = newComment.findViewById<TextView>(R.id.contentFour)
-            val addButton = newComment.findViewById<ImageButton>(R.id.addFour)
-
-            nameText.text = "나"
-            timeText.text = "방금 전"
-            contentText.text = inputText
-
-            // 드롭다운 수정/삭제 기능
-            addButton.setOnClickListener {
-                val popup = PopupMenu(this, addButton)
-                popup.menu.add(0, 0, 0, "수정")
-                popup.menu.add(0, 1, 1, "삭제")
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        0 -> {
-                            writeReview.setText(contentText.text.toString())
-                            commentContainer.removeView(newComment)
-                            true
-                        }
-                        1 -> {
-                            commentContainer.removeView(newComment)
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popup.show()
-            }
-
-            // 댓글 추가 + 스크롤 + 초기화
-            commentContainer.addView(newComment)
-            writeReview.setText("")
-            commentScroll.post {
-                commentScroll.fullScroll(View.FOCUS_DOWN)
-            }
+            postComment(inputText)
         }
     }
+    private fun loadPostDetail() {
+        RetrofitInstance.communityApi.getPostDetail(token, postId)
+            .enqueue(object : Callback<CommunityDetailResponse> {
+                override fun onResponse(
+                    call: Call<CommunityDetailResponse>,
+                    response: Response<CommunityDetailResponse>
+                ) {
+                    Log.d("CommunityDetail", "✅ Response code: ${response.code()}")
+                    if (response.isSuccessful) {
+                        val post = response.body()!!
+                        findViewById<TextView>(R.id.name).text = post.writer
+                        findViewById<TextView>(R.id.content).text = post.content
+                        findViewById<TextView>(R.id.goodNumber).text = post.likeCount.toString()
+                        println("Like count  :"+post.likeCount.toString())
+                        loadImages(post.imageUrls)
+
+                        findViewById<EditText>(R.id.writeReview).hint = "${post.writer}님에게 답글 남기기"
+                        val goodButton = findViewById<ImageView>(R.id.good)
+                        if (post.liked) {
+                            goodButton.setImageResource(R.drawable.ic_good_fill)
+                            goodButton.setTag(R.id.good, true)
+                        } else {
+                            goodButton.setImageResource(R.drawable.ic_good)
+                            goodButton.setTag(R.id.good, false)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<CommunityDetailResponse>, t: Throwable) {}
+            })
+    }
+    private fun loadImages(imageUrls: List<String>) {
+        val container = findViewById<LinearLayout>(R.id.imageContainer)
+        container.removeAllViews()
+        val inflater = LayoutInflater.from(this)
+
+        for (url in imageUrls) {
+            val imageView = ImageView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(217.dp, 246.dp).apply {
+                    rightMargin = 13.dp
+                }
+                scaleType = ImageView.ScaleType.CENTER_CROP
+            }
+            Glide.with(this).load(RetrofitInstance.BASE_URL + url).into(imageView)
+            container.addView(imageView)
+        }
+    }
+
+    private fun loadComments() {
+        val commentContainer = findViewById<LinearLayout>(R.id.commentAddContainer)
+        val commentCountView = findViewById<TextView>(R.id.chatNumber)
+
+        RetrofitInstance.communityApi.getCommentsWithCount(token, postId)
+            .enqueue(object : Callback<CommentListResponse> {
+                override fun onResponse(
+                    call: Call<CommentListResponse>,
+                    response: Response<CommentListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body() ?: return
+                        val inflater = LayoutInflater.from(this@CommunityDetailActivity)
+                        commentContainer.removeAllViews()
+
+                        // 총 댓글 수 표시
+                        commentCountView.text = body.count.toString()
+
+                        // 댓글 렌더링
+                        body.comments.forEach { comment ->
+                            val view = inflater.inflate(R.layout.item_comment, commentContainer, false)
+                            view.findViewById<TextView>(R.id.nameFour).text = comment.user
+                            view.findViewById<TextView>(R.id.contentFour).text = comment.content
+                            view.findViewById<TextView>(R.id.timeFour).text = comment.createdAt.take(10).replace("-", ".")
+                            commentContainer.addView(view)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<CommentListResponse>, t: Throwable) {}
+            })
+    }
+    private fun postComment(content: String) {
+        RetrofitInstance.communityApi.postComment(token, postId, CommentRequest(content))
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        findViewById<EditText>(R.id.writeReview).setText("")
+                        loadComments()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {}
+            })
+    }
+
+    // 확장 함수
+    val Int.dp: Int get() = (this * resources.displayMetrics.density).toInt()
 }

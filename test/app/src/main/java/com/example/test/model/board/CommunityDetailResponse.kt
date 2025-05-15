@@ -7,5 +7,6 @@ data class CommunityDetailResponse(
     val imageUrls: List<String>,
     val boardType: String,
     val createdAt: String,
-    val likeCount: Int
+    val likeCount: Int,
+    val liked: Boolean = false
 )
