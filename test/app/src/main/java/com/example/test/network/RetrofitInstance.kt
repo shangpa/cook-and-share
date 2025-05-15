@@ -7,10 +7,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    const val BASE_URL = "http://34.47.85.54:8080"
+    const val BASE_URL = "http://192.168.219.108:8080"
+    //서버는 34.47.85.54
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
+    lateinit var communityApi: CommunityApi
 
     // 초기화 메서드에서 context 전달받아 처리
     fun init(context: Context) {
@@ -30,5 +32,6 @@ object RetrofitInstance {
             .build()
 
         apiService = retrofit.create(ApiService::class.java)
+        communityApi = retrofit.create(CommunityApi::class.java)
     }
 }
