@@ -4,13 +4,22 @@ package com.example.test
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
+import com.bumptech.glide.Glide
+import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.model.board.CommunityPostResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+val token = App.prefs.token ?: ""
 class CommunityMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +105,9 @@ class CommunityMainActivity : AppCompatActivity() {
             Triple(cookPost, cookGroup, "cook")
         )
 
+        //인기 게시글 TOP 10
+        loadPopularPosts()
+
         fun showGroup(selected: GridLayout) {
             for ((tab, group, _) in tabList) {
                 if (group == selected) {
@@ -117,5 +129,55 @@ class CommunityMainActivity : AppCompatActivity() {
         // 초기 탭
         showGroup(popularGroup)
     }
+    private fun loadPopularPosts() {
+        val categoryGroup = findViewById<GridLayout>(R.id.categoryGroup)
+        categoryGroup.removeAllViews()
 
+        RetrofitInstance.communityApi.getPopularPosts("Bearer $token")
+            .enqueue(object : Callback<List<CommunityDetailResponse>> {
+                override fun onResponse(
+                    call: Call<List<CommunityDetailResponse>>,
+                    response: Response<List<CommunityDetailResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val posts = response.body() ?: return
+                        val inflater = LayoutInflater.from(this@CommunityMainActivity)
+
+                        for (post in posts) {
+                            val postView = inflater.inflate(R.layout.item_community_popular_post, categoryGroup, false)
+
+                            val imageView = postView.findViewById<ImageView>(R.id.postImage)
+                            val titleText = postView.findViewById<TextView>(R.id.postTitle)
+                            val authorText = postView.findViewById<TextView>(R.id.postAuthor)
+                            val likeCount = postView.findViewById<TextView>(R.id.postLike)
+
+                            val imageUrl = post.imageUrls.firstOrNull()?.let {
+                                RetrofitInstance.BASE_URL + it
+                            }
+
+                            Glide.with(this@CommunityMainActivity)
+                                .load(imageUrl)
+                                .placeholder(R.drawable.img_kitchen1)
+                                .into(imageView)
+
+                            titleText.text = post.content.take(20) + "..."
+                            authorText.text = post.writer
+                            likeCount.text = post.likeCount.toString()
+
+                            postView.setOnClickListener {
+                                val intent = Intent(this@CommunityMainActivity, CommunityDetailActivity::class.java)
+                                intent.putExtra("postId", post.id)
+                                startActivity(intent)
+                            }
+
+                            categoryGroup.addView(postView)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<CommunityDetailResponse>>, t: Throwable) {
+                    Toast.makeText(this@CommunityMainActivity, "인기 게시물 로딩 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
+}

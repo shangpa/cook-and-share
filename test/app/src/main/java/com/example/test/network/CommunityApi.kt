@@ -1,5 +1,6 @@
 package com.example.test.network
 
+import com.example.test.model.board.CommunityDetailResponse
 import com.example.test.model.board.CommunityPostRequest
 import com.example.test.model.board.CommunityPostResponse
 import retrofit2.Call
@@ -13,4 +14,10 @@ interface CommunityApi {
         @Header("Authorization") token: String,
         @Body request: CommunityPostRequest
     ): Call<CommunityPostResponse>
+
+    //인기 게시글 TOP 10
+    @GET("/api/boards/popular")
+    fun getPopularPosts(
+        @Header("Authorization") token: String
+    ): Call<List<CommunityDetailResponse>>
 }

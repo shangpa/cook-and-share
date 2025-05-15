@@ -76,7 +76,8 @@ class CommunityWritePostActivity : AppCompatActivity() {
             val gson = Gson()
             val request = CommunityPostRequest(
                 content = content,
-                imageUrls = imageUrlList
+                imageUrls = imageUrlList,
+                boardType = "FREE" // 일단 free로 게시글 작성
             )
 
             val token = App.prefs.token ?: ""
