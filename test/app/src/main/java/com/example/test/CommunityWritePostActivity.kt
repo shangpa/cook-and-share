@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +52,8 @@ class CommunityWritePostActivity : AppCompatActivity() {
         val postButton = findViewById<Button>(R.id.postButton)
         val useQuestion = findViewById<ConstraintLayout>(R.id.useQuestion)
         val cancel = findViewById<Button>(R.id.cancel)
+        val dropDown = findViewById<ImageView>(R.id.postDropDown)
+        val postCategory = findViewById<TextView>(R.id.postCategory)
 
         register.setOnClickListener {
             startActivity(Intent(this, CommunityDetailActivity::class.java))
@@ -60,6 +63,22 @@ class CommunityWritePostActivity : AppCompatActivity() {
             isPickingRepresentImage = true
             pickImageLauncherForDetailSettle.launch("image/*")
         }
+
+        //게시판 카테고리 드롭다운 버튼 클릭
+        dropDown.setOnClickListener {
+            val popup = PopupMenu(this, dropDown)
+            val items = listOf("요리 게시판", "자유 게시판")
+
+            items.forEach { popup.menu.add(it) }
+
+            popup.setOnMenuItemClickListener { item: MenuItem ->
+                postCategory.text = item.title // 선택된 텍스트 적용!
+                true
+            }
+
+            popup.show()
+        }
+
         //게시하기 등록 버튼누르기
         postButton.setOnClickListener {
             useQuestion.visibility = View.VISIBLE
@@ -103,7 +122,7 @@ class CommunityWritePostActivity : AppCompatActivity() {
         cancel.setOnClickListener {
             useQuestion.visibility = View.GONE
         }
-        //이름 가져오기
+        /* //이름 가져오기
         val userNameText = findViewById<TextView>(R.id.id)
         val token = App.prefs.token.toString()
         if (token.isNotEmpty()) {
@@ -122,7 +141,7 @@ class CommunityWritePostActivity : AppCompatActivity() {
                         userNameText.text = "사용자"
                     }
                 })
-        }
+        }*/
 
     }
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
