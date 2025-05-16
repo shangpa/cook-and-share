@@ -46,13 +46,15 @@ class CommunityBoardActivity : AppCompatActivity() {
 
         loadBoards(currentBoardType, currentSort)
 
+
+
         val dropDown = findViewById<ImageView>(R.id.dropDown)
         val dropDownTwo = findViewById<ImageView>(R.id.dropDownTwo)
         val cookPost = findViewById<TextView>(R.id.cookPost)
         val recommend = findViewById<TextView>(R.id.recommend)
 
         //요리 게시판 드롭다운 버튼 클릭
-        dropDown.setOnClickListener {
+        val showBoardTypeMenu = {
             val popup = PopupMenu(this, dropDown)
             val items = listOf("인기 게시판", "요리 게시판", "자유 게시판")
 
@@ -62,7 +64,7 @@ class CommunityBoardActivity : AppCompatActivity() {
                 when (item.title) {
                     "인기 게시판" -> {
                         cookPost.text = item.title
-                        loadPopularBoards()     // 👈 이 함수로 인기게시판 API 호출!
+                        loadPopularBoards()
                     }
                     "요리 게시판" -> {
                         cookPost.text = item.title
@@ -80,9 +82,11 @@ class CommunityBoardActivity : AppCompatActivity() {
 
             popup.show()
         }
+        dropDown.setOnClickListener { showBoardTypeMenu() }
+        cookPost.setOnClickListener { showBoardTypeMenu() }
 
         //최신순 드롭다운 버튼 클릭
-        dropDownTwo.setOnClickListener {
+        val showSortMenu = {
             val popup = PopupMenu(this, dropDownTwo)
             val items = listOf("추천순", "댓글순", "최신순")
             items.forEach { popup.menu.add(it) }
@@ -98,6 +102,8 @@ class CommunityBoardActivity : AppCompatActivity() {
             }
             popup.show()
         }
+        dropDownTwo.setOnClickListener { showSortMenu() }
+        recommend.setOnClickListener { showSortMenu() }
     }
     private fun loadBoards(type: String, sort: String) {
         val token = App.prefs.token ?: ""
