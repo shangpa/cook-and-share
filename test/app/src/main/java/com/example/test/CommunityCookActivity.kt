@@ -9,29 +9,42 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.test.adapter.BoardPostAdapter
+import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CommunityCookActivity : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: BoardPostAdapter
+    private var currentSort: String = "latest"
+    private var currentPage: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_cook)
-        // postWrite 클릭했을 때 WritePost 이동
-        val postWrite: ImageView = findViewById(R.id.postWrite)
-        postWrite.setOnClickListener {
-            val intent = Intent(this, CommunityWritePostActivity::class.java)
+
+//        // postWrite 클릭했을 때 WritePost 이동
+//        val postWrite: ImageView = findViewById(R.id.postWrite)
+//        postWrite.setOnClickListener {
+//            val intent = Intent(this, CommunityWritePostActivity::class.java)
+//            startActivity(intent)
+//        }
+
+        recyclerView = findViewById(R.id.boardRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = BoardPostAdapter { postId ->
+            // 상세로 이동
+            val intent = Intent(this, CommunityDetailActivity::class.java)
+            intent.putExtra("postId", postId)
             startActivity(intent)
         }
+        recyclerView.adapter = adapter
 
-        //chat 아이콘 클릭시 CommunityDetailActivity로 넘어감
-        val chatIds = listOf(
-            R.id.chat, R.id.chatTwo, R.id.chatThree,
-            R.id.chatFour, R.id.chatFive
-        )
-
-        chatIds.forEach { id ->
-            findViewById<ImageView>(id).setOnClickListener {
-                startActivity(Intent(this, CommunityDetailActivity::class.java))
-            }
-        }
+        loadBoards(currentSort)
 
         val dropDown = findViewById<ImageView>(R.id.dropDown)
         val dropDownTwo = findViewById<ImageView>(R.id.dropDownTwo)
@@ -48,18 +61,15 @@ class CommunityCookActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { item: MenuItem ->
                 when (item.title) {
                     "인기 게시판" -> {
-                        val intent = Intent(this, CommunityPopularActivity::class.java)
-                        startActivity(intent)
-                        finish() // 현재 액티비티 종료 (선택사항)
+                        startActivity(Intent(this, CommunityPopularActivity::class.java))
+                        finish()
                     }
                     "요리 게시판" -> {
-                        // 현재 화면이 요리 게시판이면 아무것도 안 해도 됨
                         cookPost.text = item.title
                     }
                     "자유 게시판" -> {
-                        val intent = Intent(this, CommunityFreeActivity::class.java)
-                        startActivity(intent)
-                        finish() // 현재 액티비티 종료 (선택사항)
+                        startActivity(Intent(this, CommunityFreeActivity::class.java))
+                        finish()
                     }
                 }
                 true
@@ -72,71 +82,38 @@ class CommunityCookActivity : AppCompatActivity() {
         dropDownTwo.setOnClickListener {
             val popup = PopupMenu(this, dropDownTwo)
             val items = listOf("추천순", "댓글순", "최신순")
-
             items.forEach { popup.menu.add(it) }
-
             popup.setOnMenuItemClickListener { item: MenuItem ->
-                recommend.text = item.title // 선택된 텍스트 적용!
+                recommend.text = item.title
+                currentSort = when (item.title) {
+                    "추천순" -> "like"
+                    "댓글순" -> "comment"
+                    else -> "latest"
+                }
+                loadBoards(currentSort)
                 true
             }
-
             popup.show()
         }
-
-        // 저장버튼 선언
-        val saveButtons = listOf<ImageView>(
-            findViewById(R.id.save),
-            findViewById(R.id.saveTwo),
-            findViewById(R.id.saveThree),
-            findViewById(R.id.saveFour),
-            findViewById(R.id.saveFive)
-        )
-
-        // 각 버튼에 대해 저장 기능 설정
-        saveButtons.forEach { button ->
-            button.setTag(R.id.save, false)
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.save) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_store) // 비어 있는 저장 아이콘
-                } else {
-                    button.setImageResource(R.drawable.ic_store_fill) // 채워진 저장 아이콘
-                    Toast.makeText(this, "레시피를 저장하였습니다.", Toast.LENGTH_SHORT).show()
+    }
+    private fun loadBoards(sort: String) {
+        val token = App.prefs.token ?: ""
+        RetrofitInstance.communityApi.getCookingBoards("Bearer $token",sort = sort)
+            .enqueue(object : Callback<List<CommunityDetailResponse>> {
+                override fun onResponse(
+                    call: Call<List<CommunityDetailResponse>>,
+                    response: Response<List<CommunityDetailResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val posts = response.body() ?: emptyList()
+                        adapter.submitList(posts)
+                    } else {
+                        Toast.makeText(this@CommunityCookActivity, "불러오기 실패", Toast.LENGTH_SHORT).show()
+                    }
                 }
-
-                // 상태 반대로 바꿔줌 (★ 이게 꼭 필요해)
-                it.setTag(R.id.save, !isLiked)
-            }
-        }
-
-        // 좋아요 버튼 선언
-        val goodButtons = listOf<ImageView>(
-            findViewById(R.id.good),
-            findViewById(R.id.goodTwo),
-            findViewById(R.id.goodThree),
-            findViewById(R.id.goodFour),
-            findViewById(R.id.goodFive)
-        )
-
-        // 각 버튼에 대해 좋아요 기능 설정
-        goodButtons.forEach { button ->
-            button.setTag(R.id.good, false)
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.good) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_good) // 비어 있는 좋아요 아이콘
-                } else {
-                    button.setImageResource(R.drawable.ic_good_fill) // 채워진 좋아요 아이콘
-                    Toast.makeText(this, "해당 레시피를 추천하였습니다.", Toast.LENGTH_SHORT).show()
+                override fun onFailure(call: Call<List<CommunityDetailResponse>>, t: Throwable) {
+                    Toast.makeText(this@CommunityCookActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                 }
-
-                // 상태 반대로 바꿔줌 (★ 이게 꼭 필요해)
-                it.setTag(R.id.good, !isLiked)
-            }
-        }
+            })
     }
 }
