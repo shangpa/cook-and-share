@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.test.model.board.CommunityDetailResponse
 import com.example.test.model.board.CommunityMainResponse
-import com.example.test.model.board.CommunityPostResponse
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,21 +36,24 @@ class CommunityMainActivity : AppCompatActivity() {
         // categoryGroup 클릭했을 때 CommunityPopularActivity 이동
         val categoryGroup: GridLayout = findViewById(R.id.categoryGroup)
         categoryGroup.setOnClickListener {
-            val intent = Intent(this, CommunityPopularActivity::class.java)
+            val intent = Intent(this, CommunityBoardActivity::class.java)
+            intent.putExtra("boardType", "popular")   // 인기게시판 모드
             startActivity(intent)
         }
 
         // cookAdd 클릭했을 때 CommunityCookActivity 이동
         val cookAdd: TextView = findViewById(R.id.cookAdd)
         cookAdd.setOnClickListener {
-            val intent = Intent(this, CommunityCookActivity::class.java)
+            val intent = Intent(this, CommunityBoardActivity::class.java)
+            intent.putExtra("boardType", "cooking")
             startActivity(intent)
         }
 
         // hotAdd 클릭했을 때 CommunityPopularActivity 이동
         val hotAdd: TextView = findViewById(R.id.hotAdd)
         hotAdd.setOnClickListener {
-            val intent = Intent(this, CommunityPopularActivity::class.java)
+            val intent = Intent(this, CommunityBoardActivity::class.java)
+            intent.putExtra("boardType", "popular")   // 인기게시판 모드
             startActivity(intent)
         }
 
@@ -59,21 +61,24 @@ class CommunityMainActivity : AppCompatActivity() {
         // popularGroup 클릭했을 때 CommunityPopularActivity 이동
         val popularGroup: GridLayout = findViewById(R.id.popularGroup)
         popularGroup.setOnClickListener {
-            val intent = Intent(this, CommunityPopularActivity::class.java)
+            val intent = Intent(this, CommunityBoardActivity::class.java)
+            intent.putExtra("boardType", "popular")   // 인기게시판 모드
             startActivity(intent)
         }
 
         // freeGroup 클릭했을 때 CommunityFreeActivity 이동
         val freeGroup: GridLayout = findViewById(R.id.freeGroup)
         freeGroup.setOnClickListener {
-            val intent = Intent(this, CommunityFreeActivity::class.java)
+            val intent = Intent(this, CommunityBoardActivity::class.java)
+            intent.putExtra("boardType", "free")
             startActivity(intent)
         }
 
         // cookGroup 클릭했을 때 CommunityCookActivity 이동
         val cookGroup: GridLayout = findViewById(R.id.cookGroup)
         cookGroup.setOnClickListener {
-            val intent = Intent(this, CommunityCookActivity::class.java)
+            val intent = Intent(this, CommunityBoardActivity::class.java)
+            intent.putExtra("boardType", "cooking")
             startActivity(intent)
         }
 

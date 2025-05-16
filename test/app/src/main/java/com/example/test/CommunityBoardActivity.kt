@@ -18,11 +18,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CommunityCookActivity : AppCompatActivity() {
+class CommunityBoardActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: BoardPostAdapter
     private var currentSort: String = "latest"
-    private var currentPage: Int = 0
+    private var currentBoardType: String = "cooking"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_cook)
@@ -44,7 +44,7 @@ class CommunityCookActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adapter
 
-        loadBoards(currentSort)
+        loadBoards(currentBoardType, currentSort)
 
         val dropDown = findViewById<ImageView>(R.id.dropDown)
         val dropDownTwo = findViewById<ImageView>(R.id.dropDownTwo)
@@ -61,15 +61,18 @@ class CommunityCookActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { item: MenuItem ->
                 when (item.title) {
                     "인기 게시판" -> {
-                        startActivity(Intent(this, CommunityPopularActivity::class.java))
-                        finish()
+                        cookPost.text = item.title
+                        loadPopularBoards()     // 👈 이 함수로 인기게시판 API 호출!
                     }
                     "요리 게시판" -> {
                         cookPost.text = item.title
+                        currentBoardType = "cooking"
+                        loadBoards(currentBoardType, currentSort)
                     }
                     "자유 게시판" -> {
-                        startActivity(Intent(this, CommunityFreeActivity::class.java))
-                        finish()
+                        cookPost.text = item.title
+                        currentBoardType = "free"
+                        loadBoards(currentBoardType, currentSort)
                     }
                 }
                 true
@@ -90,15 +93,39 @@ class CommunityCookActivity : AppCompatActivity() {
                     "댓글순" -> "comment"
                     else -> "latest"
                 }
-                loadBoards(currentSort)
+                loadBoards(currentBoardType, currentSort)
                 true
             }
             popup.show()
         }
     }
-    private fun loadBoards(sort: String) {
+    private fun loadBoards(type: String, sort: String) {
         val token = App.prefs.token ?: ""
-        RetrofitInstance.communityApi.getCookingBoards("Bearer $token",sort = sort)
+        RetrofitInstance.communityApi.getBoardsByType(
+            type = type,
+            token = "Bearer $token",
+            sort = sort
+        ).enqueue(object : Callback<List<CommunityDetailResponse>> {
+            override fun onResponse(
+                call: Call<List<CommunityDetailResponse>>,
+                response: Response<List<CommunityDetailResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    val posts = response.body() ?: emptyList()
+                    adapter.submitList(posts)
+                } else {
+                    Toast.makeText(this@CommunityBoardActivity, "불러오기 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<CommunityDetailResponse>>, t: Throwable) {
+                Toast.makeText(this@CommunityBoardActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    private fun loadPopularBoards() {
+        val token = App.prefs.token ?: ""
+        RetrofitInstance.communityApi.getPopularPosts("Bearer $token")
             .enqueue(object : Callback<List<CommunityDetailResponse>> {
                 override fun onResponse(
                     call: Call<List<CommunityDetailResponse>>,
@@ -108,11 +135,12 @@ class CommunityCookActivity : AppCompatActivity() {
                         val posts = response.body() ?: emptyList()
                         adapter.submitList(posts)
                     } else {
-                        Toast.makeText(this@CommunityCookActivity, "불러오기 실패", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CommunityBoardActivity, "인기 게시판 불러오기 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
+
                 override fun onFailure(call: Call<List<CommunityDetailResponse>>, t: Throwable) {
-                    Toast.makeText(this@CommunityCookActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CommunityBoardActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                 }
             })
     }

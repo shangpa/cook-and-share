@@ -61,12 +61,14 @@ interface CommunityApi {
         @Header("Authorization") token: String
     ): Call<CommunityMainResponse>
 
-    // 요리게시판
-    @GET("api/boards/cooking")
-    fun getCookingBoards(
+
+    //타입별
+    @GET("api/boards/{type}")
+    fun getBoardsByType(
+        @Path("type") type: String,
         @Header("Authorization") token: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 10,
-        @Query("sort") sort: String = "latest" // like, comment, latest
+        @Query("sort") sort: String = "latest"
     ): Call<List<CommunityDetailResponse>>
 }
