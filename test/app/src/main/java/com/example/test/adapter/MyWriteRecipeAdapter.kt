@@ -38,7 +38,7 @@ class MyWriteRecipeAdapter(
         holder.title.text = item.title
         holder.heartCount.text = item.heartCount.toString()
         holder.goodCount.text = item.likeCount.toString()
-        holder.date.text = "작성일자 : ${item.createdAt}"
+        holder.date.text = "${item.createdAt}"
 
         Glide.with(holder.itemView.context)
             .load(item.thumbnailUrl)
