@@ -4,6 +4,7 @@ import com.example.test.model.board.CommentListResponse
 import com.example.test.model.board.CommentRequest
 import com.example.test.model.board.CommentResponse
 import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.model.board.CommunityMainResponse
 import com.example.test.model.board.CommunityPostRequest
 import com.example.test.model.board.CommunityPostResponse
 import okhttp3.ResponseBody
@@ -53,4 +54,21 @@ interface CommunityApi {
         @Header("Authorization") token: String,
         @Path("id") postId: Long
     ): Call<ResponseBody>
+
+    //메인기능
+    @GET("/api/boards/main")
+    fun getCommunityMain(
+        @Header("Authorization") token: String
+    ): Call<CommunityMainResponse>
+
+
+    //타입별
+    @GET("api/boards/{type}")
+    fun getBoardsByType(
+        @Path("type") type: String,
+        @Header("Authorization") token: String,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 10,
+        @Query("sort") sort: String = "latest"
+    ): Call<List<CommunityDetailResponse>>
 }

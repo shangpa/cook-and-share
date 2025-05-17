@@ -637,7 +637,7 @@
 
         <!-- CommunityCookActivity -->
         <activity
-            android:name=".CommunityCookActivity"
+            android:name=".CommunityBoardActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
