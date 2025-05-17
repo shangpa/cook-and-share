@@ -197,6 +197,21 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("recipeId") recipeId: Long
     ): Call<Boolean>
+    
+    //추천 토글
+    @POST("api/recipes/{recipeId}/recommend-toggle")
+    fun toggleRecommend(
+        @Path("recipeId") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    //추천 여부 확인
+    @GET("api/recipes/{recipeId}/recommended")
+    fun isRecipeRecommended(
+        @Path("recipeId") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<Boolean>
+
 
     // 냉장고 재료 기반 레시피 추천
     @POST("/api/fridge/recommend")

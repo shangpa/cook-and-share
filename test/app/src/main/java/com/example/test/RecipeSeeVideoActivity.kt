@@ -42,6 +42,7 @@ import com.example.test.Utils.LikeUtils
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import com.example.test.Utils.RecommendUtils
 
 private lateinit var player: ExoPlayer
 private lateinit var playerView: PlayerView
@@ -152,24 +153,8 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
             findViewById<ImageButton>(R.id.goodButton)
         )
 
-        // 좋아요 버튼 클릭시 채워진 좋아요로 바뀜
         goodButtons.forEach { button ->
-            // 초기 상태를 태그로 저장
-            button.setTag(R.id.goodButton, false) // false: 좋아요 안 누름
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.goodButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_good)
-                } else {
-                    button.setImageResource(R.drawable.ic_good_fill)
-                    Toast.makeText(this, "해당 레시피를 추천하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                // 상태 반전해서 저장
-                it.setTag(R.id.goodButton, !isLiked)
-            }
+            RecommendUtils.setupRecommendButton(button, recipeId)
         }
 
         // 공유 버튼
