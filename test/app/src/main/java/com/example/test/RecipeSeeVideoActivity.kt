@@ -136,24 +136,14 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
             findViewById<ImageButton>(R.id.heartButton)
         )
 
-        // 하트버튼 클릭시 채워진 하트로 바뀜
-        // 각 버튼에 대해 좋아요 기능 설정
         heartButtons.forEach { button ->
-            // 초기 상태를 false로 태그 저장
-            button.setTag(R.id.heartButton, false)
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.heartButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_recipe_heart)
-                } else {
-                    button.setImageResource(R.drawable.ic_heart_fill)
-                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
-                }
+            LikeUtils.isRecipeLiked(recipeId) { isLiked ->
+                button.setImageResource(
+                    if (isLiked) R.drawable.ic_heart_fill else R.drawable.ic_recipe_heart
+                )
+                button.setTag(R.id.heartButton, isLiked)
             }
 
-            // 서버 연동 + 토글 UI
             LikeUtils.setupLikeButton(button, recipeId)
         }
 

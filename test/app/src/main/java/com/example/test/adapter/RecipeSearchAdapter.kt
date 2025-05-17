@@ -1,5 +1,6 @@
 package com.example.test.adapter
 
+import Prefs
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.test.R
 import com.example.test.model.Recipe
 import com.example.test.network.RetrofitInstance
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Response
 
 class RecipeSearchAdapter(private var recipeList: List<Recipe>,
                           private val onItemClick: (Recipe) -> Unit) :
@@ -39,9 +43,13 @@ class RecipeSearchAdapter(private var recipeList: List<Recipe>,
         holder.recipeTitle.text = recipe.title
         holder.recipeLevel.text = recipe.difficulty
         holder.recipeTime.text = "${recipe.cookingTime}분"
-        holder.recipeRating.text = "5.0"
-        holder.reviewCount.text = "(6)"
+        holder.recipeRating.text = String.format("%.1f", recipe.averageRating)
+        holder.reviewCount.text = "(${recipe.reviewCount})"
         holder.recipeAuthor.text = recipe.user.name ?: "작성자"
+        holder.heartIcon.setImageResource(
+            if (recipe.liked) R.drawable.ic_heart_fill
+            else R.drawable.image_search_result_list_heart
+        )
 
         // base URL을 붙여서 이미지 로드
         val imageUrl = RetrofitInstance.BASE_URL + recipe.mainImageUrl // mainImageUrl에 base URL 붙여서
@@ -49,20 +57,33 @@ class RecipeSearchAdapter(private var recipeList: List<Recipe>,
         Glide.with(holder.itemView.context)
             .load(imageUrl)
             .into(holder.recipeImage)
-        holder.heartIcon.setImageResource(R.drawable.image_search_result_list_heart)
-        var isLiked = false
 
-        // 하트 클릭 리스너 추가
+        // 하트 클릭 리스너
         holder.heartIcon.setOnClickListener {
-            isLiked = !isLiked
-            if (isLiked) {
-                holder.heartIcon.setImageResource(R.drawable.ic_heart_fill)
-                showToast(holder, "관심 레시피로 저장하였습니다.")
-            } else {
-                holder.heartIcon.setImageResource(R.drawable.image_search_result_list_heart)
-            }
-        }
+            val token = "Bearer " + (Prefs(holder.itemView.context).token ?: "")
+            println("토큰왜안되냐"+token)
+            RetrofitInstance.apiService.toggleLike(recipe.recipeId, token)
+                .enqueue(object : retrofit2.Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            val newLiked = !recipe.liked
+                            recipe.liked = newLiked
+                            holder.heartIcon.setImageResource(
+                                if (newLiked) R.drawable.ic_heart_fill
+                                else R.drawable.image_search_result_list_heart
+                            )
+                            val msg = if (newLiked) "관심 레시피로 저장되었습니다." else "관심 해제되었습니다."
+                            showToast(holder, msg)
+                        } else {
+                            showToast(holder, "서버 오류: ${response.code()}")
+                        }
+                    }
 
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        showToast(holder, "서버 요청 실패: ${t.localizedMessage}")
+                    }
+                })
+        }
         holder.itemView.setOnClickListener {
             onItemClick(recipe)
         }
