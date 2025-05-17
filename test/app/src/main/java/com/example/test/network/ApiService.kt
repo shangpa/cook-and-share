@@ -9,6 +9,7 @@ import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.board.CommunityDetailResponse
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -316,6 +317,17 @@ interface ApiService {
     fun deleteRecipe(
         @Header("Authorization") token: String,
         @Path("id") recipeId: Int
+    ): Call<Void>
+
+    //마이페이지 - 작성한 게시글
+    @GET("api/boards/mine")
+    fun getMyPosts(@Header("Authorization") token: String
+    ): Call<List<CommunityDetailResponse>>
+
+    @DELETE("community/{id}")
+    fun deletePost(
+        @Path("id") postId: Long,
+        @Header("Authorization") token: String
     ): Call<Void>
 
 }

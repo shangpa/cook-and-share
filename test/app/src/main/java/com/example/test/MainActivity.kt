@@ -94,6 +94,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
         // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
         val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
         tapFridgeIcon.setOnClickListener {
