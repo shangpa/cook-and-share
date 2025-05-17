@@ -169,7 +169,8 @@ class SearchResultActivity : AppCompatActivity() {
 
     private fun filterByCategory(category: String?) {
         currentSelectedCategory = category
-        RetrofitInstance.apiService.searchRecipes(title = searchKeyword, sort = sortOrder)
+        val token = "Bearer ${App.prefs.token}"
+        RetrofitInstance.apiService.searchRecipes(title = searchKeyword, sort = sortOrder,token = token,)
             .enqueue(object : Callback<List<Recipe>> {
                 override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
                     if (response.isSuccessful) {

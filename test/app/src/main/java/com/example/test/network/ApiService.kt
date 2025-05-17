@@ -35,6 +35,7 @@ interface ApiService {
     // 레시피 탭
     @GET("api/recipes/public")
     fun getAllPublicRecipes(
+        @Header("Authorization") token: String,
         @Query("sort") sort: String? = null
     ): Call<List<Recipe>>
 
@@ -55,6 +56,7 @@ interface ApiService {
     // 레시피 검색
     @GET("api/recipes/search")
     fun searchRecipes(
+        @Header("Authorization") token: String,
         @Query("title") title: String,
         @Query("sort") sort: String? = null
     ): Call<List<Recipe>>
@@ -188,6 +190,28 @@ interface ApiService {
         @Path("recipeId") recipeId: Long,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    // 레시피 좋아요 눌렀는지 확인
+    @GET("api/recipes/{recipeId}/liked")
+    fun isRecipeLiked(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Long
+    ): Call<Boolean>
+    
+    //추천 토글
+    @POST("api/recipes/{recipeId}/recommend-toggle")
+    fun toggleRecommend(
+        @Path("recipeId") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    //추천 여부 확인
+    @GET("api/recipes/{recipeId}/recommended")
+    fun isRecipeRecommended(
+        @Path("recipeId") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<Boolean>
+
 
     // 냉장고 재료 기반 레시피 추천
     @POST("/api/fridge/recommend")

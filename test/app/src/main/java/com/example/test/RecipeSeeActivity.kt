@@ -39,6 +39,7 @@ import android.speech.RecognizerIntent
 import android.speech.RecognitionListener
 import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
+import com.example.test.Utils.RecommendUtils
 
 
 private lateinit var steps: List<View>
@@ -135,21 +136,15 @@ class RecipeSeeActivity : AppCompatActivity() {
 
         // 각 버튼에 대해 좋아요 기능 설정
         heartButtons.forEach { button ->
-            // 초기 상태를 false로 태그 저장
-            button.setTag(R.id.heartButton, false)
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.heartButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_recipe_heart)
-                } else {
-                    button.setImageResource(R.drawable.ic_heart_fill)
-                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
-                }
+            // 1) 초기 상태 불러오기 (하트 채움 or 빈 하트)
+            LikeUtils.isRecipeLiked(recipeId) { isLiked ->
+                button.setImageResource(
+                    if (isLiked) R.drawable.ic_heart_fill else R.drawable.ic_recipe_heart
+                )
+                button.setTag(R.id.heartButton, isLiked)
             }
 
-            // 서버 연동 + 토글 UI
+            // 2) 좋아요 버튼 클릭 처리
             LikeUtils.setupLikeButton(button, recipeId)
         }
 
@@ -157,27 +152,12 @@ class RecipeSeeActivity : AppCompatActivity() {
         // 좋아요 버튼 선언
         val goodButtons = listOf(
             findViewById<ImageButton>(R.id.goodButton),
-            findViewById(R.id.goodButtonTwo),
+            findViewById(R.id.goodButtonTwo)
         )
 
         // 좋아요 버튼 클릭시 채워진 좋아요로 바뀜
         goodButtons.forEach { button ->
-            // 초기 상태를 태그로 저장
-            button.setTag(R.id.goodButton, false) // false: 좋아요 안 누름
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.goodButton) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_good)
-                } else {
-                    button.setImageResource(R.drawable.ic_good_fill)
-                    Toast.makeText(this, "해당 레시피를 추천하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                // 상태 반전해서 저장
-                it.setTag(R.id.goodButton, !isLiked)
-            }
+            RecommendUtils.setupRecommendButton(button, recipeId)
         }
 
         // 공유 버튼 선언
