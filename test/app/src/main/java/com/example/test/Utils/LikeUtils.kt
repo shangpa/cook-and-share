@@ -4,6 +4,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.example.test.App
 import com.example.test.R
+import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -45,4 +46,18 @@ object LikeUtils {
                 })
         }
     }
+    fun isRecipeLiked(recipeId: Long, callback: (Boolean) -> Unit) {
+        val token = "Bearer ${App.prefs.token ?: ""}"
+        RetrofitInstance.apiService.isRecipeLiked(token, recipeId)
+            .enqueue(object : Callback<Boolean> {
+                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                    callback(response.body() ?: false)
+                }
+
+                override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                    callback(false)
+                }
+            })
+    }
+
 }
