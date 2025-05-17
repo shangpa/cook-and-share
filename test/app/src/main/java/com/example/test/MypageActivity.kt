@@ -77,7 +77,7 @@ class MypageActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val userInfo = response.body()
                             userInfo?.let {
-                                userNameText.text = it.userName
+                                userNameText.text = it.name
                             }
                         }
                     }
@@ -107,9 +107,9 @@ class MypageActivity : AppCompatActivity() {
 
         } else {
             // 로그인 안 되어있을 때
-            userNameText.text = "사용자"
-            userPointText.text = "?"
-            logoutText.text ="로그인"
+            userNameText.text = "로그인을 해주세요"
+            userPointText.text = "0"
+            logoutText.text ="로그인하러 가기"
         }
 
         // editInformation 클릭했을 때 MypagePersonalInfoActivity 이동
