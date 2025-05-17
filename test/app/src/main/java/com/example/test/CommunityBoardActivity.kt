@@ -26,7 +26,20 @@ class CommunityBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_cook)
-
+        val boardTypeFromIntent = intent.getStringExtra("boardType")
+        if (boardTypeFromIntent == "popular") {
+            currentBoardType = "popular"
+            findViewById<TextView>(R.id.cookPost).text = "인기 게시판"
+            loadPopularBoards()
+        } else if (boardTypeFromIntent == "free") {
+            currentBoardType = "free"
+            findViewById<TextView>(R.id.cookPost).text = "자유 게시판"
+            loadBoards(currentBoardType, currentSort)
+        } else {
+            currentBoardType = "cooking" // 기본값
+            findViewById<TextView>(R.id.cookPost).text = "요리 게시판"
+            loadBoards(currentBoardType, currentSort)
+        }
 //        // postWrite 클릭했을 때 WritePost 이동
 //        val postWrite: ImageView = findViewById(R.id.postWrite)
 //        postWrite.setOnClickListener {
