@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
+    android:layout_marginBottom="20dp">
+
+    <!-- 요리 이미지 -->
+    <ImageView
+        android:id="@+id/imageThumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="레시피 이미지" />
+
+    <!-- 레시피 설명 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="13dp">
+
+        <!-- 요리명 + 더보기 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 요리명 -->
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="레시피 이름"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- 더보기 버튼 -->
+            <ImageButton
+                android:id="@+id/moreIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_more"
+                android:layout_marginTop="1dp"/>
+        </LinearLayout>
+
+        <!-- 찜 + 좋아요 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- 찜 아이콘 -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_write_recipe_heart"
+                    android:contentDescription="찜 아이콘" />
+
+                <!-- 찜 수 -->
+                <TextView
+                    android:id="@+id/heartCountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="3dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="15dp">
+
+                <!-- 좋아요 아이콘 -->
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_write_recipe_good"
+                    android:contentDescription="좋아요 아이콘"
+                    android:layout_marginTop="-2.5dp"/>
+
+                <!-- 좋아요 수 -->
+                <TextView
+                    android:id="@+id/goodCountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="3dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 작성일자 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp">
+
+            <!-- 작성일자 고정 텍스트 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성일자 : "
+                android:textSize="12sp"
+                android:textColor="#8A8F9C" />
+
+            <!-- 작성일자 값 -->
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2025.01.01"
+                android:textSize="12sp"
+                android:textColor="#8A8F9C"
+                android:layout_marginStart="2dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

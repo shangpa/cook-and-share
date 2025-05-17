@@ -11,5 +11,6 @@ data class TradePostResponse(
     val description: String,
     val location: String,
     val imageUrls: String,
-    val createdAt: String
+    val createdAt: String,
+    val distance: Double?
 )

@@ -3,10 +3,13 @@ package com.example.test.network
 import com.example.test.model.*
 import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
+import com.example.test.model.Fridge.FridgeRequest
+import com.example.test.model.Fridge.FridgeResponse
 import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.recipeDetail.MyWriteRecipeResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -15,7 +18,6 @@ import retrofit2.http.*
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
-import com.google.gson.JsonObject
 import retrofit2.http.Path
 
 interface ApiService {
@@ -29,8 +31,27 @@ interface ApiService {
     fun signUp(@Body signUpRequest: SignUpRequest): Call<ApiResponse>
 
     // 사용자 정보 조회
-    @GET("user/info")
+    @GET("api/user/profile")
     fun getUserInfo(@Header("Authorization") token: String): Call<LoginInfoResponse>
+
+    //메인 - 냉장고 재료
+    @GET("/api/main")
+    fun getMainMessage(
+        @Header("Authorization") token: String
+    ): Call<Map<String, String>>
+
+    //메인 - 냉장고 재료 추천 레시피
+    @GET("/api/recipes/recommend-by-title")
+    fun recommendByTitle(
+        @Query("ingredients") ingredients: List<String>,
+        @Header("Authorization") token: String
+    ): Call<List<RecipeSearchResponseDTO>>
+
+    @POST("/api/recipes/recommend-grouped")
+    fun recommendGrouped(
+        @Body ingredients: List<String>,
+        @Header("Authorization") token: String
+    ): Call<List<IngredientRecipeGroup>>
 
     // 레시피 탭
     @GET("api/recipes/public")
@@ -129,6 +150,44 @@ interface ApiService {
         @Query("category") category: String
     ): Call<List<TradePostResponse>>
 
+    //동네재료 사용자 위치 계산
+    @GET("/api/trade-posts/nearby")
+    fun getNearbyTradePosts(
+        @Header("Authorization") token: String,
+        @Query("distanceKm") distanceKm: Double = 1.0
+    ): Call<List<TradePostResponse>>
+
+    //동네재료 사용자 위치 저장
+    @POST("/api/user/location")
+    fun saveUserLocation(
+        @Header("Authorization") token: String,
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double
+
+    ): Call<Void>
+
+    //동네재료 카테고리 + 거리 다중 필터링
+    @GET("/api/trade-posts/nearby-by-multiple-categories")
+    fun getNearbyTradePostsByMultipleCategories(
+        @Header("Authorization") token: String,
+        @Query("distanceKm") distanceKm: Double,
+        @Query("categories") categories: List<String>
+    ): Call<List<TradePostResponse>>
+
+    @POST("trade-posts/filter/categories")
+    fun getTradePostsByMultipleCategories(
+        @Header("Authorization") token: String,
+        @Body categories: List<String>
+    ): Call<List<TradePostResponse>>
+
+    //카테고리 + 거리순
+    @GET("/api/trade-posts/nearby/filter")
+    fun getNearbyTradePostsByCategory(
+        @Header("Authorization") token: String,
+        @Query("distanceKm") distanceKm: Double,
+        @Query("category") category: String
+    ): Call<List<TradePostResponse>>
+
     // 동네재료 거래글 검색 (키워드로 검색)
     @GET("/api/trade-posts/search")
     fun searchTradePosts(
@@ -201,4 +260,38 @@ interface ApiService {
     fun getMyPoint(
         @Header("Authorization") token: String
     ): Call<Int>
+
+    //개인정보수정
+    @PUT("api/user/update")
+    fun updateUserInfo(
+        @Header("Authorization") token: String,
+        @Body request: UpdateUserRequest
+    ): Call<Void>
+    @POST("/api/user/check-password")
+    fun checkPassword(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, String>
+    ): Call<Boolean>
+
+    //마이페이지 - 찜한 레시피
+    @GET("api/recipes/likes")
+    fun getLikedRecipes(
+        @Header("Authorization") token: String
+    ): Call<List<RecipeDetailResponse>>
+
+    //마이페이지 - 작성한 레시피
+    @GET("user/recipes")
+    fun getMyRecipes(
+        @Header("Authorization") token: String,
+        @Query("sort") sort: String,
+        @Query("categories") categories: List<String>
+    ): Call<MyWriteRecipeResponse>
+
+    //마이페이지 - 작성한 레시피 삭제
+    @DELETE("api/recipes/{id}")
+    fun deleteRecipe(
+        @Header("Authorization") token: String,
+        @Path("id") recipeId: Int
+    ): Call<Void>
+
 }
