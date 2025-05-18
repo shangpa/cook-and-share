@@ -57,7 +57,7 @@ class NoticeActivity : AppCompatActivity() {
 
         fridege.setOnClickListener {
             updateSelection(fridege)
-            filterNotificationsByCategory("fridege")
+            filterNotificationsByCategory("fridge")
         }
 
         community.setOnClickListener {
@@ -179,7 +179,7 @@ class NoticeActivity : AppCompatActivity() {
             item.visibility = when (category) {
                 "all" -> View.VISIBLE
                 "recipe" -> if (drawableId == "ic_book") View.VISIBLE else View.GONE
-                "fridege" -> if (drawableId == "ic_refrigerator") View.VISIBLE else View.GONE
+                "fridge" -> if (drawableId == "ic_refrigerator") View.VISIBLE else View.GONE
                 "community" -> if (drawableId == "ic_chatt") View.VISIBLE else View.GONE
                 "material" -> if (drawableId == "ic_bell") View.VISIBLE else View.GONE
                 else -> View.VISIBLE
@@ -200,7 +200,7 @@ class NoticeActivity : AppCompatActivity() {
                         for (notification in notifications) {
                             Log.d("Notification", "알림 내용: ${notification.category}, ${notification.content}")
                             val itemView = layoutInflater.inflate(R.layout.item_notification, container, false)
-
+                            (itemView.parent as? ViewGroup)?.removeView(itemView)
                             val icon = itemView.findViewById<ImageView>(R.id.notificationIcon)
                             val content = itemView.findViewById<TextView>(R.id.notificationContent)
                             val time = itemView.findViewById<TextView>(R.id.notificationTime)
@@ -215,7 +215,7 @@ class NoticeActivity : AppCompatActivity() {
                                     icon.setImageResource(R.drawable.ic_refrigerator)
                                     icon.tag = "ic_refrigerator"
                                 }
-                                "VILLAGE" -> {
+                                "MATERIAL" -> {
                                     icon.setImageResource(R.drawable.ic_bell)
                                     icon.tag = "ic_bell"
                                 }
