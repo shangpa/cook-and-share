@@ -3,14 +3,11 @@ package com.example.test
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
-import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.test.model.FridgeRequest
+import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.*
-import java.util.*
 
 class FridgeIngredientActivity : AppCompatActivity() {
 

@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
+    //파이어 베이스 용
+    id("com.google.gms.google-services")
 }
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
@@ -38,6 +41,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -59,6 +63,11 @@ android {
         resources.excludes.add("META-INF/*")
     }
 
+/*    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }*/
     sourceSets["main"].jniLibs.srcDir("libs")
     sourceSets["main"].resources.srcDirs("libs")
     sourceSets["main"].assets.srcDirs("libs")
@@ -87,6 +96,7 @@ dependencies {
     // 기타
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     // ✅ Tmap SDK V1, V2 (로컬 aar 파일)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
@@ -99,18 +109,27 @@ dependencies {
     //영수증
     implementation ("com.google.mlkit:text-recognition:16.0.0")
 
+    //firebase 버전 관리용
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    //firebase 알림용
+    implementation("com.google.firebase:firebase-messaging")
+    
     //GCV 영수증
     implementation("com.google.cloud:google-cloud-vision:3.26.0")
 
     implementation("io.socket:socket.io-client:2.0.1") {
         exclude("org.json", "json")
 
-        //이미지
+    //이미지
     implementation("com.github.yalantis:ucrop:2.2.8")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
+    // 메인-냉장고
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
     }
-
+    
 
 }
 

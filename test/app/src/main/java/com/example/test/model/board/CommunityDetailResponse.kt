@@ -8,5 +8,6 @@ data class CommunityDetailResponse(
     val boardType: String,
     val createdAt: String,
     val likeCount: Int,
-    val liked: Boolean = false
+    val liked: Boolean = false,
+    val commentCount: Int = 0
 )

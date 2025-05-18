@@ -9,7 +9,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.test.network.RetrofitInstance
 import com.skt.tmap.TMapView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MaterialMyLocationActivity : AppCompatActivity() {
 
@@ -50,26 +54,51 @@ class MaterialMyLocationActivity : AppCompatActivity() {
 
         }, 1500)
 
-        // 🔥 지도 이동시 항상 중심좌표 업데이트
+        // 지도 이동시 항상 중심좌표 업데이트
         tmapView.setOnDisableScrollWithZoomLevelListener { _, centerPoint ->
             selectedLat = centerPoint.latitude
             selectedLng = centerPoint.longitude
         }
 
-        findViewById<Button>(R.id.btn_select).setOnClickListener {
-            if (selectedLat != null && selectedLng != null) {
-                val intent = Intent(this, MaterialActivity::class.java).apply {
-                    putExtra("latitude", selectedLat)
-                    putExtra("longitude", selectedLng)
-                }
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "지도를 움직여 위치를 선택해주세요.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
         findViewById<ImageView>(R.id.btn_close).setOnClickListener {
             finish()
         }
+
+        findViewById<Button>(R.id.btn_select).setOnClickListener {
+            val token = App.prefs.token.toString()
+            if (token.isBlank() || token == "null") {
+                Toast.makeText(this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val lat = selectedLat
+            val lng = selectedLng
+
+            if (lat == null || lng == null) {
+                Toast.makeText(this, "지도를 움직여 위치를 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            RetrofitInstance.apiService.saveUserLocation("Bearer $token", lat, lng)
+                .enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@MaterialMyLocationActivity, "위치 저장 완료", Toast.LENGTH_SHORT).show()
+                            // 저장 완료 후 MaterialActivity에 알림
+                            val resultIntent = Intent()
+                            resultIntent.putExtra("locationSaved", true)
+                            setResult(RESULT_OK, resultIntent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@MaterialMyLocationActivity, "저장 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Toast.makeText(this@MaterialMyLocationActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
     }
+
 }

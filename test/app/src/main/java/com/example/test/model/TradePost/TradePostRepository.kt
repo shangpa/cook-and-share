@@ -73,4 +73,20 @@ object TradePostRepository {
         })
     }
 
+    fun getTradePostsByMultipleCategories(token: String, categories: List<String>, callback: (List<TradePostResponse>?) -> Unit) {
+        RetrofitInstance.apiService.getTradePostsByMultipleCategories("Bearer $token", categories)
+            .enqueue(object : Callback<List<TradePostResponse>> {
+                override fun onResponse(call: Call<List<TradePostResponse>>, response: Response<List<TradePostResponse>>) {
+                    if (response.isSuccessful) {
+                        callback(response.body())
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
+                    callback(null)
+                }
+            })
+    }
 }

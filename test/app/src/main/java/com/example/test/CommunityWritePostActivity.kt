@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +32,7 @@ class CommunityWritePostActivity : AppCompatActivity() {
 
     private var isPickingRepresentImage = false
     private val imageUrlList = mutableListOf<String>()
+    private var categoryKey: String = "COOKING"
     // 이미지 업로드 (갤러리에서 가져와 crop)
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -51,6 +53,8 @@ class CommunityWritePostActivity : AppCompatActivity() {
         val postButton = findViewById<Button>(R.id.postButton)
         val useQuestion = findViewById<ConstraintLayout>(R.id.useQuestion)
         val cancel = findViewById<Button>(R.id.cancel)
+        val postCategory = findViewById<TextView>(R.id.postCategory)
+        val postDropDown = findViewById<ImageView>(R.id.postDropDown)
 
         register.setOnClickListener {
             startActivity(Intent(this, CommunityDetailActivity::class.java))
@@ -60,6 +64,30 @@ class CommunityWritePostActivity : AppCompatActivity() {
             isPickingRepresentImage = true
             pickImageLauncherForDetailSettle.launch("image/*")
         }
+
+
+        val showCategoryMenu = View.OnClickListener {
+            val popup = PopupMenu(this, it)
+            val categories = listOf("자유게시판", "요리게시판")
+
+            categories.forEach { popup.menu.add(it) }
+
+            popup.setOnMenuItemClickListener { item ->
+                postCategory.text = item.title
+                categoryKey = when (item.title) {
+                    "자유게시판" -> "FREE"
+                    "요리게시판" -> "COOKING"
+                    else -> "COOKING"
+                }
+                true
+            }
+
+            popup.show()
+        }
+
+        postCategory.setOnClickListener(showCategoryMenu)
+        postDropDown.setOnClickListener(showCategoryMenu)
+
         //게시하기 등록 버튼누르기
         postButton.setOnClickListener {
             useQuestion.visibility = View.VISIBLE
@@ -77,10 +105,12 @@ class CommunityWritePostActivity : AppCompatActivity() {
             val request = CommunityPostRequest(
                 content = content,
                 imageUrls = imageUrlList,
-                boardType = "FREE" // 일단 free로 게시글 작성
+                boardType = categoryKey
             )
 
+
             val token = App.prefs.token ?: ""
+            println("게시글 boardType : $request.boardType")
             RetrofitInstance.communityApi.uploadPost("Bearer $token", request)
                 .enqueue(object : Callback<CommunityPostResponse> {
                     override fun onResponse(call: Call<CommunityPostResponse>, response: Response<CommunityPostResponse>) {
@@ -103,7 +133,7 @@ class CommunityWritePostActivity : AppCompatActivity() {
         cancel.setOnClickListener {
             useQuestion.visibility = View.GONE
         }
-        //이름 가져오기
+        /* //이름 가져오기
         val userNameText = findViewById<TextView>(R.id.id)
         val token = App.prefs.token.toString()
         if (token.isNotEmpty()) {
@@ -122,7 +152,7 @@ class CommunityWritePostActivity : AppCompatActivity() {
                         userNameText.text = "사용자"
                     }
                 })
-        }
+        }*/
 
     }
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
