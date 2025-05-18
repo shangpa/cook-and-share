@@ -6,5 +6,7 @@ data class ReviewResponseDTO(
     val rating: Int,
     val mediaUrls: String,
     val createdAt: String,
-    val username: String
+    val username: String,
+    val recipeId: Long,
+    val recipeTitle: String
 )

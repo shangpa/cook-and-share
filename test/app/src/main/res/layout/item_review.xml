@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemReviewContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="35dp">
+
+    <!-- 상단: 이미지 + 설명 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/reviewRecipeImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="13dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reviewRecipeTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="레시피명"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_recipe_level"
+                        android:contentDescription="난이도 아이콘" />
+
+                    <TextView
+                        android:id="@+id/reviewRecipeLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="초급"
+                        android:textSize="11sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="2dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_recipe_time"
+                        android:contentDescription="시간 아이콘"
+                        android:layout_marginTop="2dp"/>
+
+                    <TextView
+                        android:id="@+id/reviewRecipeTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textSize="11sp"
+                        android:textColor="#9B9B9B"
+                        android:layout_marginStart="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="분"
+                        android:textSize="11sp"
+                        android:textColor="#9B9B9B" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 수정/삭제 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="14dp">
+
+                <TextView
+                    android:id="@+id/reviewEditBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수정"
+                    android:textSize="11sp"
+                    android:textColor="#AEB2BA" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="11dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#D9D9D9" />
+
+                <TextView
+                    android:id="@+id/reviewDeleteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="삭제"
+                    android:textSize="11sp"
+                    android:textColor="#AEB2BA" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 구분선 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E7E7E7"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- 별점 + 작성일자 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_star"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:id="@+id/reviewStarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5.0"
+            android:textSize="11sp"
+            android:textColor="#454A52"
+            android:layout_marginStart="4dp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="11dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="2dp"
+            android:background="#D9D9D9" />
+
+        <TextView
+            android:id="@+id/reviewDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025.01.23"
+            android:textSize="11sp"
+            android:textColor="#A1A9AD" />
+    </LinearLayout>
+
+    <!-- 본문 내용 -->
+    <TextView
+        android:id="@+id/reviewContentText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="레시피가 정말 맛있어요! 또 해먹고 싶어요."
+        android:textSize="12sp"
+        android:layout_marginTop="6dp"
+        android:lineSpacingExtra="5dp"
+        android:textColor="@color/black" />
+</LinearLayout>

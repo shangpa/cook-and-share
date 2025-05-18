@@ -330,4 +330,24 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<Void>
 
+    //마이페이지 - 리뷰 내역
+    @GET("api/reviews/mypage")
+    fun getMyReviews(
+        @Header("Authorization") token: String
+    ): Call<List<ReviewResponseDTO>>
+
+    //마이페이지 - 리뷰 삭제
+    @DELETE("api/reviews/{reviewId}")
+    fun deleteReview(
+        @Header("Authorization") token: String,
+        @Path("reviewId") reviewId: Long
+    ): Call<Void>
+
+    //마이페이지 - 리뷰 카테고리
+    @GET("api/reviews/mypage/filter")
+    fun getMyReviewsByCategory(
+        @Header("Authorization") token: String,
+        @Query("category") category: String
+    ): Call<List<ReviewResponseDTO>>
+
 }
