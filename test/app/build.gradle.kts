@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
     id("kotlin-kapt")
+    //파이어 베이스 용
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
@@ -107,6 +109,11 @@ dependencies {
     //영수증
     implementation ("com.google.mlkit:text-recognition:16.0.0")
 
+    //firebase 버전 관리용
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    //firebase 알림용
+    implementation("com.google.firebase:firebase-messaging")
+    
     //GCV 영수증
     implementation("com.google.cloud:google-cloud-vision:3.26.0")
 
@@ -122,7 +129,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
     }
-
+    
 
 }
 

@@ -36,6 +36,14 @@
             android:name="com.skt.Tmap.openapi.key"
             android:value="5p5MIj0ajg149wOnUX3Ui5WfNBUnZngt5kCE8TMc" />
 
+        <service
+            android:name="com.example.test.alarm.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -624,16 +632,6 @@
             </intent-filter>
         </activity>
 
-        <!-- CommunityPopularActivity -->
-        <activity
-            android:name=".CommunityPopularActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- CommunityCookActivity -->
         <activity
@@ -646,16 +644,6 @@
             </intent-filter>
         </activity>
 
-        <!-- CommunityFreeActivity -->
-        <activity
-            android:name=".CommunityFreeActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- CommunityWritePostActivity -->
         <activity

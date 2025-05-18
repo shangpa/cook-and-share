@@ -13,6 +13,7 @@ object RetrofitInstance {
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
     lateinit var communityApi: CommunityApi
+    lateinit var notificationApi: NotificationApi
 
     // 초기화 메서드에서 context 전달받아 처리
     fun init(context: Context) {
@@ -33,5 +34,6 @@ object RetrofitInstance {
 
         apiService = retrofit.create(ApiService::class.java)
         communityApi = retrofit.create(CommunityApi::class.java)
+        notificationApi = retrofit.create(NotificationApi::class.java)
     }
 }
