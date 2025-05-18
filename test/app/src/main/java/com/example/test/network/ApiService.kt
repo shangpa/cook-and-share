@@ -54,6 +54,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<IngredientRecipeGroup>>
 
+    //메인 - 동네주방 HOT 거래글
+    @GET("api/trade-posts/popular")
+    fun getPopularTradePosts(
+        @Header("Authorization") token: String
+    ): Call<List<TradePostSimpleResponse>>
+
     // 레시피 탭
     @GET("api/recipes/public")
     fun getAllPublicRecipes(
@@ -197,6 +203,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("keyword") keyword: String
     ): Call<List<TradePostResponse>>
+
+    //거래글 조회수
+    @PATCH("api/trade-posts/{id}/view")
+    fun increaseViewCount(
+        @Path("id") postId: Long,
+        @Header("Authorization") token: String
+    ): Call<Void>
 
     // 내가 쓴 거래 후기 리스트
     @GET("/api/tp-reviews/my-reviews")

@@ -285,17 +285,30 @@ class MaterialActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
 
-        Log.d("거리값 확인", tradePosts.joinToString { "${it.title}: ${it.distance}" })
-        Log.d("거리값 확인", list.joinToString { "${it.title}: ${it.distance}" })
-
         tradePostAdapter = TradePostAdapter(list) { tradePost ->
+            // 여기서 조회수 증가 먼저 호출
+            val token = App.prefs.token.toString()
+            RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
+                .enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        Log.d("ViewCount", "조회수 증가 성공")
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.e("ViewCount", "조회수 증가 실패", t)
+                    }
+                })
+
+            // 상세 페이지 이동
             val intent = Intent(this, MaterialDetailActivity::class.java)
             intent.putExtra("tradePostId", tradePost.tradePostId)
             startActivity(intent)
         }
+
         recyclerView.adapter = tradePostAdapter
         numberTextView.text = list.size.toString()
     }
+
 
     private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
         val category = button.text.toString()
