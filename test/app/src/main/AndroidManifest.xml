@@ -136,17 +136,6 @@
             </intent-filter>
         </activity>
 
-        <!-- LikeFoodActivity -->
-        <activity
-            android:name=".LikeFoodActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <!-- FindIDMainActivity -->
         <activity
             android:name=".FindIDMainActivity"
