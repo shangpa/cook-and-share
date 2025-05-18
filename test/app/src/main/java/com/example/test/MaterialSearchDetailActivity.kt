@@ -2,6 +2,7 @@ package com.example.test
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -98,6 +99,21 @@ class MaterialSearchDetailActivity : AppCompatActivity() {
 
     private fun setRecyclerViewAdapter(list: List<TradePostResponse>) {
         tradePostAdapter = TradePostAdapter(list) { tradePost ->
+            val token = App.prefs.token.toString()
+
+            // 조회수 증가 호출
+            RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
+                .enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        Log.d("ViewCount", "조회수 증가 성공")
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("ViewCount", "조회수 증가 실패")
+                    }
+                })
+
+            // 상세 페이지 이동
             val intent = Intent(this, MaterialDetailActivity::class.java)
             intent.putExtra("tradePostId", tradePost.tradePostId)
             startActivity(intent)
