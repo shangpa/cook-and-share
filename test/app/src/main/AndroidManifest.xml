@@ -330,17 +330,6 @@
             </intent-filter>
         </activity>
 
-        <!-- MypageSavePostActivity -->
-        <activity
-            android:name=".MypageSavePostActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <!-- MypageWritePostActivity -->
         <activity
             android:name=".MypageWritePostActivity"

@@ -50,10 +50,6 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
         arrowIcon = findViewById(R.id.arrowIcon)
         categoryFoodText = categoryFood.getChildAt(0) as TextView
 
-        categoryMaterial = findViewById(R.id.categoryMaterial)
-        materialDropdown = findViewById(R.id.material)
-        categoryMaterialText = categoryMaterial.getChildAt(0) as TextView
-
         fridgeRecipeResultDropDownIcon = findViewById(R.id.fridgeRecipeResultDropDownIcon)
         fridgeRecipefillterText = findViewById(R.id.fridgeRecipefillterText)
 
@@ -73,21 +69,6 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
             findViewById(R.id.filterSideDish)
         )
 
-        val materialButtons = listOf(
-            findViewById<Button>(R.id.alll),
-            findViewById(R.id.grain),
-            findViewById(R.id.fruit),
-            findViewById(R.id.vegetable),
-            findViewById(R.id.meat),
-            findViewById(R.id.dairy),
-            findViewById(R.id.seafood),
-            findViewById(R.id.condiment),
-            findViewById(R.id.mushroom),
-            findViewById(R.id.additive),
-            findViewById(R.id.processed),
-            findViewById(R.id.favorite)
-        )
-
         categoryFood.setOnClickListener {
             isCategoryVisible = !isCategoryVisible
             cookDropdown.visibility = if (isCategoryVisible) View.VISIBLE else View.GONE
@@ -103,29 +84,6 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
             } else {
                 categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
                 categoryFoodText.setTextColor(Color.WHITE)
-            }
-        }
-
-        categoryMaterial.setOnClickListener {
-            isMaterialVisible = !isMaterialVisible
-            materialDropdown.bringToFront()
-            materialDropdown.visibility = if (isMaterialVisible) View.VISIBLE else View.GONE
-            categoryMaterial.getChildAt(1).apply {
-                if (this is ImageView) {
-                    setImageResource(
-                        if (isMaterialVisible) R.drawable.ic_arrow_up
-                        else R.drawable.ic_arrow_down_category_filter
-                    )
-                }
-            }
-            if (!isMaterialVisible) {
-                if (selectedMaterialButtons.isEmpty()) {
-                    categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct)
-                    categoryMaterialText.setTextColor(Color.parseColor("#8A8F9C"))
-                }
-            } else {
-                categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
-                categoryMaterialText.setTextColor(Color.WHITE)
             }
         }
 
@@ -158,12 +116,6 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
                 }
 
                 filterAndDisplayRecipes()
-            }
-        }
-
-        materialButtons.forEach { button ->
-            button.setOnClickListener {
-                toggleMaterialButton(button)
             }
         }
 

@@ -24,7 +24,6 @@ class MyReviewAdapter(
         val rating: TextView = view.findViewById(R.id.reviewStarText)
         val content: TextView = view.findViewById(R.id.reviewContentText)
         val image: ImageView = view.findViewById(R.id.reviewRecipeImage)
-        val editBtn: TextView = view.findViewById(R.id.reviewEditBtn)
         val deleteBtn: TextView = view.findViewById(R.id.reviewDeleteBtn)
     }
 
@@ -55,7 +54,6 @@ class MyReviewAdapter(
             holder.image.setImageResource(R.drawable.image_review_list_food)
         }
 
-        holder.editBtn.setOnClickListener { onEditClick(review) }
         holder.deleteBtn.setOnClickListener { onDeleteClick(review) }
     }
 

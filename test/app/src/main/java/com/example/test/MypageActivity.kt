@@ -134,13 +134,6 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // savePostText 클릭했을 때 MypageSavePostActivity 이동
-        val savePostText: TextView = findViewById(R.id.savePostText)
-        savePostText.setOnClickListener {
-            val intent = Intent(this, MypageSavePostActivity::class.java)
-            startActivity(intent)
-        }
-
         // writePostText 클릭했을 때 MypageWritePostActivity 이동
         val writePostText: TextView = findViewById(R.id.writePostText)
         writePostText.setOnClickListener {
