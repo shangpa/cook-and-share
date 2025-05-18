@@ -49,8 +49,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendTokenToServer(token: String) {
-        val context = App.context // ✅ 항상 초기화된 컨텍스트 사용
-        val prefs = Prefs(context)
+        val prefs = Prefs(applicationContext)
         val authToken = prefs.token ?: return
 
         val request = FcmTokenRequestDTO(token, "ANDROID")
