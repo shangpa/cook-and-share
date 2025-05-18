@@ -27,7 +27,6 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
 
     private lateinit var arrowIcon: ImageView
     private lateinit var categoryFood: LinearLayout
-    private lateinit var categoryMaterial: LinearLayout
     private lateinit var cookDropdown: LinearLayout
     private lateinit var materialDropdown: LinearLayout
     private lateinit var categoryFoodText: TextView
@@ -49,11 +48,8 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
         // UI 요소 연결
         arrowIcon = findViewById(R.id.writeRecipeDropDownIcon)
         categoryFood = findViewById(R.id.categoryFood)
-        categoryMaterial = findViewById(R.id.categoryMaterial)
         cookDropdown = findViewById(R.id.cook)
-        materialDropdown = findViewById(R.id.material)
         categoryFoodText = categoryFood.getChildAt(0) as TextView
-        categoryMaterialText = categoryMaterial.getChildAt(0) as TextView
         writeRecipeDropDownIcon = findViewById(R.id.writeRecipeDropDownIcon)
         writeRecipefillterText = findViewById(R.id.writeRecipefillterText)
         writeRecipeNumber = findViewById(R.id.WriteRecipeNumber)
@@ -77,15 +73,8 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
             updateCategoryStyle()
         }
 
-        categoryMaterial.setOnClickListener {
-            isMaterialVisible = !isMaterialVisible
-            materialDropdown.visibility = if (isMaterialVisible) View.VISIBLE else View.GONE
-            updateMaterialStyle()
-        }
-
         // 필터 버튼 초기화
         setupCategoryButtons()
-        setupMaterialButtons()
 
         // 더 많은 레시피 작성하러 가기
         findViewById<LinearLayout>(R.id.btnRecipeMore).setOnClickListener {
@@ -113,22 +102,6 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
         } else {
             categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
             categoryFoodText.setTextColor(Color.WHITE)
-        }
-    }
-
-    private fun updateMaterialStyle() {
-        val arrow = categoryMaterial.getChildAt(1) as? ImageView
-        arrow?.setImageResource(
-            if (isMaterialVisible) R.drawable.ic_arrow_up
-            else R.drawable.ic_arrow_down_category_filter
-        )
-
-        if (!isMaterialVisible && selectedMaterialButtons.isEmpty()) {
-            categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct)
-            categoryMaterialText.setTextColor(Color.parseColor("#8A8F9C"))
-        } else {
-            categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
-            categoryMaterialText.setTextColor(Color.WHITE)
         }
     }
 
@@ -177,60 +150,6 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
                 }
 
                 updateCategoryStyle()
-                fetchMyRecipes()
-            }
-        }
-    }
-
-    private fun setupMaterialButtons() {
-        val buttons = listOf(
-            findViewById<Button>(R.id.alll),
-            findViewById(R.id.grain),
-            findViewById(R.id.fruit),
-            findViewById(R.id.vegetable),
-            findViewById(R.id.meat),
-            findViewById(R.id.dairy),
-            findViewById(R.id.seafood),
-            findViewById(R.id.condiment),
-            findViewById(R.id.mushroom),
-            findViewById(R.id.additive),
-            findViewById(R.id.processed),
-            findViewById(R.id.favorite)
-        )
-
-        buttons.forEach { button ->
-            button.setOnClickListener {
-                if (button.id == R.id.alll) {
-                    // 전체 버튼: 모든 재료 선택 해제
-                    selectedMaterialButtons.clear()
-                    buttons.forEach {
-                        it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                        it.setTextColor(Color.parseColor("#8A8F9C"))
-                    }
-
-                    // 전체 버튼 강조
-                    button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-                    button.setTextColor(Color.WHITE)
-
-                } else {
-                    // 전체 버튼 선택 해제
-                    val allButton = findViewById<Button>(R.id.alll)
-                    allButton.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    allButton.setTextColor(Color.parseColor("#8A8F9C"))
-
-                    // 선택/해제 토글
-                    if (selectedMaterialButtons.contains(button)) {
-                        selectedMaterialButtons.remove(button)
-                        button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                        button.setTextColor(Color.parseColor("#8A8F9C"))
-                    } else {
-                        selectedMaterialButtons.add(button)
-                        button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-                        button.setTextColor(Color.WHITE)
-                    }
-                }
-
-                updateMaterialStyle()
                 fetchMyRecipes()
             }
         }

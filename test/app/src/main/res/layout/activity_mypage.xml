@@ -376,35 +376,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"/>
 
-        <!-- 저장한 게시글 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
 
-            <!-- 저장한 게시글 아이콘 -->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_mypage_community_save"
-                android:contentDescription="저장한 게시글 아이콘"
-                android:layout_marginTop="1dp"
-                android:layout_marginStart="1dp"/>
-
-            <!--  저장한 게시글 텍스트 -->
-            <TextView
-                android:id="@+id/savePostText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="저장한 게시글"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:layout_marginStart="6dp"/>
-
-        </LinearLayout>
 
         <!-- 작성한 게시글 -->
         <LinearLayout
