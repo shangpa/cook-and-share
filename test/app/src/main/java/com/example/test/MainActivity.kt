@@ -1,6 +1,10 @@
 package com.example.test
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.GridLayout
 import android.widget.ImageButton
@@ -33,6 +37,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.test.model.IngredientRecipeGroup
+import com.google.firebase.messaging.FirebaseMessaging
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import java.text.DecimalFormat
 
@@ -51,11 +56,27 @@ data class RecipeCardViewIds(
     val timeId: Int,
     val playBtnId: Int
 )
+fun createNotificationChannel(context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = "기본 알림 채널"
+        val descriptionText = "앱 기본 알림 채널입니다."
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel("default", name, importance).apply {
+            description = descriptionText
+        }
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //알림용
+        createNotificationChannel(this)
 
         // 배너
         val bannerAdapter = BannerViewPagerAdapter(this@MainActivity)
