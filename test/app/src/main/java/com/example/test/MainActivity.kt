@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.GridLayout
@@ -36,11 +37,13 @@ import java.time.format.DateTimeFormatter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.test.model.IngredientRecipeGroup
 import com.google.firebase.messaging.FirebaseMessaging
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import java.text.DecimalFormat
-
+import android.Manifest
 
 lateinit var binding: ActivityMainBinding
 private var currentPage = 0
@@ -74,6 +77,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 알림 권한 설정
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
 
         //알림용
         createNotificationChannel(this)
