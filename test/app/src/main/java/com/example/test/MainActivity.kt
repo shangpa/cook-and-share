@@ -38,6 +38,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.test.model.IngredientRecipeGroup
 import com.google.firebase.messaging.FirebaseMessaging
+import com.example.test.model.TradePost.TradePostSimpleResponse
+import java.text.DecimalFormat
 
 
 lateinit var binding: ActivityMainBinding
@@ -271,6 +273,7 @@ class MainActivity : AppCompatActivity() {
 
         val token = App.prefs.token.toString()
         val call = RetrofitInstance.apiService.getMainMessage("Bearer $token")
+        loadPopularKitchenPosts()
 
         call.enqueue(object : Callback<Map<String, String>> {
             override fun onResponse(
@@ -601,5 +604,73 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    //동네주방
+    private fun loadPopularKitchenPosts() {
+        val token = App.prefs.token ?: return
+        val container = findViewById<GridLayout>(R.id.kitchenList)
+
+        RetrofitInstance.apiService.getPopularTradePosts("Bearer $token")
+            .enqueue(object : Callback<List<TradePostSimpleResponse>> {
+                override fun onResponse(
+                    call: Call<List<TradePostSimpleResponse>>,
+                    response: Response<List<TradePostSimpleResponse>>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val posts = response.body()!!
+                        container.removeAllViews()
+
+                        for (post in posts) {
+                            val postView = layoutInflater.inflate(R.layout.item_main_trade_post, container, false)
+
+                            val imageView = postView.findViewById<ImageView>(R.id.itemImage)
+                            val titleView = postView.findViewById<TextView>(R.id.itemTitle)
+                            val priceView = postView.findViewById<TextView>(R.id.itemPrice)
+
+                            val distanceText = postView.findViewById<TextView>(R.id.distanceText)
+
+                            titleView.text = post.title
+                            val formatter = DecimalFormat("#,###")
+                            priceView.text = if (post.price == 0) {
+                                "나눔"
+                            } else {
+                                "${formatter.format(post.price)} P"
+                            }
+
+                            Glide.with(this@MainActivity)
+                                .load(post.firstImageUrl)
+                                .placeholder(R.drawable.img_kitchen1)
+                                .into(imageView)
+
+                            // 숨김 처리
+                            distanceText.visibility = View.GONE
+
+                            container.addView(postView)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<TradePostSimpleResponse>>, t: Throwable) {
+                    Log.e("MainActivity", "인기 거래글 불러오기 실패", t)
+                }
+            })
+    }
+
+    private fun convertTimeAgo(dateStr: String): String {
+        return try {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val postDate = LocalDate.parse(dateStr, formatter)
+            val daysAgo = ChronoUnit.DAYS.between(postDate, LocalDate.now())
+
+            when (daysAgo) {
+                0L -> "오늘"
+                1L -> "어제"
+                else -> "${daysAgo}일 전"
+            }
+        } catch (e: Exception) {
+            "-"
+        }
+    }
+
 
 }
