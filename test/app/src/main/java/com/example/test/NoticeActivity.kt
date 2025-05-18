@@ -9,6 +9,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.test.model.notification.NotificationResponseDTO
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class NoticeActivity : AppCompatActivity() {
 
@@ -91,9 +96,8 @@ class NoticeActivity : AppCompatActivity() {
         noticeBack.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
+        loadNotifications()
 
-        updateSelection(all)
-        filterNotificationsByCategory("all")
     }
 
     private fun updateSelection(selected: LinearLayout) {
@@ -181,5 +185,61 @@ class NoticeActivity : AppCompatActivity() {
                 else -> View.VISIBLE
             }
         }
+    }
+    private fun loadNotifications() {
+        val token = App.prefs.token ?: return
+        val container = findViewById<LinearLayout>(R.id.roundedContainer)
+        container.removeAllViews()
+
+        RetrofitInstance.notificationApi.getNotifications("Bearer $token")
+            .enqueue(object : Callback<List<NotificationResponseDTO>> {
+                override fun onResponse(call: Call<List<NotificationResponseDTO>>, response: Response<List<NotificationResponseDTO>>) {
+                    if (response.isSuccessful) {
+                        val notifications = response.body() ?: return
+                        Log.d("Notification", "불러온 알림 개수: ${notifications.size}")
+                        for (notification in notifications) {
+                            Log.d("Notification", "알림 내용: ${notification.category}, ${notification.content}")
+                            val itemView = layoutInflater.inflate(R.layout.item_notification, container, false)
+
+                            val icon = itemView.findViewById<ImageView>(R.id.notificationIcon)
+                            val content = itemView.findViewById<TextView>(R.id.notificationContent)
+                            val time = itemView.findViewById<TextView>(R.id.notificationTime)
+
+                            // 카테고리별 아이콘 지정
+                            when (notification.category.uppercase()) {
+                                "RECIPE" -> {
+                                    icon.setImageResource(R.drawable.ic_book)
+                                    icon.tag = "ic_book"
+                                }
+                                "FRIDGE" -> {
+                                    icon.setImageResource(R.drawable.ic_refrigerator)
+                                    icon.tag = "ic_refrigerator"
+                                }
+                                "VILLAGE" -> {
+                                    icon.setImageResource(R.drawable.ic_bell)
+                                    icon.tag = "ic_bell"
+                                }
+                                "COMMUNITY" -> {
+                                    icon.setImageResource(R.drawable.ic_chatt)
+                                    icon.tag = "ic_chatt"
+                                }
+                                else -> icon.setImageResource(R.drawable.ic_bell)
+                            }
+
+                            content.text = notification.content
+                            time.text = notification.createdAt.substring(0, 16).replace("T", " ")
+
+                            container.addView(itemView)
+                            Log.d("Notification", "아이템 추가: ${notification.content}")
+
+                        }
+                        filterNotificationsByCategory("all")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<NotificationResponseDTO>>, t: Throwable) {
+                    Log.e("Notification", "알림 불러오기 실패", t)
+                }
+            })
     }
 }

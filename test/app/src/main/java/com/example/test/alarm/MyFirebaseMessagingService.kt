@@ -22,8 +22,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
-        val title = remoteMessage.notification?.title ?: "알림"
-        val body = remoteMessage.notification?.body ?: ""
+        val title = remoteMessage.data["title"] ?: "알림"
+        val body = remoteMessage.data["body"] ?: ""
 
         Log.d("FCM", "onMessageReceived 호출됨")
         Log.d("FCM", "알림 제목: $title")
