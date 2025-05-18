@@ -284,135 +284,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/onePerson" />
 
-                <!-- 계란 박스 -->
-                <View
-                    android:id="@+id/eggBox"
-                    android:layout_width="352dp"
-                    android:layout_height="74dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerExpectedIngredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="22dp"
-                    android:background="@drawable/ic_recipe_rect"
                     app:layout_constraintStart_toStartOf="@id/expectationMaterialsToBeUsed"
-                    app:layout_constraintTop_toBottomOf="@id/expectationMaterialsToBeUsed" />
+                    app:layout_constraintTop_toBottomOf="@id/expectationMaterialsToBeUsed"/>
 
-                <!-- 계란 -->
-                <TextView
-                    android:id="@+id/egg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginStart="25dp"
-                    android:text="계란"
-                    android:textSize="14sp"
-                    android:textColor="#35A825"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/eggBox"
-                    app:layout_constraintStart_toStartOf="@id/eggBox" />
-
-                <!-- 개수 -->
-                <TextView
-                    android:id="@+id/theNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="25dp"
-                    android:text="2알"
-                    android:textSize="14sp"
-                    android:textColor="#2B2B2B"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/egg"
-                    app:layout_constraintEnd_toEndOf="@id/eggBox" />
-
-                <!-- 날짜 -->
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginStart="25dp"
-                    android:text="구매일자 : 2025.01.02"
-                    android:textSize="11sp"
-                    android:textColor="#000000"
-                    app:layout_constraintTop_toTopOf="@id/egg"
-                    app:layout_constraintStart_toStartOf="@id/eggBox" />
-
-                <!-- 전체 : 16 알 -->
-                <TextView
-                    android:id="@+id/totalNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="25dp"
-                    android:text="전체 : 16 알"
-                    android:textSize="11sp"
-                    android:textColor="#000000"
-                    app:layout_constraintTop_toTopOf="@id/date"
-                    app:layout_constraintEnd_toEndOf="@id/eggBox" />
-
-                <!-- 적양파 박스 -->
-                <View
-                    android:id="@+id/redOnionBox"
-                    android:layout_width="352dp"
-                    android:layout_height="74dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="11dp"
-                    android:background="@drawable/ic_recipe_rect"
-                    app:layout_constraintStart_toStartOf="@id/expectationMaterialsToBeUsed"
-                    app:layout_constraintTop_toBottomOf="@id/eggBox" />
-
-                <!-- 적양파 -->
-                <TextView
-                    android:id="@+id/redOnion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginStart="25dp"
-                    android:text="적양파"
-                    android:textSize="14sp"
-                    android:textColor="#35A825"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/redOnionBox"
-                    app:layout_constraintStart_toStartOf="@id/redOnionBox" />
-
-                <!-- 개수 -->
-                <TextView
-                    android:id="@+id/theNumberTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="25dp"
-                    android:text="1 개"
-                    android:textSize="14sp"
-                    android:textColor="#2B2B2B"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="@id/redOnion"
-                    app:layout_constraintEnd_toEndOf="@id/redOnionBox" />
-
-                <!-- 날짜 -->
-                <TextView
-                    android:id="@+id/dateTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginStart="25dp"
-                    android:text="구매일자 : 2025.01.02"
-                    android:textSize="11sp"
-                    android:textColor="#000000"
-                    app:layout_constraintTop_toTopOf="@id/redOnion"
-                    app:layout_constraintStart_toStartOf="@id/redOnionBox" />
-
-                <!-- 전체 : 2 개 -->
-                <TextView
-                    android:id="@+id/totalNumberTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="25dp"
-                    android:text="전체 : 2 개"
-                    android:textSize="11sp"
-                    android:textColor="#000000"
-                    app:layout_constraintTop_toTopOf="@id/dateTwo"
-                    app:layout_constraintEnd_toEndOf="@id/redOnionBox" />
 
                 <!-- 냉장고 재료 관리하러 가기 버튼 -->
                 <Button
@@ -425,7 +305,7 @@
                     android:layout_marginTop="130dp"
                     android:layout_marginBottom="50dp"
                     android:background="@drawable/btn_recipe_add"
-                    app:layout_constraintTop_toTopOf="@id/redOnionBox"
+                    app:layout_constraintTop_toTopOf="@id/recyclerExpectedIngredients"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
