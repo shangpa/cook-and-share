@@ -1,6 +1,7 @@
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.firebase.FirebaseApp
 
 class Prefs(context: Context) {
     companion object {
@@ -38,5 +39,6 @@ class App : Application() {
         super.onCreate()
         context = applicationContext
         prefs = Prefs(applicationContext)
+        FirebaseApp.initializeApp(this)
     }
 }

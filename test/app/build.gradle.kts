@@ -6,7 +6,7 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     //파이어 베이스 용
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    id("com.google.gms.google-services")
 }
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
