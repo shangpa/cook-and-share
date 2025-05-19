@@ -16,5 +16,6 @@ data class RecipeDetailResponse(
     val createdAt: String,
     val isPublic: Boolean,
     val writer: String,
-    val videoUrl: String?
+    val videoUrl: String?,
+    val viewCount: Int?
 )

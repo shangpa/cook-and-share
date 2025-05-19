@@ -125,8 +125,9 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun filterByCategory(category: String?) {
+        val token = "Bearer ${App.prefs.token}"
         currentSelectedCategory = category
-        RetrofitInstance.apiService.getAllPublicRecipes(sort = sortOrder)
+        RetrofitInstance.apiService.getAllPublicRecipes(token = token,sort = sortOrder)
             .enqueue(object : Callback<List<Recipe>> {
                 override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
                     if (response.isSuccessful) {

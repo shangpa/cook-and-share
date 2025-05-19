@@ -11,7 +11,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import com.example.test.model.Fridge.SelectedIngredient
-import com.example.test.model.FridgeResponse
+import com.example.test.model.Fridge.FridgeResponse
 import com.example.test.network.ApiService
 import com.example.test.network.RetrofitInstance
 import com.google.mlkit.vision.text.TextRecognition
@@ -30,7 +30,6 @@ import java.io.File
 import android.Manifest
 import android.provider.MediaStore
 import androidx.appcompat.app.AlertDialog
-import com.example.test.App.Companion.context
 import com.example.test.model.recipt.Feature
 import com.example.test.model.recipt.Image
 import com.example.test.model.recipt.ImageContext

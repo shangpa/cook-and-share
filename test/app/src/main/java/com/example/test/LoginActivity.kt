@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test.model.LoginRequest
 import com.example.test.model.LoginResponse
+import com.example.test.model.notification.FcmTokenRequestDTO
 import com.example.test.network.RetrofitInstance
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,6 +51,27 @@ class LoginActivity : AppCompatActivity() {
                             saveAuthData(loginResponse.userId, loginResponse.token)
                             Log.e("LoginActivity", "저장된 토큰: ${App.prefs.token}")
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
+
+                            //FCM 토큰 받아서 서버에 전송
+                            FirebaseMessaging.getInstance().token.addOnSuccessListener { fcmToken ->
+                                Log.d("FCM", "FCM 토큰: $fcmToken")
+
+                                val request = FcmTokenRequestDTO(token = fcmToken, platform = "ANDROID")
+                                val authToken = App.prefs.token ?: return@addOnSuccessListener
+
+                                RetrofitInstance.notificationApi.sendFcmToken(
+                                    "Bearer $authToken",
+                                    request
+                                ).enqueue(object : Callback<Void> {
+                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                        Log.d("FCM", "FCM 토큰 서버 전송 성공")
+                                    }
+
+                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                                        Log.e("FCM", "FCM 토큰 서버 전송 실패", t)
+                                    }
+                                })
+                            }
 
                             // 로그인 성공 후 LoginInfoActivity 또는 메인 화면으로 이동
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)

@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#F5F6F7"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="50dp"/>
 
 
         <!-- 이름 -->
@@ -68,10 +68,11 @@
 
             <!-- 이름 (변경불가) -->
             <TextView
+                android:id="@+id/personalInfoName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="홍길동"
+                android:hint="사용자 이름"
                 android:fontFamily="@font/pretendard_medium"
                 android:textSize="13sp"
                 android:textStyle="bold"
@@ -99,16 +100,18 @@
 
             <!-- Input 텍스트 -->
             <EditText
+                android:id="@+id/personalInfoID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="gildong"
-                android:fontFamily="@font/pretendard_medium"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#A1A9AD"
                 android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"/>
+                android:layout_marginBottom="15dp"
+                android:background="@null"
+                android:fontFamily="@font/pretendard_medium"
+                android:hint="사용자 아이디"
+                android:enabled="false"
+                android:textColor="#A1A9AD"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <!-- 밑줄 -->
             <View
@@ -116,6 +119,53 @@
                 android:layout_height="2dp"
                 android:background="#D2D5D6" />
 
+        </LinearLayout>
+
+        <!-- 현재 비밀번호 입력 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="30dp">
+
+
+            <!-- Input 텍스트 -->
+            <EditText
+                android:id="@+id/passwordNowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="현재 비밀번호 입력"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="15dp"/>
+
+            <!-- 밑줄 -->
+            <View
+                android:id="@+id/passwordNowUnderline"
+                android:layout_width="352dp"
+                android:layout_height="2dp"
+                android:background="#D2D5D6" />
+
+            <!-- 밑줄 아래에 추가 -->
+            <TextView
+                android:id="@+id/passwordNowErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="비밀번호가 일치하지 않습니다"
+                android:textColor="#FF0000"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <!-- 비밀번호 입력 -->
@@ -127,6 +177,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginBottom="30dp"
             android:layout_marginEnd="30dp">
+
 
             <!-- Input 텍스트 -->
             <EditText
@@ -162,8 +213,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="15dp"
                 android:visibility="gone"/>
-
-
         </LinearLayout>
 
         <!-- 비밀번호 확인 -->
@@ -213,346 +262,349 @@
 
         </LinearLayout>
 
-        <!-- 이메일 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
 
-            <!-- Input 텍스트 -->
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="gildong@example.com"
-                android:fontFamily="@font/pretendard_medium"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:maxLines="1"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"/>
-
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 전화번호 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- 전화번호 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp">
-
-                <!-- 전화번호 -->
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="010-1234-5678"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="#A1A9AD"
-                    android:maxLines="1"
-                    android:layout_marginTop="5dp"/>
-
-                <!-- 카테고리 컨테이너 (인증번호 전송) -->
+        <!--        &lt;!&ndash; 이메일 &ndash;&gt;
                 <LinearLayout
-                    android:id="@+id/sendAuthNumber"
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/ic_fridge_add"
-                    android:gravity="center"
-                    android:layout_marginStart="125dp">
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
 
-                    <!-- 인증번호 전송 텍스트 -->
+                    &lt;!&ndash; Input 텍스트 &ndash;&gt;
+                    <EditText
+                        android:id="@+id/personalInfoName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="gildong@example.com"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:maxLines="1"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp"/>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
+
+                </LinearLayout>-->
+
+        <!--        &lt;!&ndash; 전화번호 &ndash;&gt;
+                <LinearLayout
+                    android:id="@+id/personalInfoName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    &lt;!&ndash; 전화번호 &ndash;&gt;
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp">
+
+                        &lt;!&ndash; 전화번호 &ndash;&gt;
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="010-1234-5678"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#A1A9AD"
+                            android:maxLines="1"
+                            android:layout_marginTop="5dp"/>
+
+                        &lt;!&ndash; 카테고리 컨테이너 (인증번호 전송) &ndash;&gt;
+                        <LinearLayout
+                            android:id="@+id/sendAuthNumber"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/ic_fridge_add"
+                            android:gravity="center"
+                            android:layout_marginStart="125dp">
+
+                            &lt;!&ndash; 인증번호 전송 텍스트 &ndash;&gt;
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="인증번호 전송"
+                                android:textSize="12sp"
+                                android:textColor="#A1A9AD"
+                                android:layout_marginStart="1dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
+
+                </LinearLayout>
+
+                &lt;!&ndash; 인증번호 입력 &ndash;&gt;
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    &lt;!&ndash; 인증번호 입력 &ndash;&gt;
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp">
+
+                        &lt;!&ndash; 인증번호 입력 &ndash;&gt;
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="인증번호 입력"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#A1A9AD"
+                            android:maxLines="1"
+                            android:layout_marginTop="3dp"/>
+
+                        &lt;!&ndash; 카테고리 컨테이너 (인증번호 확인) &ndash;&gt;
+                        <LinearLayout
+                            android:id="@+id/checkAuthNumber"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/ic_fridge_add"
+                            android:gravity="center"
+                            android:layout_marginStart="150dp">
+
+                            &lt;!&ndash; 인증번호 확인 텍스트 &ndash;&gt;
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="인증번호 확인"
+                                android:textSize="12sp"
+                                android:textColor="#A1A9AD"
+                                android:layout_marginStart="1dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
+
+                </LinearLayout>
+
+                &lt;!&ndash; 우편번호 &ndash;&gt;
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    &lt;!&ndash; 우편번호 &ndash;&gt;
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp">
+
+                        &lt;!&ndash; 우편번호 &ndash;&gt;
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="12345"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#A1A9AD"
+                            android:maxLines="1"
+                            android:layout_marginTop="5dp"/>
+
+                        &lt;!&ndash; 카테고리 컨테이너 (우편번호 찾기) &ndash;&gt;
+                        <LinearLayout
+                            android:id="@+id/findAddress"
+                            android:layout_width="100dp"
+                            android:layout_height="26dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/btn_fridge_recipe_green"
+                            android:gravity="center"
+                            android:layout_marginStart="182dp">
+
+                            &lt;!&ndash; 인증번호 전송 텍스트 &ndash;&gt;
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="우편번호 찾기"
+                                android:textSize="12sp"
+                                android:textColor="#fff"
+                                android:layout_marginStart="1dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
+
+                </LinearLayout>
+
+                &lt;!&ndash; 주소 &ndash;&gt;
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    &lt;!&ndash; Input 텍스트 &ndash;&gt;
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="경기도 부천시 원미구 신흥로 56번길 25"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:maxLines="1"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp"/>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
+
+                </LinearLayout>
+
+                &lt;!&ndash; 상세 주소 &ndash;&gt;
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    &lt;!&ndash; Input 텍스트 &ndash;&gt;
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="꿈집 6층"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:maxLines="1"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp"/>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
+
+                </LinearLayout>
+
+                &lt;!&ndash; 생년월일 &ndash;&gt;
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    &lt;!&ndash; 생년월일 (변경불가) &ndash;&gt;
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="인증번호 전송"
-                        android:textSize="12sp"
+                        android:background="@null"
+                        android:hint="2004-01-01"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
                         android:textColor="#A1A9AD"
-                        android:layout_marginStart="1dp"/>
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp"/>
+
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
 
                 </LinearLayout>
-            </LinearLayout>
 
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 인증번호 입력 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- 인증번호 입력 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp">
-
-                <!-- 인증번호 입력 -->
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="인증번호 입력"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="#A1A9AD"
-                    android:maxLines="1"
-                    android:layout_marginTop="3dp"/>
-
-                <!-- 카테고리 컨테이너 (인증번호 확인) -->
+                &lt;!&ndash; 성별 &ndash;&gt;
                 <LinearLayout
-                    android:id="@+id/checkAuthNumber"
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/ic_fridge_add"
-                    android:gravity="center"
-                    android:layout_marginStart="150dp">
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginEnd="30dp">
 
-                    <!-- 인증번호 확인 텍스트 -->
+                    &lt;!&ndash; 성별 (변경불가) &ndash;&gt;
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="인증번호 확인"
-                        android:textSize="12sp"
+                        android:background="@null"
+                        android:hint="남성"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
                         android:textColor="#A1A9AD"
-                        android:layout_marginStart="1dp"/>
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="15dp"/>
 
-                </LinearLayout>
-            </LinearLayout>
+                    &lt;!&ndash; 밑줄 &ndash;&gt;
+                    <View
+                        android:layout_width="352dp"
+                        android:layout_height="2dp"
+                        android:background="#D2D5D6" />
 
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 우편번호 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- 우편번호 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp">
-
-                <!-- 우편번호 -->
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="12345"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="#A1A9AD"
-                    android:maxLines="1"
-                    android:layout_marginTop="5dp"/>
-
-                <!-- 카테고리 컨테이너 (우편번호 찾기) -->
-                <LinearLayout
-                    android:id="@+id/findAddress"
-                    android:layout_width="100dp"
-                    android:layout_height="26dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/btn_fridge_recipe_green"
-                    android:gravity="center"
-                    android:layout_marginStart="182dp">
-
-                    <!-- 인증번호 전송 텍스트 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="우편번호 찾기"
-                        android:textSize="12sp"
-                        android:textColor="#fff"
-                        android:layout_marginStart="1dp"/>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 주소 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- Input 텍스트 -->
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="경기도 부천시 원미구 신흥로 56번길 25"
-                android:fontFamily="@font/pretendard_medium"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:maxLines="1"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"/>
-
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 상세 주소 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- Input 텍스트 -->
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="꿈집 6층"
-                android:fontFamily="@font/pretendard_medium"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:maxLines="1"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"/>
-
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 생년월일 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- 생년월일 (변경불가) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="2004-01-01"
-                android:fontFamily="@font/pretendard_medium"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#A1A9AD"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"/>
-
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
-
-        <!-- 성별 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="100dp"
-            android:layout_marginEnd="30dp">
-
-            <!-- 성별 (변경불가) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="남성"
-                android:fontFamily="@font/pretendard_medium"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#A1A9AD"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="15dp"/>
-
-            <!-- 밑줄 -->
-            <View
-                android:layout_width="352dp"
-                android:layout_height="2dp"
-                android:background="#D2D5D6" />
-
-        </LinearLayout>
+                </LinearLayout>-->
 
         <!-- 수정하기 -->
         <LinearLayout
@@ -563,6 +615,7 @@
             android:background="@drawable/btn_big_green"
             android:gravity="center"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="30dp"
             android:layout_marginEnd="30dp">
 

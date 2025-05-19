@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="18dp"
-        android:text="소금시러설탕시러"
+        android:text="작성자이름"
         android:textColor="#000000"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="9dp"
-        android:text="동해바다가 보고싶어서 펜션을 빌렸어요.\n바베큐와 레시피에서 본 삼겹살 배추 술찜 만들어 먹었는데\n술 안주로 딱 좋네요ㅎㅎ\n추천합니다!"
+        android:text="본문"
         android:textColor="#000000"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,20 +113,7 @@
             android:paddingEnd="20dp"
             android:gravity="center_vertical">
 
-            <!-- 이미지 1 -->
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="217dp"
-                android:layout_height="246dp"
-                android:src="@drawable/image_post_list_one"
-                android:layout_marginEnd="13dp"/>
 
-            <!-- 이미지 2 -->
-            <ImageView
-                android:id="@+id/imageTwo"
-                android:layout_width="217dp"
-                android:layout_height="246dp"
-                android:src="@drawable/image_post_list_two" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -149,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginTop="1dp"
-        android:text="123"
+        android:text="11"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/good"
@@ -174,7 +161,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginTop="1dp"
-        android:text="20"
+        android:text="22"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/chat"

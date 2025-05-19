@@ -16,7 +16,10 @@ data class Recipe(
     val handlingMethods: String?,
     val cookingSteps: String?,
     val isPublic: Boolean,
-    val videoUrl: String?
+    val videoUrl: String?,
+    val averageRating: Double = 0.0,
+    val reviewCount: Int = 0,
+    var liked: Boolean = false
 )
 
 data class User(

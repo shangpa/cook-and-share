@@ -3,11 +3,22 @@ package com.example.test
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.test.adapter.MyWriteRecipeAdapter
+import com.example.test.model.recipeDetail.MyWriteRecipe
+import com.example.test.model.recipeDetail.MyWriteRecipeResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MypageWriteRecipeActivity : AppCompatActivity() {
 
@@ -21,28 +32,108 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
     private lateinit var materialDropdown: LinearLayout
     private lateinit var categoryFoodText: TextView
     private lateinit var categoryMaterialText: TextView
-    private lateinit var fridgeRecipeResultDropDownIcon: ImageView
-    private lateinit var fridgeRecipefillterText: TextView
+    private lateinit var writeRecipeDropDownIcon: ImageView
+    private lateinit var writeRecipefillterText: TextView
+    private lateinit var writeRecipeNumber: TextView
+    private lateinit var recyclerView: RecyclerView
 
-    private var selectedButton: Button? = null
+    private lateinit var adapter: MyWriteRecipeAdapter
+    private var recipeList = listOf<MyWriteRecipe>()
+    private val selectedCategoryButtons = mutableSetOf<Button>()
     private val selectedMaterialButtons = mutableSetOf<Button>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage_write_recipe)
 
+        // UI 요소 연결
+        arrowIcon = findViewById(R.id.writeRecipeDropDownIcon)
         categoryFood = findViewById(R.id.categoryFood)
-        cookDropdown = findViewById(R.id.cook)
-        categoryFoodText = categoryFood.getChildAt(0) as TextView
-
         categoryMaterial = findViewById(R.id.categoryMaterial)
+        cookDropdown = findViewById(R.id.cook)
         materialDropdown = findViewById(R.id.material)
+        categoryFoodText = categoryFood.getChildAt(0) as TextView
         categoryMaterialText = categoryMaterial.getChildAt(0) as TextView
+        writeRecipeDropDownIcon = findViewById(R.id.writeRecipeDropDownIcon)
+        writeRecipefillterText = findViewById(R.id.writeRecipefillterText)
+        writeRecipeNumber = findViewById(R.id.WriteRecipeNumber)
+        recyclerView = findViewById(R.id.writeRecipeRecyclerView)
 
-        fridgeRecipeResultDropDownIcon = findViewById(R.id.fridgeRecipeResultDropDownIcon)
-        fridgeRecipefillterText = findViewById(R.id.fridgeRecipefillterText)
+        // 리사이클러뷰 세팅
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = MyWriteRecipeAdapter(recipeList) { item -> showMorePopup(item) }
+        recyclerView.adapter = adapter
 
-        val categoryButtons = listOf(
+        // 드롭다운(정렬)
+        writeRecipeDropDownIcon.setOnClickListener {
+            showSortPopup(it)
+        }
+
+        // 필터 드롭다운 열기
+        categoryFood.setOnClickListener {
+            isCategoryVisible = !isCategoryVisible
+            cookDropdown.visibility = if (isCategoryVisible) View.VISIBLE else View.GONE
+            arrowIcon.setImageResource(if (isCategoryVisible) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down_category_filter)
+            updateCategoryStyle()
+        }
+
+        categoryMaterial.setOnClickListener {
+            isMaterialVisible = !isMaterialVisible
+            materialDropdown.visibility = if (isMaterialVisible) View.VISIBLE else View.GONE
+            updateMaterialStyle()
+        }
+
+        // 필터 버튼 초기화
+        setupCategoryButtons()
+        setupMaterialButtons()
+
+        // 더 많은 레시피 작성하러 가기
+        findViewById<LinearLayout>(R.id.btnRecipeMore).setOnClickListener {
+            startActivity(Intent(this, RecipeWriteMain::class.java))
+        }
+
+        // 뒤로가기
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
+
+        // 서버에서 레시피 가져오기
+        fetchMyRecipes()
+    }
+
+    private fun updateCategoryStyle() {
+        if (!isCategoryVisible) {
+            if (selectedCategoryButtons.isNotEmpty()) {
+                categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
+                categoryFoodText.setTextColor(Color.WHITE)
+            } else {
+                categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct)
+                categoryFoodText.setTextColor(Color.parseColor("#8A8F9C"))
+            }
+        } else {
+            categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
+            categoryFoodText.setTextColor(Color.WHITE)
+        }
+    }
+
+    private fun updateMaterialStyle() {
+        val arrow = categoryMaterial.getChildAt(1) as? ImageView
+        arrow?.setImageResource(
+            if (isMaterialVisible) R.drawable.ic_arrow_up
+            else R.drawable.ic_arrow_down_category_filter
+        )
+
+        if (!isMaterialVisible && selectedMaterialButtons.isEmpty()) {
+            categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct)
+            categoryMaterialText.setTextColor(Color.parseColor("#8A8F9C"))
+        } else {
+            categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
+            categoryMaterialText.setTextColor(Color.WHITE)
+        }
+    }
+
+    private fun setupCategoryButtons() {
+        val buttons = listOf(
             findViewById<Button>(R.id.all),
             findViewById(R.id.filterKorean),
             findViewById(R.id.filterWestern),
@@ -54,7 +145,45 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
             findViewById(R.id.filterSideDish)
         )
 
-        val materialButtons = listOf(
+        buttons.forEach { button ->
+            button.setOnClickListener {
+                if (button.id == R.id.all) {
+                    // 전체 버튼 → 전체 선택 해제 + 스타일 초기화
+                    selectedCategoryButtons.clear()
+                    buttons.forEach {
+                        it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                        it.setTextColor(Color.parseColor("#8A8F9C"))
+                    }
+                    // 전체 버튼 강조
+                    button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                    button.setTextColor(Color.WHITE)
+                } else {
+                    // 전체 버튼 스타일 비활성화
+                    findViewById<Button>(R.id.all).apply {
+                        setBackgroundResource(R.drawable.rounded_rectangle_background)
+                        setTextColor(Color.parseColor("#8A8F9C"))
+                    }
+
+                    // 다중 선택 토글
+                    if (selectedCategoryButtons.contains(button)) {
+                        selectedCategoryButtons.remove(button)
+                        button.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                        button.setTextColor(Color.parseColor("#8A8F9C"))
+                    } else {
+                        selectedCategoryButtons.add(button)
+                        button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                        button.setTextColor(Color.WHITE)
+                    }
+                }
+
+                updateCategoryStyle()
+                fetchMyRecipes()
+            }
+        }
+    }
+
+    private fun setupMaterialButtons() {
+        val buttons = listOf(
             findViewById<Button>(R.id.alll),
             findViewById(R.id.grain),
             findViewById(R.id.fruit),
@@ -69,109 +198,123 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
             findViewById(R.id.favorite)
         )
 
-        categoryFood.setOnClickListener {
-            isCategoryVisible = !isCategoryVisible
-            cookDropdown.visibility = if (isCategoryVisible) View.VISIBLE else View.GONE
-            arrowIcon.setImageResource(
-                if (isCategoryVisible) R.drawable.ic_arrow_up
-                else R.drawable.ic_arrow_down_category_filter
-            )
-            if (!isCategoryVisible) {
-                if (selectedButton != null) {
-                    categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
-                    categoryFoodText.setTextColor(Color.WHITE)
+        buttons.forEach { button ->
+            button.setOnClickListener {
+                if (button.id == R.id.alll) {
+                    // 전체 버튼: 모든 재료 선택 해제
+                    selectedMaterialButtons.clear()
+                    buttons.forEach {
+                        it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                        it.setTextColor(Color.parseColor("#8A8F9C"))
+                    }
+
+                    // 전체 버튼 강조
+                    button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                    button.setTextColor(Color.WHITE)
+
                 } else {
-                    categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct)
-                    categoryFoodText.setTextColor(Color.parseColor("#8A8F9C"))
+                    // 전체 버튼 선택 해제
+                    val allButton = findViewById<Button>(R.id.alll)
+                    allButton.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                    allButton.setTextColor(Color.parseColor("#8A8F9C"))
+
+                    // 선택/해제 토글
+                    if (selectedMaterialButtons.contains(button)) {
+                        selectedMaterialButtons.remove(button)
+                        button.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                        button.setTextColor(Color.parseColor("#8A8F9C"))
+                    } else {
+                        selectedMaterialButtons.add(button)
+                        button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                        button.setTextColor(Color.WHITE)
+                    }
                 }
-            } else {
-                categoryFood.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
-                categoryFoodText.setTextColor(Color.WHITE)
+
+                updateMaterialStyle()
+                fetchMyRecipes()
             }
         }
-
-        categoryMaterial.setOnClickListener {
-            isMaterialVisible = !isMaterialVisible
-            materialDropdown.bringToFront()
-            materialDropdown.visibility = if (isMaterialVisible) View.VISIBLE else View.GONE
-            categoryMaterial.getChildAt(1).apply {
-                if (this is ImageView) {
-                    setImageResource(
-                        if (isMaterialVisible) R.drawable.ic_arrow_up
-                        else R.drawable.ic_arrow_down_category_filter
-                    )
-                }
-            }
-            if (!isMaterialVisible) {
-                if (selectedMaterialButtons.isEmpty()) {
-                    categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct)
-                    categoryMaterialText.setTextColor(Color.parseColor("#8A8F9C"))
-                }
-            } else {
-                categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
-                categoryMaterialText.setTextColor(Color.WHITE)
-            }
-        }
-
-        categoryButtons.forEach { button ->
-            button.setOnClickListener {
-                selectedButton = if (selectedButton == button) null else button
-                categoryButtons.forEach {
-                    it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    it.setTextColor(Color.parseColor("#8A8F9C"))
-                }
-                selectedButton?.let {
-                    it.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-                    it.setTextColor(Color.WHITE)
-                }
-            }
-        }
-
-        materialButtons.forEach { button ->
-            button.setOnClickListener {
-                toggleMaterialButton(button)
-            }
-        }
-
-        fridgeRecipeResultDropDownIcon.setOnClickListener {
-            showSortPopup(it)
-        }
-
-        findViewById<LinearLayout>(R.id.btnRecipeMore).setOnClickListener {
-            startActivity(Intent(this, RecipeActivity::class.java))
-        }
-
-        findViewById<ImageView>(R.id.backButton).setOnClickListener {
-            startActivity(Intent(this, MypageActivity::class.java))
-        }
-
-        val moreIconIds = listOf(
-            R.id.moreIcon1, R.id.moreIcon2, R.id.moreIcon3,
-            R.id.moreIcon4, R.id.moreIcon5
-        )
-
-        moreIconIds.forEach { id ->
-            findViewById<ImageButton>(id).setOnClickListener { view ->
-                showMorePopup(view)
-            }
-        }
-
     }
 
-    private fun showMorePopup(anchor: View) {
-        val popup = PopupMenu(this, anchor)
+    private fun getSelectedFilters(): List<String> {
+        val result = mutableListOf<String>()
+
+        // 카테고리 다중 선택
+        selectedCategoryButtons.forEach {
+            if (it.text.toString() != "전체") {
+                result.add(it.text.toString())
+            }
+        }
+
+        // 재료 다중 선택
+        selectedMaterialButtons.forEach {
+            if (it.text.toString() != "전체") {
+                result.add(it.text.toString())
+            }
+        }
+
+        return result
+    }
+
+    private fun fetchMyRecipes() {
+        val token = App.prefs.token ?: return
+        val sort = when (writeRecipefillterText.text.toString()) {
+            "조회수순" -> "views"
+            "최신순" -> "latest"
+            else -> "latest"
+        }
+        val filters = getSelectedFilters()
+
+        RetrofitInstance.apiService.getMyRecipes("Bearer $token", sort, filters)
+            .enqueue(object : Callback<MyWriteRecipeResponse> {
+                override fun onResponse(call: Call<MyWriteRecipeResponse>, response: Response<MyWriteRecipeResponse>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            recipeList = it.recipes
+                            writeRecipeNumber.text = "${it.count}"
+                            adapter = MyWriteRecipeAdapter(recipeList) { item -> showMorePopup(item) }
+                            recyclerView.adapter = adapter
+                        }
+                    } else {
+                        Log.e("작성레시피", "서버 응답 오류 ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<MyWriteRecipeResponse>, t: Throwable) {
+                    Log.e("작성레시피", "통신 실패: ${t.message}")
+                }
+            })
+    }
+
+    private fun showMorePopup(item: MyWriteRecipe) {
+        val popup = PopupMenu(this, writeRecipeDropDownIcon)
         popup.menu.add("수정")
         popup.menu.add("삭제")
 
-        popup.setOnMenuItemClickListener { item ->
-            when (item.title) {
+        popup.setOnMenuItemClickListener {
+            when (it.title) {
                 "수정" -> {
-                    Toast.makeText(this, "수정 클릭됨", Toast.LENGTH_SHORT).show()
-                    // TODO: 수정 로직 연결
+                    val intent = Intent(this, RecipeWriteBothActivity::class.java)
+                    intent.putExtra("recipeId", item.id) // 필요 시 ID 전달
+                    startActivity(intent)
                 }
                 "삭제" -> {
-                    Toast.makeText(this, "삭제 클릭됨", Toast.LENGTH_SHORT).show()
-                    // TODO: 삭제 로직 연결
+                    val token = App.prefs.token ?: return@setOnMenuItemClickListener true
+                    RetrofitInstance.apiService.deleteRecipe("Bearer $token", item.id)
+                        .enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(this@MypageWriteRecipeActivity, "삭제되었습니다", Toast.LENGTH_SHORT).show()
+                                    fetchMyRecipes() // 목록 다시 불러오기
+                                } else {
+                                    Toast.makeText(this@MypageWriteRecipeActivity, "삭제 실패", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@MypageWriteRecipeActivity, "에러: ${t.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
                 }
             }
             true
@@ -179,44 +322,15 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
         popup.show()
     }
 
-    private fun toggleMaterialButton(button: Button) {
-        if (selectedMaterialButtons.contains(button)) {
-            selectedMaterialButtons.remove(button)
-            button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-            button.setTextColor(Color.parseColor("#8A8F9C"))
-        } else {
-            selectedMaterialButtons.add(button)
-            button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-            button.setTextColor(Color.WHITE)
-        }
-
-        if (selectedMaterialButtons.isEmpty()) {
-            categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct)
-            categoryMaterialText.setTextColor(Color.parseColor("#8A8F9C"))
-        } else {
-            categoryMaterial.setBackgroundResource(R.drawable.btn_fridge_ct_selected)
-            categoryMaterialText.setTextColor(Color.WHITE)
-        }
-    }
-
     private fun showSortPopup(view: View) {
         val popupMenu = PopupMenu(this, view)
         popupMenu.menu.add("조회수순")
-        popupMenu.menu.add("별점순")
         popupMenu.menu.add("최신순")
-
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-            fridgeRecipefillterText.text = item.title
+            writeRecipefillterText.text = item.title
+            fetchMyRecipes()
             true
         }
-
         popupMenu.show()
-
-        // btnRecipeMore 클릭했을 때 RecipeWriteMain 이동
-        val btnRecipeMore: LinearLayout = findViewById(R.id.btnRecipeMore)
-        btnRecipeMore.setOnClickListener {
-            val intent = Intent(this, RecipeWriteMain::class.java)
-            startActivity(intent)
-        }
     }
 }
