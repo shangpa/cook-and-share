@@ -956,7 +956,7 @@
                     val uploadRecipe = recipe!!.copy(isPublic = isPublic)
                     sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
                         // 업로드 성공 후 해당 레시피 보기 화면으로 이동
-                        val intent = Intent(this, RecipeSeeActivity::class.java)
+                        val intent = Intent(this, RecipeSeeMainActivity::class.java)
                         intent.putExtra("recipeId", recipeId)
                         startActivity(intent)
                     }, onFailure = {
@@ -972,7 +972,7 @@
                 if (recipe != null) {
                     val uploadRecipe = recipe!!.copy(isPublic = isPublic)
                     sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
-                        val intent = Intent(this, RecipeSeeActivity::class.java)
+                        val intent = Intent(this, RecipeSeeMainActivity::class.java)
                         startActivity(intent)
                         Toast.makeText(this, "레시피가 등록되었습니다.", Toast.LENGTH_SHORT).show()
                         finish()
