@@ -532,19 +532,19 @@
 
     <ImageView
         android:id="@+id/aa"
-        android:layout_width="93dp"
-        android:layout_height="30dp"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_writting"
         android:contentDescription="작성 버튼"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="323dp"
+        android:layout_marginBottom="335dp"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/bb"
-        android:layout_width="93dp"
-        android:layout_height="30dp"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_chat"
         android:contentDescription="채팅 버튼"
         android:layout_gravity="bottom|end"
