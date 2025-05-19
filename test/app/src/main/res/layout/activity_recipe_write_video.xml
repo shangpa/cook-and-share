@@ -3019,7 +3019,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThirtytwo"/>
-
+                    <androidx.media3.ui.PlayerView
+                        android:id="@+id/videoPlayerView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/image"
+                        app:layout_constraintBottom_toBottomOf="@id/image"
+                        app:layout_constraintDimensionRatio="16:9"
+                        android:visibility="gone"
+                        app:use_controller="true"
+                        app:resize_mode="fit" />
                     <!-- 재생 버튼 -->
                     <ImageButton
                         android:id="@+id/btnVideo"
