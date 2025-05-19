@@ -1,6 +1,7 @@
-package com.example.test.model.board
+package com.example.test.model.community
 
 data class CommentResponse(
+    val id: Long,
     val user: String,
     val content: String,
     val createdAt: String

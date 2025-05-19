@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test.R
-import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.model.community.CommunityDetailResponse
 import com.example.test.network.RetrofitInstance
 
 class BoardPostAdapter(
