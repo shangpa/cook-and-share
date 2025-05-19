@@ -74,7 +74,8 @@ private lateinit var levelChoice: ConstraintLayout
 private lateinit var requiredTimeAndTag: ConstraintLayout
 private lateinit var root: ConstraintLayout  // 전체 레이아웃
 private var createdRecipeId: Long? = null
-
+private var isPublic: Boolean = true //공개설정용
+private var recipe: RecipeRequest? = null
 class RecipeWriteVideoActivity : AppCompatActivity() {
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
@@ -151,7 +152,10 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 handlingMethodMoveButtonDown() // 버튼 아래로 이동
             }
         }
-
+        val uncheck = findViewById<ImageButton>(R.id.uncheck)
+        val uncheckTwo = findViewById<ImageButton>(R.id.uncheckTwo)
+        val settle = findViewById<Button>(R.id.settle)
+        val cancelTwo = findViewById<Button>(R.id.cancelTwo)
         // 카테고리 선언
         val recipeWriteCategory = findViewById<ConstraintLayout>(R.id.recipeWriteCategory)
         val recipeWrite = findViewById<ConstraintLayout>(R.id.recipeWrite)
@@ -504,7 +508,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                     val gson = Gson()
 
                     // RecipeRequest 객체 생성
-                    val recipe = RecipeRequest(
+                    recipe = RecipeRequest(
                         title = recipeTitle,
                         category = categoryEnum,
                         ingredients = gson.toJson(filteredIngredients.map {
@@ -528,23 +532,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                         isPublic = true,
                         videoUrl = recipeVideoUrl ?: ""
                     )
-                    Log.d("RecipeRequest", "최종 videoUrl 값: ${recipe.videoUrl}")
                     Log.d("RecipeRequest", "전체 객체: ${gson.toJson(recipe)}")
-                    fun sendRecipeToServer(recipe: RecipeRequest) {
-                        val token = App.prefs.token
-                        RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
-                            if (response != null) {
-                                Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
-                                createdRecipeId = response.recipeId?.toLong()
-
-                            } else {
-                                Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
-
-                            }
-                        }
-                    }
-                    Log.d("RecipeRequest", gson.toJson(recipe))
-                    sendRecipeToServer(recipe)
                     updateMaterialListView(
                         findViewById(R.id.materialList),
                         filteredIngredients,
@@ -753,6 +741,32 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 }
             }
         }
+        var isCheckedOne = false
+        var isCheckedTwo = false
+        uncheck.setOnClickListener {
+            isCheckedOne = !isCheckedOne
+            uncheck.setImageResource(if (isCheckedOne) R.drawable.ic_check else R.drawable.ic_uncheck)
+            isCheckedTwo = false
+            uncheckTwo.setImageResource(R.drawable.ic_uncheck)
+            isPublic = true
+            recipe = recipe?.copy(isPublic = true) // recipe 객체도 같이 업데이트
+        }
+
+        uncheckTwo.setOnClickListener {
+            isCheckedTwo = !isCheckedTwo
+            uncheckTwo.setImageResource(if (isCheckedTwo) R.drawable.ic_check else R.drawable.ic_uncheck)
+            isCheckedOne = false
+            uncheck.setImageResource(R.drawable.ic_uncheck)
+            isPublic = false
+            recipe = recipe?.copy(isPublic = false) // recipe 객체도 같이 업데이트
+        }
+        settle.setOnClickListener {
+            shareSettle.visibility = View.GONE
+            recipeRegister.visibility = View.VISIBLE
+        }
+        cancelTwo.setOnClickListener {
+            recipeRegister.visibility = View.GONE
+        }
 
         // 레시피 작성내용 확인 공유 설정 클릭시 상자 나타남
         shareFixButton.setOnClickListener {
@@ -766,24 +780,37 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 Toast.makeText(this, "동영상 업로드가 끝날 때까지 기다려 주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (createdRecipeId != null) {
-                val intent = Intent(this, RecipeSeeMainActivity::class.java)
-                intent.putExtra("recipeId", createdRecipeId!!)
-                startActivity(intent)
-                finish()
+            if (recipe != null) {
+                sendRecipeToServer(recipe!!, onSuccess = { recipeId ->
+                    val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                    intent.putExtra("recipeId", recipeId)
+                    startActivity(intent)
+                    finish()
+                }, onFailure = {
+                    Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                })
             } else {
-                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "레시피 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)
         registerFixButton.setOnClickListener {
-            if (createdRecipeId != null) {
-                val intent = Intent(this, RecipeSeeMainActivity::class.java)
-                intent.putExtra("recipeId", createdRecipeId!!)
-                startActivity(intent)
+            if (isVideoUploading) {
+                Toast.makeText(this, "동영상 업로드가 끝날 때까지 기다려 주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (recipe != null) {
+                sendRecipeToServer(recipe!!, onSuccess = { recipeId ->
+                    val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                    intent.putExtra("recipeId", recipeId)
+                    startActivity(intent)
+                    finish()
+                }, onFailure = {
+                    Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                })
             } else {
-                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "레시피 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -1559,5 +1586,17 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             null
         }
     }
-
+    fun sendRecipeToServer(recipe: RecipeRequest, onSuccess: (Long) -> Unit, onFailure: (() -> Unit)? = null) {
+        val token = App.prefs.token
+        RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
+            if (response != null && response.recipeId != null) {
+                createdRecipeId = response.recipeId.toLong()
+                Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
+                onSuccess(createdRecipeId!!)  // 서버에서 받은 id 전달
+            } else {
+                Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                onFailure?.invoke()
+            }
+        }
+    }
 }
