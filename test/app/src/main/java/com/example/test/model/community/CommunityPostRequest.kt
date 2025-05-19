@@ -1,4 +1,4 @@
-package com.example.test.model.board
+package com.example.test.model.community
 
 data class CommunityPostRequest(
     val content: String,

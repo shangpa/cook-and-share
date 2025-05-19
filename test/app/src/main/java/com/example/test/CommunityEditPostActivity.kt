@@ -5,15 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.test.model.LoginInfoResponse
-import com.example.test.model.board.CommunityPostRequest
-import com.example.test.model.board.CommunityPostResponse
+import com.example.test.model.community.CommunityPostRequest
+import com.example.test.model.community.CommunityPostResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
 import com.yalantis.ucrop.UCrop

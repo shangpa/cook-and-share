@@ -10,7 +10,7 @@ import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
-import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.model.community.CommunityDetailResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
 import com.example.test.model.recipeDetail.RecipeDetailResponse
