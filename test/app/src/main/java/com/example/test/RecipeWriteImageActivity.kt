@@ -570,7 +570,11 @@
             // 레시피 탭바와 바 선언
             textViewList = listOf(one, two, three, four, five, six)
             underlineBar = findViewById(R.id.divideRectangleBarTwentythree)
-
+            underlineBar.post {
+                val textView = findViewById<TextView>(R.id.one)
+                val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
+                indicatorBar.x = targetX
+            }
             // 레시피 탭바 텍스트 클릭시 해당 텍스트 색 바뀌고 바 아래로 움직임
             textViewList.forEachIndexed { index, textView ->
                 textView.setOnClickListener {

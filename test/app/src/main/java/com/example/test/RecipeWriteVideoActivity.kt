@@ -160,7 +160,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val recipeWriteCategory = findViewById<ConstraintLayout>(R.id.recipeWriteCategory)
         val recipeWrite = findViewById<ConstraintLayout>(R.id.recipeWrite)
         val indicatorBar = findViewById<View>(R.id.divideRectangleBarThirtythree)
-
+        indicatorBar.post {
+            val textView = findViewById<TextView>(R.id.one)
+            val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
+            indicatorBar.x = targetX
+        }
         // 레시피 타이틀 선언
         val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
         val recipeTitleWrite = findViewById<EditText>(R.id.recipeTitleWrite)
