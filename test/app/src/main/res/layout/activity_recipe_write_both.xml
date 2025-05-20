@@ -79,93 +79,102 @@
                 <!-- 타이틀 -->
                 <TextView
                     android:id="@+id/one"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="14dp"
                     android:text="타이틀"
                     android:textColor="#2B2B2B"
                     android:textSize="12sp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/two"/>
 
                 <!-- 재료 -->
                 <TextView
                     android:id="@+id/two"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:layout_marginTop="14dp"
-                    android:text="재료"
+                    android:text="재  료"
                     android:textColor="#A1A9AD"
                     android:textSize="12sp"
+                    android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/one"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/three"/>
 
                 <!-- 대체재료 -->
                 <TextView
                     android:id="@+id/three"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:layout_marginTop="14dp"
                     android:text="대체재료"
                     android:textColor="#A1A9AD"
                     android:textSize="12sp"
+                    android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/two"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/four"/>
 
                 <!-- 처리방법 -->
                 <TextView
                     android:id="@+id/four"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:layout_marginTop="14dp"
                     android:text="처리방법"
                     android:textColor="#A1A9AD"
                     android:textSize="12sp"
+                    android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/three"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/five"/>
 
                 <!-- 조리순서 -->
                 <TextView
                     android:id="@+id/five"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:layout_marginTop="14dp"
                     android:text="조리순서"
                     android:textColor="#A1A9AD"
                     android:textSize="12sp"
+                    android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/four"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/six"/>
 
                 <!-- 조리영상 -->
                 <TextView
                     android:id="@+id/six"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:layout_marginTop="14dp"
                     android:text="조리영상"
                     android:textColor="#A1A9AD"
                     android:textSize="12sp"
+                    android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/five"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/seven"/>
 
                 <!-- 세부설정 -->
                 <TextView
                     android:id="@+id/seven"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="14dp"
                     android:text="세부설정"
                     android:textColor="#A1A9AD"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@id/six"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
