@@ -28,12 +28,6 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // likeFoodIcon 클릭했을 때 MainActivity 이동
-        val likeFoodIcon: ImageView = findViewById(R.id.likeFoodIcon)
-        likeFoodIcon.setOnClickListener {
-            val intent = Intent(this, LikeFoodActivity::class.java)
-            startActivity(intent)
-        }
 
         // logoutText 클릭했을 때 LoginActivity 이동
         val logoutText: TextView = findViewById(R.id.logoutText)
@@ -131,13 +125,6 @@ class MypageActivity : AppCompatActivity() {
         val MaterialListText: TextView = findViewById(R.id.MaterialListText)
         MaterialListText.setOnClickListener {
             val intent = Intent(this, MaterialMyProfileActivity::class.java)
-            startActivity(intent)
-        }
-
-        // savePostText 클릭했을 때 MypageSavePostActivity 이동
-        val savePostText: TextView = findViewById(R.id.savePostText)
-        savePostText.setOnClickListener {
-            val intent = Intent(this, MypageSavePostActivity::class.java)
             startActivity(intent)
         }
 

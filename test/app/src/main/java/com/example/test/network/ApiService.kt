@@ -5,21 +5,23 @@ import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.model.Fridge.FridgeResponse
+import com.example.test.model.Fridge.UsedIngredientRequest
 import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
-import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
+import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.model.review.ReviewRequestDTO
+import com.example.test.model.review.ReviewResponseDTO
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import com.example.test.model.recipeDetail.RecipeDetailResponse
-import com.example.test.model.review.ReviewRequestDTO
-import com.example.test.model.review.ReviewResponseDTO
-import retrofit2.http.Path
+
 
 interface ApiService {
 
@@ -80,6 +82,21 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") recipeId: Long
     ): Call<RecipeDetailResponse>
+
+
+    //레시피 - 예상 사용 재료
+    @GET("api/recipes/{id}/expected-ingredients")
+    fun getExpectedIngredients(
+        @Path("id") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<List<ExpectedIngredient>>
+
+    @POST("api/fridges/use-ingredients")
+    fun useIngredients(
+        @Header("Authorization") token: String,
+        @Body ingredients: List<UsedIngredientRequest>
+    ): Call<Void>
+
 
     // 레시피 검색
     @GET("api/recipes/search")

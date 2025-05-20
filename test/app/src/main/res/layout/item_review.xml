@@ -100,27 +100,12 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 수정/삭제 -->
+            <!-- 삭제 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="14dp">
-
-                <TextView
-                    android:id="@+id/reviewEditBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="수정"
-                    android:textSize="11sp"
-                    android:textColor="#AEB2BA" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="11dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="2dp"
-                    android:background="#D9D9D9" />
 
                 <TextView
                     android:id="@+id/reviewDeleteBtn"
@@ -129,6 +114,7 @@
                     android:text="삭제"
                     android:textSize="11sp"
                     android:textColor="#AEB2BA" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

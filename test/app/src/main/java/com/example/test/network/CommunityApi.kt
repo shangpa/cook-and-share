@@ -1,12 +1,12 @@
 package com.example.test.network
 
-import com.example.test.model.board.CommentListResponse
-import com.example.test.model.board.CommentRequest
-import com.example.test.model.board.CommentResponse
-import com.example.test.model.board.CommunityDetailResponse
-import com.example.test.model.board.CommunityMainResponse
-import com.example.test.model.board.CommunityPostRequest
-import com.example.test.model.board.CommunityPostResponse
+import com.example.test.model.community.CommentListResponse
+import com.example.test.model.community.CommentRequest
+import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.community.CommunityMainResponse
+import com.example.test.model.community.CommunityPostRequest
+import com.example.test.model.community.CommunityPostResponse
+import com.example.test.model.community.ReportRequestDTO
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -71,4 +71,10 @@ interface CommunityApi {
         @Query("size") size: Int = 10,
         @Query("sort") sort: String = "latest"
     ): Call<List<CommunityDetailResponse>>
+
+    @POST("/api/reports")
+    fun report(
+        @Header("Authorization") token: String,
+        @Body request: ReportRequestDTO
+    ): Call<Void>
 }

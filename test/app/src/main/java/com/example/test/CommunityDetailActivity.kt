@@ -4,8 +4,6 @@ package com.example.test
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -16,10 +14,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import com.bumptech.glide.Glide
-import com.example.test.model.board.CommentListResponse
-import com.example.test.model.board.CommentRequest
-import com.example.test.model.board.CommentResponse
-import com.example.test.model.board.CommunityDetailResponse
+import com.example.test.model.community.CommentListResponse
+import com.example.test.model.community.CommentRequest
+import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.community.ReportRequestDTO
 import com.example.test.network.RetrofitInstance
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -50,8 +48,23 @@ class CommunityDetailActivity : AppCompatActivity() {
             val popup = PopupMenu(this, add)
             popup.menu.add("신고하기")
             popup.setOnMenuItemClickListener {
-                Toast.makeText(this, "신고되었습니다.", Toast.LENGTH_SHORT).show()
-                finish()
+                // 실제 신고 API 호출 부분
+                val token = App.prefs.token ?: return@setOnMenuItemClickListener false
+                val boardId = intent.getLongExtra("postId", -1) // or 네가 전달하는 방식대로
+                if (boardId != -1L) {
+                    val dto = ReportRequestDTO(boardId = postId)
+                    RetrofitInstance.communityApi.report("Bearer $token", dto)
+                        .enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                Toast.makeText(this@CommunityDetailActivity, "신고되었습니다.", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@CommunityDetailActivity, "신고 실패", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                }
                 true
             }
             popup.show()
@@ -176,7 +189,33 @@ class CommunityDetailActivity : AppCompatActivity() {
                             view.findViewById<TextView>(R.id.nameFour).text = comment.user
                             view.findViewById<TextView>(R.id.contentFour).text = comment.content
                             view.findViewById<TextView>(R.id.timeFour).text = comment.createdAt.take(10).replace("-", ".")
+
+                            val addBtn = view.findViewById<ImageButton>(R.id.addFour)
+                            addBtn.setOnClickListener {
+                                val popup = PopupMenu(this@CommunityDetailActivity, addBtn)
+                                popup.menu.add("신고하기")
+                                popup.setOnMenuItemClickListener {
+                                    // 1. 토큰 준비
+                                    val token = App.prefs.token ?: return@setOnMenuItemClickListener false
+                                    // 2. 신고 DTO 준비 (댓글ID 필요)
+                                    val dto = ReportRequestDTO(boardCommentId = comment.id)
+                                    // 3. 서버로 신고 보내기
+                                    RetrofitInstance.communityApi.report("Bearer $token", dto)
+                                        .enqueue(object : Callback<Void> {
+                                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                                Toast.makeText(this@CommunityDetailActivity, "댓글이 신고되었습니다.", Toast.LENGTH_SHORT).show()
+                                            }
+                                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                                Toast.makeText(this@CommunityDetailActivity, "신고 실패", Toast.LENGTH_SHORT).show()
+                                            }
+                                        })
+                                    true
+                                }
+                                popup.show()
+                            }
+
                             commentContainer.addView(view)
+
                         }
                     }
                 }

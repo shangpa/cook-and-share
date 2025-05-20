@@ -53,6 +53,10 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import androidx.appcompat.app.AlertDialog
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -64,19 +68,18 @@ private lateinit var handlingMethodAddFixButton: Button
 private var itemCount = 0 // 추가된 개수 추적
 private val maxItems = 10 // 최대 10개 제한
 private val buttonMarginIncrease = 130 // 버튼을 아래로 내릴 거리 (px)
-private lateinit var cookVideoCamera: ImageButton
-private lateinit var detailSettleCamera: ImageButton
-private lateinit var imageContainer: LinearLayout
+private lateinit var videoCameraLauncher: ActivityResultLauncher<Intent>
 private lateinit var representImageContainer: LinearLayout
 private lateinit var levelChoice: ConstraintLayout
 private lateinit var requiredTimeAndTag: ConstraintLayout
 private lateinit var root: ConstraintLayout  // 전체 레이아웃
 private var createdRecipeId: Long? = null
-
+private var isPublic: Boolean = true //공개설정용
+private var recipe: RecipeRequest? = null
 class RecipeWriteVideoActivity : AppCompatActivity() {
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
-
+    private var isVideoUploading = false // 업로드 중 여부 체크
     private var targetContainer: LinearLayout? = null  // 선택한 이미지가 추가될 컨테이너 저장
     private var selectedVideoUri: Uri? = null
     private var recipeVideoUrl: String? = null  // 서버에 업로드된 영상 URL 저장용
@@ -149,12 +152,19 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 handlingMethodMoveButtonDown() // 버튼 아래로 이동
             }
         }
-
+        val uncheck = findViewById<ImageButton>(R.id.uncheck)
+        val uncheckTwo = findViewById<ImageButton>(R.id.uncheckTwo)
+        val settle = findViewById<Button>(R.id.settle)
+        val cancelTwo = findViewById<Button>(R.id.cancelTwo)
         // 카테고리 선언
         val recipeWriteCategory = findViewById<ConstraintLayout>(R.id.recipeWriteCategory)
         val recipeWrite = findViewById<ConstraintLayout>(R.id.recipeWrite)
         val indicatorBar = findViewById<View>(R.id.divideRectangleBarThirtythree)
-
+        indicatorBar.post {
+            val textView = findViewById<TextView>(R.id.one)
+            val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
+            indicatorBar.x = targetX
+        }
         // 레시피 타이틀 선언
         val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
         val recipeTitleWrite = findViewById<EditText>(R.id.recipeTitleWrite)
@@ -256,6 +266,17 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val registerFixButton = findViewById<Button>(R.id.registerFixButton)
         val register = findViewById<Button>(R.id.register)
 
+        videoCameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val videoUri = result.data?.data
+                if (videoUri != null) {
+                    selectedVideoUri = videoUri
+                    showVideoInfo(videoUri)
+                    uploadVideoToServer(videoUri)
+                }
+            }
+        }
+
         // 카테고리 TextView 리스트
         val textViews = listOf(
             findViewById<TextView>(R.id.one),
@@ -351,162 +372,179 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
         // "계속하기" 버튼 클릭 시 화면 이동
-        continueButton.setOnClickListener {
-            if (currentIndex < layouts.size - 1) {
-                // 현재 화면 숨기기
-                layouts[currentIndex].visibility = View.GONE
-                // 다음 화면 표시
-                currentIndex++
-                layouts[currentIndex].visibility = View.VISIBLE
+            continueButton.setOnClickListener {
+                if (currentIndex < layouts.size - 1) {
+                    // 현재 화면 숨기기
+                    layouts[currentIndex].visibility = View.GONE
+                    // 다음 화면 표시
+                    currentIndex++
+                    layouts[currentIndex].visibility = View.VISIBLE
 
-                // 해당 TextView 색상 변경
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
+                    // 해당 TextView 색상 변경
+                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
+                    textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
 
-                // 바(View)의 위치 변경
-                val targetX =
-                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
-            } else {
-                // 마지막 화면이면 contentCheckLayout
-                //대표이미지 가져오기
-                val representativeImage = findViewById<ImageView>(R.id.representativeImage)
-                val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
-                Glide.with(this).load(fullImageUrl).into(representativeImage)
-                // todo 동영상 업로드된거 가져와야함
-                // 선택된 카테고리 가져오기
-                val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
-                // 레시피 제목 가져오기
-                val recipeTitle = recipeTitleWrite.text.toString()
-                // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
-                val ingredients = mutableListOf<Pair<String, String>>()
+                    // 바(View)의 위치 변경
+                    val targetX =
+                        textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
+                    indicatorBar.x = targetX
+                } else {
+                    // 마지막 화면이면 contentCheckLayout
+                    //대표이미지 가져오기
+                    val representativeImage = findViewById<ImageView>(R.id.representativeImage)
+                    val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
+                    Glide.with(this).load(fullImageUrl).into(representativeImage)
+                    // todo 동영상 업로드된거 가져와야함
+                    // 선택된 카테고리 가져오기
+                    val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
+                    // 레시피 제목 가져오기
+                    val recipeTitle = recipeTitleWrite.text.toString()
+                    // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
+                    val ingredients = mutableListOf<Pair<String, String>>()
 
-                // 정적 재료 입력란 추가
-                ingredients.add(material.text.toString() to "${measuring.text} ${unit.text}")
-                ingredients.add(materialTwo.text.toString() to "${measuringTwo.text} ${unitTwo.text}")
-                ingredients.add(materialThree.text.toString() to "${measuringThree.text} ${unitThree.text}")
-                ingredients.add(materialFour.text.toString() to "${measuringFour.text} ${unitFour.text}")
-                ingredients.add(materialFive.text.toString() to "${measuringFive.text} ${unitFive.text}")
-                ingredients.add(materialSix.text.toString() to "${measuringSix.text} ${unitSix.text}")
+                    // 정적 재료 입력란 추가
+                    ingredients.add(material.text.toString() to "${measuring.text} ${unit.text}")
+                    ingredients.add(materialTwo.text.toString() to "${measuringTwo.text} ${unitTwo.text}")
+                    ingredients.add(materialThree.text.toString() to "${measuringThree.text} ${unitThree.text}")
+                    ingredients.add(materialFour.text.toString() to "${measuringFour.text} ${unitFour.text}")
+                    ingredients.add(materialFive.text.toString() to "${measuringFive.text} ${unitFive.text}")
+                    ingredients.add(materialSix.text.toString() to "${measuringSix.text} ${unitSix.text}")
 
 
-                // 동적으로 추가된 재료 입력란에서 데이터 수집
-                for (i in 0 until materialContainer.childCount) {
-                    val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
-                    val materialEditText = itemLayout.getChildAt(0) as? EditText
-                    val measuringEditText = itemLayout.getChildAt(1) as? EditText
-                    val unitTextView = itemLayout.getChildAt(2) as? TextView
+                    // 동적으로 추가된 재료 입력란에서 데이터 수집
+                    for (i in 0 until materialContainer.childCount) {
+                        val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
+                        val materialEditText = itemLayout.getChildAt(0) as? EditText
+                        val measuringEditText = itemLayout.getChildAt(1) as? EditText
+                        val unitTextView = itemLayout.getChildAt(2) as? TextView
 
-                    if (materialEditText != null && measuringEditText != null && unitTextView != null) {
-                        val materialName = materialEditText.text.toString()
-                        val amountWithUnit = "${measuringEditText.text} ${unitTextView.text}" //단위 추가
+                        if (materialEditText != null && measuringEditText != null && unitTextView != null) {
+                            val materialName = materialEditText.text.toString()
+                            val amountWithUnit = "${measuringEditText.text} ${unitTextView.text}" //단위 추가
 
-                        if (materialName.isNotBlank() && amountWithUnit.isNotBlank()) {
-                            ingredients.add(materialName to amountWithUnit)
+                            if (materialName.isNotBlank() && amountWithUnit.isNotBlank()) {
+                                ingredients.add(materialName to amountWithUnit)
+                            }
                         }
                     }
-                }
 
-                // 빈 값 제거
-                val filteredIngredients =
-                    ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+                    // 빈 값 제거
+                    val filteredIngredients =
+                        ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
 
-                // UI 업데이트 (RecyclerView 대신 기존 LinearLayout에 추가)
-                updateMaterialList(materialContainer, filteredIngredients)
+                    // UI 업데이트 (RecyclerView 대신 기존 LinearLayout에 추가)
+                    updateMaterialList(materialContainer, filteredIngredients)
 
-                // 대체 재료 가져오기
-                val replaceIngredients = listOf(
-                    "${replaceMaterialName.text.toString().trim()} → ${replaceMaterial.text.toString().trim()}",
-                    "${replaceMaterialMaterialTwo.text.toString().trim()} → ${replaceMaterialTwo.text.toString().trim()}"
-                ).filter { it.isNotBlank() }
+                    // 대체 재료 가져오기
+                    val replaceIngredients = listOf(
+                        "${replaceMaterialName.text.toString().trim()} → ${replaceMaterial.text.toString().trim()}",
+                        "${replaceMaterialMaterialTwo.text.toString().trim()} → ${replaceMaterialTwo.text.toString().trim()}"
+                    ).filter { it.isNotBlank() }
 
-                // 처리 방법 가져오기
-                val handlingMethods = listOf(
-                    "${handlingMethodName.text.toString().trim()} : ${handlingMethod.text.toString().trim()}",
-                    "${handlingMethodMaterialTwo.text.toString().trim()} : ${handlingMethodTwo.text.toString().trim()}"
-                ).filter { it.isNotBlank() }
+                    // 처리 방법 가져오기
+                    val handlingMethods = listOf(
+                        "${handlingMethodName.text.toString().trim()} : ${handlingMethod.text.toString().trim()}",
+                        "${handlingMethodMaterialTwo.text.toString().trim()} : ${handlingMethodTwo.text.toString().trim()}"
+                    ).filter { it.isNotBlank() }
 
-                // 타이머 값 가져오기
-                val cookingHour = zero.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
-                val cookingMinute = halfHour.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
+                    // 타이머 값 가져오기
+                    val cookingHour = zero.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
+                    val cookingMinute = halfHour.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
 
-                //태그 값 가져오기
-                val recipeTag = detailSettleRecipeTitleWrite.text.toString()
+                    //태그 값 가져오기
+                    val recipeTag = detailSettleRecipeTitleWrite.text.toString()
 
-                // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
-                findViewById<TextView>(R.id.checkFoodName).text = recipeTitle
-                findViewById<TextView>(R.id.checkKoreanFood).text = categoryText
-                findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
-                findViewById<TextView>(R.id.checkZero).text = cookingHour.toString()
-                findViewById<TextView>(R.id.checkHalfHour).text = cookingMinute.toString()
+                    // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
+                    findViewById<TextView>(R.id.checkFoodName).text = recipeTitle
+                    findViewById<TextView>(R.id.checkKoreanFood).text = categoryText
+                    findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
+                    findViewById<TextView>(R.id.checkZero).text = cookingHour.toString()
+                    findViewById<TextView>(R.id.checkHalfHour).text = cookingMinute.toString()
 
-                // 기존 레이아웃 변경 (가시성 설정 유지)
-                layouts[currentIndex].visibility = View.GONE
-                findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
-                findViewById<ConstraintLayout>(R.id.contentCheckTapFix).visibility = View.VISIBLE
-                findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
-                findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
-                findViewById<View>(R.id.divideRectangleBarThirtythree).visibility = View.GONE
-                findViewById<View>(R.id.tapBar).visibility = View.GONE
-                // 소요시간 (조리시간)
-                val totalCookingTime = (cookingHour.toInt() * 60) + cookingMinute.toInt()
-                //난이도
-                val difficulty = elementaryLevel.text.toString()
-                // 카테고리 Enum 변환
-                val categoryEnum = mapCategoryToEnum(categoryText)
-                // Gson 인스턴스 생성
-                val gson = Gson()
+                    // 기존 레이아웃 변경 (가시성 설정 유지)
+                    layouts[currentIndex].visibility = View.GONE
+                    findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.contentCheckTapFix).visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
+                    findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
+                    findViewById<View>(R.id.divideRectangleBarThirtythree).visibility = View.GONE
+                    findViewById<View>(R.id.tapBar).visibility = View.GONE
+                    // 소요시간 (조리시간)
+                    val totalCookingTime = (cookingHour.toInt() * 60) + cookingMinute.toInt()
+                    //난이도
+                    val difficulty = elementaryLevel.text.toString()
+                    // 카테고리 Enum 변환
+                    val categoryEnum = mapCategoryToEnum(categoryText)
+                    val videoThumbImageView = findViewById<ImageView>(R.id.image)
+                    val playButton = findViewById<ImageButton>(R.id.btnVideo)
+                    val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+                    if (!recipeVideoUrl.isNullOrEmpty()) {
+                        // 썸네일 표시 (Glide의 .frame(0) 지원: videoUrl에서 첫 프레임을 가져옴)
+                        Glide.with(this)
+                            .load(RetrofitInstance.BASE_URL + recipeVideoUrl!!.trim())
+                            .frame(0)
+                            .into(videoThumbImageView)
 
-                // RecipeRequest 객체 생성
-                val recipe = RecipeRequest(
-                    title = recipeTitle,
-                    category = categoryEnum,
-                    ingredients = gson.toJson(filteredIngredients.map {
-                        Ingredient(
-                            it.first,
-                            it.second
-                        )
-                    }),
-                    alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
-                        .map {
-                            val parts = it.split(" → ")
-                            Ingredient(parts[0], parts[1])
+                        videoThumbImageView.visibility = View.VISIBLE
+                        playButton.visibility = View.VISIBLE
+                        playerView.visibility = View.GONE // 미리보기일 땐 숨김
+
+                        // 2. 재생 버튼 클릭 시 ExoPlayer로 영상 재생
+                        playButton.setOnClickListener {
+                            val player = ExoPlayer.Builder(this).build()
+                            playerView.player = player
+                            val mediaItem = MediaItem.fromUri(RetrofitInstance.BASE_URL + recipeVideoUrl!!.trim())
+                            player.setMediaItem(mediaItem)
+                            player.prepare()
+                            player.play()
+                            playerView.visibility = View.VISIBLE
+                            videoThumbImageView.alpha = 0f
+                            playButton.visibility = View.GONE
+                        }
+                    } else {
+                        videoThumbImageView.visibility = View.GONE
+                        playButton.visibility = View.GONE
+                        playerView.visibility = View.GONE
+                    }
+
+
+                    // Gson 인스턴스 생성
+                    val gson = Gson()
+
+                    // RecipeRequest 객체 생성
+                    recipe = RecipeRequest(
+                        title = recipeTitle,
+                        category = categoryEnum,
+                        ingredients = gson.toJson(filteredIngredients.map {
+                            Ingredient(
+                                it.first,
+                                it.second
+                            )
                         }),
-                    handlingMethods = gson.toJson(handlingMethods),
-                    cookingSteps = gson.toJson(emptyList<CookingStep>()),//동영상만 보낼거라 조리순서 X
-                    mainImageUrl = mainImageUrl,
-                    difficulty = difficulty,
-                    tags = recipeTag,
-                    cookingTime = totalCookingTime,
-                    servings = 2,
-                    isPublic = true,
-                    videoUrl = recipeVideoUrl ?: ""
-                )
-                Log.d("RecipeRequest", "최종 videoUrl 값: ${recipe.videoUrl}")
-                Log.d("RecipeRequest", "전체 객체: ${gson.toJson(recipe)}")
-                fun sendRecipeToServer(recipe: RecipeRequest) {
-                    val token = App.prefs.token
-                    RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
-                        if (response != null) {
-                            Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
-                            createdRecipeId = response.recipeId?.toLong()
-
-                        } else {
-                            Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
-
-                        }
-                    }
+                        alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
+                            .map {
+                                val parts = it.split(" → ")
+                                Ingredient(parts[0], parts[1])
+                            }),
+                        handlingMethods = gson.toJson(handlingMethods),
+                        cookingSteps = gson.toJson(emptyList<CookingStep>()),//동영상만 보낼거라 조리순서 X
+                        mainImageUrl = mainImageUrl,
+                        difficulty = difficulty,
+                        tags = recipeTag,
+                        cookingTime = totalCookingTime,
+                        servings = 2,
+                        isPublic = true,
+                        videoUrl = recipeVideoUrl ?: ""
+                    )
+                    Log.d("RecipeRequest", "전체 객체: ${gson.toJson(recipe)}")
+                    updateMaterialListView(
+                        findViewById(R.id.materialList),
+                        filteredIngredients,
+                        replaceIngredients.map { it.split(" → ")[0] to it.split(" → ")[1] },
+                        handlingMethods.map { it.split(" : ")[0] to it.split(" : ")[1] }
+                    )
                 }
-                Log.d("RecipeRequest", gson.toJson(recipe))
-                sendRecipeToServer(recipe)
-                updateMaterialListView(
-                    findViewById(R.id.materialList),
-                    filteredIngredients,
-                    replaceIngredients.map { it.split(" → ")[0] to it.split(" → ")[1] },
-                    handlingMethods.map { it.split(" : ")[0] to it.split(" : ")[1] }
-                )
             }
-        }
 
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
@@ -663,10 +701,23 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             divideRectangleBarSixteen.visibility = View.GONE
         }
 
-        // 레시피 조리영상 갤러리 불러오기
+
         cookVideoCamera.setOnClickListener {
-            targetContainer = imageContainer  // 이 버튼을 누르면 imageContainer에 추가
-            videoPickerLauncher.launch("video/*")
+            targetContainer = imageContainer
+            // AlertDialog로 두 가지 선택지 제공
+            AlertDialog.Builder(this)
+                .setTitle("동영상 가져오기")
+                .setItems(arrayOf("카메라 촬영", "앨범에서 선택")) { _, which ->
+                    when (which) {
+                        0 -> {
+                            launchVideoCamera() // 위에서 만든 함수 그대로 사용!
+                        }
+                        1 -> {
+                            // 🔵 갤러리에서 동영상 선택
+                            videoPickerLauncher.launch("video/*")
+                        }
+                    }
+                }.show()
         }
 
         detailSettleCamera.setOnClickListener {
@@ -694,6 +745,32 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 }
             }
         }
+        var isCheckedOne = false
+        var isCheckedTwo = false
+        uncheck.setOnClickListener {
+            isCheckedOne = !isCheckedOne
+            uncheck.setImageResource(if (isCheckedOne) R.drawable.ic_check else R.drawable.ic_uncheck)
+            isCheckedTwo = false
+            uncheckTwo.setImageResource(R.drawable.ic_uncheck)
+            isPublic = true
+            recipe = recipe?.copy(isPublic = true) // recipe 객체도 같이 업데이트
+        }
+
+        uncheckTwo.setOnClickListener {
+            isCheckedTwo = !isCheckedTwo
+            uncheckTwo.setImageResource(if (isCheckedTwo) R.drawable.ic_check else R.drawable.ic_uncheck)
+            isCheckedOne = false
+            uncheck.setImageResource(R.drawable.ic_uncheck)
+            isPublic = false
+            recipe = recipe?.copy(isPublic = false) // recipe 객체도 같이 업데이트
+        }
+        settle.setOnClickListener {
+            shareSettle.visibility = View.GONE
+            recipeRegister.visibility = View.VISIBLE
+        }
+        cancelTwo.setOnClickListener {
+            recipeRegister.visibility = View.GONE
+        }
 
         // 레시피 작성내용 확인 공유 설정 클릭시 상자 나타남
         shareFixButton.setOnClickListener {
@@ -703,23 +780,41 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // 레시피 등록한 레시피 확인 (작은 등록하기 클릭시 화면 이동)
         register.setOnClickListener {
-            if (createdRecipeId != null) {
-                val intent = Intent(this, RecipeSeeActivity::class.java)
-                intent.putExtra("recipeId", createdRecipeId!!)
-                startActivity(intent)
+            if (isVideoUploading) {
+                Toast.makeText(this, "동영상 업로드가 끝날 때까지 기다려 주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (recipe != null) {
+                sendRecipeToServer(recipe!!, onSuccess = { recipeId ->
+                    val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                    intent.putExtra("recipeId", recipeId)
+                    startActivity(intent)
+                    finish()
+                }, onFailure = {
+                    Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                })
             } else {
-                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "레시피 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
         // 레시피 등록한 레시피 확인 (큰 등록하기 클릭시 화면 이동)
         registerFixButton.setOnClickListener {
-            if (createdRecipeId != null) {
-                val intent = Intent(this, RecipeSeeActivity::class.java)
-                intent.putExtra("recipeId", createdRecipeId!!)
-                startActivity(intent)
+            if (isVideoUploading) {
+                Toast.makeText(this, "동영상 업로드가 끝날 때까지 기다려 주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (recipe != null) {
+                sendRecipeToServer(recipe!!, onSuccess = { recipeId ->
+                    val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                    intent.putExtra("recipeId", recipeId)
+                    startActivity(intent)
+                    finish()
+                }, onFailure = {
+                    Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                })
             } else {
-                Toast.makeText(this, "레시피 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "레시피 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -742,7 +837,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
     }
     private fun uploadVideoToServer(uri: Uri) {
         Log.d("Upload", "영상 업로드 시작")
-
+        isVideoUploading = true
         val inputStream = contentResolver.openInputStream(uri) ?: return
         val file = File(cacheDir, "upload_video.mp4")
         file.outputStream().use { inputStream.copyTo(it) }
@@ -756,20 +851,23 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         RetrofitInstance.apiService.uploadVideo(body, "Bearer $token")
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    isVideoUploading = false
                     if (response.isSuccessful && response.body() != null) {
                         val responseBody = response.body()!!
                         val videoUrl = responseBody.string()
                         Log.d("Upload", "영상 업로드 성공: $videoUrl")
                         recipeVideoUrl = videoUrl
                         Log.d("Upload", "recipeVideoUrl 저장됨: $recipeVideoUrl")
-
+                        Toast.makeText(this@RecipeWriteVideoActivity, "동영상 업로드 성공!", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("Upload", "업로드 실패 - 응답 없음 또는 실패 응답: ${response.code()}")
+                        Toast.makeText(this@RecipeWriteVideoActivity, "동영상 업로드 실패!", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("Upload", "업로드 실패: ${t.message}")
+                    Toast.makeText(this@RecipeWriteVideoActivity, "동영상 업로드 실패!", Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -1323,6 +1421,10 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         targetContainer.addView(imageView) // 선택한 컨테이너에 이미지 추가
         Log.d("RecipeWriteImageActivity", "이미지 추가 완료! 대상 컨테이너: ${targetContainer.id}")
     }
+    private fun launchVideoCamera() {
+        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        videoCameraLauncher.launch(intent)
+    }
     private fun updateMaterialListView(materialView: View, ingredients: List<Pair<String, String>>, alternatives: List<Pair<String, String>>, handling: List<Pair<String, String>>) {
         val categoryGroup = materialView.findViewById<GridLayout>(R.id.categoryGroup)
         categoryGroup.removeAllViews() // 기존 뷰 제거
@@ -1488,5 +1590,17 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             null
         }
     }
-
+    fun sendRecipeToServer(recipe: RecipeRequest, onSuccess: (Long) -> Unit, onFailure: (() -> Unit)? = null) {
+        val token = App.prefs.token
+        RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
+            if (response != null && response.recipeId != null) {
+                createdRecipeId = response.recipeId.toLong()
+                Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
+                onSuccess(createdRecipeId!!)  // 서버에서 받은 id 전달
+            } else {
+                Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                onFailure?.invoke()
+            }
+        }
+    }
 }

@@ -14,8 +14,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.test.model.board.CommunityDetailResponse
-import com.example.test.model.board.CommunityMainResponse
+import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.community.CommunityMainResponse
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
