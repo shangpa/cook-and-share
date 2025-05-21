@@ -9,6 +9,7 @@ class App : Application() {
     companion object {
         lateinit var context: Context
         lateinit var prefs: Prefs
+        var currentChatRoomKey: String? = null
     }
 
     override fun onCreate() {

@@ -117,6 +117,11 @@ dependencies {
     //GCV 영수증
     implementation("com.google.cloud:google-cloud-vision:3.26.0")
 
+    //채팅용
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+
     implementation("io.socket:socket.io-client:2.0.1") {
         exclude("org.json", "json")
 
