@@ -7,8 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    const val BASE_URL = "http://172.16.96.197:8080"
-    //서버는 34.47.85.54
+
+    const val BASE_URL = "http://172.30.1.44:8080"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService

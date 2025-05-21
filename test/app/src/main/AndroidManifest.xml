@@ -223,6 +223,17 @@
             </intent-filter>
         </activity>
 
+        <!-- FridgeMaterialListActivity -->
+        <activity
+            android:name=".FridgeMaterialListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- FridgeMaterialActivity -->
         <activity
             android:name=".FridgeIngredientActivity"

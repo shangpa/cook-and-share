@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fridgeItemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    android:layout_marginBottom="20dp">
+
+    <!-- 사각 도형 -->
+    <LinearLayout
+        android:id="@+id/fridgeIngredientBox"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_rectangle_fridge"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 재료 이름 -->
+            <TextView
+                android:id="@+id/ingredientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="계란"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/green" />
+
+            <!-- 보관장소 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="11dp">
+
+                <TextView
+                    android:id="@+id/storageAreaLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="보관장소 : "
+                    android:textSize="11sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/storageAreaText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="냉장"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 수량 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="총"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ingredientQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp" />
+
+            <TextView
+                android:id="@+id/ingredientUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginStart="3dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--  사각 도형 오른쪽 아이콘 -->
+    <ImageView
+        android:id="@+id/fridgeArrowIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_fridge_list_arrow"
+        android:contentDescription="오른쪽 아이콘"
+        android:layout_marginStart="10dp"/>
+</LinearLayout>
