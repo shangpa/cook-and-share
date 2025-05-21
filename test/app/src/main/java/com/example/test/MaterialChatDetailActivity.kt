@@ -1,5 +1,6 @@
 package com.example.test
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -80,8 +81,15 @@ class MaterialChatDetailActivity : AppCompatActivity() {
             if (messageText.isNotBlank()) {
                 val message = ChatMessage(roomKey, senderId, messageText)
                 val json = gson.toJson(message)
-                stompClient.send("/app/chat.send", json).subscribe()
+                Log.d("STOMP", "보내는 메시지 roomKey=${message.roomKey}, from=$senderId, content=${message.message}")
+                stompClient.send("/app/chat.send", json)
+                    .subscribe({
+                        Log.d("STOMP", "✅ 메시지 전송 성공")
+                    }, { error ->
+                        Log.e("STOMP", "❌ 메시지 전송 실패", error)
+                    })
                 binding.contentEdit.setText("")
+
             }
         }
 
@@ -89,59 +97,54 @@ class MaterialChatDetailActivity : AppCompatActivity() {
             finish()
         }
     }
+    @SuppressLint("CheckResult")
     private fun connectStomp() {
-        val token = App.prefs.token.toString()
+        val token = App.prefs.token
+        val wsUrl = "${RetrofitInstance.BASE_URL}/ws/websocket?token=$token"
+            .replace("http://", "ws://")
+            .replace("https://", "wss://")
 
-        val okHttpClient = okhttp3.OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $token")
-                    .build()
-                chain.proceed(request)
-            }
-            .build()
-
-        val wsUrl = "${RetrofitInstance.BASE_URL}/ws/websocket".replace("http", "ws")
-        val connectionProvider = OkHttpConnectionProvider(wsUrl)
-        connectionProvider.setOkHttpClient(okHttpClient)
-
-        stompClient = Stomp(connectionProvider)
-
+        // stompClient 초기화
         stompClient = Stomp.over(
             Stomp.ConnectionProvider.OKHTTP,
-            "${RetrofitInstance.BASE_URL}/ws/websocket".replace("http", "ws")
+            wsUrl
         )
 
+        // lifecycle 로그
         stompClient.lifecycle()
             .subscribe({ lifecycleEvent ->
                 when (lifecycleEvent.type) {
-                    LifecycleEvent.Type.OPENED -> Log.d("STOMP", "✅ WebSocket 연결됨")
-                    LifecycleEvent.Type.CLOSED -> Log.d("STOMP", "❌ WebSocket 연결 종료됨")
-                    LifecycleEvent.Type.ERROR -> Log.e(
-                        "STOMP",
-                        "⚠️ WebSocket 오류",
-                        lifecycleEvent.exception
-                    )
-
-                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> Log.w("STOMP", "💔 서버 하트비트 실패")
+                    LifecycleEvent.Type.OPENED ->
+                        Log.d("STOMP", "WebSocket 연결됨")
+                    LifecycleEvent.Type.CLOSED ->
+                        Log.d("STOMP", " WebSocket 연결 종료됨")
+                    LifecycleEvent.Type.ERROR ->
+                        Log.e("STOMP", "WebSocket 오류", lifecycleEvent.exception)
+                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT ->
+                        Log.w("STOMP", "서버 하트비트 실패")
                 }
             }, { error ->
                 Log.e("STOMP", "라이프사이클 에러", error)
             })
 
+        // connect 헤더 추가 (JWT Authorization 포함)
+        val headers = listOf(
+            StompHeader("Authorization", "Bearer $token")
+        )
 
         stompClient.connect(headers)
-
+        // ✅ 4. topic 구독
         stompClient.topic("/topic/chatroom/$roomKey")
-            .subscribe { topicMessage ->
+            .subscribe({ topicMessage ->
                 val chat = gson.fromJson(topicMessage.payload, ChatMessage::class.java)
                 runOnUiThread {
                     chatList.add(chat)
                     chatAdapter.notifyItemInserted(chatList.size - 1)
                     binding.recyclerView.scrollToPosition(chatList.size - 1)
                 }
-            }
-
+            }, { error ->
+                Log.e("STOMP", "❌ 메시지 구독 실패", error)
+            })
     }
 
 }

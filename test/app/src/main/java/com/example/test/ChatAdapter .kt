@@ -17,7 +17,8 @@ class ChatAdapter(
 ) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val text: TextView = view.findViewById(R.id.chatText)
+        val text: TextView = view.findViewById(R.id.chatContent)
+        val time: TextView = view.findViewById(R.id.chatTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
