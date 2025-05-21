@@ -7,14 +7,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
+
     const val BASE_URL = "http://172.30.1.44:8080"
-    //서버는 34.47.85.54
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
     lateinit var communityApi: CommunityApi
     lateinit var notificationApi: NotificationApi
-
+    lateinit var chatApi: ChatApi
     // 초기화 메서드에서 context 전달받아 처리
     fun init(context: Context) {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -35,5 +35,6 @@ object RetrofitInstance {
         apiService = retrofit.create(ApiService::class.java)
         communityApi = retrofit.create(CommunityApi::class.java)
         notificationApi = retrofit.create(NotificationApi::class.java)
+        chatApi= retrofit.create(ChatApi::class.java)
     }
 }

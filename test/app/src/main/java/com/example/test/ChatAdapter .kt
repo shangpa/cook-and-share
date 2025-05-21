@@ -9,45 +9,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test.R
 import com.example.test.model.ChatItem
 import com.example.test.model.ChatType
+import com.example.test.model.chat.ChatMessage
 
-class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(
+    private val chatList: List<ChatMessage>,
+    private val myId: Long
+) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<ChatItem>()
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val text: TextView = view.findViewById(R.id.chatContent)
+        val time: TextView = view.findViewById(R.id.chatTime)
+    }
 
-    fun addItem(item: ChatItem) {
-        items.add(item)
-        notifyItemInserted(items.size - 1)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutId = if (viewType == 0) R.layout.chat_left else R.layout.chat_right
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        return ViewHolder(view)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position].type) {
-            ChatType.LEFT_CONTENT -> 0
-            ChatType.RIGHT_CONTENT -> 1
-            ChatType.CENTER_CONTENT -> 2
-        }
+        return if (chatList[position].senderId == myId) 1 else 0
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        val layout = when (viewType) {
-            0 -> R.layout.chat_left
-            1 -> R.layout.chat_right
-            else -> R.layout.chat_center
-        }
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        return ChatViewHolder(view)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.text.text = chatList[position].message
     }
 
-    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val item = items[position]
-        holder.bind(item)
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: ChatItem) {
-            itemView.findViewById<TextView>(R.id.chatContent).text = item.content
-            itemView.findViewById<TextView?>(R.id.chatTime)?.text = item.time
-        }
-    }
+    override fun getItemCount(): Int = chatList.size
 }

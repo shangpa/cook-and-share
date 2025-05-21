@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.example.test.adapter.ImagePagerAdapter
 import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.model.chat.ChatRoomResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
 import retrofit2.Call
@@ -31,7 +32,7 @@ class MaterialDetailActivity : AppCompatActivity() {
     private lateinit var imagePager: ViewPager2
     private lateinit var imageCount: TextView
     private lateinit var imageCountTwo: TextView
-
+    private lateinit var currentPost: TradePostResponse
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,7 @@ class MaterialDetailActivity : AppCompatActivity() {
 
         //테스트 중 val tradePostId =3L
         val token = "Bearer ${App.prefs.token}"
-
+        var writerName = ""
         val itemTitle = findViewById<TextView>(R.id.itemTitle)
         val category1 = findViewById<TextView>(R.id.category1)
         val quantity2 = findViewById<TextView>(R.id.quantity2)
@@ -72,6 +73,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                                 itemPrice.text =
                                     if (post.price == 0) "나눔" else "${post.price} P"
                                 userName.text = post.writer
+                                writerName= post.writer
 
                                 val original = post.purchaseDate  // 예: "2024-04-12"
                                 val formattedDate = try {
@@ -116,10 +118,34 @@ class MaterialDetailActivity : AppCompatActivity() {
         // chatButton 클릭했을 때 MaterialChatDetailActivity 이동
         val chatButton: Button = findViewById(R.id.chatButton)
         chatButton.setOnClickListener {
-            val intent = Intent(this, MaterialChatDetailActivity::class.java)
-            startActivity(intent)
-        }
 
+            RetrofitInstance.chatApi.createOrGetRoom(token, tradePostId)
+                .enqueue(object : Callback<ChatRoomResponse> {
+                    override fun onResponse(call: Call<ChatRoomResponse>, response: Response<ChatRoomResponse>) {
+                        if (response.isSuccessful) {
+                            val body = response.body() ?: return
+                            val roomKey = body.roomKey
+                            val receiverId = if (App.prefs.userId.toLong() == body.userAId) body.userBId else body.userAId
+                            println(" App.prefs.userId"+App.prefs.userId)
+
+                            val intent = Intent(this@MaterialDetailActivity, MaterialChatDetailActivity::class.java)
+                            intent.putExtra("roomKey", roomKey)
+                            println("roomKey"+ roomKey)
+                            intent.putExtra("postId", tradePostId)
+                            println("postId"+ tradePostId)
+                            intent.putExtra("receiverId", receiverId)
+                            println("receiverId"+ receiverId)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this@MaterialDetailActivity, "채팅방 생성 실패", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ChatRoomResponse>, t: Throwable) {
+                        Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
         // imageSearch 클릭했을 때 MaterialSearchActivity 이동
         val imageSearch: ImageView = findViewById(R.id.imageSearch)
         imageSearch.setOnClickListener {

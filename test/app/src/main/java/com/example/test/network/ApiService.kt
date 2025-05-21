@@ -407,4 +407,11 @@ interface ApiService {
     fun getAllFridgeHistories(
         @Header("Authorization") token: String
     ): Call<List<FridgeHistoryResponse>>
+
+    @GET("/api/user/id")
+    fun getUserIdByUsername(
+        @Header("Authorization") token: String,
+        @Query("username") username: String
+    ): Call<Long>
+
 }
