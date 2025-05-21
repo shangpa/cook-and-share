@@ -380,4 +380,9 @@ interface ApiService {
         @Query("category") category: String
     ): Call<List<ReviewResponseDTO>>
 
+    @GET("/api/user/id")
+    fun getUserIdByUsername(
+        @Header("Authorization") token: String,
+        @Query("username") username: String
+    ): Call<Long>
 }

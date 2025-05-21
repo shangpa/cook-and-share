@@ -4,83 +4,69 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.test.adapter.ChatRoomAdapter
+import com.example.test.model.chat.ChatRoomListResponseDTO
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MaterialChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_chat) // 다른 프로필 화면의 레이아웃 파일 연결
 
-        // chat1 클릭했을 때 MaterialChatDetailActivity 이동
-        val chat1: LinearLayout = findViewById(R.id.totalChat1)
-        chat1.setOnClickListener {
-            val intent = Intent(this, MaterialChatDetailActivity::class.java)
-            startActivity(intent)
-        }
+
 
         // chatBack 클릭했을 때 MainActivity 이동
         val chatBack: ImageView = findViewById(R.id.chatBack)
         chatBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        // 채팅 선언
-        val total = findViewById<LinearLayout>(R.id.total)
-        val sale = findViewById<LinearLayout>(R.id.sale)
-        val purchase = findViewById<LinearLayout>(R.id.purchase)
-        val unread = findViewById<LinearLayout>(R.id.unread)
-        val totalListContainer = findViewById<LinearLayout>(R.id.totalListContainer)
-        val saleListContainer = findViewById<LinearLayout>(R.id.saleListContainer)
-        val purchaseListContainer = findViewById<LinearLayout>(R.id.purchaseListContainer)
-        val unreadListContainer = findViewById<LinearLayout>(R.id.unreadListContainer)
+        loadChatRooms()
 
-        // 카테고리 LinearLayout 리스트
-        val linearlayouts = listOf(
-            findViewById<LinearLayout>(R.id.total),
-            findViewById<LinearLayout>(R.id.sale),
-            findViewById<LinearLayout>(R.id.purchase),
-            findViewById<LinearLayout>(R.id.unread)
-        )
 
-        // LinearLayout 리스트 (위 LinearLayout와 1:1 매칭)
-        val layouts = listOf(
-            findViewById<LinearLayout>(R.id.totalListContainer),
-            findViewById<LinearLayout>(R.id.saleListContainer),
-            findViewById<LinearLayout>(R.id.purchaseListContainer),
-            findViewById<LinearLayout>(R.id.unreadListContainer)
-        )
+    }
+    private fun loadChatRooms() {
+        val token = App.prefs.token ?: return
 
-        // 카테고리 TextView 클릭 시 해당 화면으로 이동
-        linearlayouts.forEachIndexed { index, layout ->
-            layout.setOnClickListener {
-
-                // 모든 LinearLayout 숨김
-                layouts.forEach { it.visibility = View.GONE }
-
-                // 클릭된 LinearLayout에 해당하는 LinearLayout 표시
-                layouts[index].visibility = View.VISIBLE
-
-                // 모든 backgroundTint 초기화 + 텍스트 색 회색
-                linearlayouts.forEach {
-                    it.backgroundTintList = null
-                    val textView = it.getChildAt(0) as? TextView
-                    textView?.setTextColor(Color.parseColor("#8A8F9C"))
+        RetrofitInstance.chatApi.getChatRooms("Bearer $token")
+            .enqueue(object : Callback<List<ChatRoomListResponseDTO>> {
+                override fun onResponse(
+                    call: Call<List<ChatRoomListResponseDTO>>,
+                    response: Response<List<ChatRoomListResponseDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        val chatRooms = response.body() ?: return
+                        val recyclerView = findViewById<RecyclerView>(R.id.chatRoomRecyclerView)
+                        recyclerView.layoutManager = LinearLayoutManager(this@MaterialChatActivity)
+                        recyclerView.adapter = ChatRoomAdapter(chatRooms) { chat ->
+                            val intent = Intent(this@MaterialChatActivity, MaterialChatDetailActivity::class.java)
+                            intent.putExtra("roomKey", chat.roomKey)
+                            intent.putExtra("receiverId", chat.opponentId) // ✅ 추가!
+                            intent.putExtra("opponentNickname", chat.opponentUsername)
+                            startActivity(intent)
+                        }
+                    }
                 }
 
-                // 선택된 항목은 초록색으로 강조
-                layout.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#35A825"))
-                val selectedTextView = layout.getChildAt(0) as? TextView
-                selectedTextView?.setTextColor(Color.WHITE)
-            }
-        }
-        }
+                override fun onFailure(call: Call<List<ChatRoomListResponseDTO>>, t: Throwable) {
+                    Log.e("Chat", "채팅방 리스트 불러오기 실패", t)
+                }
+            })
+    }
+
 }
 
 
