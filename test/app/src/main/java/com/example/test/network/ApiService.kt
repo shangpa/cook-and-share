@@ -18,6 +18,7 @@ import com.example.test.model.recipeDetail.MyWriteRecipeResponse
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
+import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -50,7 +51,7 @@ interface ApiService {
     fun recommendByTitle(
         @Query("ingredients") ingredients: List<String>,
         @Header("Authorization") token: String
-    ): Call<List<RecipeSearchResponseDTO>>
+    ): Call<List<RecipeMainSearchResponseDTO>>
 
     @POST("/api/recipes/recommend-grouped")
     fun recommendGrouped(
@@ -63,6 +64,22 @@ interface ApiService {
     fun getPopularTradePosts(
         @Header("Authorization") token: String
     ): Call<List<TradePostSimpleResponse>>
+
+    //메인 - 레시피 조회
+    @GET("/api/recipes/like/list")
+    fun getMainLikedRecipes(
+        @Header("Authorization") token: String
+    ): Call<List<RecipeMainSearchResponseDTO>>
+
+    // 메인 - 조회수 TOP 레시피
+    @GET("/api/recipes/top/view")
+    fun getTopViewedRecipes(): Call<List<RecipeMainSearchResponseDTO>>
+
+    @POST("/api/recipes/{recipeId}/like-toggle")
+    fun toggleLikeMainRecipe(
+        @Path("recipeId") recipeId: Long,
+        @Header("Authorization") token: String
+    ): Call<String>
 
     // 레시피 탭
     @GET("api/recipes/public")
