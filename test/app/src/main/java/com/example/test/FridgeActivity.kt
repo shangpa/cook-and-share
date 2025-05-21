@@ -2,82 +2,74 @@ package com.example.test
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
-import com.example.test.model.Fridge.SelectedIngredient
-import com.example.test.model.Fridge.FridgeResponse
-import com.example.test.network.ApiService
-import com.example.test.network.RetrofitInstance
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.*
-import android.graphics.Bitmap
-import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.google.mlkit.vision.common.InputImage
-import java.io.File
-import android.Manifest
-import android.provider.MediaStore
-import androidx.appcompat.app.AlertDialog
-import com.example.test.model.recipt.Feature
-import com.example.test.model.recipt.Image
-import com.example.test.model.recipt.ImageContext
-import com.example.test.model.recipt.RequestItem
-import com.example.test.model.recipt.VisionRequest
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.test.adapter.FridgeAdapter
+import com.example.test.model.Fridge.FridgeCreateRequest
+import com.example.test.model.Fridge.FridgeResponse
+import com.example.test.model.Fridge.IngredientData
+import com.example.test.model.Fridge.SelectedIngredient
+import com.example.test.model.recipt.*
+import com.example.test.network.ApiService
 import com.example.test.network.GoogleVisionApi
+import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FridgeActivity : AppCompatActivity() {
 
-    private var isChecked = false
-    private val selectedLayouts = mutableSetOf<LinearLayout>()
+    private lateinit var apiService: ApiService
     private var allFridgeList: List<FridgeResponse> = listOf()
     private var currentCategory = "전체"
-
-    private lateinit var apiService: ApiService
-
+    private var selectedFridgeIds = mutableSetOf<Long>()
+    private lateinit var fridgeAdapter: FridgeAdapter
+    private lateinit var imageUri: Uri
+    private var displayedFridgeList: List<FridgeResponse> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.CAMERA),
-                1001
-            )
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge)
 
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 1001)
+        }
+
         apiService = RetrofitInstance.apiService
 
-        val todayDate = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
-        findViewById<TextView>(R.id.dayInput).text = todayDate
+        findViewById<TextView>(R.id.dayInput).text = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
 
-        val categoryAll: LinearLayout = findViewById(R.id.categoryAll)
-        val categoryFridge: LinearLayout = findViewById(R.id.categoryFridge)
-        val categoryFreeze: LinearLayout = findViewById(R.id.categoryFreeze)
-        val categoryRoom: LinearLayout = findViewById(R.id.categoryRoom)
+        val categoryAll = findViewById<LinearLayout>(R.id.categoryAll)
+        val categoryFridge = findViewById<LinearLayout>(R.id.categoryFridge)
+        val categoryFreeze = findViewById<LinearLayout>(R.id.categoryFreeze)
+        val categoryRoom = findViewById<LinearLayout>(R.id.categoryRoom)
         val categoryViews = listOf(categoryAll, categoryFridge, categoryFreeze, categoryRoom)
 
         setCategorySelected(categoryAll, categoryViews)
@@ -94,7 +86,7 @@ class FridgeActivity : AppCompatActivity() {
                     when (which) {
                         0 -> {
                             val photoFile = File.createTempFile("ocr_", ".jpg", cacheDir)
-                            imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", photoFile)
+                            imageUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
                             takePictureLauncher.launch(imageUri)
                         }
                         1 -> {
@@ -104,53 +96,28 @@ class FridgeActivity : AppCompatActivity() {
                 }.show()
         }
 
-        findViewById<ImageView>(R.id.fridgeAllCheckIcon).setOnClickListener {
-            isChecked = !isChecked
-            it as ImageView
-            it.setImageResource(
-                if (isChecked) R.drawable.btn_fridge_checked else R.drawable.ic_fridge_check
-            )
-            val rootLayout: LinearLayout = findViewById(R.id.rootLayout)
-            rootLayout.children.filterIsInstance<LinearLayout>().forEach { layout ->
-                layout.setBackgroundResource(
-                    if (isChecked) R.drawable.rounded_rectangle_fridge_ck else R.drawable.rounded_rectangle_fridge
-                )
-                if (isChecked) selectedLayouts.add(layout) else selectedLayouts.remove(layout)
-            }
-        }
-
-
+        findViewById<RecyclerView>(R.id.fridgeRecyclerView).layoutManager = LinearLayoutManager(this)
 
         findViewById<LinearLayout>(R.id.fridgeAddBtn).setOnClickListener {
             startActivity(Intent(this, FridgeIngredientActivity::class.java))
         }
 
         findViewById<LinearLayout>(R.id.recipeRecommendBtn).setOnClickListener {
-            val selectedIngredients = selectedLayouts.map { layout ->
-                val row1 = layout.getChildAt(0) as LinearLayout
-                val ingredientName = (row1.getChildAt(0) as TextView).text.toString()
-                val quantityAndUnit = (row1.getChildAt(1) as TextView).text.toString()
-
-                val parts = quantityAndUnit.split(" ")
-                val quantity = parts.getOrNull(0)?.toDoubleOrNull()
-                val unit = parts.getOrNull(1) ?: ""
-
-                val row2 = layout.getChildAt(1) as LinearLayout
-                val storageAreaLabel = (row2.getChildAt(0) as TextView).text.toString()
-                val storageArea = (row2.getChildAt(1) as TextView).text.toString()
-
-                val row3 = layout.getChildAt(2) as LinearLayout
-                val dateLabel = (row3.getChildAt(0) as TextView).text.toString().removeSuffix(" : ")
-                val dateText = (row3.getChildAt(1) as TextView).text.toString()
-
+            val selectedIngredients = allFridgeList.filter { selectedFridgeIds.contains(it.id) }.map {
                 SelectedIngredient(
-                    name = ingredientName,
-                    quantity = quantity,
-                    unit = unit,
-                    dateLabel = dateLabel,
-                    dateText = dateText
+                    name = it.ingredientName,
+                    quantity = it.quantity,
+                    unit = it.unitDetail,
+                    dateLabel = it.dateOption ?: "유통기한",
+                    dateText = it.fridgeDate
                 )
             }
+
+            if (selectedIngredients.isEmpty()) {
+                Toast.makeText(this, "추천할 재료를 선택해주세요!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val allIngredients = allFridgeList.map {
                 SelectedIngredient(
                     name = it.ingredientName,
@@ -161,171 +128,172 @@ class FridgeActivity : AppCompatActivity() {
                 )
             }
 
-            Log.d("선택한재료", "선택한 재료 리스트: $selectedIngredients")
-
-            if (selectedIngredients.isEmpty()) {
-                Toast.makeText(this, "추천할 재료를 선택해주세요!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             val intent = Intent(this, FridgeRecipeActivity::class.java).apply {
                 putParcelableArrayListExtra("selectedIngredients", ArrayList(selectedIngredients))
-                putParcelableArrayListExtra("allIngredients", ArrayList(allIngredients)) // 🔥 추가
+                putParcelableArrayListExtra("allIngredients", ArrayList(allIngredients))
             }
             startActivity(intent)
         }
+
         findViewById<TextView>(R.id.fridgeDeleteText).setOnClickListener {
-            if (selectedLayouts.isEmpty()) {
+            val token = "Bearer ${getTokenFromPreferences()}"
+            val deleteTargets = allFridgeList.filter { selectedFridgeIds.contains(it.id) }
+
+            if (deleteTargets.isEmpty()) {
                 Toast.makeText(this, "삭제할 항목을 선택해 주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val token = "Bearer ${getTokenFromPreferences()}"
-            val rootLayout: LinearLayout = findViewById(R.id.rootLayout)
-
-            selectedLayouts.forEach { layout ->
-                val row1 = layout.getChildAt(0) as? LinearLayout
-                val row2 = layout.getChildAt(1) as? LinearLayout
-                val row3 = layout.getChildAt(2) as? LinearLayout
-
-                if (row1 != null && row2 != null && row3 != null) {
-                    val ingredientName = (row1.getChildAt(0) as? TextView)?.text.toString()
-                    val quantityAndUnit = (row1.getChildAt(1) as? TextView)?.text.toString()
-                    val parts = quantityAndUnit.split(" ")
-                    val quantity = if (parts.isNotEmpty()) parts[0] else ""
-                    val unit = if (parts.size > 1) parts[1] else ""
-                    val storageArea = (row2.getChildAt(1) as? TextView)?.text.toString()
-                    val dateValue = (row3.getChildAt(1) as? TextView)?.text.toString()
-
-                    val quantityNum = quantity.toDoubleOrNull()
-
-                    val targetFridge = allFridgeList.find {
-                        it.ingredientName == ingredientName &&
-                                it.storageArea == storageArea &&
-                                it.fridgeDate == dateValue &&
-                                it.unitDetail == unit &&
-                                it.quantity == quantityNum
-                    }
-
-                    if (targetFridge != null) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            try {
-                                val response = apiService.deleteFridge(targetFridge.id, token)
-                                withContext(Dispatchers.Main) {
-                                    if (response.isSuccessful) {
-                                        rootLayout.removeView(layout)
-                                        selectedLayouts.remove(layout)
-                                        Toast.makeText(this@FridgeActivity, "삭제 완료!", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(this@FridgeActivity, "삭제 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(this@FridgeActivity, "삭제 중 오류 발생: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
-                            }
+            deleteTargets.forEach { fridge ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    val response = apiService.deleteFridge(fridge.id, token)
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@FridgeActivity, "삭제 완료!", Toast.LENGTH_SHORT).show()
+                            fetchFridgeData()
+                        } else {
+                            Toast.makeText(this@FridgeActivity, "삭제 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this, "선택된 항목의 ID를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
-
-        val fridgeEditText: TextView = findViewById(R.id.fridgeEditText)
-        fridgeEditText.setOnClickListener {
-            if (selectedLayouts.size != 1) {
+        findViewById<TextView>(R.id.fridgeEditText).setOnClickListener {
+            if (selectedFridgeIds.size != 1) {
                 Toast.makeText(this, "편집할 항목을 하나 선택해 주세요.", Toast.LENGTH_SHORT).show()
             } else {
-                val selectedBox = selectedLayouts.first()
-                val row1 = selectedBox.getChildAt(0) as? LinearLayout
-                val row2 = selectedBox.getChildAt(1) as? LinearLayout
-                val row3 = selectedBox.getChildAt(2) as? LinearLayout
-
-                if (row1 != null && row2 != null && row3 != null) {
-                    val ingredientName = (row1.getChildAt(0) as? TextView)?.text.toString()
-                    val quantityAndUnit = (row1.getChildAt(1) as? TextView)?.text.toString()
-                    val parts = quantityAndUnit.split(" ")
-                    val quantity = if (parts.isNotEmpty()) parts[0] else ""
-                    val unit = if (parts.size > 1) parts[1] else ""
-                    val storageArea = (row2.getChildAt(1) as? TextView)?.text.toString()
-                    val dateOption = (row3.getChildAt(0) as? TextView)?.text.toString().removeSuffix(" : ")
-                    val dateValue = (row3.getChildAt(1) as? TextView)?.text.toString()
-
-                    //  fridgeId를 정확하게 찾기 위해 조건을 보완
-                    val quantityNum = quantity.toDoubleOrNull()
-                    val targetFridge = allFridgeList.find {
-                        it.ingredientName == ingredientName &&
-                                it.storageArea == storageArea &&
-                                it.fridgeDate == dateValue &&
-                                it.unitDetail == unit &&
-                                it.quantity == quantityNum
-                    }
-
-
-                    if (targetFridge == null) {
-                        Log.e("FridgeActivity", "fridgeId를 찾을 수 없습니다: $ingredientName, $quantity, $unit, $storageArea, $dateValue")
-                        Toast.makeText(this, "선택된 항목의 ID를 찾지 못했습니다.", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-
+                val targetFridge = allFridgeList.find { it.id == selectedFridgeIds.first() }
+                if (targetFridge != null) {
                     val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
-                        putExtra("ingredientName", ingredientName)
-                        putExtra("quantity", quantity)
-                        putExtra("unit", unit)
-                        putExtra("storageArea", storageArea)
-                        putExtra("fridgeDate", dateValue)
-                        putExtra("dateOption", dateOption)
+                        putExtra("ingredientName", targetFridge.ingredientName)
+                        putExtra("quantity", targetFridge.quantity.toString())
+                        putExtra("unit", targetFridge.unitDetail)
+                        putExtra("storageArea", targetFridge.storageArea)
+                        putExtra("fridgeDate", targetFridge.fridgeDate)
+                        putExtra("dateOption", targetFridge.dateOption)
                         putExtra("fridgeId", targetFridge.id)
                     }
-                    Log.d("FridgeActivity", "선택된 fridgeId: ${targetFridge.id}")
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this, "선택된 항목의 데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "선택된 항목의 데이터를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        val fridgeSearchInput = findViewById<EditText>(R.id.fridgeSearchInput)
-        fridgeSearchInput.addTextChangedListener(object : TextWatcher {
+        findViewById<EditText>(R.id.fridgeSearchInput).addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val keyword = s.toString().trim()
-                filterAndDisplayFridgeItems(currentCategory, keyword)
+                filterAndDisplayFridgeItems(currentCategory, s.toString())
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-    }
-    private fun handleDetectedText(text: String) {
-        val lines = text.lines()
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-            .filterNot { line ->
-                val ignoreKeywords = listOf("결제", "부가세", "합계", "카드", "현금", "전화", "tel", "매출", "pos", "번호", "wifi")
-                ignoreKeywords.any { keyword -> line.contains(keyword, ignoreCase = true) }
+
+        findViewById<ImageView>(R.id.fridgeAllCheckIcon).setOnClickListener {
+            val icon = it as ImageView
+            val filteredIds = displayedFridgeList.map { it.id }
+            val isAllSelected = selectedFridgeIds.containsAll(filteredIds)
+
+            if (isAllSelected) {
+                selectedFridgeIds.removeAll(filteredIds)
+                icon.setImageResource(R.drawable.ic_fridge_check)
+            } else {
+                selectedFridgeIds.addAll(filteredIds)
+                icon.setImageResource(R.drawable.btn_fridge_checked)
             }
 
-        if (lines.isEmpty()) {
-            Toast.makeText(this, "인식된 재료가 없습니다.", Toast.LENGTH_SHORT).show()
-            return
+            fridgeAdapter.notifyDataSetChanged()
         }
 
-        AlertDialog.Builder(this)
-            .setTitle("인식된 재료 선택")
-            .setItems(lines.toTypedArray()) { _, which ->
-                val selectedText = lines[which]
-                val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
-                    putExtra("ingredientName", selectedText)
-                }
-                startActivity(intent)
-            }
-            .setNegativeButton("취소", null)
-            .show()
     }
 
-    private lateinit var imageUri: Uri
+    override fun onResume() {
+        super.onResume()
+        fetchFridgeData()
+    }
+
+    private fun fetchFridgeData() {
+        val token = "Bearer ${getTokenFromPreferences()}"
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getMyFridges(token)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        allFridgeList = response.body()?.sortedByDescending { it.updatedAt } ?: listOf()
+                        filterAndDisplayFridgeItems(currentCategory)
+                    } else {
+                        Toast.makeText(this@FridgeActivity, "데이터 불러오기 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                val msg = e.message ?: "알 수 없는 오류"
+                Log.e("FridgeActivity", "데이터 불러오기 예외", e)
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@FridgeActivity, "네트워크 오류: $msg", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun filterAndDisplayFridgeItems(category: String, keyword: String = "") {
+        val filteredList = allFridgeList.filter {
+            val categoryMatch = when (category) {
+                "냉장" -> it.storageArea == "냉장"
+                "냉동" -> it.storageArea == "냉동"
+                "실온" -> it.storageArea == "실온"
+                else -> true
+            }
+            val keywordMatch = it.ingredientName.contains(keyword, ignoreCase = true)
+            categoryMatch && keywordMatch
+        }
+
+        // 동일 ingredientName끼리 묶어서 quantity 합산
+        val groupedList = filteredList
+            .filter { it.ingredientName != null && it.updatedAt != null }
+            .groupBy { it.ingredientName!! }
+            .map { (name, items) ->
+                val latest = items.maxByOrNull { it.updatedAt!! } ?: items.first()
+                latest.copy(quantity = items.sumOf { it.quantity })
+            }
+        fridgeAdapter = FridgeAdapter(
+            fridgeList = groupedList,
+            selectedIds = selectedFridgeIds,
+            onItemClick = { fridge ->
+                if (selectedFridgeIds.contains(fridge.id)) {
+                    selectedFridgeIds.remove(fridge.id)
+                } else {
+                    selectedFridgeIds.add(fridge.id)
+                }
+                fridgeAdapter.notifyDataSetChanged()
+            },
+            onIconClick = { fridge ->
+                val intent = Intent(this@FridgeActivity, FridgeMaterialListActivity::class.java)
+                intent.putExtra("ingredientName", fridge.ingredientName) // ✅ 수정
+                startActivity(intent)
+            }
+        )
+
+        displayedFridgeList = groupedList
+        findViewById<RecyclerView>(R.id.fridgeRecyclerView).adapter = fridgeAdapter
+    }
+
+    private fun setCategorySelected(selected: LinearLayout, allCategories: List<LinearLayout>) {
+        val textView = selected.getChildAt(0) as? TextView
+        currentCategory = textView?.text.toString()
+        filterAndDisplayFridgeItems(currentCategory)
+
+        for (container in allCategories) {
+            val tv = container.getChildAt(0) as? TextView
+            if (container == selected) {
+                container.setBackgroundResource(R.drawable.btn_fridge_ct_ck)
+                tv?.setTextColor(resources.getColor(R.color.white))
+            } else {
+                container.setBackgroundResource(R.drawable.btn_fridge_ct)
+                tv?.setTextColor(resources.getColor(R.color.black))
+            }
+        }
+    }
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
@@ -334,27 +302,35 @@ class FridgeActivity : AppCompatActivity() {
             recognizer.process(image)
                 .addOnSuccessListener { visionText ->
                     val text = visionText.text
-                    Log.d("OCR_RESULT", "인식된 텍스트: $text")
-                    Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-
-                    val knownIngredients = listOf("복숭아아이스티", "감자", "[포장]복숭아아이스티", "계란", "두부", "당근")
-                    val matched = knownIngredients.firstOrNull { text.contains(it) }
-
-                    if (matched != null) {
-                        val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
-                            putExtra("ingredientName", matched)
-                        }
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "음식 재료를 인식하지 못했습니다.", Toast.LENGTH_SHORT).show()
+                    val cleanedText = text.replace(" ", "").replace("\n", "")
+                    if (!cleanedText.contains(Regex("[가-힣]"))) {
+                        Log.d("OCR_RESULT", "한글 없음, Vision API 시도")
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                        callGoogleVisionAPI(bitmap)
+                        return@addOnSuccessListener
                     }
+                    handleMatchedText(cleanedText)
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, "OCR 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+                .addOnFailureListener { e ->
+                    Log.w("OCR_MLKIT", "ML Kit 인식 실패: ${e.message}, Vision API 시도")
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                    callGoogleVisionAPI(bitmap)
                 }
         }
     }
 
+    private fun handleMatchedText(text: String) {
+        val knownIngredients = listOf("감자", "깻잎", "햇감자", "당근", "양파", "계란", "오이", "상추", "시금치")
+        val matched = knownIngredients.firstOrNull { text.contains(it) }
+        if (matched != null) {
+            val intent = Intent(this, FridgeIngredientActivity::class.java).apply {
+                putExtra("ingredientName", matched)
+            }
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "음식 재료를 인식하지 못했습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -370,7 +346,6 @@ class FridgeActivity : AppCompatActivity() {
         }
     }
 
-
     private fun bitmapToBase64(bitmap: Bitmap): String {
         val stream = java.io.ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
@@ -380,23 +355,24 @@ class FridgeActivity : AppCompatActivity() {
 
     fun callGoogleVisionAPI(bitmap: Bitmap) {
         val base64Image = bitmapToBase64(bitmap)
-        Log.d("OCR_DEBUG", "callGoogleVisionAPI 호출됨")
         val image = Image(content = base64Image)
         val feature = Feature()
         val context = ImageContext(languageHints = listOf("ko"))
         val requestItem = RequestItem(image, listOf(feature), context)
         val request = VisionRequest(listOf(requestItem))
+
         val gson = Gson()
-        Log.d("VisionRequest", gson.toJson(request))
-        Log.d("OCR_DEBUG", "request json 변환 완료")
         val retrofit = Retrofit.Builder()
             .baseUrl("https://vision.googleapis.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service = retrofit.create(GoogleVisionApi::class.java)
-        val apiKey = getString(R.string.gcp_vision_api_key)
+        val apiKey = "AIzaSyDQWnQPMzjhZU4h6XZ3R9f8BO3bTwt8at0"
+        Log.d("API_KEY_CHECK", "Google Vision API Key: '$apiKey'")
         val call = service.annotateImage(apiKey, request)
+
+        Log.d("VISION_REQUEST_URL", call.request().url.toString())
 
         call.enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -406,9 +382,9 @@ class FridgeActivity : AppCompatActivity() {
                         ?.get(0)?.asJsonObject
                         ?.getAsJsonObject("fullTextAnnotation")
                         ?.get("text")?.asString ?: "결과 없음"
-
+                    Log.d("VISION_REQUEST_URL", call.request().url.toString())
                     Log.d("VISION_RESULT", text)
-                    handleDetectedText(text) // ✅ 호출됨
+                    handleDetectedText(text)
                 } else {
                     Log.e("VISION_ERROR", "오류 응답: ${response.errorBody()?.string()}")
                 }
@@ -421,173 +397,114 @@ class FridgeActivity : AppCompatActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        fetchFridgeData()
-    }
+    private fun handleDetectedText(text: String) {
+        val dateRegex = Regex("""판매일[:\s]+(\d{2,4}[-.]\d{2}[-.]\d{2})""")
+        val dateRaw = dateRegex.find(text)?.groupValues?.get(1) ?: ""
+        val fridgeDate = if (dateRaw.isNotEmpty()) {
+            val parts = dateRaw.split("[-./]".toRegex())
+            if (parts[0].length == 2) "20${parts[0]}-${parts[1]}-${parts[2]}" else dateRaw
+        } else {
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        }
 
-    private fun fetchFridgeData() {
-        val token = "Bearer ${getTokenFromPreferences()}"
-        if (token.isBlank()) {
-            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+        val lines = text.lines()
+        val items = mutableListOf<FridgeCreateRequest>()
+
+        // 여기서 itemHeaderRegex 선언
+        val itemHeaderRegex = Regex("""\d{3}\s+([가-힣]+)""")
+
+        var index = 0
+        while (index < lines.size) {
+            val line = lines[index].trim()
+            val matchedName = itemHeaderRegex.find(line)?.groupValues?.get(1)
+
+            if (matchedName != null && isValidIngredientName(matchedName)) {
+                var quantity = 1.0
+                if (index + 3 < lines.size) {
+                    val quantityLine = lines[index + 3].trim().replace(",", "")
+                    quantity = quantityLine.toDoubleOrNull() ?: 1.0
+                }
+
+                items.add(
+                    FridgeCreateRequest(
+                        ingredientName = matchedName,
+                        quantity = quantity,
+                        fridgeDate = fridgeDate,
+                        dateOption = "구매일자",
+                        storageArea = "실온",
+                        unitDetail = "개",
+                        unitCategory = "COUNT"
+                    )
+                )
+                index += 1 // 한 줄씩 검사하도록 변경
+            } else {
+                index++
+            }
+        }
+
+        if (items.isEmpty()) {
+            Toast.makeText(this, "인식된 재료가 없습니다.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = apiService.getMyFridges(token)
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        allFridgeList = response.body()?.sortedByDescending { it.updatedAt } ?: listOf()
-                        filterAndDisplayFridgeItems(currentCategory)
-                    } else {
-                        Toast.makeText(
-                            this@FridgeActivity,
-                            "데이터 불러오기 실패: ${response.errorBody()?.string()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@FridgeActivity, "네트워크 오류: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        saveItemsToServerSequentially(items)
     }
 
-    private fun filterAndDisplayFridgeItems(category: String, keyword: String = "") {
-        val rootLayout: LinearLayout = findViewById(R.id.rootLayout)
-        rootLayout.removeAllViews()
-        selectedLayouts.clear()
 
-        val filteredList = allFridgeList.filter {
-            val categoryMatch = when (category) {
-                "냉장" -> it.storageArea == "냉장"
-                "냉동" -> it.storageArea == "냉동"
-                "실온" -> it.storageArea == "실온"
-                else -> true
-            }
-            val keywordMatch = it.ingredientName.contains(keyword, ignoreCase = true)
-            categoryMatch && keywordMatch
+    fun isValidIngredientName(name: String): Boolean {
+        val excludedWords = listOf("계산원", "고객", "카드", "영수증", "권미경", "신용카드", "판매일")
+        if (name.length !in 2..6) return false
+        if (excludedWords.any { name.contains(it) }) return false
+        return true
+    }
+    private fun saveItemsToServerSequentially(items: List<FridgeCreateRequest>, index: Int = 0) {
+        if (index >= items.size) {
+            Log.d("OCR_SAVE_DEBUG", "모든 아이템 저장 완료")
+            fetchFridgeData()
+            return
         }
 
-        filteredList.forEach { fridge ->
-            val box = createIngredientBox(
-                ingredientName = fridge.ingredientName,
-                storageArea = fridge.storageArea,
-                dateOption = fridge.dateOption ?: "유통기한",
-                dateValue = fridge.fridgeDate,
-                quantity = fridge.quantity.toString(),
-                unit = fridge.unitDetail
-            )
-            box.setOnClickListener {
-                if (selectedLayouts.contains(box)) {
-                    box.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
-                    selectedLayouts.remove(box)
+        val token = "Bearer ${App.prefs.token}"
+        val api = RetrofitInstance.apiService
+        val item = items[index]
+
+        Log.d("OCR_SAVE_DEBUG", "아이템 ${index} 저장 시도: ${item.ingredientName}")
+
+        api.createFridgeByOCR(item, token).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Log.d("OCR_SAVE_DEBUG", "아이템 ${index} 저장 완료: ${item.ingredientName}")
+                    saveItemsToServerSequentially(items, index + 1)  // 재귀 호출
                 } else {
-                    box.setBackgroundResource(R.drawable.rounded_rectangle_fridge_ck)
-                    selectedLayouts.add(box)
+                    Log.e("OCR_SAVE_DEBUG", "아이템 ${index} 저장 실패 코드: ${response.code()}")
                 }
             }
-            rootLayout.addView(box)
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                val message = t.message ?: "알 수 없는 네트워크 오류"
+                Log.e("OCR_SAVE_DEBUG", "아이템 $index 저장 실패 에러: $message", t)
+                runOnUiThread {
+                    Toast.makeText(this@FridgeActivity, "네트워크 오류: $message", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        })
     }
 
-    private fun setCategorySelected(selected: LinearLayout, allCategories: List<LinearLayout>) {
-        val textView = selected.getChildAt(0) as? TextView
-        currentCategory = textView?.text.toString()
-        filterAndDisplayFridgeItems(currentCategory)
 
-        for (container in allCategories) {
-            val tv = container.getChildAt(0) as? TextView
-            if (container == selected) {
-                container.setBackgroundResource(R.drawable.btn_fridge_ct_ck)
-                tv?.setTextColor(android.graphics.Color.WHITE)
-            } else {
-                container.setBackgroundResource(R.drawable.btn_fridge_ct)
-                tv?.setTextColor(android.graphics.Color.BLACK)
-            }
-        }
+    private fun parseItem(lines: List<String>, date: String): IngredientData? {
+        // 1. 재료명 찾기: 한글로 된 단어 중 가장 먼저 나오는 걸 이름으로 사용
+        val name = lines.firstOrNull { it.contains(Regex("[가-힣]+")) }?.trim() ?: return null
+
+        // 2. 수량 찾기: 숫자만 있는 줄이나, '1' 또는 '2' 같은 단순 숫자를 우선 찾기
+        val quantityLine = lines.firstOrNull { it.trim().matches(Regex("""\d+""")) }
+        val quantity = quantityLine?.toIntOrNull() ?: 1
+
+        return IngredientData(name, quantity.toString(), date)
     }
 
-    private fun createIngredientBox(
-        ingredientName: String,
-        storageArea: String,
-        dateOption: String,
-        dateValue: String,
-        quantity: String,
-        unit: String
-    ): LinearLayout {
-        val marginLR = dpToPx(30)
-        val marginBottom = dpToPx(10)
-        val paddingLR = dpToPx(30)
-        val paddingTB = dpToPx(15)
 
-        val quantityDisplay = if (quantity.toDoubleOrNull()?.rem(1.0) == 0.0) {
-            quantity.toDouble().toInt().toString()
-        } else {
-            quantity
-        }
-
-        return LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setBackgroundResource(R.drawable.rounded_rectangle_fridge)
-            setPadding(paddingLR, paddingTB, paddingLR, paddingTB)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(marginLR, 0, marginLR, marginBottom)
-            }
-
-            val row1 = LinearLayout(context).apply {
-                orientation = LinearLayout.HORIZONTAL
-            }
-            val nameText = TextView(context).apply {
-                text = ingredientName
-                setTypeface(typeface, android.graphics.Typeface.BOLD)
-                textSize = 16f
-                setTextColor(resources.getColor(R.color.green))
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            }
-            val qtyText = TextView(context).apply {
-                text = "$quantityDisplay $unit"
-                setTypeface(typeface, android.graphics.Typeface.BOLD)
-                textSize = 16f
-                setTextColor(resources.getColor(R.color.black))
-            }
-            row1.addView(nameText)
-            row1.addView(qtyText)
-
-            val row2 = LinearLayout(context).apply {
-                orientation = LinearLayout.HORIZONTAL
-            }
-            row2.addView(TextView(context).apply {
-                text = "보관장소 : "
-                textSize = 12f
-            })
-            row2.addView(TextView(context).apply {
-                text = storageArea
-                textSize = 12f
-            })
-
-            val row3 = LinearLayout(context).apply {
-                orientation = LinearLayout.HORIZONTAL
-            }
-            row3.addView(TextView(context).apply {
-                text = "$dateOption : "
-                textSize = 12f
-            })
-            row3.addView(TextView(context).apply {
-                text = dateValue
-                textSize = 12f
-            })
-
-            addView(row1)
-            addView(row2)
-            addView(row3)
-        }
+    private fun getTokenFromPreferences(): String {
+        return App.prefs.token ?: ""
     }
 
     private fun dpToPx(dp: Int): Int {
@@ -597,10 +514,4 @@ class FridgeActivity : AppCompatActivity() {
             resources.displayMetrics
         ).toInt()
     }
-
-    private fun getTokenFromPreferences(): String {
-        return App.prefs.token ?: ""
-    }
-
-
 }

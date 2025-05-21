@@ -1,6 +1,8 @@
 package com.example.test.network
 
 import com.example.test.model.*
+import com.example.test.model.Fridge.FridgeCreateRequest
+import com.example.test.model.Fridge.FridgeHistoryResponse
 import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.Fridge.FridgeRequest
@@ -157,6 +159,26 @@ interface ApiService {
         @Path("id") id: Long,
         @Header("Authorization") token: String
     ): Response<Void>
+
+    // 냉장고 재료 이력 조회
+    @GET("/api/fridges/history")
+    fun getFridgeHistory(
+        @Header("Authorization") token: String,
+        @Query("ingredientName") ingredientName: String
+    ): Call<List<FridgeHistoryResponse>>
+
+    //영수증으로 재료추가
+    @POST("/api/fridges/ocr")
+    fun createFridgeByOCR(
+        @Body body: FridgeCreateRequest,
+        @Header("Authorization") token: String
+    ): Call<Void>
+
+    @POST("/api/fridges/ocr/batch")
+    fun createFridgesByOCRBatch(
+        @Body body: List<FridgeCreateRequest>,
+        @Header("Authorization") token: String
+    ): Call<Void>
 
     //동네재료 게시글
     @POST("/api/trade-posts")
@@ -380,4 +402,9 @@ interface ApiService {
         @Query("category") category: String
     ): Call<List<ReviewResponseDTO>>
 
+    //마이페이지 - 냉장고 재료 관리
+    @GET("/api/fridge-history/all")
+    fun getAllFridgeHistories(
+        @Header("Authorization") token: String
+    ): Call<List<FridgeHistoryResponse>>
 }
