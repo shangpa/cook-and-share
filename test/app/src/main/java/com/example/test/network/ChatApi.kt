@@ -1,5 +1,7 @@
 package com.example.test.network
 
+import com.example.test.model.chat.ChatMessageDTO
+import com.example.test.model.chat.ChatRoomListResponseDTO
 import com.example.test.model.chat.ChatRoomResponse
 import com.example.test.model.chat.UsernameResponse
 import retrofit2.Call
@@ -20,4 +22,15 @@ interface ChatApi {
         @Header("Authorization") token: String,
         @Query("id") id: Long
     ): Call<UsernameResponse>
+
+    @GET("/api/chat-room/list")
+    fun getChatRooms(
+        @Header("Authorization") token: String
+    ): Call<List<ChatRoomListResponseDTO>>
+
+    @GET("/api/chat-message")
+    fun getMessages(
+        @Header("Authorization") token: String,
+        @Query("roomKey") roomKey: String
+    ): Call<List<ChatMessageDTO>>
 }

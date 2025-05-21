@@ -10,12 +10,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.test.Utils.ChatSessionManager
 import com.example.test.databinding.ActivityMaterialChatDetailBinding
 import com.example.test.model.ChatItem
 import com.example.test.model.ChatType
 import com.example.test.model.Chatting
 import com.example.test.model.ChattingRoom
 import com.example.test.model.chat.ChatMessage
+import com.example.test.model.chat.ChatMessageDTO
 import com.example.test.model.chat.UsernameResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
@@ -50,7 +52,9 @@ class MaterialChatDetailActivity : AppCompatActivity() {
         binding = ActivityMaterialChatDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         roomKey = intent.getStringExtra("roomKey") ?: return
+        ChatSessionManager.currentChatRoomKey = roomKey
         senderId = App.prefs.userId.toLong()
         chatAdapter = ChatAdapter(chatList, senderId)
         binding.recyclerView.adapter = chatAdapter
@@ -96,7 +100,13 @@ class MaterialChatDetailActivity : AppCompatActivity() {
         binding.chatDetailBack.setOnClickListener {
             finish()
         }
+        loadPreviousMessages()
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        ChatSessionManager.currentChatRoomKey = null
+    }
+
     @SuppressLint("CheckResult")
     private fun connectStomp() {
         val token = App.prefs.token
@@ -146,6 +156,28 @@ class MaterialChatDetailActivity : AppCompatActivity() {
                 Log.e("STOMP", "❌ 메시지 구독 실패", error)
             })
     }
+    private fun loadPreviousMessages() {
+        val token = App.prefs.token ?: return
 
+        RetrofitInstance.chatApi.getMessages("Bearer $token", roomKey)
+            .enqueue(object : Callback<List<ChatMessageDTO>> {
+                override fun onResponse(
+                    call: Call<List<ChatMessageDTO>>,
+                    response: Response<List<ChatMessageDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        val messages = response.body() ?: return
+                        chatList.clear()
+                        chatList.addAll(messages.map { ChatMessage(it.roomKey, it.senderId, it.message, it.createdAt) })
+                        chatAdapter.notifyDataSetChanged()
+                        binding.recyclerView.scrollToPosition(chatList.size - 1)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ChatMessageDTO>>, t: Throwable) {
+                    Log.e("Chat", "이전 메시지 불러오기 실패", t)
+                }
+            })
+    }
 }
 
