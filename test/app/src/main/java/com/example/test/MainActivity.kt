@@ -8,14 +8,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.GridLayout
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.test.databinding.ActivityMainBinding
 import android.os.Handler
@@ -26,12 +22,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.example.test.network.RetrofitInstance
-import com.example.test.network.ApiService
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.test.model.RecipeSearchResponseDTO
+import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import android.view.View
@@ -40,10 +35,13 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.test.model.IngredientRecipeGroup
-import com.google.firebase.messaging.FirebaseMessaging
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import java.text.DecimalFormat
 import android.Manifest
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.test.adapter.LikedRecipeAdapter
+import com.example.test.adapter.LikedVideoRecipeAdapter
+import com.example.test.model.LoginInfoResponse
 
 lateinit var binding: ActivityMainBinding
 private var currentPage = 0
@@ -95,8 +93,8 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel(this)
 
         // 배너
-        val bannerAdapter = BannerViewPagerAdapter(this@MainActivity)
-        binding.homeBannerVp.adapter = bannerAdapter
+        val adapter = BannerViewPagerAdapter(this)
+        binding.homeBannerVp.adapter = adapter
         binding.homeBannerVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         bannerPagerAdapter = BannerPagerAdapter(this)
@@ -224,13 +222,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // interestList 클릭했을 때 RecipeSeeVideoActivity 이동
-        val interestList: GridLayout = findViewById(R.id.interestList)
-        interestList.setOnClickListener {
-            val intent = Intent(this, RecipeSeeVideoActivity::class.java)
-            startActivity(intent)
-        }
-
         // themeRecipe 클릭했을 때 RecipeActivity 이동
         val themeRecipe: TextView = findViewById(R.id.themeRecipe)
         themeRecipe.setOnClickListener {
@@ -263,28 +254,9 @@ class MainActivity : AppCompatActivity() {
             listOf(
                 findViewById(R.id.fridgeHeartTwo),
                 findViewById(R.id.fridgeHeartThree),
-                findViewById(R.id.fridgeHeartFour),
-                findViewById(R.id.saveHeartTwo),
-                findViewById(R.id.saveHeartFive),
-                findViewById(R.id.saveHeartSix)
+                findViewById(R.id.fridgeHeartFour)
             ),
             initiallyLiked = false
-        )
-
-        //좋아요 버튼(채워진거)
-        setupHeartToggle(
-            listOf(
-                findViewById(R.id.fridgeHeart),
-                findViewById(R.id.saveHeart),
-                findViewById(R.id.saveHeartThree),
-                findViewById(R.id.saveHeartFour),
-                findViewById(R.id.interestHeart),
-                findViewById(R.id.interestHeartTwo),
-                findViewById(R.id.interestHeartThree),
-                findViewById(R.id.interestHeartFour),
-                findViewById(R.id.interestHeartFive)
-            ),
-            initiallyLiked = true
         )
 
         val token = App.prefs.token.toString()
@@ -479,6 +451,36 @@ class MainActivity : AppCompatActivity() {
                 Log.e("Fridge API", "오류 발생", e)
             }
         }
+
+        val likedRecipeUserNameTextView: TextView = findViewById(R.id.likedRecipeUserName)
+
+        if (token.isNullOrBlank()) {
+            // 로그인하지 않은 경우
+            likedRecipeUserNameTextView.text = "쿡앤쉐어 유저들이 선호하는 레시피"
+        } else {
+            // 로그인한 경우 → 사용자 정보 가져오기
+            RetrofitInstance.apiService.getUserInfo("Bearer $token")
+                .enqueue(object : Callback<LoginInfoResponse> {
+                    override fun onResponse(
+                        call: Call<LoginInfoResponse>,
+                        response: Response<LoginInfoResponse>
+                    ) {
+                        if (response.isSuccessful && response.body() != null) {
+                            val name = response.body()!!.name
+                            likedRecipeUserNameTextView.text = "${name}님이 선호하는 레시피"
+                        } else {
+                            likedRecipeUserNameTextView.text = "쿡앤쉐어 유저들이 선호하는 레시피"
+                        }
+                    }
+
+                    override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
+                        likedRecipeUserNameTextView.text = "쿡앤쉐어 유저들이 선호하는 레시피"
+                    }
+                })
+        }
+
+        loadPreferredRecipes()
+        loadLikedVideoRecipes()
     }
 
     // 2. 배너 세팅
@@ -576,15 +578,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupHeartToggle(buttons: List<ImageView>, initiallyLiked: Boolean) {
         val TAG_IS_LIKED = R.id.fridgeHeart
 
-        // 버튼 ID → 현재 레이아웃 ID + 다음 레이아웃 ID 매핑
-        val buttonToLayoutMap = mapOf(
-            R.id.interestHeart to Pair(R.id.interestItem1, R.id.interestItem2),
-            R.id.interestHeartTwo to Pair(R.id.interestItem2, R.id.interestItem3),
-            R.id.interestHeartThree to Pair(R.id.interestItem3, R.id.interestItem4),
-            R.id.interestHeartFour to Pair(R.id.interestItem4, R.id.interestItem5),
-            R.id.interestHeartFive to Pair(R.id.interestItem5, null) // 마지막 항목은 다음이 없음
-        )
-
         buttons.forEach { button ->
             button.setTag(TAG_IS_LIKED, initiallyLiked)
 
@@ -597,23 +590,6 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     button.setImageResource(R.drawable.ic_heart_list)
-
-                    // 현재 + 다음 레이아웃 처리
-                    val layoutPair = buttonToLayoutMap[button.id]
-                    layoutPair?.let { (currentId, nextId) ->
-                        // 현재 레이아웃 GONE
-                        findViewById<View>(currentId)?.visibility = View.GONE
-
-                        // 다음 레이아웃 marginTop 제거
-                        nextId?.let { nid ->
-                            val nextLayout = findViewById<View>(nid)
-                            val params = nextLayout.layoutParams as? ViewGroup.MarginLayoutParams
-                            params?.let {
-                                it.topMargin = 0
-                                nextLayout.layoutParams = it
-                            }
-                        }
-                    }
                 }
 
                 it.setTag(TAG_IS_LIKED, newLiked)
@@ -688,5 +664,68 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadPreferredRecipes() {
+        val token = App.prefs.token
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerLikedRecipes)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+
+        val call: Call<List<RecipeMainSearchResponseDTO>> = if (token.isNullOrBlank()) {
+            RetrofitInstance.apiService.getTopViewedRecipes()
+        } else {
+            RetrofitInstance.apiService.getMainLikedRecipes("Bearer $token")
+        }
+
+        call.enqueue(object : Callback<List<RecipeMainSearchResponseDTO>> {
+            override fun onResponse(
+                call: Call<List<RecipeMainSearchResponseDTO>>,
+                response: Response<List<RecipeMainSearchResponseDTO>>
+            ) {
+                if (response.isSuccessful) {
+                    val recipes = response.body()?.take(6) ?: return
+                    recyclerView.adapter = LikedRecipeAdapter(recipes) { selectedRecipe ->
+                        val intent = Intent(this@MainActivity, RecipeSeeMainActivity::class.java)
+                        intent.putExtra("recipeId", selectedRecipe.recipeId)
+                        startActivity(intent)
+                    }
+                } else {
+                    Log.e("MainActivity", "레시피 응답 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<RecipeMainSearchResponseDTO>>, t: Throwable) {
+                Log.e("MainActivity", "레시피 불러오기 실패", t)
+            }
+        })
+    }
+
+    private fun loadLikedVideoRecipes() {
+        val token = App.prefs.token ?: return
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerLikedVideoRecipes)
+        recyclerView.layoutManager = GridLayoutManager(this, 1)
+
+        RetrofitInstance.apiService.getMainLikedRecipes("Bearer $token")
+            .enqueue(object : Callback<List<RecipeMainSearchResponseDTO>> {
+                override fun onResponse(
+                    call: Call<List<RecipeMainSearchResponseDTO>>,
+                    response: Response<List<RecipeMainSearchResponseDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        val recipes = response.body()?.filter { !it.videoUrl.isNullOrBlank() } ?: return
+                        recyclerView.adapter = LikedVideoRecipeAdapter(recipes) { selectedRecipe ->
+                            // ✅ 여기서 RecipeSeeMainActivity로 이동
+                            val intent = Intent(this@MainActivity, RecipeSeeMainActivity::class.java)
+                            intent.putExtra("recipeId", selectedRecipe.recipeId)
+                            startActivity(intent)
+                        }
+                    } else {
+                        Log.e("MainActivity", "관심 동영상 응답 실패: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<RecipeMainSearchResponseDTO>>, t: Throwable) {
+                    Log.e("MainActivity", "관심 동영상 레시피 불러오기 실패", t)
+                }
+            })
+    }
 
 }
