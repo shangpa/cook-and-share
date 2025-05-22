@@ -432,18 +432,24 @@ interface ApiService {
         @Query("username") username: String
     ): Call<Long>
 
-    //썸네일 만들기
+    // 썸네일 만들기
     @POST("/api/recipe/generate-thumbnail")
     fun generateThumbnail(
         @Header("Authorization") token: String,
         @Body recipe: RecipeRequest
     ): Call<ThumbnailResponse>
 
-    //썸네일 수정하기
+    // 썸네일 수정하기
     @PATCH("/api/recipe/{recipeId}/thumbnail")
     fun updateRecipeThumbnail(
         @Header("Authorization") token: String,
         @Path("recipeId") recipeId: Long,
         @Body body: Map<String, String>
     ): Call<Void>
+
+    // 마이페이지 - 포인트 사용내역
+    @GET("/api/point/my-history")
+    fun getMyPointHistory(
+        @Header("Authorization") token: String
+    ): Call<List<PointHistoryResponse>>
 }

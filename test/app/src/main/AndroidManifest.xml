@@ -601,7 +601,7 @@
 
         <!-- MyPagePoint -->
         <activity
-            android:name=".MyPagePoint"
+            android:name=".MyPagePointActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
