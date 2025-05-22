@@ -20,6 +20,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.test.adapter.ImagePagerAdapter
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.chat.ChatRoomResponse
+import com.example.test.model.chat.UsernameResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
 import retrofit2.Call
@@ -55,6 +56,8 @@ class MaterialDetailActivity : AppCompatActivity() {
         imageCount = findViewById(R.id.imageCount)
         imageCountTwo = findViewById(R.id.imageCountTwo)
 
+
+
         if (tradePostId != -1L) {
             RetrofitInstance.apiService.getTradePostById(token, tradePostId)
                 .enqueue(object : Callback<TradePostResponse> {
@@ -65,6 +68,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                     ) {
                         if (response.isSuccessful) {
                             response.body()?.let { post ->
+                                currentPost = post
                                 itemTitle.text = post.title
                                 category1.text = post.category
                                 quantity2.text = "${post.quantity}개"
@@ -115,9 +119,20 @@ class MaterialDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         // chatButton 클릭했을 때 MaterialChatDetailActivity 이동
         val chatButton: Button = findViewById(R.id.chatButton)
         chatButton.setOnClickListener {
+            fetchMyNickname { myNickname ->
+                if (myNickname == null) {
+                    Toast.makeText(this, "사용자 정보 조회 실패", Toast.LENGTH_SHORT).show()
+                    return@fetchMyNickname
+                }
+
+                if (::currentPost.isInitialized && currentPost.writer == myNickname) {
+                    Toast.makeText(this, "자신의 게시글에는 채팅할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    return@fetchMyNickname
+                }
 
             RetrofitInstance.chatApi.createOrGetRoom(token, tradePostId)
                 .enqueue(object : Callback<ChatRoomResponse> {
@@ -145,6 +160,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                         Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                     }
                 })
+            }
         }
         // imageSearch 클릭했을 때 MaterialSearchActivity 이동
         val imageSearch: ImageView = findViewById(R.id.imageSearch)
@@ -220,5 +236,24 @@ class MaterialDetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             emptyList()
         }
+    }
+    private fun fetchMyNickname(onResult: (String?) -> Unit) {
+        val token = "Bearer ${App.prefs.token}"
+        val userId = App.prefs.userId
+        RetrofitInstance.chatApi.getUserProfileById(token, userId)
+            .enqueue(object : Callback<UsernameResponse> {
+                override fun onResponse(call: Call<UsernameResponse>, response: Response<UsernameResponse>) {
+                    if (response.isSuccessful) {
+                        val nickname = response.body()?.username
+                        onResult(nickname)
+                    } else {
+                        onResult(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<UsernameResponse>, t: Throwable) {
+                    onResult(null)
+                }
+            })
     }
 }
