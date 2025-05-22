@@ -19,6 +19,7 @@ import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
+import com.example.test.model.recipeDetail.ThumbnailResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -431,4 +432,18 @@ interface ApiService {
         @Query("username") username: String
     ): Call<Long>
 
+    //썸네일 만들기
+    @POST("/api/recipe/generate-thumbnail")
+    fun generateThumbnail(
+        @Header("Authorization") token: String,
+        @Body recipe: RecipeRequest
+    ): Call<ThumbnailResponse>
+
+    //썸네일 수정하기
+    @PATCH("/api/recipe/{recipeId}/thumbnail")
+    fun updateRecipeThumbnail(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Long,
+        @Body body: Map<String, String>
+    ): Call<Void>
 }

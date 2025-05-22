@@ -219,7 +219,17 @@ class RecipeSeeActivity : AppCompatActivity() {
                         findViewById<TextView>(R.id.vegetarianDiet).text = recipe.category
                         findViewById<TextView>(R.id.elementaryLevel).text = recipe.difficulty
                         findViewById<TextView>(R.id.halfHour).text = "${recipe.cookingTime}분"
+                        val mainImageView = findViewById<ImageView>(R.id.riceImage)
 
+                        val imageUrl = recipe.mainImageUrl?.let {
+                            if (it.startsWith("http")) it else RetrofitInstance.BASE_URL + it
+                        }
+                        Log.d("MAIN_IMAGE_URL", "url: $imageUrl")
+                        if (!imageUrl.isNullOrEmpty()) {
+                            Glide.with(this@RecipeSeeActivity)
+                                .load(imageUrl)
+                                .into(mainImageView)
+                        }
                         //날짜
                         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
                         val outputFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
