@@ -54,12 +54,16 @@ class TradePostAdapter(
                 .map { it.trim() }
 
             if (urls.isNotEmpty() && urls[0].isNotBlank()) {
-                val fullImageUrl = baseUrl + urls[0] // ✅ 여기서 baseUrl + 상대 경로
+                val fullImageUrl = baseUrl + urls[0]
+                holder.itemImage.visibility = View.VISIBLE
                 Glide.with(holder.itemView.context)
                     .load(fullImageUrl)
-                    .placeholder(R.drawable.img_kitchen1)
                     .into(holder.itemImage)
+            } else {
+                holder.itemImage.visibility = View.GONE
             }
+        } else {
+            holder.itemImage.visibility = View.GONE
         }
 
         holder.itemView.setOnClickListener {
