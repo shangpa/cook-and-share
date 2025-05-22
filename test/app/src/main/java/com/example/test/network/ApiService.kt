@@ -431,7 +431,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("username") username: String
     ): Call<Long>
-
+    
     //썸네일 만들기
     @POST("/api/recipe/generate-thumbnail")
     fun generateThumbnail(
@@ -446,4 +446,11 @@ interface ApiService {
         @Path("recipeId") recipeId: Long,
         @Body body: Map<String, String>
     ): Call<Void>
+
+    //마이페이지 - 포인트 사용내역
+    @GET("/api/point/my-history")
+    fun getMyPointHistory(
+        @Header("Authorization") token: String
+    ): Call<List<PointHistoryResponse>>
+
 }
