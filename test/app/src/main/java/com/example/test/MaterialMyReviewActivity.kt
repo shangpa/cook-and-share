@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.test.model.TradePost.TpReviewResponseDTO
+import com.example.test.model.review.TpReviewResponseDTO
 import com.example.test.network.RetrofitInstance
 
 class MaterialMyReviewActivity : AppCompatActivity() {

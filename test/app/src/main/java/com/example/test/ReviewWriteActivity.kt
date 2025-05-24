@@ -38,7 +38,7 @@ private var isHeartFilled = false // 하트 상태 저장
 private var isGoodFilled = false // 하트 상태 저장
 private var selectedRating = 0 // 선택된 점수
 private val imageUrlList = mutableListOf<String>() //이미지 리스트 저장용
-class ReveiwWriteActivity : AppCompatActivity() {
+class ReviewWriteActivity : AppCompatActivity() {
 
     // 갤러리에서 선택한 이미지를 처리하는 콜백
 
@@ -57,7 +57,7 @@ class ReveiwWriteActivity : AppCompatActivity() {
                                 setMargins(12.dpToPx(), 12.dpToPx(), 0, 12.dpToPx())
                             }
                             scaleType = ImageView.ScaleType.CENTER_CROP
-                            Glide.with(this@ReveiwWriteActivity).load(fullImageUrl).into(this)
+                            Glide.with(this@ReviewWriteActivity).load(fullImageUrl).into(this)
                         }
 
                         val photoContainer = findViewById<LinearLayout>(R.id.photoContainer)
@@ -162,15 +162,15 @@ class ReveiwWriteActivity : AppCompatActivity() {
 
                         if (recipe.mainImageUrl.isNotBlank()) {
                             val imageUrl = RetrofitInstance.BASE_URL + recipe.mainImageUrl.trim()
-                            Glide.with(this@ReveiwWriteActivity).load(imageUrl).into(recipeImage)
+                            Glide.with(this@ReviewWriteActivity).load(imageUrl).into(recipeImage)
                         }
                     } else {
-                        Toast.makeText(this@ReveiwWriteActivity, "레시피 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ReviewWriteActivity, "레시피 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<RecipeDetailResponse>, t: Throwable) {
-                    Toast.makeText(this@ReveiwWriteActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ReviewWriteActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -204,19 +204,19 @@ class ReveiwWriteActivity : AppCompatActivity() {
                 .enqueue(object : Callback<ReviewResponseDTO> {
                     override fun onResponse(call: Call<ReviewResponseDTO>, response: Response<ReviewResponseDTO>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(this@ReveiwWriteActivity, "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@ReveiwWriteActivity, RecipeSeeNoTimerActivity::class.java)
+                            Toast.makeText(this@ReviewWriteActivity, "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@ReviewWriteActivity, RecipeSeeNoTimerActivity::class.java)
                             intent.putExtra("recipeId", recipeId)
                             intent.putExtra("selectedTab", 2) // 0: 재료, 1: 조리순서, 2: 리뷰
                             startActivity(intent)
                             finish() // 또는 작성 완료 UI로 이동
                         } else {
-                            Toast.makeText(this@ReveiwWriteActivity, "리뷰 등록 실패", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ReviewWriteActivity, "리뷰 등록 실패", Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<ReviewResponseDTO>, t: Throwable) {
-                        Toast.makeText(this@ReveiwWriteActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ReviewWriteActivity, "서버 연결 실패", Toast.LENGTH_SHORT).show()
                     }
                 })
         }

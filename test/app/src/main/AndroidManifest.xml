@@ -598,7 +598,7 @@
 
         <!-- ReveiwWriteActivity -->
         <activity
-            android:name=".ReveiwWriteActivity"
+            android:name=".ReviewWriteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

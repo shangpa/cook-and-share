@@ -19,7 +19,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.network.RetrofitInstance
 import java.util.Stack
 

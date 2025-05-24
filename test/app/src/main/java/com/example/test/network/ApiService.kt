@@ -8,7 +8,6 @@ import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.model.Fridge.FridgeResponse
 import com.example.test.model.Fridge.UsedIngredientRequest
-import com.example.test.model.TradePost.TpReviewResponseDTO
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
@@ -20,6 +19,7 @@ import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import com.example.test.model.recipeDetail.ThumbnailResponse
+import com.example.test.model.review.TpReviewResponseDTO
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
