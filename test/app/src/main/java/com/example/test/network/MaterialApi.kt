@@ -50,4 +50,8 @@ interface MaterialApi {
         @Query("buyerId") buyerId: Long
     ): Call<TradePostSimpleResponse>
 
+    @GET("/api/trade-posts/mypurchases")
+    fun getMyPurchasedPosts(
+        @Header("Authorization") token: String
+    ): Call<List<TradePostSimpleResponse>>
 }

@@ -107,6 +107,7 @@ class SaleHistoryAdapter(
 
     }
     private fun requestCompleteTradePost(context: Context, postId: Long, buyerId: Long, position: Int) {
+        Log.d("✅ buyer_final", "postId: $postId, buyerId: $buyerId")
         RetrofitInstance.materialApi.completeTradePost(token, postId, buyerId)
             .enqueue(object : Callback<TradePostSimpleResponse> {
                 override fun onResponse(
@@ -142,6 +143,7 @@ class SaleHistoryAdapter(
             .setTitle("구매자 선택")
             .setItems(names) { _, which ->
                 val selectedUser = users[which]
+                Log.d("✅ buyer_log", "선택된 사용자 ID: ${selectedUser.id}, 닉네임: ${selectedUser.nickname}")
                 onSelected(selectedUser.id)
             }
             .setNegativeButton("취소", null)

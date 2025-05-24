@@ -66,7 +66,7 @@ class MaterialMyProfileActivity : AppCompatActivity() {
         }
 
         purchase.setOnClickListener{
-            val intent = Intent(this, MaterialMyProfilePurchaseActivity::class.java)
+            val intent = Intent(this, MaterialPurchaseActivity::class.java)
             startActivity(intent)
         }
         saved.setOnClickListener{

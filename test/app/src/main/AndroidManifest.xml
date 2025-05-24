@@ -373,16 +373,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- MaterialMyProfilePurchaseActivity -->
-        <activity
-            android:name=".MaterialMyProfilePurchaseActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <!-- MaterialMyProfileSaleActivityActivity -->
         <activity
             android:name=".MaterialMyProfileSaleActivity"
