@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.test.adapter.TradePostAdapter
 import com.example.test.model.TradePost.TradePostRepository
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.network.RetrofitInstance
 import java.text.SimpleDateFormat
 import android.util.Log
+import com.example.test.adapter.TradePostAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,6 +45,69 @@ class MaterialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material)
+
+        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
+        tapVillageKitchenIcon.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
+        tapVillageKitchenText.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
+        tapRecipeIcon.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+        tapRecipeText.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapHomeIcon 클릭했을 때 MainActivity 이동
+        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+        tapHomeIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
+        tapFridgeIcon.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+        tapFridgeText.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
 
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
         numberTextView = findViewById(R.id.number)
@@ -556,28 +619,28 @@ class MaterialActivity : AppCompatActivity() {
             })
     }
 
-/*    private fun loadNearbyPostsByCategory(distanceKm: Double, category: String) {
-        val token = App.prefs.token.toString()
-        if (token != "null" && token.isNotBlank()) {
-            RetrofitInstance.apiService.getNearbyTradePostsByCategory("Bearer $token", distanceKm, category)
-                .enqueue(object : Callback<List<TradePostResponse>> {
-                    override fun onResponse(
-                        call: Call<List<TradePostResponse>>,
-                        response: Response<List<TradePostResponse>>
-                    ) {
-                        if (response.isSuccessful) {
-                            val result = response.body() ?: emptyList()
-                            isDistanceBasedData = true
-                            setRecyclerViewAdapter(result)
-                        } else {
-                            Toast.makeText(this@MaterialActivity, "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
+    /*    private fun loadNearbyPostsByCategory(distanceKm: Double, category: String) {
+            val token = App.prefs.token.toString()
+            if (token != "null" && token.isNotBlank()) {
+                RetrofitInstance.apiService.getNearbyTradePostsByCategory("Bearer $token", distanceKm, category)
+                    .enqueue(object : Callback<List<TradePostResponse>> {
+                        override fun onResponse(
+                            call: Call<List<TradePostResponse>>,
+                            response: Response<List<TradePostResponse>>
+                        ) {
+                            if (response.isSuccessful) {
+                                val result = response.body() ?: emptyList()
+                                isDistanceBasedData = true
+                                setRecyclerViewAdapter(result)
+                            } else {
+                                Toast.makeText(this@MaterialActivity, "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                        Toast.makeText(this@MaterialActivity, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
-                    }
-                })
-        }
-    }*/
+                        override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
+                            Toast.makeText(this@MaterialActivity, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+        }*/
 }

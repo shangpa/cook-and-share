@@ -605,7 +605,7 @@
                                             android:textColor="#8A8F9C"
                                             android:layout_marginEnd="4dp" />
                                     </LinearLayout>
-                            </LinearLayout>
+                                </LinearLayout>
 
                                 <!-- 카테고리 선택2 -->
                                 <LinearLayout
@@ -1684,17 +1684,16 @@
             app:layout_constraintBottom_toBottomOf="@id/tapFixBarThree"
             app:layout_constraintStart_toEndOf="@id/bar"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/chatButton"
             android:layout_width="145dp"
             android:layout_height="45dp"
-            android:backgroundTint="@color/green"
             android:text="채팅하기"
-            android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:layout_gravity="center"
+            android:textColor="@android:color/white"
             android:background="@drawable/rounded_button"
             android:layout_marginEnd="20dp"
+            android:stateListAnimator="@null"
             app:layout_constraintTop_toTopOf="@id/tapFixBarThree"
             app:layout_constraintBottom_toBottomOf="@id/tapFixBarThree"
             app:layout_constraintEnd_toEndOf="@id/tapFixBarThree"/>

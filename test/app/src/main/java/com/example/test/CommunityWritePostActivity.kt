@@ -2,13 +2,17 @@ package com.example.test
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.model.community.CommunityPostRequest
 import com.example.test.model.community.CommunityPostResponse
@@ -48,11 +52,12 @@ class CommunityWritePostActivity : AppCompatActivity() {
 
         val register: Button = findViewById(R.id.register)
         val image = findViewById<ImageButton>(R.id.image)
-        val postButton = findViewById<Button>(R.id.postButton)
+        val postButton = findViewById<AppCompatButton>(R.id.postButton)
         val useQuestion = findViewById<ConstraintLayout>(R.id.useQuestion)
         val cancel = findViewById<Button>(R.id.cancel)
         val postCategory = findViewById<TextView>(R.id.postCategory)
         val postDropDown = findViewById<ImageView>(R.id.postDropDown)
+        val content = findViewById<EditText>(R.id.content)
 
         register.setOnClickListener {
             startActivity(Intent(this, CommunityDetailActivity::class.java))
@@ -90,6 +95,24 @@ class CommunityWritePostActivity : AppCompatActivity() {
         postButton.setOnClickListener {
             useQuestion.visibility = View.VISIBLE
         }
+
+        content.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val isFilled = s?.isNotBlank() == true
+
+                if (isFilled) {
+                    postButton.setBackgroundResource(R.drawable.btn_big_green)
+                    postButton.setTextColor(Color.parseColor("#FFFFFF"))
+                } else {
+                    postButton.setBackgroundResource(R.drawable.btn_number_of_people)
+                    postButton.setTextColor(Color.parseColor("#A1A9AD"))
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         register.setOnClickListener{
             val content = findViewById<EditText>(R.id.content).text.toString().trim()

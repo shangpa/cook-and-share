@@ -131,17 +131,18 @@
         </LinearLayout>
 
         <!-- 로그인 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:text="로그인"
             android:fontFamily="@font/pretendard_medium"
             android:textSize="14sp"
-            android:backgroundTint="#35A825"
+            android:textColor="#A1A9AD"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="60dp" />
+            android:background="@drawable/btn_number_of_people"
+            android:stateListAnimator="@null"
+            android:layout_marginTop="60dp"/>
 
         <!-- 회원가입 -->
         <androidx.constraintlayout.widget.ConstraintLayout

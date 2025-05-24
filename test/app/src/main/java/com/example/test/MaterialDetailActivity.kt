@@ -134,32 +134,32 @@ class MaterialDetailActivity : AppCompatActivity() {
                     return@fetchMyNickname
                 }
 
-            RetrofitInstance.chatApi.createOrGetRoom(token, tradePostId)
-                .enqueue(object : Callback<ChatRoomResponse> {
-                    override fun onResponse(call: Call<ChatRoomResponse>, response: Response<ChatRoomResponse>) {
-                        if (response.isSuccessful) {
-                            val body = response.body() ?: return
-                            val roomKey = body.roomKey
-                            val receiverId = if (App.prefs.userId.toLong() == body.userAId) body.userBId else body.userAId
-                            println(" App.prefs.userId"+App.prefs.userId)
+                RetrofitInstance.chatApi.createOrGetRoom(token, tradePostId)
+                    .enqueue(object : Callback<ChatRoomResponse> {
+                        override fun onResponse(call: Call<ChatRoomResponse>, response: Response<ChatRoomResponse>) {
+                            if (response.isSuccessful) {
+                                val body = response.body() ?: return
+                                val roomKey = body.roomKey
+                                val receiverId = if (App.prefs.userId.toLong() == body.userAId) body.userBId else body.userAId
+                                println(" App.prefs.userId"+App.prefs.userId)
 
-                            val intent = Intent(this@MaterialDetailActivity, MaterialChatDetailActivity::class.java)
-                            intent.putExtra("roomKey", roomKey)
-                            println("roomKey"+ roomKey)
-                            intent.putExtra("postId", tradePostId)
-                            println("postId"+ tradePostId)
-                            intent.putExtra("receiverId", receiverId)
-                            println("receiverId"+ receiverId)
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(this@MaterialDetailActivity, "채팅방 생성 실패", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this@MaterialDetailActivity, MaterialChatDetailActivity::class.java)
+                                intent.putExtra("roomKey", roomKey)
+                                println("roomKey"+ roomKey)
+                                intent.putExtra("postId", tradePostId)
+                                println("postId"+ tradePostId)
+                                intent.putExtra("receiverId", receiverId)
+                                println("receiverId"+ receiverId)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(this@MaterialDetailActivity, "채팅방 생성 실패", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<ChatRoomResponse>, t: Throwable) {
-                        Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onFailure(call: Call<ChatRoomResponse>, t: Throwable) {
+                            Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                        }
+                    })
             }
         }
         // imageSearch 클릭했을 때 MaterialSearchActivity 이동

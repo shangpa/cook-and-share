@@ -189,7 +189,7 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
                 <!-- 게시하기 -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/postButton"
                     android:layout_width="352dp"
                     android:layout_height="50dp"
@@ -197,11 +197,12 @@
                     android:textSize="15sp"
                     android:textColor="#A1A9AD"
                     android:textStyle="bold"
-                    android:layout_marginEnd="27dp"
                     android:background="@drawable/btn_number_of_people"
+                    android:layout_marginEnd="27dp"
+                    android:stateListAnimator="@null"
                     app:layout_constraintTop_toTopOf="@id/tapFixBar"
                     app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
-                    app:layout_constraintEnd_toEndOf="@id/tapFixBar" />
+                    app:layout_constraintEnd_toEndOf="@id/tapFixBar"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -252,30 +253,32 @@
                     app:layout_constraintTop_toTopOf="@id/postRegisterBox"/>
 
                 <!-- 취소 -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/cancel"
                     android:layout_width="115dp"
                     android:layout_height="33dp"
                     android:text="취소"
                     android:textSize="11sp"
                     android:textColor="#000000"
+                    android:background="@drawable/ic_recipe_main_rect_no"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/ic_recipe_main_rect_no"
+                    android:stateListAnimator="@null"
                     app:layout_constraintBottom_toBottomOf="@id/postRegisterBox"
                     app:layout_constraintStart_toStartOf="@id/postRegisterBox"/>
 
                 <!-- 등록 -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/register"
                     android:layout_width="115dp"
                     android:layout_height="33dp"
                     android:text="등록"
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
+                    android:background="@drawable/ic_recipe_main_rect_yes"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/ic_recipe_main_rect_yes"
+                    android:stateListAnimator="@null"
                     app:layout_constraintBottom_toBottomOf="@id/postRegisterBox"
                     app:layout_constraintEnd_toEndOf="@id/postRegisterBox"/>
 

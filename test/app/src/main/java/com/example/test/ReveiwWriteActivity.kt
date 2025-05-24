@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.example.test.model.review.ReviewRequestDTO
@@ -136,7 +137,7 @@ class ReveiwWriteActivity : AppCompatActivity() {
         val recipeImage = findViewById<ImageView>(R.id.Image)
         // 리뷰 작성 권유하기 선언
         val reviewWriteSuggestion = findViewById<ConstraintLayout>(R.id.reviewWriteSuggestion)
-        val reviewWriteBtn = findViewById<Button>(R.id.reviewWriteBtn)
+        val reviewWriteBtn = findViewById<AppCompatButton>(R.id.reviewWriteBtn)
         val searchIcon = findViewById<ImageButton>(R.id.searchIcon)
         val bellIcon = findViewById<ImageButton>(R.id.bellIcon)
         val person = findViewById<ImageButton>(R.id.person)
@@ -146,7 +147,7 @@ class ReveiwWriteActivity : AppCompatActivity() {
         val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
         val reviewContentWrite = findViewById<EditText>(R.id.reviewContentWrite)
         val cameraBtn = findViewById<ImageButton>(R.id.cameraBtn)
-        val registerButton = findViewById<Button>(R.id.registerButton)
+        val registerButton = findViewById<AppCompatButton>(R.id.registerButton)
 
         //레시피 정보 가져오기
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)

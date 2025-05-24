@@ -97,4 +97,147 @@
                     android:clipToPadding="false"
                     android:overScrollMode="never" />
             </LinearLayout>
+
+        <!-- 탭바 전체 배경 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom">
+
+            <!-- 탭바 배경 이미지 -->
+            <ImageView
+                android:id="@+id/mainTapBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bar_tap_bg"
+                android:scaleType="fitXY" />
+
+            <!-- 탭바 버튼 그룹 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="5">
+
+                <!-- 동네주방 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/tapVillageKitchenIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_village_kitchen" />
+
+                    <TextView
+                        android:id="@+id/tapVillageKitchenText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="동네주방"
+                        android:textColor="#B9BEC1"
+                        android:textSize="10sp"
+                        android:layout_marginBottom="4dp" />
+                </LinearLayout>
+
+                <!-- 레시피 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center|top">
+
+                    <ImageView
+                        android:id="@+id/tapRecipeIcon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_recipe"
+                        android:layout_marginTop="14dp"/>
+
+
+                    <TextView
+                        android:id="@+id/tapRecipeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="레시피"
+                        android:textColor="#B9BEC1"
+                        android:textSize="10sp"
+                        android:layout_marginTop="6dp"/>
+                </LinearLayout>
+
+                <!-- 홈 탭 -->
+                <LinearLayout
+                    android:id="@+id/tapHome"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/tapHomeIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home"
+                        android:layout_marginBottom="15dp"/>
+                </LinearLayout>
+
+                <!-- 커뮤니티 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/tapCommunityIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:tint="#2B2B2B"
+                        android:src="@drawable/ic_community" />
+
+                    <TextView
+                        android:id="@+id/tapCommunityText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="커뮤니티"
+                        android:textColor="#2B2B2B"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <!-- 냉장고 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center|top">
+
+                    <ImageView
+                        android:id="@+id/tapFridgeIcon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_refrigerator"
+                        android:layout_marginTop="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tapFridgeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="냉장고"
+                        android:textColor="#B9BEC1"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
     </LinearLayout></layout>

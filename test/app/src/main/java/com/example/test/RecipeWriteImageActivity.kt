@@ -31,6 +31,7 @@
     import androidx.activity.result.ActivityResultLauncher
     import androidx.activity.result.contract.ActivityResultContracts
     import androidx.appcompat.app.AppCompatActivity
+    import androidx.appcompat.widget.AppCompatButton
     import androidx.constraintlayout.widget.ConstraintLayout
     import androidx.constraintlayout.widget.ConstraintSet
     import androidx.core.content.ContextCompat
@@ -61,9 +62,9 @@
     private lateinit var replaceMaterialContainer: LinearLayout
     private lateinit var handlingMethodContainer: LinearLayout
     private lateinit var cookOrderRecipeContainer: LinearLayout
-    private lateinit var addFixButton: Button
-    private lateinit var replaceMaterialAddFixButton: Button
-    private lateinit var handlingMethodAddFixButton: Button
+    private lateinit var addFixButton: AppCompatButton
+    private lateinit var replaceMaterialAddFixButton: AppCompatButton
+    private lateinit var handlingMethodAddFixButton: AppCompatButton
     private lateinit var hourEditText: EditText
     private lateinit var minuteEditText: EditText
     private lateinit var startTextView: TextView
@@ -125,6 +126,195 @@
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_recipe_write_image)
 
+            // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+            val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
+            tapVillageKitchenIcon.setOnClickListener {
+                val intent = Intent(this, MaterialActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+            val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
+            tapVillageKitchenText.setOnClickListener {
+                val intent = Intent(this, MaterialActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+            val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
+            tapRecipeIcon.setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+            val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+            tapRecipeText.setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapHomeIcon 클릭했을 때 MainActivity 이동
+            val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+            tapHomeIcon.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+            val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+            tapCommunityIcon.setOnClickListener {
+                val intent = Intent(this, CommunityMainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+            val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+            tapCommunityText.setOnClickListener {
+                val intent = Intent(this, CommunityMainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+            val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
+            tapFridgeIcon.setOnClickListener {
+                val intent = Intent(this, FridgeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapFridgeText 클릭했을 때 FridgeActivity 이동
+            val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+            tapFridgeText.setOnClickListener {
+                val intent = Intent(this, FridgeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapVillageKitchenIconTwo 클릭했을 때 MaterialActivity 이동
+            val tapVillageKitchenIconTwo: ImageView = findViewById(R.id.tapVillageKitchenIconTwo)
+            tapVillageKitchenIconTwo.setOnClickListener {
+                val intent = Intent(this, MaterialActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapVillageKitchenTextTwo 클릭했을 때 MaterialActivity 이동
+            val tapVillageKitchenTextTwo: TextView = findViewById(R.id.tapVillageKitchenTextTwo)
+            tapVillageKitchenTextTwo.setOnClickListener {
+                val intent = Intent(this, MaterialActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapRecipeIconTwo 클릭했을 때 RecipeSeeMainActivity 이동
+            val tapRecipeIconTwo: ImageView = findViewById(R.id.tapRecipeIconTwo)
+            tapRecipeIconTwo.setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapRecipeTextTwo 클릭했을 때 RecipeSeeMainActivity 이동
+            val tapRecipeTextTwo: TextView = findViewById(R.id.tapRecipeTextTwo)
+            tapRecipeTextTwo.setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapHomeIconTwo 클릭했을 때 MainActivity 이동
+            val tapHomeIconTwo: ImageView = findViewById(R.id.tapHomeIconTwo)
+            tapHomeIconTwo.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapCommunityIconTwo 클릭했을 때 CommunityMainActivity 이동
+            val tapCommunityIconTwo: ImageView = findViewById(R.id.tapCommunityIconTwo)
+            tapCommunityIconTwo.setOnClickListener {
+                val intent = Intent(this, CommunityMainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapCommunityTextTwo 클릭했을 때 CommunityMainActivity 이동
+            val tapCommunityTextTwo: TextView = findViewById(R.id.tapCommunityTextTwo)
+            tapCommunityTextTwo.setOnClickListener {
+                val intent = Intent(this, CommunityMainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapFridgeIconTwo 클릭했을 때 FridgeActivity 이동
+            val tapFridgeIconTwo: ImageView = findViewById(R.id.tapFridgeIconTwo)
+            tapFridgeIconTwo.setOnClickListener {
+                val intent = Intent(this, FridgeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapFridgeTextTwo 클릭했을 때 FridgeActivity 이동
+            val tapFridgeTextTwo: TextView = findViewById(R.id.tapFridgeTextTwo)
+            tapFridgeTextTwo.setOnClickListener {
+                val intent = Intent(this, FridgeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapVillageKitchenIconThree 클릭했을 때 MaterialActivity 이동
+            val tapVillageKitchenIconThree: ImageView = findViewById(R.id.tapVillageKitchenIconThree)
+            tapVillageKitchenIconThree.setOnClickListener {
+                val intent = Intent(this, MaterialActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapVillageKitchenTextThree 클릭했을 때 MaterialActivity 이동
+            val tapVillageKitchenTextThree: TextView = findViewById(R.id.tapVillageKitchenTextThree)
+            tapVillageKitchenTextThree.setOnClickListener {
+                val intent = Intent(this, MaterialActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapRecipeIconThree 클릭했을 때 RecipeSeeMainActivity 이동
+            val tapRecipeIconThree: ImageView = findViewById(R.id.tapRecipeIconThree)
+            tapRecipeIconThree.setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapRecipeTextThree 클릭했을 때 RecipeSeeMainActivity 이동
+            val tapRecipeTextThree: TextView = findViewById(R.id.tapRecipeTextThree)
+            tapRecipeTextThree.setOnClickListener {
+                val intent = Intent(this, RecipeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapHomeIconThree 클릭했을 때 MainActivity 이동
+            val tapHomeIconThree: ImageView = findViewById(R.id.tapHomeIconThree)
+            tapHomeIconThree.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapCommunityIconThree 클릭했을 때 CommunityMainActivity 이동
+            val tapCommunityIconThree: ImageView = findViewById(R.id.tapCommunityIconThree)
+            tapCommunityIconThree.setOnClickListener {
+                val intent = Intent(this, CommunityMainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapCommunityTextThree 클릭했을 때 CommunityMainActivity 이동
+            val tapCommunityTextThree: TextView = findViewById(R.id.tapCommunityTextThree)
+            tapCommunityTextThree.setOnClickListener {
+                val intent = Intent(this, CommunityMainActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapFridgeIconThree 클릭했을 때 FridgeActivity 이동
+            val tapFridgeIconThree: ImageView = findViewById(R.id.tapFridgeIconThree)
+            tapFridgeIconThree.setOnClickListener {
+                val intent = Intent(this, FridgeActivity::class.java)
+                startActivity(intent)
+            }
+
+            // tapFridgeTextThree 클릭했을 때 FridgeActivity 이동
+            val tapFridgeTextThree: TextView = findViewById(R.id.tapFridgeTextThree)
+            tapFridgeTextThree.setOnClickListener {
+                val intent = Intent(this, FridgeActivity::class.java)
+                startActivity(intent)
+            }
+
             // 재료
             materialContainer = findViewById(R.id.materialContainer)
             addFixButton = findViewById(R.id.addFixButton)
@@ -170,8 +360,8 @@
             val categoryDropDown = findViewById<ConstraintLayout>(R.id.categoryDropDown)
             val recipeName = findViewById<ConstraintLayout>(R.id.recipeName)
             val koreanFood = findViewById<TextView>(R.id.koreanFood)
-            val continueButton = findViewById<Button>(R.id.continueButton)
-            val beforeButton = findViewById<Button>(R.id.beforeButton)
+            val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
+            val beforeButton = findViewById<AppCompatButton>(R.id.beforeButton)
 
             // 레시피 재료 선언
             val recipeWriteMaterialLayout =
@@ -194,7 +384,7 @@
             val deleteFour = findViewById<ImageButton>(R.id.deleteFour)
             val deleteFive = findViewById<ImageButton>(R.id.deleteFive)
             val deleteSix = findViewById<ImageButton>(R.id.deleteSix)
-            val addFixButton = findViewById<Button>(R.id.addFixButton)
+            val addFixButton = findViewById<AppCompatButton>(R.id.addFixButton)
             val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
             val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
             val divideRectangleBarSeven = findViewById<View>(R.id.divideRectangleBarSeven)
@@ -224,7 +414,7 @@
             val replaceMaterialTwo = findViewById<EditText>(R.id.replaceMaterialTwo)
             val replaceMaterialDeleteTwo = findViewById<ImageButton>(R.id.replaceMaterialDeleteTwo)
             val divideRectangleBarThirteen = findViewById<View>(R.id.divideRectangleBarThirteen)
-            val replaceMaterialAddFixButton = findViewById<Button>(R.id.replaceMaterialAddFixButton)
+            val replaceMaterialAddFixButton = findViewById<AppCompatButton>(R.id.replaceMaterialAddFixButton)
 
             // 레시피 처리방법 선언
             val recipeWriteHandlingMethodLayout =
@@ -237,7 +427,7 @@
             val handlingMethodTwo = findViewById<EditText>(R.id.handlingMethodTwo)
             val handlingMethodDeleteTwo = findViewById<ImageButton>(R.id.handlingMethodDeleteTwo)
             val divideRectangleBarSixteen = findViewById<View>(R.id.divideRectangleBarSixteen)
-            val handlingMethodAddFixButton = findViewById<Button>(R.id.handlingMethodAddFixButton)
+            val handlingMethodAddFixButton = findViewById<AppCompatButton>(R.id.handlingMethodAddFixButton)
 
             // 레시피 조리순서 선언
             val recipeWriteCookOrderLayout =
@@ -250,10 +440,10 @@
             val cookOrderRecipeWrite = findViewById<EditText>(R.id.cookOrderRecipeWrite)
             val stepLittleOne = findViewById<TextView>(R.id.stepLittleOne)
             val camera = findViewById<ImageButton>(R.id.camera)
-            val timerAdd = findViewById<Button>(R.id.timerAdd)
-            val endFixButton = findViewById<Button>(R.id.endFixButton)
-            val stepAddButton = findViewById<Button>(R.id.stepAddFixButton)
-            val contentAdd = findViewById<Button>(R.id.contentAdd)
+            val timerAdd = findViewById<AppCompatButton>(R.id.timerAdd)
+            val endFixButton = findViewById<AppCompatButton>(R.id.endFixButton)
+            val stepAddButton = findViewById<AppCompatButton>(R.id.stepAddFixButton)
+            val contentAdd = findViewById<AppCompatButton>(R.id.contentAdd)
             val timer = findViewById<TextView>(R.id.timer)
             val hour = findViewById<EditText>(R.id.hour)
             val time = findViewById<TextView>(R.id.time)
@@ -286,14 +476,14 @@
             val shareSettle = findViewById<ConstraintLayout>(R.id.shareSettle)
             val recipeRegister = findViewById<ConstraintLayout>(R.id.recipeRegister)
             val contentCheckTapBar = findViewById<ConstraintLayout>(R.id.contentCheckTapBar)
-            val shareFixButton = findViewById<Button>(R.id.shareFixButton)
-            val registerFixButton = findViewById<Button>(R.id.registerFixButton)
+            val shareFixButton = findViewById<AppCompatButton>(R.id.shareFixButton)
+            val registerFixButton = findViewById<AppCompatButton>(R.id.registerFixButton)
             val uncheck = findViewById<ImageButton>(R.id.uncheck)
             val uncheckTwo = findViewById<ImageButton>(R.id.uncheckTwo)
-            val cancel = findViewById<Button>(R.id.cancel)
-            val settle = findViewById<Button>(R.id.settle)
-            val cancelTwo = findViewById<Button>(R.id.cancelTwo)
-            val register = findViewById<Button>(R.id.register)
+            val cancel = findViewById<AppCompatButton>(R.id.cancel)
+            val settle = findViewById<AppCompatButton>(R.id.settle)
+            val cancelTwo = findViewById<AppCompatButton>(R.id.cancelTwo)
+            val register = findViewById<AppCompatButton>(R.id.register)
 
             // 레시피 위 탭바 선언
             val one = findViewById<TextView>(R.id.one)
@@ -784,7 +974,7 @@
 
                 val hourPicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker1)
                 val minutePicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker2)
-                val storeBtn = timerLayout.findViewById<Button>(R.id.storeBtn)
+                val storeBtn = timerLayout.findViewById<AppCompatButton>(R.id.storeBtn)
 
                 hourPicker.minValue = 0
                 hourPicker.maxValue = 24
@@ -806,7 +996,7 @@
             // NumberPicker 초기화
             val hourPicker = findViewById<NumberPicker>(R.id.numberPicker1)
             val minutePicker = findViewById<NumberPicker>(R.id.numberPicker2)
-            val storeBtn = findViewById<Button>(R.id.storeBtn)
+            val storeBtn = findViewById<AppCompatButton>(R.id.storeBtn)
 
             // 시 (0~23)
             hourPicker.minValue = 0
@@ -852,6 +1042,9 @@
             endFixButton.setOnClickListener{
                 val detailSettleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
                 showOnlyLayout(detailSettleLayout)
+
+                updateSelectedTab(six)
+                moveUnderlineBar(six)
             }
             // 레시피 조리순서 다른 레이아웃 목록을 먼저 선언
             val otherLayouts = listOf(
@@ -1803,8 +1996,8 @@
             }
 
             // 기존 버튼 가져오기
-            val addButton = findViewById<Button>(R.id.contentAdd)
-            val timerButton = findViewById<Button>(R.id.timerAdd)
+            val addButton = findViewById<AppCompatButton>(R.id.contentAdd)
+            val timerButton = findViewById<AppCompatButton>(R.id.timerAdd)
 
             // 🚀 버튼 위치 조정 (입력 칸과 70dp 떨어지게 설정)
             val buttonParams = addButton.layoutParams as ViewGroup.MarginLayoutParams
@@ -1845,9 +2038,9 @@
             val stepCamera = newStepLayout.findViewById<ImageButton>(R.id.stepCamera)
 
             // 내용추가 버튼 선언
-            val contentAddTwo = newStepLayout.findViewById<Button>(R.id.contentAddTwo)
+            val contentAddTwo = newStepLayout.findViewById<AppCompatButton>(R.id.contentAddTwo)
 
-            val timerAddTwo = newStepLayout.findViewById<Button>(R.id.timerAddTwo)
+            val timerAddTwo = newStepLayout.findViewById<AppCompatButton>(R.id.timerAddTwo)
             timerAddTwo.setOnClickListener {
                 val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
 
@@ -1867,7 +2060,7 @@
 
                 val hourPicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker1)
                 val minutePicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker2)
-                val storeBtn = timerLayout.findViewById<Button>(R.id.storeBtn)
+                val storeBtn = timerLayout.findViewById<AppCompatButton>(R.id.storeBtn)
 
                 hourPicker.minValue = 0
                 hourPicker.maxValue = 24
