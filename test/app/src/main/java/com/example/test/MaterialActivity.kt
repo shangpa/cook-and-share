@@ -285,7 +285,7 @@ class MaterialActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
 
-        tradePostAdapter = TradePostAdapter(list) { tradePost ->
+        tradePostAdapter = TradePostAdapter(list.toMutableList()) { tradePost ->
             // 여기서 조회수 증가 먼저 호출
             val token = App.prefs.token.toString()
             RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")

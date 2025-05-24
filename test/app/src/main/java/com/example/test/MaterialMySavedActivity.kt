@@ -1,13 +1,15 @@
 package com.example.test
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.test.adapter.SavedTradePostAdapter
+import com.example.test.adapter.TradePostAdapter
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
@@ -26,20 +28,104 @@ class MaterialMySavedActivity : AppCompatActivity() {
     private lateinit var distanceIcon: ImageView
     private lateinit var sortArrow: ImageView
     private lateinit var w: TextView
+    private lateinit var buttons: List<Button>
 
     private var isMaterialVisible = false
     private var isDistanceVisible = false
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: SavedTradePostAdapter
+    private lateinit var adapter: TradePostAdapter
     private val savedPosts = mutableListOf<TradePostResponse>()
+    private var filteredPosts = mutableListOf<TradePostResponse>()
+
+    //필터변수
+    private var selectedDistance: Double? = null
+    private val selectedCategories = mutableSetOf<String>()
+    private var currentSort = "최신순"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_my_saved)
 
+
+        val materialButtons = listOf(
+            findViewById<Button>(R.id.all),
+            findViewById(R.id.cookware),
+            findViewById(R.id.fans_pots),
+            findViewById(R.id.containers),
+            findViewById(R.id.tableware),
+            findViewById(R.id.storageSupplies),
+            findViewById(R.id.sanitaryProducts),
+            findViewById(R.id.smallAppliances),
+            findViewById(R.id.disposableProducts),
+            findViewById(R.id.etc)
+        )
+        materialButtons.forEach { button ->
+            button.setOnClickListener {
+                // 선택된 텍스트
+                val category = button.text.toString()
+                Log.d("카테고리필터", "클릭된 카테고리: $category")
+                // 모두 초기화 (모든 버튼 기본 상태로 되돌리기)
+                materialButtons.forEach {
+                    it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                    it.setTextColor(Color.parseColor("#8A8F9C"))
+                }
+
+                // 선택 상태로 설정
+                if (selectedCategories.contains(category)) {
+                    // 이미 선택된 버튼을 다시 클릭하면 선택 해제
+                    selectedCategories.clear()
+                    Log.d("카테고리필터", "선택 해제됨")
+                } else {
+                    selectedCategories.clear()
+                    selectedCategories.add(category)
+                    button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                    button.setTextColor(Color.WHITE)
+                    Log.d("카테고리필터", "현재 선택된 카테고리: $selectedCategories")
+                }
+
+                // 필터 적용
+                applySavedPostFilterAndSort()
+            }
+        }
+        buttons = listOf(
+            findViewById(R.id.alll),
+            findViewById(R.id.threeHundred),
+            findViewById(R.id.fiveHundred),
+            findViewById(R.id.oneThousand),
+            findViewById(R.id.onefiveThousand),
+            findViewById(R.id.twoThousand)
+        )
+        buttons.forEach { button ->
+            button.setOnClickListener {
+                buttons.forEach {
+                    it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                    it.setTextColor(Color.parseColor("#8A8F9C"))
+                }
+
+                button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                button.setTextColor(Color.WHITE)
+
+                selectedDistance = when (button.id) {
+                    R.id.threeHundred -> 0.3
+                    R.id.fiveHundred -> 0.5
+                    R.id.oneThousand -> 1.0
+                    R.id.onefiveThousand -> 1.5
+                    R.id.twoThousand -> 2.0
+                    else -> null
+                }
+
+                applySavedPostFilterAndSort()
+            }
+        }
+
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = SavedTradePostAdapter(savedPosts)
+        adapter = TradePostAdapter(mutableListOf()) { post ->
+            val intent = Intent(this, MaterialDetailActivity::class.java)
+            intent.putExtra("tradePostId", post.tradePostId)
+            startActivity(intent)
+        }
+        recyclerView.adapter = adapter
         recyclerView.adapter = adapter
 
         loadSavedPosts()
@@ -66,12 +152,16 @@ class MaterialMySavedActivity : AppCompatActivity() {
             val popup = PopupMenu(this, it)
             popup.menu.add("최신순")
             popup.menu.add("거리순")
+            popup.menu.add("가격순")
+            popup.menu.add("구입 날짜순")
             popup.setOnMenuItemClickListener { item ->
-                w.text = item.title
+                currentSort = item.title.toString()
+                applySavedPostFilterAndSort()
                 true
             }
             popup.show()
         }
+
 
         // 필터 버튼 클릭 시 드롭다운
         materialContainer.setOnClickListener {
@@ -105,7 +195,13 @@ class MaterialMySavedActivity : AppCompatActivity() {
         RetrofitInstance.materialApi.getSavedTradePostIds(token).enqueue(object :
             Callback<List<Long>> {
             override fun onResponse(call: Call<List<Long>>, response: Response<List<Long>>) {
-                response.body()?.forEach { postId ->
+                val ids = response.body() ?: return
+                if (ids.isEmpty()) return
+
+                var loadedCount = 0
+                val tempList = mutableListOf<TradePostResponse>()
+
+                ids.forEach { postId ->
                     RetrofitInstance.apiService.getTradePostById(token, postId)
                         .enqueue(object : Callback<TradePostResponse> {
                             override fun onResponse(
@@ -113,12 +209,19 @@ class MaterialMySavedActivity : AppCompatActivity() {
                                 response: Response<TradePostResponse>
                             ) {
                                 response.body()?.let {
-                                    savedPosts.add(it)
-                                    adapter.notifyItemInserted(savedPosts.size - 1)
+                                    tempList.add(it)
+                                }
+                                loadedCount++
+                                if (loadedCount == ids.size) {
+                                    savedPosts.clear()
+                                    savedPosts.addAll(tempList)
+                                    applySavedPostFilterAndSort()
                                 }
                             }
 
-                            override fun onFailure(call: Call<TradePostResponse>, t: Throwable) {}
+                            override fun onFailure(call: Call<TradePostResponse>, t: Throwable) {
+                                loadedCount++
+                            }
                         })
                 }
             }
@@ -128,4 +231,24 @@ class MaterialMySavedActivity : AppCompatActivity() {
             }
         })
     }
+    private fun applySavedPostFilterAndSort() {
+        filteredPosts = savedPosts
+            .filter { post ->
+                val matchCategory = selectedCategories.isEmpty() || selectedCategories.contains(post.category)
+                val matchDistance = selectedDistance == null || (post.distance != null && post.distance!! <= selectedDistance!!)
+                matchCategory && matchDistance
+            }
+            .sortedWith(
+                when (currentSort) {
+                    "최신순" -> compareByDescending { it.createdAt }
+                    "거리순" -> compareBy { it.distance ?: Double.MAX_VALUE }
+                    "가격순" -> compareBy { it.price }
+                    "구입 날짜순" -> compareByDescending { it.purchaseDate }
+                    else -> compareByDescending { it.createdAt }
+                }
+            ).toMutableList()
+
+        adapter.updateData(filteredPosts)
+    }
+
 }

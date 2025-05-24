@@ -14,7 +14,7 @@ import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.network.RetrofitInstance
 
 class TradePostAdapter(
-    private val tradePosts: List<TradePostResponse>,
+    private var tradePosts: MutableList<TradePostResponse> = mutableListOf(),
     private val onItemClick: (TradePostResponse) -> Unit
     ) :RecyclerView.Adapter<TradePostAdapter.TradePostViewHolder>() {
 
@@ -72,4 +72,8 @@ class TradePostAdapter(
     }
 
     override fun getItemCount(): Int = tradePosts.size
+    fun updateData(newList: List<TradePostResponse>) {
+        tradePosts = newList.toMutableList() // 리스트 자체를 새로 교체
+        notifyDataSetChanged()
+    }
 }

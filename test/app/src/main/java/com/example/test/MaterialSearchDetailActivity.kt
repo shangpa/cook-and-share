@@ -98,7 +98,7 @@ class MaterialSearchDetailActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerViewAdapter(list: List<TradePostResponse>) {
-        tradePostAdapter = TradePostAdapter(list) { tradePost ->
+        tradePostAdapter = TradePostAdapter(list.toMutableList()) { tradePost ->
             val token = App.prefs.token.toString()
 
             // 조회수 증가 호출

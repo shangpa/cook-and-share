@@ -47,7 +47,7 @@ class MaterialDetailActivity : AppCompatActivity() {
         val token = "Bearer ${App.prefs.token}"
         var writerName = ""
         val itemTitle = findViewById<TextView>(R.id.itemTitle)
-        val category1 = findViewById<TextView>(R.id.category1)
+        val quantity1 = findViewById<TextView>(R.id.quantity1)
         val quantity2 = findViewById<TextView>(R.id.quantity2)
         val itemSub = findViewById<TextView>(R.id.itemSub)
         val locationText = findViewById<TextView>(R.id.transactionPlace2)
@@ -73,7 +73,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                             response.body()?.let { post ->
                                 currentPost = post
                                 itemTitle.text = post.title
-                                category1.text = post.category
+                                quantity1.text = post.category
                                 quantity2.text = "${post.quantity}개"
                                 itemSub.text = post.description
                                 locationText.text = post.location
