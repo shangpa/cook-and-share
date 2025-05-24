@@ -17,15 +17,14 @@
             android:orientation="vertical">
 
             <!-- 상단 바 -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_marginBottom="13dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingTop="16dp">
+                android:paddingTop="16dp"
+                android:paddingBottom="0dp">
 
                 <TextView
                     android:id="@+id/fridgeMainTitle"
@@ -33,26 +32,33 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <!-- 검색 아이콘 -->
-                <ImageView
-                    android:id="@+id/searchIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_search"
-                    android:contentDescription="검색 아이콘"
-                    android:layout_marginLeft="260dp" />
-
-                <!-- 사람 아이콘 -->
                 <ImageView
                     android:id="@+id/profileIcon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_profile"
                     android:contentDescription="사람 아이콘"
-                    android:layout_marginLeft="8dp" />
-            </LinearLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/fridgeMainTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/fridgeMainTitle"/>
+
+                <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_search"
+                    android:contentDescription="검색 아이콘"
+                    app:layout_constraintEnd_toStartOf="@id/profileIcon"
+                    app:layout_constraintTop_toTopOf="@id/profileIcon"
+                    app:layout_constraintBottom_toBottomOf="@id/profileIcon"
+                    android:layout_marginEnd="8dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

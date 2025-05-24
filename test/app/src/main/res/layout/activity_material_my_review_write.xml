@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reviewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 상단 바 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp">
+
+                <ImageView
+                    android:id="@+id/reviewWriteBack"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="뒤로가기 아이콘"
+                    android:layout_marginRight="90dp"
+                    android:layout_marginLeft="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="동네주방 후기 작성하기"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0" />
+
+            <!-- 프로필 아이템 1 -->
+            <LinearLayout
+                android:id="@+id/reviewProfileItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+
+                <!-- 사진, 제목 및 정보 그룹 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp"
+                    android:layout_marginTop="18dp">
+
+                    <!-- 사진 -->
+                    <ImageView
+                        android:id="@+id/reviewimage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/image_britta"
+                        android:contentDescription="아이템 사진"
+                        android:layout_marginEnd="8dp" />
+
+                    <!-- 제목 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/reviewItemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="거래한 주방용품"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:layout_marginRight="170dp"
+                                android:textColor="#8A8F9C"/>
+
+                            <ImageView
+                                android:id="@+id/reviewItemMore"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_more"
+                                android:contentDescription="더보기 아이콘"
+                                android:layout_marginEnd="4dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/reviewItemSubTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="미개봉 브리타 팔아요"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="35dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="25dp"/>
+            </LinearLayout>
+
+            <!-- 내용 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="25dp">
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내용"
+                    android:textSize="13sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="30dp"/>
+
+                <!-- 입력 필드 -->
+                <EditText
+                    android:id="@+id/descriptionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="거래 후기를 작성해주세요.\n\n남겨주신 거래 후기는 상대방의 프로필에 공개됩니다.\n\n욕설, 비방 등 불건전한 내용을 작성한 경우, 앱 사용에 제한이 있을 수 있습니다."
+                    android:background="@null"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="12sp"
+                    android:textColor="#2B2B2B" />
+
+                <View
+                    android:layout_width="370dp"
+                    android:layout_height="1dp"
+                    android:background="#CCCCCC"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 하단 고정 바 -->
+        <ImageView
+            android:id="@+id/tapFixBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bar_tap_bg"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/postBtn"
+            android:layout_width="352dp"
+            android:layout_height="55dp"
+            android:text="게시하기"
+            android:backgroundTint="#35A825"
+            android:textColor="#FFFFFF"
+            app:layout_constraintTop_toTopOf="@id/tapFixBar"
+            app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
+            app:layout_constraintStart_toStartOf="@id/tapFixBar"
+            app:layout_constraintEnd_toEndOf="@id/tapFixBar"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
