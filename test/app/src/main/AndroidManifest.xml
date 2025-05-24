@@ -457,6 +457,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- MaterialReviewWriteActivity -->
+        <activity
+            android:name=".MaterialReviewWriteActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <!-- MaterialReviewSendActivity -->
         <activity
