@@ -190,7 +190,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- MaterialActivity 추가 -->
+        <!-- LoginInfoActivity 추가 -->
         <activity
             android:name=".LoginInfoActivity"
             android:exported="true">
@@ -366,6 +366,46 @@
         <!-- MaterialMyProfileActivity -->
         <activity
             android:name=".MaterialMyProfileActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- MaterialMyProfilePurchaseActivity -->
+        <activity
+            android:name=".MaterialMyProfilePurchaseActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- MaterialMyProfileSaleActivityActivity -->
+        <activity
+            android:name=".MaterialMyProfileSaleActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- MaterialMyReviewActivity -->
+        <activity
+            android:name=".MaterialMyReviewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- MaterialMySavedActivity -->
+        <activity
+            android:name=".MaterialMySavedActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
