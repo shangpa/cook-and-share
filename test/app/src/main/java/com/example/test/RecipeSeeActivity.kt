@@ -55,7 +55,7 @@ class RecipeSeeActivity : AppCompatActivity() {
         val recipeId = intent.getLongExtra("recipeId", -1L)
         val endFixButton: Button = findViewById(R.id.endFixButton)
         endFixButton.setOnClickListener {
-            val intent = Intent(this, ReveiwWriteActivity::class.java)
+            val intent = Intent(this, ReviewWriteActivity::class.java)
             intent.putExtra("recipeId", recipeId)
             startActivity(intent)
             finish()

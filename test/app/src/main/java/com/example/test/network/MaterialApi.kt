@@ -3,8 +3,11 @@ package com.example.test.network
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import com.example.test.model.UserSimpleResponse
+import com.example.test.model.review.TpReviewRequestDTO
+import com.example.test.model.review.TpReviewResponseDTO
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -54,4 +57,10 @@ interface MaterialApi {
     fun getMyPurchasedPosts(
         @Header("Authorization") token: String
     ): Call<List<TradePostSimpleResponse>>
+
+    @POST("/api/tp-reviews")
+    fun createTpReview(
+        @Header("Authorization") token: String,
+        @Body dto: TpReviewRequestDTO
+    ): Call<TpReviewResponseDTO>
 }
