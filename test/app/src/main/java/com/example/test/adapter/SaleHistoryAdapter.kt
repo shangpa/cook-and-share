@@ -1,16 +1,22 @@
 package com.example.test.adapter
 
+import App.Companion.context
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.test.App
 import com.example.test.R
 import com.example.test.model.TradePost.TradeItem
 import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.UserSimpleResponse
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -73,24 +79,23 @@ class SaleHistoryAdapter(
             val currentPosition = holder.adapterPosition
             if (currentPosition != RecyclerView.NO_POSITION) {
                 val currentItem = tradeList[currentPosition]
-
-                RetrofitInstance.apiService.completeTradePost(token, currentItem.id)
-                    .enqueue(object : Callback<TradePostSimpleResponse> {
-                        override fun onResponse(
-                            call: Call<TradePostSimpleResponse>,
-                            response: Response<TradePostSimpleResponse>
-                        ) {
+                RetrofitInstance.materialApi.getCompleteRequestUsers(token, currentItem.id)
+                    .enqueue(object : Callback<List<UserSimpleResponse>> {
+                        override fun onResponse(call: Call<List<UserSimpleResponse>>, response: Response<List<UserSimpleResponse>>) {
                             if (response.isSuccessful) {
-                                // 서버 응답 성공하면 해당 아이템 상태 변경
-                                (tradeList as MutableList)[currentPosition] = currentItem.copy(isCompleted = true)
-                                notifyItemChanged(currentPosition)
-                            } else {
-                                Log.e("TradePost", "거래완료 실패: ${response.code()}")
+                                val userList = response.body() ?: emptyList()
+                                if (userList.isEmpty()) {
+                                    Toast.makeText(context, "거래 요청한 구매자가 없습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    showBuyerSelectDialog(context, userList) { selectedUserId ->
+                                        requestCompleteTradePost(context,currentItem.id, selectedUserId, currentPosition)
+                                    }
+                                }
                             }
                         }
 
-                        override fun onFailure(call: Call<TradePostSimpleResponse>, t: Throwable) {
-                            Log.e("TradePost", "거래완료 에러: ${t.message}")
+                        override fun onFailure(call: Call<List<UserSimpleResponse>>, t: Throwable) {
+                            Log.e("TradePost", "요청자 조회 실패: ${t.message}")
                         }
                     })
             }
@@ -99,13 +104,53 @@ class SaleHistoryAdapter(
         holder.moreButton.setOnClickListener {
             // TODO: 수정/삭제 팝업 띄우기
         }
+
+    }
+    private fun requestCompleteTradePost(context: Context, postId: Long, buyerId: Long, position: Int) {
+        RetrofitInstance.materialApi.completeTradePost(token, postId, buyerId)
+            .enqueue(object : Callback<TradePostSimpleResponse> {
+                override fun onResponse(
+                    call: Call<TradePostSimpleResponse>,
+                    response: Response<TradePostSimpleResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        (tradeList as MutableList)[position] = tradeList[position].copy(isCompleted = true)
+                        notifyItemChanged(position)
+                        Toast.makeText(context,"거래가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "거래완료 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<TradePostSimpleResponse>, t: Throwable) {
+                    Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun getItemCount(): Int = tradeList.size
 
+
+    private fun showBuyerSelectDialog(
+        context: Context,
+        users: List<UserSimpleResponse>,
+        onSelected: (Long) -> Unit
+    ) {
+        val names = users.map { it.nickname }.toTypedArray()
+
+        AlertDialog.Builder(context)
+            .setTitle("구매자 선택")
+            .setItems(names) { _, which ->
+                val selectedUser = users[which]
+                onSelected(selectedUser.id)
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
     // 데이터 갱신 함수 (필터링 후 사용할 것)
     fun updateList(newList: List<TradeItem>) {
         tradeList = newList
         notifyDataSetChanged()
     }
 }
+

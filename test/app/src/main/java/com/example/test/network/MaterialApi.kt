@@ -1,12 +1,16 @@
 package com.example.test.network
 
 import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.UserSimpleResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MaterialApi {
 
@@ -26,4 +30,24 @@ interface MaterialApi {
     fun getSavedTradePostIds(
         @Header("Authorization") token: String
     ): Call<List<Long>>
+
+    @POST("/api/trade-posts/{id}/complete-request")
+    fun requestComplete(
+        @Header("Authorization") token: String,
+        @Path("id") postId: Long
+    ): Call<Void>
+
+    @GET("/api/trade-posts/{id}/complete-requests")
+    fun getCompleteRequestUsers(
+        @Header("Authorization") token: String,
+        @Path("id") postId: Long
+    ): Call<List<UserSimpleResponse>>
+
+    @PATCH("/api/trade-posts/{id}/complete")
+    fun completeTradePost(
+        @Header("Authorization") token: String,
+        @Path("id") postId: Long,
+        @Query("buyerId") buyerId: Long
+    ): Call<TradePostSimpleResponse>
+
 }

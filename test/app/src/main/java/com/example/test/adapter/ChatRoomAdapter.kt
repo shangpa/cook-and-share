@@ -36,10 +36,10 @@ class ChatRoomAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chat = chatRooms[position]
         holder.opponentName.text = chat.opponentUsername
-        holder.lastMessage.text = chat.lastMessageContent
-        //마지막 메시지 시간에서 HH:mm만 추출
+        holder.lastMessage.text = chat.lastMessageContent ?: ""
+
         val time = chat.lastMessageTime
-        val formattedTime = if (time.contains("T") && time.length >= 16) {
+        val formattedTime = if (!time.isNullOrEmpty() && time.contains("T") && time.length >= 16) {
             time.substring(0, 16).replace("T", " ")
         } else {
             ""
