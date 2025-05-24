@@ -974,6 +974,7 @@
                             val intent = Intent(this, RecipeSeeMainActivity::class.java)
                             intent.putExtra("recipeId", recipeId)
                             startActivity(intent)
+                            finish()
                         }, onFailure = {
                             Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
                         })
@@ -984,6 +985,7 @@
                             val intent = Intent(this, RecipeSeeMainActivity::class.java)
                             intent.putExtra("recipeId", recipeId)
                             startActivity(intent)
+                            finish()
                         }, onFailure = {
                             Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
                         })
@@ -1014,6 +1016,7 @@
                             val intent = Intent(this, RecipeSeeMainActivity::class.java)
                             intent.putExtra("recipeId", recipeId)
                             startActivity(intent)
+                            finish()
                         }, onFailure = {
                             Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
                         })
@@ -1024,6 +1027,7 @@
                             val intent = Intent(this, RecipeSeeMainActivity::class.java)
                             intent.putExtra("recipeId", recipeId)
                             startActivity(intent)
+                            finish()
                         }, onFailure = {
                             Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
                         })

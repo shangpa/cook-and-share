@@ -91,19 +91,22 @@
                 android:layout_marginTop="4dp" />
 
             <!-- 판매자 온도 + 채팅 수-->
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:paddingEnd="4dp">
 
                 <TextView
+                    android:id="@+id/sellerLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="판매자 온도"
                     android:textSize="11sp"
-                    android:textColor="#8A8A8A" />
+                    android:textColor="#8A8A8A"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
                     android:id="@+id/temperatureText"
@@ -113,8 +116,20 @@
                     android:textSize="14sp"
                     android:textColor="#2B2B2B"
                     android:textStyle="bold"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="180dp"/>
+                    app:layout_constraintStart_toEndOf="@id/sellerLabel"
+                    app:layout_constraintTop_toTopOf="@id/sellerLabel"
+                    app:layout_constraintBottom_toBottomOf="@id/sellerLabel"
+                    android:layout_marginStart="6dp" />
+
+                <TextView
+                    android:id="@+id/commentCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageView
                     android:id="@+id/commentIcon"
@@ -122,16 +137,12 @@
                     android:layout_height="16dp"
                     android:src="@drawable/ic_comment"
                     android:contentDescription="채팅 아이콘"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    app:layout_constraintEnd_toStartOf="@id/commentCount"
+                    app:layout_constraintTop_toTopOf="@id/commentCount"
+                    app:layout_constraintBottom_toBottomOf="@id/commentCount" />
 
-                <TextView
-                    android:id="@+id/commentCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
