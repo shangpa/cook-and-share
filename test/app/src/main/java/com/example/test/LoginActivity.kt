@@ -2,13 +2,17 @@ package com.example.test
 
 import Prefs
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.example.test.model.LoginRequest
 import com.example.test.model.LoginResponse
 import com.example.test.model.notification.FcmTokenRequestDTO
@@ -24,10 +28,32 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val loginButton = findViewById<Button>(R.id.btnLogin)
+        val loginButton = findViewById<AppCompatButton>(R.id.btnLogin)
         val loginId = findViewById<EditText>(R.id.etLoginId)
         val loginPassword = findViewById<EditText>(R.id.etLoginPassword)
         val tvSignUp = findViewById<TextView>(R.id.tvSignUp)
+
+        val loginTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val idFilled = loginId.text.toString().isNotBlank()
+                val pwFilled = loginPassword.text.toString().isNotBlank()
+
+                if (idFilled && pwFilled) {
+                    loginButton.setBackgroundResource(R.drawable.btn_big_green)
+                    loginButton.setTextColor(Color.parseColor("#FFFFFF"))
+                } else {
+                    loginButton.setBackgroundResource(R.drawable.btn_number_of_people)
+                    loginButton.setTextColor(Color.parseColor("#A1A9AD"))
+                }
+            }
+        }
+
+        // 두 EditText에 TextWatcher 등록
+        loginId.addTextChangedListener(loginTextWatcher)
+        loginPassword.addTextChangedListener(loginTextWatcher)
 
         loginButton.setOnClickListener {
             val username = loginId.text.toString().trim()

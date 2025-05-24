@@ -39,6 +39,7 @@ import android.speech.RecognizerIntent
 import android.speech.RecognitionListener
 import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
+import androidx.appcompat.widget.AppCompatButton
 import com.example.test.Utils.RecommendUtils
 
 
@@ -53,7 +54,7 @@ class RecipeSeeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see)
         val recipeId = intent.getLongExtra("recipeId", -1L)
-        val endFixButton: Button = findViewById(R.id.endFixButton)
+        val endFixButton: AppCompatButton = findViewById(R.id.endFixButton)
         endFixButton.setOnClickListener {
             val intent = Intent(this, ReveiwWriteActivity::class.java)
             intent.putExtra("recipeId", recipeId)
@@ -75,7 +76,7 @@ class RecipeSeeActivity : AppCompatActivity() {
         val recipeSeeMain = findViewById<ConstraintLayout>(R.id.recipeSeeMain)
         val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
         val shareButton = findViewById<ImageButton>(R.id.shareButton)
-        val nextFixButton = findViewById<Button>(R.id.nextFixButton)
+        val nextFixButton = findViewById<AppCompatButton>(R.id.nextFixButton)
         val voice = findViewById<ImageButton>(R.id.voice)
         val voiceBubble = findViewById<View>(R.id.voiceBubble)
         val beforeStep = findViewById<TextView>(R.id.beforeStep)
@@ -518,8 +519,8 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 // 타이머 동작 추가
                                 val hourText = stepView.findViewById<TextView>(R.id.hour)
                                 val minuteText = stepView.findViewById<TextView>(R.id.minute)
-                                val startButton = stepView.findViewById<Button>(R.id.start)
-                                val stopButton = stepView.findViewById<Button>(R.id.stop)
+                                val startButton = stepView.findViewById<AppCompatButton>(R.id.start)
+                                val stopButton = stepView.findViewById<AppCompatButton>(R.id.stop)
 
                                 var timeLeft = step.timeInSeconds * 1000L
                                 var timer: CountDownTimer? = null
@@ -554,8 +555,8 @@ class RecipeSeeActivity : AppCompatActivity() {
                                 stepView.findViewById<TextView>(R.id.hour).visibility = View.GONE
                                 stepView.findViewById<TextView>(R.id.colon).visibility = View.GONE
                                 stepView.findViewById<TextView>(R.id.minute).visibility = View.GONE
-                                stepView.findViewById<Button>(R.id.start).visibility = View.GONE
-                                stepView.findViewById<Button>(R.id.stop).visibility = View.GONE
+                                stepView.findViewById<AppCompatButton>(R.id.start).visibility = View.GONE
+                                stepView.findViewById<AppCompatButton>(R.id.stop).visibility = View.GONE
 
                                 // 설명의 아래 마진이 충분한지 확인하거나 추가
                                 val explainOne = stepView.findViewById<TextView>(R.id.explainOne)
@@ -620,12 +621,12 @@ class RecipeSeeActivity : AppCompatActivity() {
                         }
                         result.contains("시작") -> {
                             val currentView = steps.getOrNull(currentStep)
-                            currentView?.findViewById<Button>(R.id.start)?.performClick()
+                            currentView?.findViewById<AppCompatButton>(R.id.start)?.performClick()
                             Toast.makeText(this@RecipeSeeActivity, "타이머 시작", Toast.LENGTH_SHORT).show()
                         }
                         result.contains("정지") -> {
                             val currentView = steps.getOrNull(currentStep)
-                            currentView?.findViewById<Button>(R.id.stop)?.performClick()
+                            currentView?.findViewById<AppCompatButton>(R.id.stop)?.performClick()
                             Toast.makeText(this@RecipeSeeActivity, "타이머 정지", Toast.LENGTH_SHORT).show()
                         }
                     }

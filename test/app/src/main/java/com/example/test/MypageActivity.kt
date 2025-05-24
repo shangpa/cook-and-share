@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,69 @@ class MypageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
+
+        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
+        tapVillageKitchenIcon.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
+        tapVillageKitchenText.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
+        tapRecipeIcon.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+        tapRecipeText.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapHomeIcon 클릭했을 때 MainActivity 이동
+        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+        tapHomeIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
+        tapFridgeIcon.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+        tapFridgeText.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
 
         // bellIcon 클릭했을 때 NoticeActivity 이동
         val bellIcon: ImageButton = findViewById(R.id.bellIcon)
@@ -42,14 +106,14 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-          // 레시피 리뷰 내역으로 이동
+        // 레시피 리뷰 내역으로 이동
         val recipeReviewListText: LinearLayout = findViewById(R.id.recipeReview)
         recipeReviewListText.setOnClickListener {
             val intent = Intent(this, MypageRecipeReviewActivity::class.java)
             startActivity(intent)
         }
 
-         // 찜한 레시피로 이동
+        // 찜한 레시피로 이동
         val likeRecipeText: LinearLayout = findViewById(R.id.recipeLike)
         likeRecipeText.setOnClickListener {
             val intent = Intent(this, MypageLoveRecipeActivity::class.java)

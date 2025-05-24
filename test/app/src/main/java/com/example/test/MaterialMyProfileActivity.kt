@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
@@ -40,7 +43,7 @@ var lastEnteredFrom: String? = null
 
 
 class MaterialMyProfileActivity : AppCompatActivity() {
-    
+
     private lateinit var saleHistoryAdapter: SaleHistoryAdapter //어댑터
     private var allTradeList = mutableListOf<TradeItem>()  // 전체 판매내역
 
@@ -68,6 +71,70 @@ class MaterialMyProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_my_profile)
+
+        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
+        tapVillageKitchenIcon.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
+        tapVillageKitchenText.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
+        tapRecipeIcon.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+        tapRecipeText.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapHomeIcon 클릭했을 때 MainActivity 이동
+        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+        tapHomeIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
+        tapFridgeIcon.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+        tapFridgeText.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
         val token = "Bearer ${App.prefs.token.toString()}"
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
         loadReceivedReviews()
@@ -93,6 +160,7 @@ class MaterialMyProfileActivity : AppCompatActivity() {
         val reviewIcon = findViewById<ImageView>(R.id.ic_chatt)
         val reviewText = findViewById<TextView>(R.id.ic_chatt1)
         val reviewArrow = findViewById<ImageView>(R.id.ic_rigth4)
+        val bottomTabBar = findViewById<FrameLayout>(R.id.bottomTabBar)
 
         // 판매내역 선언
         val saleHistoryLayout = findViewById<LinearLayout>(R.id.saleHistory)
@@ -105,7 +173,8 @@ class MaterialMyProfileActivity : AppCompatActivity() {
         // 후기 작성하기 선언
         val reviewItemMore = findViewById<ImageView>(R.id.reviewItemMore)
         val descriptionText = findViewById<EditText>(R.id.descriptionText)
-        val postBtn = findViewById<Button>(R.id.postBtn)
+        val postBtn = findViewById<AppCompatButton>(R.id.postBtn)
+
 
         // 저장한 게시글 선언
         val savePostLayout = findViewById<ConstraintLayout>(R.id.savePost)
@@ -347,12 +416,14 @@ class MaterialMyProfileActivity : AppCompatActivity() {
             lastEnteredFrom = "reviewWrite"
             purchaseHistoryLayout.visibility = View.GONE
             reviewContainer.visibility = View.VISIBLE
+            findViewById<FrameLayout>(R.id.bottomTabBar).visibility = View.GONE
         }
 
         reviewWriteTwo.setOnClickListener {
             lastEnteredFrom = "reviewWriteTwo"
             purchaseHistoryLayout.visibility = View.GONE
             reviewContainer.visibility = View.VISIBLE
+            findViewById<FrameLayout>(R.id.bottomTabBar).visibility = View.GONE
         }
 
 
@@ -407,7 +478,25 @@ class MaterialMyProfileActivity : AppCompatActivity() {
         postBtn.setOnClickListener {
             reviewContainer.visibility = View.GONE
             purchaseHistoryLayout.visibility = View.VISIBLE
+            findViewById<FrameLayout>(R.id.bottomTabBar).visibility = View.VISIBLE
         }
+
+        descriptionText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val isFilled = s?.isNotBlank() == true
+
+                if (isFilled) {
+                    postBtn.setBackgroundResource(R.drawable.btn_big_green)
+                    postBtn.setTextColor(Color.parseColor("#FFFFFF"))
+                } else {
+                    postBtn.setBackgroundResource(R.drawable.btn_number_of_people)
+                    postBtn.setTextColor(Color.parseColor("#A1A9AD"))
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         // 저장한 게시글 재료 버튼들
         val all = findViewById<Button>(R.id.all)
@@ -695,71 +784,109 @@ class MaterialMyProfileActivity : AppCompatActivity() {
 
     }
 
-        private fun setSelectedButton(selectedButton: Button) {
-            val distanceText = findViewById<TextView>(R.id.distanceText)
-            val distanceContainer = findViewById<LinearLayout>(R.id.distanceContainer)
-            val distanceLayout = findViewById<LinearLayout>(R.id.distance)
+    private fun setSelectedButton(selectedButton: Button) {
+        val distanceText = findViewById<TextView>(R.id.distanceText)
+        val distanceContainer = findViewById<LinearLayout>(R.id.distanceContainer)
+        val distanceLayout = findViewById<LinearLayout>(R.id.distance)
 
-            // 버튼 스타일 설정 및 selectedDistance 지정
-            for (button in buttons) {
-                if (button == selectedButton) {
-                    button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-                    button.setTextColor(Color.WHITE)
-                    selectedDistance = button
-                } else {
-                    button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    button.setTextColor(Color.parseColor("#8A8F9C"))
-                }
+        // 버튼 스타일 설정 및 selectedDistance 지정
+        for (button in buttons) {
+            if (button == selectedButton) {
+                button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+                button.setTextColor(Color.WHITE)
+                selectedDistance = button
+            } else {
+                button.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                button.setTextColor(Color.parseColor("#8A8F9C"))
             }
-
-            // 기존 거리 뱃지 제거
-            val childCount = selectedFilterLayout.childCount
-            for (i in childCount - 1 downTo 0) {
-                val badge = selectedFilterLayout.getChildAt(i)
-                val badgeText = badge.findViewById<TextView>(R.id.filterText)
-                if (badge.tag == "distance") {
-                    selectedFilterLayout.removeView(badge)
-                }
-            }
-
-            // 뱃지 추가
-            val badge = layoutInflater.inflate(R.layout.filter_badge, null)
-            badge.tag = "distance"
-            val badgeText = badge.findViewById<TextView>(R.id.filterText)
-            val badgeClose = badge.findViewById<ImageView>(R.id.filterClose)
-
-            badgeText.text = selectedButton.text.toString()
-            badgeClose.setOnClickListener {
-                selectedFilterLayout.removeView(badge)
-                selectedDistance = null
-
-                // 거리 버튼 초기화
-                buttons.forEach {
-                    it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    it.setTextColor(Color.parseColor("#8A8F9C"))
-                }
-
-                // 거리 필터 UI 초기화
-                distanceContainer.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                distanceText.setTextColor(Color.parseColor("#8A8F9C"))
-            }
-
-            selectedFilterLayout.addView(badge)
-
-            // 거리 레이아웃 닫기
-            distanceLayout.visibility = View.GONE
-            isdistanceVisible = false
-
-            // 선택된 상태로 필터 배경/글자색 설정
-            distanceContainer.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-            distanceText.setTextColor(Color.WHITE)
         }
 
+        // 기존 거리 뱃지 제거
+        val childCount = selectedFilterLayout.childCount
+        for (i in childCount - 1 downTo 0) {
+            val badge = selectedFilterLayout.getChildAt(i)
+            val badgeText = badge.findViewById<TextView>(R.id.filterText)
+            if (badge.tag == "distance") {
+                selectedFilterLayout.removeView(badge)
+            }
+        }
+
+        // 뱃지 추가
+        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
+        badge.tag = "distance"
+        val badgeText = badge.findViewById<TextView>(R.id.filterText)
+        val badgeClose = badge.findViewById<ImageView>(R.id.filterClose)
+
+        badgeText.text = selectedButton.text.toString()
+        badgeClose.setOnClickListener {
+            selectedFilterLayout.removeView(badge)
+            selectedDistance = null
+
+            // 거리 버튼 초기화
+            buttons.forEach {
+                it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                it.setTextColor(Color.parseColor("#8A8F9C"))
+            }
+
+            // 거리 필터 UI 초기화
+            distanceContainer.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            distanceText.setTextColor(Color.parseColor("#8A8F9C"))
+        }
+
+        selectedFilterLayout.addView(badge)
+
+        // 거리 레이아웃 닫기
+        distanceLayout.visibility = View.GONE
+        isdistanceVisible = false
+
+        // 선택된 상태로 필터 배경/글자색 설정
+        distanceContainer.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+        distanceText.setTextColor(Color.WHITE)
+    }
 
 
-        private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
-            selectedMaterial = if (selectedMaterial == button) null else button
 
+    private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
+        selectedMaterial = if (selectedMaterial == button) null else button
+
+        val allMaterialButtons = listOf(
+            findViewById<Button>(R.id.all),
+            findViewById(R.id.cookware),
+            findViewById(R.id.fans_pots),
+            findViewById(R.id.containers),
+            findViewById(R.id.tableware),
+            findViewById(R.id.storageSupplies),
+            findViewById(R.id.sanitaryProducts),
+            findViewById(R.id.smallAppliances),
+            findViewById(R.id.disposableProducts),
+            findViewById(R.id.etc)
+        )
+
+        allMaterialButtons.forEach {
+            it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            it.setTextColor(Color.parseColor("#8A8F9C"))
+        }
+
+        selectedMaterial?.let {
+            it.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+            it.setTextColor(Color.WHITE)
+        }
+    }
+
+    private fun showSelectedFilterBadge(text: String, materialFilter: LinearLayout, materialText: TextView) {
+        selectedFilterLayout.visibility = View.VISIBLE
+
+        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
+        val badgeText = badge.findViewById<TextView>(R.id.filterText)
+        val badgeClose = badge.findViewById<ImageView>(R.id.filterClose)
+
+        badgeText.text = text
+        badge.tag = "material-$text" // 고유 태그 설정
+
+        badgeClose.setOnClickListener {
+            selectedFilterLayout.removeView(badge)
+
+            // 버튼 초기화
             val allMaterialButtons = listOf(
                 findViewById<Button>(R.id.all),
                 findViewById(R.id.cookware),
@@ -773,58 +900,20 @@ class MaterialMyProfileActivity : AppCompatActivity() {
                 findViewById(R.id.etc)
             )
 
-            allMaterialButtons.forEach {
-                it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                it.setTextColor(Color.parseColor("#8A8F9C"))
+            allMaterialButtons.find { it.text == text }?.let { button ->
+                button.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                button.setTextColor(Color.parseColor("#8A8F9C"))
             }
 
-            selectedMaterial?.let {
-                it.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-                it.setTextColor(Color.WHITE)
+            // 재료 필터 색 초기화 (선택된 게 없을 때만)
+            if (selectedFilterLayout.children.none { it.tag.toString().startsWith("material-") }) {
+                materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                materialText.setTextColor(Color.parseColor("#8A8F9C"))
             }
         }
 
-        private fun showSelectedFilterBadge(text: String, materialFilter: LinearLayout, materialText: TextView) {
-            selectedFilterLayout.visibility = View.VISIBLE
-
-            val badge = layoutInflater.inflate(R.layout.filter_badge, null)
-            val badgeText = badge.findViewById<TextView>(R.id.filterText)
-            val badgeClose = badge.findViewById<ImageView>(R.id.filterClose)
-
-            badgeText.text = text
-            badge.tag = "material-$text" // 고유 태그 설정
-
-            badgeClose.setOnClickListener {
-                selectedFilterLayout.removeView(badge)
-
-                // 버튼 초기화
-                val allMaterialButtons = listOf(
-                    findViewById<Button>(R.id.all),
-                    findViewById(R.id.cookware),
-                    findViewById(R.id.fans_pots),
-                    findViewById(R.id.containers),
-                    findViewById(R.id.tableware),
-                    findViewById(R.id.storageSupplies),
-                    findViewById(R.id.sanitaryProducts),
-                    findViewById(R.id.smallAppliances),
-                    findViewById(R.id.disposableProducts),
-                    findViewById(R.id.etc)
-                )
-
-                allMaterialButtons.find { it.text == text }?.let { button ->
-                    button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    button.setTextColor(Color.parseColor("#8A8F9C"))
-                }
-
-                // 재료 필터 색 초기화 (선택된 게 없을 때만)
-                if (selectedFilterLayout.children.none { it.tag.toString().startsWith("material-") }) {
-                    materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    materialText.setTextColor(Color.parseColor("#8A8F9C"))
-                }
-            }
-
-            selectedFilterLayout.addView(badge)
-        }
+        selectedFilterLayout.addView(badge)
+    }
 
     // 현재 보여지는 화면 숨기고, 새 화면 보여주기 + 이전 화면 스택에 저장
     private fun showView(nextView: View) {

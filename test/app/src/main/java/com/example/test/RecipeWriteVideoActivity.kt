@@ -54,6 +54,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -62,9 +63,9 @@ private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
 private lateinit var handlingMethodContainer: LinearLayout
 private lateinit var cookOrderRecipeContainer: LinearLayout
-private lateinit var addFixButton: Button
-private lateinit var replaceMaterialAddFixButton: Button
-private lateinit var handlingMethodAddFixButton: Button
+private lateinit var addFixButton: AppCompatButton
+private lateinit var replaceMaterialAddFixButton: AppCompatButton
+private lateinit var handlingMethodAddFixButton: AppCompatButton
 private var itemCount = 0 // 추가된 개수 추적
 private val maxItems = 10 // 최대 10개 제한
 private val buttonMarginIncrease = 130 // 버튼을 아래로 내릴 거리 (px)
@@ -120,6 +121,132 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_video)
 
+        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
+        tapVillageKitchenIcon.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
+        tapVillageKitchenText.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
+        tapRecipeIcon.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+        tapRecipeText.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapHomeIcon 클릭했을 때 MainActivity 이동
+        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+        tapHomeIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
+        tapFridgeIcon.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+        tapFridgeText.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenIconThree 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIconThree: ImageView = findViewById(R.id.tapVillageKitchenIconThree)
+        tapVillageKitchenIconThree.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenTextThree 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenTextThree: TextView = findViewById(R.id.tapVillageKitchenTextThree)
+        tapVillageKitchenTextThree.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIconThree 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIconThree: ImageView = findViewById(R.id.tapRecipeIconThree)
+        tapRecipeIconThree.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeTextThree 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeTextThree: TextView = findViewById(R.id.tapRecipeTextThree)
+        tapRecipeTextThree.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapHomeIconThree 클릭했을 때 MainActivity 이동
+        val tapHomeIconThree: ImageView = findViewById(R.id.tapHomeIconThree)
+        tapHomeIconThree.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIconThree 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIconThree: ImageView = findViewById(R.id.tapCommunityIconThree)
+        tapCommunityIconThree.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityTextThree 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityTextThree: TextView = findViewById(R.id.tapCommunityTextThree)
+        tapCommunityTextThree.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIconThree 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIconThree: ImageView = findViewById(R.id.tapFridgeIconThree)
+        tapFridgeIconThree.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeTextThree 클릭했을 때 FridgeActivity 이동
+        val tapFridgeTextThree: TextView = findViewById(R.id.tapFridgeTextThree)
+        tapFridgeTextThree.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
         // 재료
         materialContainer = findViewById(R.id.materialContainer)
         addFixButton = findViewById(R.id.addFixButton)
@@ -154,8 +281,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         }
         val uncheck = findViewById<ImageButton>(R.id.uncheck)
         val uncheckTwo = findViewById<ImageButton>(R.id.uncheckTwo)
-        val settle = findViewById<Button>(R.id.settle)
-        val cancelTwo = findViewById<Button>(R.id.cancelTwo)
+        val settle = findViewById<AppCompatButton>(R.id.settle)
+        val cancelTwo = findViewById<AppCompatButton>(R.id.cancelTwo)
         // 카테고리 선언
         val recipeWriteCategory = findViewById<ConstraintLayout>(R.id.recipeWriteCategory)
         val recipeWrite = findViewById<ConstraintLayout>(R.id.recipeWrite)
@@ -172,8 +299,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val categoryDropDown = findViewById<ConstraintLayout>(R.id.categoryDropDown)
         val recipeName = findViewById<ConstraintLayout>(R.id.recipeName)
         val koreanFood = findViewById<TextView>(R.id.koreanFood)
-        val continueButton = findViewById<Button>(R.id.continueButton)
-        val beforeButton = findViewById<Button>(R.id.beforeButton)
+        val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
+        val beforeButton = findViewById<AppCompatButton>(R.id.beforeButton)
 
         // 레시피 재료 선언
         val recipeWriteMaterialLayout = findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout)
@@ -195,7 +322,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val deleteFour = findViewById<ImageButton>(R.id.deleteFour)
         val deleteFive = findViewById<ImageButton>(R.id.deleteFive)
         val deleteSix = findViewById<ImageButton>(R.id.deleteSix)
-        val addFixButton = findViewById<Button>(R.id.addFixButton)
+        val addFixButton = findViewById<AppCompatButton>(R.id.addFixButton)
         val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
         val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
         val divideRectangleBarSeven = findViewById<View>(R.id.divideRectangleBarSeven)
@@ -225,7 +352,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val replaceMaterialTwo = findViewById<EditText>(R.id.replaceMaterialTwo)
         val replaceMaterialDeleteTwo = findViewById<ImageButton>(R.id.replaceMaterialDeleteTwo)
         val divideRectangleBarThirteen = findViewById<View>(R.id.divideRectangleBarThirteen)
-        val replaceMaterialAddFixButton = findViewById<Button>(R.id.replaceMaterialAddFixButton)
+        val replaceMaterialAddFixButton = findViewById<AppCompatButton>(R.id.replaceMaterialAddFixButton)
 
         // 레시피 처리방법 선언
         val recipeWriteHandlingMethodLayout =
@@ -238,7 +365,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val handlingMethodTwo = findViewById<EditText>(R.id.handlingMethodTwo)
         val handlingMethodDeleteTwo = findViewById<ImageButton>(R.id.handlingMethodDeleteTwo)
         val divideRectangleBarSixteen = findViewById<View>(R.id.divideRectangleBarSixteen)
-        val handlingMethodAddFixButton = findViewById<Button>(R.id.handlingMethodAddFixButton)
+        val handlingMethodAddFixButton = findViewById<AppCompatButton>(R.id.handlingMethodAddFixButton)
 
         // 레시피 조리영상 선언
         val root = findViewById<ConstraintLayout>(R.id.root)
@@ -262,9 +389,9 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val shareSettle = findViewById<ConstraintLayout>(R.id.shareSettle)
         val recipeRegister = findViewById<ConstraintLayout>(R.id.recipeRegister)
         val contentCheckTapBar = findViewById<ConstraintLayout>(R.id.contentCheckTapBar)
-        val shareFixButton = findViewById<Button>(R.id.shareFixButton)
-        val registerFixButton = findViewById<Button>(R.id.registerFixButton)
-        val register = findViewById<Button>(R.id.register)
+        val shareFixButton = findViewById<AppCompatButton>(R.id.shareFixButton)
+        val registerFixButton = findViewById<AppCompatButton>(R.id.registerFixButton)
+        val register = findViewById<AppCompatButton>(R.id.register)
 
         videoCameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -372,179 +499,179 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
         // "계속하기" 버튼 클릭 시 화면 이동
-            continueButton.setOnClickListener {
-                if (currentIndex < layouts.size - 1) {
-                    // 현재 화면 숨기기
-                    layouts[currentIndex].visibility = View.GONE
-                    // 다음 화면 표시
-                    currentIndex++
-                    layouts[currentIndex].visibility = View.VISIBLE
+        continueButton.setOnClickListener {
+            if (currentIndex < layouts.size - 1) {
+                // 현재 화면 숨기기
+                layouts[currentIndex].visibility = View.GONE
+                // 다음 화면 표시
+                currentIndex++
+                layouts[currentIndex].visibility = View.VISIBLE
 
-                    // 해당 TextView 색상 변경
-                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                    textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
+                // 해당 TextView 색상 변경
+                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
+                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
 
-                    // 바(View)의 위치 변경
-                    val targetX =
-                        textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                    indicatorBar.x = targetX
-                } else {
-                    // 마지막 화면이면 contentCheckLayout
-                    //대표이미지 가져오기
-                    val representativeImage = findViewById<ImageView>(R.id.representativeImage)
-                    val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
-                    Glide.with(this).load(fullImageUrl).into(representativeImage)
-                    // todo 동영상 업로드된거 가져와야함
-                    // 선택된 카테고리 가져오기
-                    val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
-                    // 레시피 제목 가져오기
-                    val recipeTitle = recipeTitleWrite.text.toString()
-                    // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
-                    val ingredients = mutableListOf<Pair<String, String>>()
+                // 바(View)의 위치 변경
+                val targetX =
+                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
+                indicatorBar.x = targetX
+            } else {
+                // 마지막 화면이면 contentCheckLayout
+                //대표이미지 가져오기
+                val representativeImage = findViewById<ImageView>(R.id.representativeImage)
+                val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
+                Glide.with(this).load(fullImageUrl).into(representativeImage)
+                // todo 동영상 업로드된거 가져와야함
+                // 선택된 카테고리 가져오기
+                val categoryText = koreanFood.text.toString() // 사용자가 선택한 값 가져오기
+                // 레시피 제목 가져오기
+                val recipeTitle = recipeTitleWrite.text.toString()
+                // 기존 재료 입력란 + 동적으로 추가된 재료 입력란 가져오기
+                val ingredients = mutableListOf<Pair<String, String>>()
 
-                    // 정적 재료 입력란 추가
-                    ingredients.add(material.text.toString() to "${measuring.text} ${unit.text}")
-                    ingredients.add(materialTwo.text.toString() to "${measuringTwo.text} ${unitTwo.text}")
-                    ingredients.add(materialThree.text.toString() to "${measuringThree.text} ${unitThree.text}")
-                    ingredients.add(materialFour.text.toString() to "${measuringFour.text} ${unitFour.text}")
-                    ingredients.add(materialFive.text.toString() to "${measuringFive.text} ${unitFive.text}")
-                    ingredients.add(materialSix.text.toString() to "${measuringSix.text} ${unitSix.text}")
+                // 정적 재료 입력란 추가
+                ingredients.add(material.text.toString() to "${measuring.text} ${unit.text}")
+                ingredients.add(materialTwo.text.toString() to "${measuringTwo.text} ${unitTwo.text}")
+                ingredients.add(materialThree.text.toString() to "${measuringThree.text} ${unitThree.text}")
+                ingredients.add(materialFour.text.toString() to "${measuringFour.text} ${unitFour.text}")
+                ingredients.add(materialFive.text.toString() to "${measuringFive.text} ${unitFive.text}")
+                ingredients.add(materialSix.text.toString() to "${measuringSix.text} ${unitSix.text}")
 
 
-                    // 동적으로 추가된 재료 입력란에서 데이터 수집
-                    for (i in 0 until materialContainer.childCount) {
-                        val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
-                        val materialEditText = itemLayout.getChildAt(0) as? EditText
-                        val measuringEditText = itemLayout.getChildAt(1) as? EditText
-                        val unitTextView = itemLayout.getChildAt(2) as? TextView
+                // 동적으로 추가된 재료 입력란에서 데이터 수집
+                for (i in 0 until materialContainer.childCount) {
+                    val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
+                    val materialEditText = itemLayout.getChildAt(0) as? EditText
+                    val measuringEditText = itemLayout.getChildAt(1) as? EditText
+                    val unitTextView = itemLayout.getChildAt(2) as? TextView
 
-                        if (materialEditText != null && measuringEditText != null && unitTextView != null) {
-                            val materialName = materialEditText.text.toString()
-                            val amountWithUnit = "${measuringEditText.text} ${unitTextView.text}" //단위 추가
+                    if (materialEditText != null && measuringEditText != null && unitTextView != null) {
+                        val materialName = materialEditText.text.toString()
+                        val amountWithUnit = "${measuringEditText.text} ${unitTextView.text}" //단위 추가
 
-                            if (materialName.isNotBlank() && amountWithUnit.isNotBlank()) {
-                                ingredients.add(materialName to amountWithUnit)
-                            }
+                        if (materialName.isNotBlank() && amountWithUnit.isNotBlank()) {
+                            ingredients.add(materialName to amountWithUnit)
                         }
                     }
-
-                    // 빈 값 제거
-                    val filteredIngredients =
-                        ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-
-                    // UI 업데이트 (RecyclerView 대신 기존 LinearLayout에 추가)
-                    updateMaterialList(materialContainer, filteredIngredients)
-
-                    // 대체 재료 가져오기
-                    val replaceIngredients = listOf(
-                        "${replaceMaterialName.text.toString().trim()} → ${replaceMaterial.text.toString().trim()}",
-                        "${replaceMaterialMaterialTwo.text.toString().trim()} → ${replaceMaterialTwo.text.toString().trim()}"
-                    ).filter { it.isNotBlank() }
-
-                    // 처리 방법 가져오기
-                    val handlingMethods = listOf(
-                        "${handlingMethodName.text.toString().trim()} : ${handlingMethod.text.toString().trim()}",
-                        "${handlingMethodMaterialTwo.text.toString().trim()} : ${handlingMethodTwo.text.toString().trim()}"
-                    ).filter { it.isNotBlank() }
-
-                    // 타이머 값 가져오기
-                    val cookingHour = zero.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
-                    val cookingMinute = halfHour.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
-
-                    //태그 값 가져오기
-                    val recipeTag = detailSettleRecipeTitleWrite.text.toString()
-
-                    // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
-                    findViewById<TextView>(R.id.checkFoodName).text = recipeTitle
-                    findViewById<TextView>(R.id.checkKoreanFood).text = categoryText
-                    findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
-                    findViewById<TextView>(R.id.checkZero).text = cookingHour.toString()
-                    findViewById<TextView>(R.id.checkHalfHour).text = cookingMinute.toString()
-
-                    // 기존 레이아웃 변경 (가시성 설정 유지)
-                    layouts[currentIndex].visibility = View.GONE
-                    findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
-                    findViewById<ConstraintLayout>(R.id.contentCheckTapFix).visibility = View.VISIBLE
-                    findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
-                    findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
-                    findViewById<View>(R.id.divideRectangleBarThirtythree).visibility = View.GONE
-                    findViewById<View>(R.id.tapBar).visibility = View.GONE
-                    // 소요시간 (조리시간)
-                    val totalCookingTime = (cookingHour.toInt() * 60) + cookingMinute.toInt()
-                    //난이도
-                    val difficulty = elementaryLevel.text.toString()
-                    // 카테고리 Enum 변환
-                    val categoryEnum = mapCategoryToEnum(categoryText)
-                    val videoThumbImageView = findViewById<ImageView>(R.id.image)
-                    val playButton = findViewById<ImageButton>(R.id.btnVideo)
-                    val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
-                    if (!recipeVideoUrl.isNullOrEmpty()) {
-                        // 썸네일 표시 (Glide의 .frame(0) 지원: videoUrl에서 첫 프레임을 가져옴)
-                        Glide.with(this)
-                            .load(RetrofitInstance.BASE_URL + recipeVideoUrl!!.trim())
-                            .frame(0)
-                            .into(videoThumbImageView)
-
-                        videoThumbImageView.visibility = View.VISIBLE
-                        playButton.visibility = View.VISIBLE
-                        playerView.visibility = View.GONE // 미리보기일 땐 숨김
-
-                        // 2. 재생 버튼 클릭 시 ExoPlayer로 영상 재생
-                        playButton.setOnClickListener {
-                            val player = ExoPlayer.Builder(this).build()
-                            playerView.player = player
-                            val mediaItem = MediaItem.fromUri(RetrofitInstance.BASE_URL + recipeVideoUrl!!.trim())
-                            player.setMediaItem(mediaItem)
-                            player.prepare()
-                            player.play()
-                            playerView.visibility = View.VISIBLE
-                            videoThumbImageView.alpha = 0f
-                            playButton.visibility = View.GONE
-                        }
-                    } else {
-                        videoThumbImageView.visibility = View.GONE
-                        playButton.visibility = View.GONE
-                        playerView.visibility = View.GONE
-                    }
-
-
-                    // Gson 인스턴스 생성
-                    val gson = Gson()
-
-                    // RecipeRequest 객체 생성
-                    recipe = RecipeRequest(
-                        title = recipeTitle,
-                        category = categoryEnum,
-                        ingredients = gson.toJson(filteredIngredients.map {
-                            Ingredient(
-                                it.first,
-                                it.second
-                            )
-                        }),
-                        alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
-                            .map {
-                                val parts = it.split(" → ")
-                                Ingredient(parts[0], parts[1])
-                            }),
-                        handlingMethods = gson.toJson(handlingMethods),
-                        cookingSteps = gson.toJson(emptyList<CookingStep>()),//동영상만 보낼거라 조리순서 X
-                        mainImageUrl = mainImageUrl,
-                        difficulty = difficulty,
-                        tags = recipeTag,
-                        cookingTime = totalCookingTime,
-                        servings = 2,
-                        isPublic = true,
-                        videoUrl = recipeVideoUrl ?: ""
-                    )
-                    Log.d("RecipeRequest", "전체 객체: ${gson.toJson(recipe)}")
-                    updateMaterialListView(
-                        findViewById(R.id.materialList),
-                        filteredIngredients,
-                        replaceIngredients.map { it.split(" → ")[0] to it.split(" → ")[1] },
-                        handlingMethods.map { it.split(" : ")[0] to it.split(" : ")[1] }
-                    )
                 }
+
+                // 빈 값 제거
+                val filteredIngredients =
+                    ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+
+                // UI 업데이트 (RecyclerView 대신 기존 LinearLayout에 추가)
+                updateMaterialList(materialContainer, filteredIngredients)
+
+                // 대체 재료 가져오기
+                val replaceIngredients = listOf(
+                    "${replaceMaterialName.text.toString().trim()} → ${replaceMaterial.text.toString().trim()}",
+                    "${replaceMaterialMaterialTwo.text.toString().trim()} → ${replaceMaterialTwo.text.toString().trim()}"
+                ).filter { it.isNotBlank() }
+
+                // 처리 방법 가져오기
+                val handlingMethods = listOf(
+                    "${handlingMethodName.text.toString().trim()} : ${handlingMethod.text.toString().trim()}",
+                    "${handlingMethodMaterialTwo.text.toString().trim()} : ${handlingMethodTwo.text.toString().trim()}"
+                ).filter { it.isNotBlank() }
+
+                // 타이머 값 가져오기
+                val cookingHour = zero.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
+                val cookingMinute = halfHour.text.toString().takeIf { it.isNotBlank() }?.toInt() ?: 0
+
+                //태그 값 가져오기
+                val recipeTag = detailSettleRecipeTitleWrite.text.toString()
+
+                // 화면에 표시할 TextView 찾기 (출력할 레이아웃이 있어야 함)
+                findViewById<TextView>(R.id.checkFoodName).text = recipeTitle
+                findViewById<TextView>(R.id.checkKoreanFood).text = categoryText
+                findViewById<TextView>(R.id.foodNameTwo).text = recipeTag
+                findViewById<TextView>(R.id.checkZero).text = cookingHour.toString()
+                findViewById<TextView>(R.id.checkHalfHour).text = cookingMinute.toString()
+
+                // 기존 레이아웃 변경 (가시성 설정 유지)
+                layouts[currentIndex].visibility = View.GONE
+                findViewById<ConstraintLayout>(R.id.contentCheckLayout).visibility = View.VISIBLE
+                findViewById<ConstraintLayout>(R.id.contentCheckTapBar).visibility = View.VISIBLE
+                findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
+                findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
+                findViewById<View>(R.id.divideRectangleBarThirtythree).visibility = View.GONE
+                findViewById<View>(R.id.tapBar).visibility = View.GONE
+                // 소요시간 (조리시간)
+                val totalCookingTime = (cookingHour.toInt() * 60) + cookingMinute.toInt()
+                //난이도
+                val difficulty = elementaryLevel.text.toString()
+                // 카테고리 Enum 변환
+                val categoryEnum = mapCategoryToEnum(categoryText)
+                val videoThumbImageView = findViewById<ImageView>(R.id.image)
+                val playButton = findViewById<ImageButton>(R.id.btnVideo)
+                val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+                if (!recipeVideoUrl.isNullOrEmpty()) {
+                    // 썸네일 표시 (Glide의 .frame(0) 지원: videoUrl에서 첫 프레임을 가져옴)
+                    Glide.with(this)
+                        .load(RetrofitInstance.BASE_URL + recipeVideoUrl!!.trim())
+                        .frame(0)
+                        .into(videoThumbImageView)
+
+                    videoThumbImageView.visibility = View.VISIBLE
+                    playButton.visibility = View.VISIBLE
+                    playerView.visibility = View.GONE // 미리보기일 땐 숨김
+
+                    // 2. 재생 버튼 클릭 시 ExoPlayer로 영상 재생
+                    playButton.setOnClickListener {
+                        val player = ExoPlayer.Builder(this).build()
+                        playerView.player = player
+                        val mediaItem = MediaItem.fromUri(RetrofitInstance.BASE_URL + recipeVideoUrl!!.trim())
+                        player.setMediaItem(mediaItem)
+                        player.prepare()
+                        player.play()
+                        playerView.visibility = View.VISIBLE
+                        videoThumbImageView.alpha = 0f
+                        playButton.visibility = View.GONE
+                    }
+                } else {
+                    videoThumbImageView.visibility = View.GONE
+                    playButton.visibility = View.GONE
+                    playerView.visibility = View.GONE
+                }
+
+
+                // Gson 인스턴스 생성
+                val gson = Gson()
+
+                // RecipeRequest 객체 생성
+                recipe = RecipeRequest(
+                    title = recipeTitle,
+                    category = categoryEnum,
+                    ingredients = gson.toJson(filteredIngredients.map {
+                        Ingredient(
+                            it.first,
+                            it.second
+                        )
+                    }),
+                    alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
+                        .map {
+                            val parts = it.split(" → ")
+                            Ingredient(parts[0], parts[1])
+                        }),
+                    handlingMethods = gson.toJson(handlingMethods),
+                    cookingSteps = gson.toJson(emptyList<CookingStep>()),//동영상만 보낼거라 조리순서 X
+                    mainImageUrl = mainImageUrl,
+                    difficulty = difficulty,
+                    tags = recipeTag,
+                    cookingTime = totalCookingTime,
+                    servings = 2,
+                    isPublic = true,
+                    videoUrl = recipeVideoUrl ?: ""
+                )
+                Log.d("RecipeRequest", "전체 객체: ${gson.toJson(recipe)}")
+                updateMaterialListView(
+                    findViewById(R.id.materialList),
+                    filteredIngredients,
+                    replaceIngredients.map { it.split(" → ")[0] to it.split(" → ")[1] },
+                    handlingMethods.map { it.split(" : ")[0] to it.split(" : ")[1] }
+                )
             }
+        }
 
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
