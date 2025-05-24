@@ -23,6 +23,7 @@ import com.example.test.model.chat.ChatRoomResponse
 import com.example.test.model.chat.UsernameResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +35,8 @@ class MaterialDetailActivity : AppCompatActivity() {
     private lateinit var imageCount: TextView
     private lateinit var imageCountTwo: TextView
     private lateinit var currentPost: TradePostResponse
+
+    private var isSaved = false
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +114,40 @@ class MaterialDetailActivity : AppCompatActivity() {
                 })
         }
 
+        RetrofitInstance.materialApi.isTradePostSaved(token, tradePostId)
+            .enqueue(object : Callback<Boolean> {
+                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                    if (response.isSuccessful) {
+                        isSaved = response.body() == true
+                        val heartBtn = findViewById<ImageView>(R.id.heartIcon)
+                        heartBtn.setImageResource(
+                            if (isSaved) R.drawable.ic_heart_fill else R.drawable.ic_heart
+                        )
+                    }
+                }
+                override fun onFailure(call: Call<Boolean>, t: Throwable) {}
+            })
+        val heartBtn = findViewById<ImageView>(R.id.heartIcon)
 
+        heartBtn.setOnClickListener {
+            RetrofitInstance.materialApi.toggleSavedTradePost(token, tradePostId)
+                .enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            isSaved = !isSaved
+                            heartBtn.setImageResource(
+                                if (isSaved) R.drawable.ic_heart_fill else R.drawable.ic_heart
+                            )
+                            val message = if (isSaved) "관심 거래글로 저장되었습니다." else "관심 목록에서 제거되었습니다."
+                            Toast.makeText(this@MaterialDetailActivity, message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
         // detailViewIcon 클릭했을 때 MaterialOtherProfileActivity 이동
         val detailViewIcon: ImageView = findViewById(R.id.detailViewIcon)
         detailViewIcon.setOnClickListener {
@@ -203,31 +239,8 @@ class MaterialDetailActivity : AppCompatActivity() {
             popup.show()
         }
 
-        // 등록한 거래글 보기 하트버튼 선언
-        val heartIcon = listOf(
-            findViewById<ImageView>(R.id.heartIcon)
-        )
-
-        // 등록한 거래글 보기 하트버튼 클릭시 채워진 하트로 바뀜
-        heartIcon.forEach { button ->
-            // 초기 상태를 태그로 저장
-            button.setTag(R.id.heartIcon, false) // false: 좋아요 안 누름
-
-            button.setOnClickListener {
-                val isLiked = it.getTag(R.id.heartIcon) as Boolean
-
-                if (isLiked) {
-                    button.setImageResource(R.drawable.ic_heart)
-                } else {
-                    button.setImageResource(R.drawable.ic_heart_fill)
-                    Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                // 상태 반전해서 저장
-                it.setTag(R.id.heartIcon, !isLiked)
-            }
-        }
     }
+
     private fun parseImageUrls(json: String): List<String> {
         return try {
             val gson = Gson()

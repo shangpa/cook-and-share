@@ -5,6 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.test.adapter.SavedTradePostAdapter
+import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MaterialMySavedActivity : AppCompatActivity() {
 
@@ -21,10 +29,20 @@ class MaterialMySavedActivity : AppCompatActivity() {
 
     private var isMaterialVisible = false
     private var isDistanceVisible = false
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SavedTradePostAdapter
+    private val savedPosts = mutableListOf<TradePostResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_my_saved)
+
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = SavedTradePostAdapter(savedPosts)
+        recyclerView.adapter = adapter
+
+        loadSavedPosts()
 
         // 뒤로가기
         findViewById<ImageView>(R.id.savedTransactioneBack).setOnClickListener {
@@ -79,5 +97,35 @@ class MaterialMySavedActivity : AppCompatActivity() {
             text.setTextColor(Color.parseColor("#8A8F9C"))
             icon.setImageResource(R.drawable.ic_arrow_down)
         }
+    }
+
+    private fun loadSavedPosts() {
+        val token = "Bearer ${App.prefs.token}"
+
+        RetrofitInstance.materialApi.getSavedTradePostIds(token).enqueue(object :
+            Callback<List<Long>> {
+            override fun onResponse(call: Call<List<Long>>, response: Response<List<Long>>) {
+                response.body()?.forEach { postId ->
+                    RetrofitInstance.apiService.getTradePostById(token, postId)
+                        .enqueue(object : Callback<TradePostResponse> {
+                            override fun onResponse(
+                                call: Call<TradePostResponse>,
+                                response: Response<TradePostResponse>
+                            ) {
+                                response.body()?.let {
+                                    savedPosts.add(it)
+                                    adapter.notifyItemInserted(savedPosts.size - 1)
+                                }
+                            }
+
+                            override fun onFailure(call: Call<TradePostResponse>, t: Throwable) {}
+                        })
+                }
+            }
+
+            override fun onFailure(call: Call<List<Long>>, t: Throwable) {
+                Toast.makeText(this@MaterialMySavedActivity, "찜 목록 불러오기 실패", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

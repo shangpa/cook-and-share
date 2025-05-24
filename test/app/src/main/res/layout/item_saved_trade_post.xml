@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="#FFFFFF"
+    android:layout_marginBottom="8dp"
+    android:elevation="2dp">
+
+    <!-- 거래글 대표 이미지 -->
+    <ImageView
+        android:id="@+id/saveImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_placeholder"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/image_rounded" />
+
+    <!-- 거래글 정보 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- 제목과 더보기 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/saveItemTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="거래글 제목"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <ImageView
+                android:id="@+id/saveItemMore"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_more"
+                android:contentDescription="더보기" />
+        </LinearLayout>
+
+        <!-- 거리와 날짜 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_location"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/saveItemDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500m"
+                android:textSize="12sp"
+                android:textColor="#8A8A8A" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" | "
+                android:textSize="12sp"
+                android:textColor="#8A8A8A"
+                android:layout_marginHorizontal="5dp" />
+
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01.16"
+                android:textSize="12sp"
+                android:textColor="#8A8A8A" />
+        </LinearLayout>
+
+        <!-- 가격과 댓글 수 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/saveItemPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="500 P"
+                android:textSize="15sp"
+                android:textColor="#35A825"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/commentIcon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_comment"
+                android:contentDescription="댓글 아이콘"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/commentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="13sp"
+                android:textColor="#444444" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
