@@ -73,4 +73,10 @@ interface MaterialApi {
     fun getMyReviews(
         @Header("Authorization") token: String
     ): Call<List<TpReviewResponseDTO>>
+
+    @GET("/api/tp-reviews/reviews-on-user/username/{username}")
+    fun getReviewsByUsername(
+        @Header("Authorization") token: String,
+        @Path("username") username: String
+    ): Call<List<TpReviewResponseDTO>>
 }

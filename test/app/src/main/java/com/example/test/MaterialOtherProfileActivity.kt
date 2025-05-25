@@ -3,6 +3,7 @@ package com.example.test
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,6 +12,11 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test.Utils.TabBarUtils
+import com.example.test.model.review.TpReviewResponseDTO
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MaterialOtherProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +24,11 @@ class MaterialOtherProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_material_other_profile) // 다른 프로필 화면의 레이아웃 파일 연결
 
         TabBarUtils.setupTabBar(this)
+        val username = intent.getStringExtra("username") ?: return
+        Log.d("왜안뜸",username)
+        val reviewContainer = findViewById<LinearLayout>(R.id.reviewContainer)
+
+        loadReviewsByUsername(username, reviewContainer)
 
         // 구매내역 선언
         val profileItem1 = findViewById<LinearLayout>(R.id.profileItem1)
@@ -146,5 +157,36 @@ class MaterialOtherProfileActivity : AppCompatActivity() {
             }
         }
 
+    }
+    private fun loadReviewsByUsername(username: String, container: LinearLayout) {
+        val token = App.prefs.token ?: return
+        Log.d("REVIEW 검색",token)
+        RetrofitInstance.materialApi.getReviewsByUsername("Bearer $token", username)
+            .enqueue(object : Callback<List<TpReviewResponseDTO>> {
+                override fun onResponse(
+                    call: Call<List<TpReviewResponseDTO>>,
+                    response: Response<List<TpReviewResponseDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        val reviews = response.body() ?: return
+                        container.removeAllViews()
+                        Log.d("Review", "📦 받은 리뷰 수: ${reviews.size}")
+                        for (review in reviews) {
+                            val itemView = layoutInflater.inflate(R.layout.item_other_review, container, false)
+                            Log.d("Review", "👤 작성자: ${review.username}, ⭐ ${review.rating}, 내용: ${review.content}, 날짜: ${review.createdAt}")
+                            itemView.findViewById<TextView>(R.id.reviewerName).text = review.username
+                            itemView.findViewById<TextView>(R.id.reviewContent).text = review.content
+                            itemView.findViewById<TextView>(R.id.reviewDate).text =
+                                review.createdAt.replace("T", " ").substring(0, 16)
+
+                            container.addView(itemView)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<TpReviewResponseDTO>>, t: Throwable) {
+                    Log.e("Review", "❌ 리뷰 조회 실패", t)
+                }
+            })
     }
 }
