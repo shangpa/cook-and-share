@@ -63,4 +63,14 @@ interface MaterialApi {
         @Header("Authorization") token: String,
         @Body dto: TpReviewRequestDTO
     ): Call<TpReviewResponseDTO>
+
+    @GET("/api/tp-reviews/reviews-on-my-posts")
+    fun getReviewsOnMyTradePosts(
+        @Header("Authorization") token: String
+    ): Call<List<TpReviewResponseDTO>>
+
+    @GET("/api/tp-reviews/my-reviews")
+    fun getMyReviews(
+        @Header("Authorization") token: String
+    ): Call<List<TpReviewResponseDTO>>
 }
