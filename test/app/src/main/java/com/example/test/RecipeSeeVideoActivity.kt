@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -12,14 +11,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
@@ -73,7 +70,7 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
         val token = App.prefs.token.toString()
         val reviewWriteButton: Button = findViewById(R.id.reviewWriteButton)
         reviewWriteButton.setOnClickListener {
-            val intent = Intent(this, ReveiwWriteActivity::class.java)
+            val intent = Intent(this, ReviewWriteActivity::class.java)
             startActivity(intent)
         }
 

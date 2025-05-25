@@ -9,13 +9,14 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
-    const val BASE_URL = "http://192.168.219.108:8080"
+    const val BASE_URL = "http://192.168.219.106:8080"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
     lateinit var communityApi: CommunityApi
     lateinit var notificationApi: NotificationApi
     lateinit var chatApi: ChatApi
+    lateinit var materialApi: MaterialApi
     // 초기화 메서드에서 context 전달받아 처리
     fun init(context: Context) {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -39,5 +40,6 @@ object RetrofitInstance {
         communityApi = retrofit.create(CommunityApi::class.java)
         notificationApi = retrofit.create(NotificationApi::class.java)
         chatApi= retrofit.create(ChatApi::class.java)
+        materialApi= retrofit.create(MaterialApi::class.java)
     }
 }

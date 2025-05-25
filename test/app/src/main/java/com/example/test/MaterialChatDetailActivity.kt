@@ -4,26 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.test.Utils.ChatSessionManager
 import com.example.test.databinding.ActivityMaterialChatDetailBinding
-import com.example.test.model.ChatItem
-import com.example.test.model.ChatType
-import com.example.test.model.Chatting
-import com.example.test.model.ChattingRoom
 import com.example.test.model.chat.ChatMessage
 import com.example.test.model.chat.ChatMessageDTO
 import com.example.test.model.chat.UsernameResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
-import java.net.URISyntaxException
-import io.socket.client.IO
-import io.socket.client.Socket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,10 +26,6 @@ import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompHeader
-import ua.naiksoftware.stomp.provider.OkHttpConnectionProvider
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class MaterialChatDetailActivity : AppCompatActivity() {
 
@@ -101,6 +92,56 @@ class MaterialChatDetailActivity : AppCompatActivity() {
             finish()
         }
         loadPreviousMessages()
+        val roomParts = roomKey.split("-")
+        val ownerId = roomParts.getOrNull(1)?.toLongOrNull()
+        val myId = App.prefs.userId.toLong()
+
+        if (ownerId != null && myId == ownerId) {
+            binding.requestCompleteButton.visibility = View.VISIBLE
+            Log.d("Chat", "👑 판매자이므로 거래완료 요청 버튼 숨김")
+        } else {
+            binding.requestCompleteButton.visibility = View.GONE
+            Log.d("Chat", "🛒 구매자이므로 거래완료 요청 버튼 보임")
+        }
+        binding.requestCompleteButton.setOnClickListener {
+            val postId = intent.getLongExtra("postId", -1L).takeIf { it != -1L }
+                ?: run {
+                    val parsedId = roomKey.split("-").lastOrNull()?.toLongOrNull()
+                    if (parsedId == null) {
+                        Log.e("Chat", "❌ roomKey에서 postId 파싱 실패")
+                        -1L
+                    } else {
+                        Log.d("Chat", "✅ roomKey에서 postId 파싱 성공: $parsedId")
+                        parsedId
+                    }
+                }
+
+            Log.d("postId", "받은 거래글 ID: $postId")
+            val token = App.prefs.token ?: return@setOnClickListener
+
+            if (postId == -1L) {
+                Log.e("RequestComplete", "거래글 ID가 없습니다.")
+                return@setOnClickListener
+            }
+
+            RetrofitInstance.materialApi.requestComplete("Bearer $token", postId)
+                .enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Log.d("RequestComplete", "✅ 거래완료 요청 성공")
+                            Toast.makeText(this@MaterialChatDetailActivity, "거래완료 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("RequestComplete", "❌ 요청 실패: ${response.code()}")
+                            Toast.makeText(this@MaterialChatDetailActivity, "이미 요청했거나 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.e("RequestComplete", "❌ 요청 실패", t)
+                        Toast.makeText(this@MaterialChatDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
     }
     override fun onDestroy() {
         super.onDestroy()
