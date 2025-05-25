@@ -7,54 +7,64 @@
     android:background="#FFFFFF">
 
     <!-- 상단 바 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp">
 
+        <!-- 뒤로가기 아이콘 -->
         <ImageView
             android:id="@+id/searchBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_back"
             android:contentDescription="뒤로가기 아이콘"
-            android:layout_marginLeft="15dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="5dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp" />
 
+        <!-- 검색창 배경 -->
         <LinearLayout
-            android:layout_width="300dp"
+            android:id="@+id/searchInputLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:background="@drawable/rounded_background"
-            android:gravity="center"
+            android:backgroundTint="#F1F3F6"
             android:orientation="horizontal"
             android:padding="10dp"
-            android:backgroundTint="#F1F3F6">
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/searchBack"
+            app:layout_constraintEnd_toStartOf="@id/seach"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp">
 
-            <!-- 검색창 -->
             <EditText
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="필요한 용품을 검색해보세요"
                 android:background="@null"
-                android:layout_gravity="center"
                 android:textSize="12sp"
                 android:layout_marginStart="5dp"/>
         </LinearLayout>
 
+        <!-- 검색 아이콘 -->
         <ImageView
             android:id="@+id/seach"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/ic_search"
             android:contentDescription="검색 아이콘"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"/>
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="15dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -74,22 +84,23 @@
                 android:layout_height="10dp"
                 android:background="#F5F6F7" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp">
 
                 <TextView
+                    android:id="@+id/recentSearchTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="최근 검색"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#35A825"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="260dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="15dp" />
 
                 <TextView
                     android:id="@+id/clearAllText"
@@ -98,9 +109,17 @@
                     android:text="전체 삭제"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="#747474" />
-            </LinearLayout>
+                    android:textColor="#747474"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/recentSearchTitle"
+                    android:layout_marginEnd="15dp" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- 구분선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F5F6F7" />
             <!-- 검색기록 -->
             <LinearLayout
                 android:id="@+id/searchHistoryContainer"
