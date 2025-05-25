@@ -152,6 +152,7 @@ class MaterialDetailActivity : AppCompatActivity() {
         val detailViewIcon: ImageView = findViewById(R.id.detailViewIcon)
         detailViewIcon.setOnClickListener {
             val intent = Intent(this, MaterialOtherProfileActivity::class.java)
+            intent.putExtra("username", writerName)
             startActivity(intent)
         }
 

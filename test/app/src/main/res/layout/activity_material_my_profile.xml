@@ -139,16 +139,12 @@
                 android:layout_height="1dp"
                 android:background="#E0E0E0" />
 
-        <LinearLayout
-            android:id="@+id/saleLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/saleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                android:layout_marginHorizontal="20dp">
 
                 <ImageView
                     android:id="@+id/ic_ticket"
@@ -156,25 +152,34 @@
                     android:layout_height="24dp"
                     android:contentDescription="판매내역 아이콘"
                     android:src="@drawable/ic_ticket"
-                    android:layout_marginRight="5dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
                     android:id="@+id/ic_ticket1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="판매내역"
                     android:textStyle="bold"
                     android:contentDescription="판매내역 텍스트"
-                    android:layout_marginRight="270dp"/>
-
+                    app:layout_constraintStart_toEndOf="@id/ic_ticket"
+                    app:layout_constraintEnd_toStartOf="@id/ic_rigth1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
 
                 <ImageView
                     android:id="@+id/ic_rigth1"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:contentDescription="판매내역 아이콘"
-                    android:src="@drawable/ic_right" />
-            </LinearLayout>
+                    android:src="@drawable/ic_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- 구분선 -->
             <View
@@ -182,16 +187,12 @@
                 android:layout_height="1dp"
                 android:background="#E0E0E0" />
 
-        <LinearLayout
-            android:id="@+id/purchaseLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/purchaseLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                android:layout_marginHorizontal="20dp">
 
                 <ImageView
                     android:id="@+id/ic_basket"
@@ -199,41 +200,46 @@
                     android:layout_height="24dp"
                     android:contentDescription="구매내역 아이콘"
                     android:src="@drawable/ic_basket"
-                    android:layout_marginRight="5dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
                     android:id="@+id/ic_basket1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="구매내역"
                     android:textStyle="bold"
-                    android:contentDescription="구매내역 텍스트"
-                    android:layout_marginRight="270dp"/>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toEndOf="@id/ic_basket"
+                    app:layout_constraintEnd_toStartOf="@id/ic_rigth2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageView
                     android:id="@+id/ic_rigth2"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:contentDescription="구매내역 아이콘"
-                    android:src="@drawable/ic_right" />
-            </LinearLayout>
+                    android:src="@drawable/ic_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- 구분선 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#E0E0E0" />
 
-        <LinearLayout
-            android:id="@+id/savedLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            <!-- 저장한 거래글 보기 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/savedLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                android:layout_marginHorizontal="20dp">
 
                 <ImageView
                     android:id="@+id/ic_bookmark"
@@ -241,41 +247,45 @@
                     android:layout_height="20dp"
                     android:contentDescription="저장한 거래글 아이콘"
                     android:src="@drawable/ic_bookmark"
-                    android:layout_marginRight="5dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
                     android:id="@+id/ic_bookmark1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="저장한 거래글 보기"
                     android:textStyle="bold"
-                    android:contentDescription="저장한 거래글 텍스트"
-                    android:layout_marginRight="218dp"/>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toEndOf="@id/ic_bookmark"
+                    app:layout_constraintEnd_toStartOf="@id/ic_rigth3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageView
                     android:id="@+id/ic_rigth3"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:contentDescription="저장한 거래글 아이콘"
-                    android:src="@drawable/ic_right" />
-            </LinearLayout>
+                    android:src="@drawable/ic_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- 구분선 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#E0E0E0" />
-
-        <LinearLayout
-            android:id="@+id/reviewLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            <!-- 후기보기 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/reviewLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                android:layout_marginHorizontal="20dp">
 
                 <ImageView
                     android:id="@+id/ic_chatt"
@@ -283,24 +293,33 @@
                     android:layout_height="24dp"
                     android:contentDescription="후기보기 아이콘"
                     android:src="@drawable/ic_chatt"
-                    android:layout_marginRight="5dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
                     android:id="@+id/ic_chatt1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="후기보기"
                     android:textStyle="bold"
-                    android:contentDescription="후기보기 텍스트"
-                    android:layout_marginRight="270dp"/>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toEndOf="@id/ic_chatt"
+                    app:layout_constraintEnd_toStartOf="@id/ic_rigth4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageView
                     android:id="@+id/ic_rigth4"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:contentDescription="후기보기 아이콘"
-                    android:src="@drawable/ic_right" />
-            </LinearLayout>
+                    android:src="@drawable/ic_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- 구분선 -->
             <View

@@ -7,54 +7,64 @@
     android:background="#FFFFFF">
 
     <!-- 상단 바 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp">
 
+        <!-- 뒤로가기 아이콘 -->
         <ImageView
             android:id="@+id/searchBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_back"
             android:contentDescription="뒤로가기 아이콘"
-            android:layout_marginLeft="15dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="5dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp" />
 
+        <!-- 검색창 배경 -->
         <LinearLayout
-            android:layout_width="300dp"
+            android:id="@+id/searchContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:background="@drawable/rounded_background"
-            android:gravity="center"
+            android:backgroundTint="#F1F3F6"
             android:orientation="horizontal"
             android:padding="10dp"
-            android:backgroundTint="#F1F3F6">
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/searchBack"
+            app:layout_constraintEnd_toStartOf="@id/search"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp">
 
-            <!-- 검색창 -->
             <EditText
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="필요한 용품을 검색해보세요"
                 android:background="@null"
-                android:layout_gravity="center"
                 android:textSize="12sp"
                 android:layout_marginStart="5dp"/>
         </LinearLayout>
 
+        <!-- 검색 아이콘 -->
         <ImageView
             android:id="@+id/search"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/ic_search"
             android:contentDescription="검색 아이콘"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"/>
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="15dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -68,24 +78,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
 
+                <!-- 재료 필터 -->
                 <LinearLayout
+                    android:id="@+id/materialFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_rectangle_background"
                     android:padding="4dp"
                     android:gravity="center"
-                    android:strokeColor="#D2D5D6"
-                    android:layout_marginRight="11dp"
-                    android:layout_marginLeft="20dp">
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-                    <!-- 재료 텍스트 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -94,7 +105,6 @@
                         android:textColor="#8A8F9C"
                         android:layout_marginEnd="4dp" />
 
-                    <!-- 화살표 아이콘 -->
                     <ImageView
                         android:id="@+id/arrowDownIcon1"
                         android:layout_width="10dp"
@@ -104,17 +114,20 @@
                         app:tint="#8A8F9C" />
                 </LinearLayout>
 
+                <!-- 거리 필터 -->
                 <LinearLayout
+                    android:id="@+id/distanceFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_rectangle_background"
                     android:padding="4dp"
                     android:gravity="center"
-                    android:strokeColor="#D2D5D6"
-                    android:layout_marginRight="11dp">
+                    app:layout_constraintStart_toEndOf="@id/materialFilter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="11dp">
 
-                    <!-- 거리 텍스트 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -123,26 +136,27 @@
                         android:textColor="#8A8F9C"
                         android:layout_marginEnd="4dp" />
 
-                    <!-- 화살표 아이콘 -->
                     <ImageView
                         android:id="@+id/arrowDownIcon2"
                         android:layout_width="10dp"
                         android:layout_height="10dp"
                         android:src="@drawable/ic_arrow_down"
-                        android:contentDescription="재료 아이콘"
+                        android:contentDescription="거리 아이콘"
                         app:tint="#8A8F9C" />
                 </LinearLayout>
 
+                <!-- 필터 아이콘 -->
                 <ImageView
                     android:id="@+id/filter"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_filter"
                     android:contentDescription="필터 아이콘"
-                    android:layout_marginLeft="200dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-            </LinearLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="10dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- 구분선 -->
             <View
@@ -152,79 +166,80 @@
                 android:layout_marginBottom="15dp"/>
 
             <!-- 검색 결과 개수 -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="20dp">
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="15dp">
 
+                <!-- 총 + 숫자 + 개 레시피 -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <!-- 총 -->
-                    <TextView
-                        android:id="@+id/total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="총"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp" />
-
-                    <!-- 150 -->
-                    <TextView
-                        android:id="@+id/number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text=""
-                        android:textColor="#35A825"
-                        android:textSize="13sp" />
-
-                    <!-- 개 검색결과 -->
-                    <TextView
-                        android:id="@+id/searchResult"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="개 레시피"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
+                    android:id="@+id/searchCountLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="260dp">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-                    <!-- 거리순 텍스트 -->
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="총"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        android:layout_marginStart="2dp" />
+
+                    <TextView
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#35A825"
+                        android:textSize="13sp"
+                        android:layout_marginStart="5dp" />
+
+                    <TextView
+                        android:id="@+id/searchResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="개 레시피"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        android:layout_marginStart="2dp" />
+                </LinearLayout>
+
+                <!-- 거리순 정렬 -->
+                <LinearLayout
+                    android:id="@+id/sortLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
                     <TextView
                         android:id="@+id/w"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="거리순"
                         android:textSize="10sp"
-                        android:textColor="#2B2B2B"/>
+                        android:textColor="#2B2B2B"
+                        android:layout_marginEnd="4dp"/>
 
-                    <!-- 화살표 -->
                     <ImageView
                         android:id="@+id/sortArrow"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:src="@drawable/ic_arrow_down"
-                        android:contentDescription="거리순 화살표"
+                        android:contentDescription="정렬 화살표"
                         app:tint="#2B2B2B" />
                 </LinearLayout>
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tradePostRecyclerView"

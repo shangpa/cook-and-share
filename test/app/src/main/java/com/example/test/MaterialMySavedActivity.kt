@@ -29,6 +29,7 @@ class MaterialMySavedActivity : AppCompatActivity() {
     private lateinit var sortArrow: ImageView
     private lateinit var w: TextView
     private lateinit var buttons: List<Button>
+    private lateinit var totalResults: TextView
 
     private var isMaterialVisible = false
     private var isDistanceVisible = false
@@ -45,6 +46,8 @@ class MaterialMySavedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_my_saved)
+
+        totalResults = findViewById(R.id.totalResults)
 
 
         val materialButtons = listOf(
@@ -247,7 +250,7 @@ class MaterialMySavedActivity : AppCompatActivity() {
                     else -> compareByDescending { it.createdAt }
                 }
             ).toMutableList()
-
+        totalResults.text = "총 ${filteredPosts.size}개 검색결과"
         adapter.updateData(filteredPosts)
     }
 

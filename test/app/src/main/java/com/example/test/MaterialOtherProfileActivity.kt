@@ -3,6 +3,7 @@ package com.example.test
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,132 +11,31 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.test.Utils.TabBarUtils
+import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.review.TpReviewResponseDTO
+import com.example.test.network.RetrofitInstance
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MaterialOtherProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_other_profile) // 다른 프로필 화면의 레이아웃 파일 연결
 
-        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
-        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
-        tapVillageKitchenIcon.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
+        TabBarUtils.setupTabBar(this)
+        val username = intent.getStringExtra("username") ?: return
+        loadUserTradePosts(username)
 
-        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
-        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
-        tapVillageKitchenText.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
+        val reviewContainer = findViewById<LinearLayout>(R.id.reviewContainer)
+        loadReviewsByUsername(username, reviewContainer)
 
-        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
-        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
-        tapRecipeIcon.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
-            startActivity(intent)
-        }
 
-        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
-        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
-        tapRecipeText.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapHomeIcon 클릭했을 때 MainActivity 이동
-        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
-        tapHomeIcon.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
-        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
-        tapCommunityIcon.setOnClickListener {
-            val intent = Intent(this, CommunityMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
-        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
-        tapCommunityText.setOnClickListener {
-            val intent = Intent(this, CommunityMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
-        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
-        tapFridgeIcon.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapFridgeText 클릭했을 때 FridgeActivity 이동
-        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
-        tapFridgeText.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 구매내역 선언
-        val profileItem1 = findViewById<LinearLayout>(R.id.profileItem1)
-        val profileItem2 = findViewById<LinearLayout>(R.id.profileItem2)
-        val profileItem3 = findViewById<LinearLayout>(R.id.profileItem3)
-        val profileItem4 = findViewById<LinearLayout>(R.id.profileItem4)
-        val profileItem5 = findViewById<LinearLayout>(R.id.profileItem5)
-        val profileItem6 = findViewById<LinearLayout>(R.id.profileItem6)
-        val profileMore = findViewById<ImageView>(R.id.profileMore)
-        val itemMore = findViewById<ImageView>(R.id.itemMore)
-        val itemMore2 = findViewById<ImageView>(R.id.itemMore2)
-        val itemMore3 = findViewById<ImageView>(R.id.itemMore3)
-        val itemMore4 = findViewById<ImageView>(R.id.itemMore4)
-        val itemMore5 = findViewById<ImageView>(R.id.itemMore5)
-        val itemMore6 = findViewById<ImageView>(R.id.itemMore6)
-        val commentIcon = findViewById<ImageView>(R.id.commentIcon)
-        val commentIcon2 = findViewById<ImageView>(R.id.commentIcon2)
-        val commentIcon3 = findViewById<ImageView>(R.id.commentIcon3)
-        val commentIcon4 = findViewById<ImageView>(R.id.commentIcon4)
-        val commentIcon5 = findViewById<ImageView>(R.id.commentIcon5)
-        val commentIcon6 = findViewById<ImageView>(R.id.commentIcon6)
         val indicator = findViewById<View>(R.id.indicator)
 
-        //채팅 아이콘 클릭시 채팅 화면으로 이동
-        val commentIcons = listOf(
-            findViewById<ImageView>(R.id.commentIcon),
-            findViewById<ImageView>(R.id.commentIcon2),
-            findViewById<ImageView>(R.id.commentIcon3),
-            findViewById<ImageView>(R.id.commentIcon4),
-            findViewById<ImageView>(R.id.commentIcon5),
-            findViewById<ImageView>(R.id.commentIcon6)
-        )
-
-        commentIcons.forEach { icon ->
-            icon.setOnClickListener {
-                val intent = Intent(this, MaterialChatDetailActivity::class.java)
-                startActivity(intent)
-            }
-        }
-
-
-        // 프로필 더하기 클릭시 신고하기 나타남
-        profileMore.setOnClickListener {
-            val popup = PopupMenu(this, it)
-            popup.menu.add("신고하기")
-
-            popup.setOnMenuItemClickListener { menuItem ->
-                if (menuItem.title == "신고하기") {
-                    // 신고 처리 로직 작성
-                    finish()
-                    true
-                } else {
-                    false
-                }
-            }
-
-            popup.show()
-        }
 
         // 판매내역 TextView 리스트
         val textViews = listOf(
@@ -179,9 +79,6 @@ class MaterialOtherProfileActivity : AppCompatActivity() {
             }
         }
 
-        // 더하기 버튼 클릭시 신고하기 나타남
-        val reviewWriteButtons = listOf(itemMore, itemMore2, itemMore3, itemMore4, itemMore5, itemMore6)
-        val reviewWriteLayouts = listOf(profileItem1, profileItem2, profileItem3, profileItem4, profileItem5, profileItem6)
 
         fun showReviewWritePopup(anchorView: View, targetLayout: LinearLayout) {
             val popup = PopupMenu(this, anchorView)
@@ -199,12 +96,102 @@ class MaterialOtherProfileActivity : AppCompatActivity() {
             popup.show()
         }
 
-        // 신고하기 버튼 연결
-        reviewWriteButtons.zip(reviewWriteLayouts).forEach { (button, layout) ->
-            button.setOnClickListener {
-                showReviewWritePopup(it, layout)
-            }
-        }
 
     }
+
+    private fun loadReviewsByUsername(username: String, container: LinearLayout) {
+        val token = App.prefs.token ?: return
+        Log.d("REVIEW 검색", token)
+        RetrofitInstance.materialApi.getReviewsByUsername("Bearer $token", username)
+            .enqueue(object : Callback<List<TpReviewResponseDTO>> {
+                override fun onResponse(
+                    call: Call<List<TpReviewResponseDTO>>,
+                    response: Response<List<TpReviewResponseDTO>>
+                ) {
+                    if (response.isSuccessful) {
+                        val reviews = response.body() ?: return
+                        container.removeAllViews()
+                        Log.d("Review", "📦 받은 리뷰 수: ${reviews.size}")
+                        for (review in reviews) {
+                            val itemView =
+                                layoutInflater.inflate(R.layout.item_other_review, container, false)
+                            Log.d(
+                                "Review",
+                                "👤 작성자: ${review.username}, ⭐ ${review.rating}, 내용: ${review.content}, 날짜: ${review.createdAt}"
+                            )
+                            itemView.findViewById<TextView>(R.id.reviewerName).text =
+                                review.username
+                            itemView.findViewById<TextView>(R.id.reviewContent).text =
+                                review.content
+                            itemView.findViewById<TextView>(R.id.reviewDate).text =
+                                review.createdAt.replace("T", " ").substring(0, 16)
+
+                            container.addView(itemView)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<TpReviewResponseDTO>>, t: Throwable) {
+                    Log.e("Review", "❌ 리뷰 조회 실패", t)
+                }
+            })
+    }
+
+    private fun loadUserTradePosts(username: String) {
+        val token = App.prefs.token ?: return
+
+        RetrofitInstance.materialApi.getUserTradePosts("Bearer $token", username)
+            .enqueue(object : Callback<List<TradePostSimpleResponse>> {
+                override fun onResponse(
+                    call: Call<List<TradePostSimpleResponse>>,
+                    response: Response<List<TradePostSimpleResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val posts = response.body() ?: return
+
+                        val allPosts = posts
+                        val ongoingPosts = posts.filter { it.status == 0 }
+                        val completedPosts = posts.filter { it.status == 1 }
+
+                        renderPosts(allPosts, findViewById(R.id.profileItemGroup))
+                        renderPosts(ongoingPosts, findViewById(R.id.profileItemGroup2))
+                        renderPosts(completedPosts, findViewById(R.id.profileItemGroup3))
+                    } else {
+                        Log.e("TradePost", "서버 응답 실패: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<TradePostSimpleResponse>>, t: Throwable) {
+                    Log.e("TradePost", "네트워크 오류", t)
+                }
+            })
+    }
+
+    private fun renderPosts(posts: List<TradePostSimpleResponse>, container: LinearLayout) {
+        container.removeAllViews()
+
+        for (post in posts) {
+            val itemView = layoutInflater.inflate(R.layout.item_trade_post, container, false)
+
+            itemView.findViewById<TextView>(R.id.itemTitle).text = post.title
+            itemView.findViewById<TextView>(R.id.itemPrice).text =
+                if (post.price == 0) "나눔" else "${post.price} P"
+            itemView.findViewById<TextView>(R.id.sellerLabel).visibility = View.GONE
+            itemView.findViewById<TextView>(R.id.temperatureText).text =
+                post.createdAt.substring(5, 10)
+            val imageView = itemView.findViewById<ImageView>(R.id.itemImage)
+            if (post.firstImageUrl.isNullOrBlank()) {
+                imageView.visibility = View.GONE
+            } else {
+                imageView.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(RetrofitInstance.BASE_URL + post.firstImageUrl)
+                    .into(imageView)
+            }
+
+            container.addView(itemView)
+        }
+    }
+
+
 }
