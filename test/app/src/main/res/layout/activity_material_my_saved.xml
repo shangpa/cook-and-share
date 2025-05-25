@@ -413,7 +413,7 @@
                     android:id="@+id/totalResults"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="총 5개 검색결과"
+                    android:text="총 0개 검색결과"
                     android:textSize="13sp" />
 
                 <LinearLayout
