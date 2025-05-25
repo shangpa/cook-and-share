@@ -79,4 +79,11 @@ interface MaterialApi {
         @Header("Authorization") token: String,
         @Path("username") username: String
     ): Call<List<TpReviewResponseDTO>>
+
+    @GET("/api/trade-posts/user/{username}")
+    fun getUserTradePosts(
+        @Header("Authorization") token: String,
+        @Path("username") username: String
+    ): Call<List<TradePostSimpleResponse>>
+
 }
