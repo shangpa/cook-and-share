@@ -45,7 +45,7 @@ import com.example.test.Utils.RecommendUtils
 
 private lateinit var steps: List<View>
 private var currentStep = 0
-private lateinit var speechRecognizer: SpeechRecognizer
+private var speechRecognizer: SpeechRecognizer? = null
 
 
 class RecipeSeeActivity : AppCompatActivity() {
@@ -598,7 +598,7 @@ class RecipeSeeActivity : AppCompatActivity() {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
         }
 
-        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+        speechRecognizer?.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) {}
             override fun onBeginningOfSpeech() {}
             override fun onRmsChanged(rmsdB: Float) {}
@@ -639,10 +639,12 @@ class RecipeSeeActivity : AppCompatActivity() {
     }
 
     private fun startListening() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-        speechRecognizer.startListening(intent)
+        speechRecognizer?.let { sr ->
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            sr.startListening(intent)
+        }
     }
 
     // ★ 이동 함수들도 onCreate 밖에 별도로 ★
@@ -680,8 +682,9 @@ class RecipeSeeActivity : AppCompatActivity() {
 
     // Activity 종료될 때 SpeechRecognizer 해제
     override fun onDestroy() {
+        speechRecognizer?.destroy()
+        speechRecognizer = null
         super.onDestroy()
-        speechRecognizer.destroy()
     }
 
     private fun Int.dpToPx(): Int {
