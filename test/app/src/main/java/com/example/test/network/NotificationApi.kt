@@ -24,4 +24,11 @@ interface NotificationApi {
     @GET("/api/notifications")
     fun getNotifications(@Header("Authorization") token: String
     ): Call<List<NotificationResponseDTO>>
+
+    //로그아웃 토큰 삭제용
+    @POST("api/fcm/token/delete")
+    fun deleteFcmToken(
+        @Header("Authorization") token: String,
+        @Body request: FcmTokenRequestDTO
+    ): Call<Void>
 }

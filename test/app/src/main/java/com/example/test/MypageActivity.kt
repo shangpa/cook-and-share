@@ -1,9 +1,11 @@
 /*마이페이지 메인*/
 package com.example.test
 
+import Prefs
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -11,7 +13,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test.Utils.TabBarUtils
 import com.example.test.model.LoginInfoResponse
+import com.example.test.model.notification.FcmTokenRequestDTO
 import com.example.test.network.RetrofitInstance
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,11 +32,38 @@ class MypageActivity : AppCompatActivity() {
         // logoutText 클릭했을 때 LoginActivity 이동
         val logoutText: TextView = findViewById(R.id.logoutText)
         logoutText.setOnClickListener {
-            App.prefs.token = ""
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            val prefs = Prefs(this)
+            val authToken = prefs.token ?: ""
+            if (authToken.isNotEmpty()) {
+                FirebaseMessaging.getInstance().token.addOnSuccessListener { fcmToken ->
+                    val request = FcmTokenRequestDTO(token = fcmToken, platform = "ANDROID")
+                    RetrofitInstance.notificationApi.deleteFcmToken(
+                        "Bearer $authToken", request
+                    ).enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            Log.d("FCM", "로그아웃 시 FCM 토큰 해제 완료")
+                            prefs.token = ""
+                            val intent = Intent(this@MypageActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.e("FCM", "FCM 토큰 해제 실패", t)
+                            prefs.token = ""
+                            val intent = Intent(this@MypageActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                    })
+                }
+            } else {
+                prefs.token = ""
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
+
         // 작성한 레시피로 이동
         val writeRecipeText: LinearLayout = findViewById(R.id.recipeWrite)
         writeRecipeText.setOnClickListener {
