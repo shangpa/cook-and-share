@@ -11,6 +11,7 @@ import com.example.test.model.Fridge.UsedIngredientRequest
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.TradePost.TradeUserResponse
 import com.example.test.model.community.CommunityDetailResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
@@ -210,6 +211,12 @@ interface ApiService {
     fun getAllTradePosts(@Header("Authorization") token: String? = null
     ): Call<List<TradePostResponse>>
 
+    //사용자 - 거래글 거리 계산
+    @GET("/api/user/location")
+    fun getUserLocation(
+        @Header("Authorization") token: String
+    ): Call<TradeUserResponse>
+    
     //동네재료 메인 카테고리 필터링
     @GET("/api/trade-posts/category")
     fun getTradePostsByCategory(

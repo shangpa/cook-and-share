@@ -72,6 +72,8 @@ class MaterialSearchActivity : AppCompatActivity() {
                 // 검색 결과 화면 이동
                 val intent = Intent(this, MaterialSearchDetailActivity::class.java)
                 intent.putExtra("keyword", searchTerm)
+                intent.putExtra("userLat", 37.49135571203)
+                intent.putExtra("userLng", 126.77773131564516)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
@@ -136,6 +138,8 @@ class MaterialSearchActivity : AppCompatActivity() {
             // 검색 결과 화면 이동
             val intent = Intent(this, MaterialSearchDetailActivity::class.java)
             intent.putExtra("keyword", keyword)
+            intent.putExtra("userLat", 37.49135571203)
+            intent.putExtra("userLng", 126.77773131564516)
             startActivity(intent)
         }
 

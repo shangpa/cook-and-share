@@ -16,6 +16,7 @@ import com.example.test.network.RetrofitInstance
 import java.text.SimpleDateFormat
 import android.util.Log
 import com.example.test.adapter.TradePostAdapter
+import com.example.test.model.TradePost.TradeUserResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,6 +46,8 @@ class MaterialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material)
+
+        fetchUserLocationAndLoadPosts()
 
         // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
         val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
@@ -348,29 +351,33 @@ class MaterialActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
 
-        tradePostAdapter = TradePostAdapter(list.toMutableList()) { tradePost ->
-            // 여기서 조회수 증가 먼저 호출
-            val token = App.prefs.token.toString()
-            RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
-                .enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        Log.d("ViewCount", "조회수 증가 성공")
-                    }
+        tradePostAdapter = TradePostAdapter(
+            list.toMutableList(),
+            onItemClick = { tradePost ->
+                val token = App.prefs.token.toString()
+                RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
+                    .enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            Log.d("ViewCount", "조회수 증가 성공")
+                        }
 
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.e("ViewCount", "조회수 증가 실패", t)
-                    }
-                })
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.e("ViewCount", "조회수 증가 실패", t)
+                        }
+                    })
 
-            // 상세 페이지 이동
-            val intent = Intent(this, MaterialDetailActivity::class.java)
-            intent.putExtra("tradePostId", tradePost.tradePostId)
-            startActivity(intent)
-        }
+                val intent = Intent(this, MaterialDetailActivity::class.java)
+                intent.putExtra("tradePostId", tradePost.tradePostId)
+                startActivity(intent)
+            },
+            userLat = userLatitude, // 여기!
+            userLng = userLongitude // 여기!
+        )
 
         recyclerView.adapter = tradePostAdapter
         numberTextView.text = list.size.toString()
     }
+
 
 
     private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
@@ -618,6 +625,37 @@ class MaterialActivity : AppCompatActivity() {
                 }
             })
     }
+
+    var userLatitude: Double? = null
+    var userLongitude: Double? = null
+
+    private fun fetchUserLocationAndLoadPosts() {
+        val token = App.prefs.token.toString()
+
+        RetrofitInstance.apiService.getUserLocation("Bearer $token")
+            .enqueue(object : Callback<TradeUserResponse> {
+                override fun onResponse(
+                    call: Call<TradeUserResponse>,
+                    response: Response<TradeUserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            userLatitude = it.latitude
+                            userLongitude = it.longitude
+                            // 유저 위치 정보를 기반으로 거래글 불러오기
+                            loadNearbyTradePosts()
+                        }
+                    } else {
+                        Log.e("UserLocation", "서버 응답 오류: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<TradeUserResponse>, t: Throwable) {
+                    Log.e("UserLocation", "위치 요청 실패", t)
+                }
+            })
+    }
+
 
     /*    private fun loadNearbyPostsByCategory(distanceKm: Double, category: String) {
             val token = App.prefs.token.toString()

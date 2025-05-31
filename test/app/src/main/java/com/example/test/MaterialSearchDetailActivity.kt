@@ -30,12 +30,17 @@ class MaterialSearchDetailActivity : AppCompatActivity() {
 
     private lateinit var tradePostAdapter: TradePostAdapter
     private var tradePosts: List<TradePostResponse> = listOf()
+    private var userLat: Double = 0.0
+    private var userLng: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material_search_details)
 
         TabBarUtils.setupTabBar(this)
+
+        userLat = intent.getDoubleExtra("userLat", 0.0)
+        userLng = intent.getDoubleExtra("userLng", 0.0)
 
         tradePostRecyclerView = findViewById(R.id.tradePostRecyclerView)
         nameEditText = findViewById(R.id.nameEditText)
@@ -101,29 +106,35 @@ class MaterialSearchDetailActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerViewAdapter(list: List<TradePostResponse>) {
-        tradePostAdapter = TradePostAdapter(list.toMutableList()) { tradePost ->
-            val token = App.prefs.token.toString()
+        tradePostAdapter = TradePostAdapter(
+            tradePosts = list.toMutableList(),
+            onItemClick = { tradePost ->
+                val token = App.prefs.token.toString()
 
-            // 조회수 증가 호출
-            RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
-                .enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        Log.d("ViewCount", "조회수 증가 성공")
-                    }
+                // 조회수 증가 API
+                RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
+                    .enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            Log.d("ViewCount", "조회수 증가 성공")
+                        }
 
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("ViewCount", "조회수 증가 실패")
-                    }
-                })
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d("ViewCount", "조회수 증가 실패")
+                        }
+                    })
 
-            // 상세 페이지 이동
-            val intent = Intent(this, MaterialDetailActivity::class.java)
-            intent.putExtra("tradePostId", tradePost.tradePostId)
-            startActivity(intent)
-        }
+                val intent = Intent(this, MaterialDetailActivity::class.java)
+                intent.putExtra("tradePostId", tradePost.tradePostId)
+                startActivity(intent)
+            },
+            userLat = userLat,
+            userLng = userLng
+        )
+
         tradePostRecyclerView.adapter = tradePostAdapter
         numberTextView.text = list.size.toString()
     }
+
 
     private fun showResultView() {
         searchEmptyImage.visibility = View.GONE

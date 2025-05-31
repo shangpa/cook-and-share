@@ -1,6 +1,5 @@
 package com.example.test.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,23 +7,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.test.MaterialDetailActivity
 import com.example.test.R
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.network.RetrofitInstance
+import kotlin.math.*
 
 class TradePostAdapter(
-    private var tradePosts: MutableList<TradePostResponse> = mutableListOf(),
-    private val onItemClick: (TradePostResponse) -> Unit
-    ) :RecyclerView.Adapter<TradePostAdapter.TradePostViewHolder>() {
+    private var tradePosts: MutableList<TradePostResponse>,
+    private val onItemClick: (TradePostResponse) -> Unit,
+    private val userLat: Double? = null,
+    private val userLng: Double? = null
+) : RecyclerView.Adapter<TradePostAdapter.TradePostViewHolder>() {
 
     class TradePostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemImage: ImageView = itemView.findViewById(R.id.itemImage)
         val itemTitle: TextView = itemView.findViewById(R.id.itemTitle)
         val distanceText: TextView = itemView.findViewById(R.id.distanceText)
         val itemPrice: TextView = itemView.findViewById(R.id.itemPrice)
-        val temperatureText: TextView = itemView.findViewById(R.id.temperatureText)
-        val commentCount: TextView = itemView.findViewById(R.id.commentCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TradePostViewHolder {
@@ -37,15 +36,29 @@ class TradePostAdapter(
         val tradePost = tradePosts[position]
 
         holder.itemTitle.text = tradePost.title
-        holder.distanceText.text = "로그인 시 확인 가능"
-        holder.itemPrice.text = if (tradePost.price == 0) {
-            "나눔"
+        holder.itemPrice.text = "${tradePost.price}P"
+
+        // 거리 계산 후 텍스트만 출력
+        if (
+            userLat != null && userLng != null &&
+            tradePost.latitude != null && tradePost.longitude != null &&
+            tradePost.latitude != 0.0 && tradePost.longitude != 0.0
+        ) {
+            val distance = calculateDistance(userLat, userLng, tradePost.latitude, tradePost.longitude)
+
+            holder.distanceText.text = if (distance < 1.0) {
+                String.format("%.0f m", distance * 1000)
+            } else {
+                String.format("%.2f km", distance)
+            }
+
+            holder.distanceText.visibility = View.VISIBLE
         } else {
-            String.format("%,dP", tradePost.price)
+            holder.distanceText.visibility = View.GONE
         }
-        holder.temperatureText.text = "70도"
-        holder.commentCount.text = "1"
-        val baseUrl =RetrofitInstance.BASE_URL
+
+        // 이미지 로딩
+        val baseUrl = RetrofitInstance.BASE_URL
         if (!tradePost.imageUrls.isNullOrEmpty()) {
             val urls = tradePost.imageUrls.replace("[", "")
                 .replace("]", "")
@@ -72,8 +85,21 @@ class TradePostAdapter(
     }
 
     override fun getItemCount(): Int = tradePosts.size
-    fun updateData(newList: List<TradePostResponse>) {
-        tradePosts = newList.toMutableList() // 리스트 자체를 새로 교체
+
+    fun updateData(newPosts: List<TradePostResponse>) {
+        tradePosts.clear()
+        tradePosts.addAll(newPosts)
         notifyDataSetChanged()
+    }
+
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val r = 6371 // 지구 반지름 (km)
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(dLon / 2).pow(2.0)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return r * c
     }
 }
