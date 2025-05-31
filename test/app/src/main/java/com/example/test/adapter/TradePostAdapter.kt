@@ -11,6 +11,7 @@ import com.example.test.R
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.network.RetrofitInstance
 import kotlin.math.*
+import java.text.DecimalFormat
 
 class TradePostAdapter(
     private var tradePosts: MutableList<TradePostResponse>,
@@ -36,7 +37,8 @@ class TradePostAdapter(
         val tradePost = tradePosts[position]
 
         holder.itemTitle.text = tradePost.title
-        holder.itemPrice.text = "${tradePost.price}P"
+        val decimalFormat = DecimalFormat("#,###")
+        holder.itemPrice.text = "${decimalFormat.format(tradePost.price)} P"
 
         // 거리 계산 후 텍스트만 출력
         if (
