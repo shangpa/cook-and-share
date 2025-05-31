@@ -123,11 +123,14 @@ class MaterialMySavedActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = TradePostAdapter(mutableListOf()) { post ->
-            val intent = Intent(this, MaterialDetailActivity::class.java)
-            intent.putExtra("tradePostId", post.tradePostId)
-            startActivity(intent)
-        }
+        adapter = TradePostAdapter(
+            tradePosts = mutableListOf(),
+            onItemClick = { post ->
+                val intent = Intent(this, MaterialDetailActivity::class.java)
+                intent.putExtra("tradePostId", post.tradePostId)
+                startActivity(intent)
+            }
+        )
         recyclerView.adapter = adapter
         recyclerView.adapter = adapter
 

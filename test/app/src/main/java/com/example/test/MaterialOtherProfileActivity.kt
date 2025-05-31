@@ -176,8 +176,8 @@ class MaterialOtherProfileActivity : AppCompatActivity() {
             itemView.findViewById<TextView>(R.id.itemTitle).text = post.title
             itemView.findViewById<TextView>(R.id.itemPrice).text =
                 if (post.price == 0) "나눔" else "${post.price} P"
-            itemView.findViewById<TextView>(R.id.sellerLabel).visibility = View.GONE
-            itemView.findViewById<TextView>(R.id.temperatureText).text =
+            //itemView.findViewById<TextView>(R.id.sellerLabel).visibility = View.GONE
+            //itemView.findViewById<TextView>(R.id.temperatureText).text =
                 post.createdAt.substring(5, 10)
             val imageView = itemView.findViewById<ImageView>(R.id.itemImage)
             if (post.firstImageUrl.isNullOrBlank()) {
