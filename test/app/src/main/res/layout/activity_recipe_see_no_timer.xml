@@ -425,9 +425,8 @@
                     android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"/>
 
-
                 <!-- 리뷰 작성하러 가기 -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/reviewWriteButton"
                     android:layout_width="179dp"
                     android:layout_height="40dp"
@@ -436,9 +435,10 @@
                     android:textColor="#9B9B9B"
                     android:layout_marginTop="106dp"
                     android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
                     app:layout_constraintTop_toBottomOf="@id/reviewRecyclerView"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

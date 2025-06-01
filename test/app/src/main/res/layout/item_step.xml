@@ -75,7 +75,7 @@
 
 
         <!-- 내용 추가하기 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/contentAddTwo"
             android:layout_width="131dp"
             android:layout_height="35dp"
@@ -85,11 +85,12 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="7dp"
             android:background="@drawable/btn_recipe_add"
+            android:stateListAnimator="@null"
             app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
             app:layout_constraintEnd_toStartOf="@id/timerAddTwo" />
 
         <!-- 타이머 추가하기 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/timerAddTwo"
             android:layout_width="131dp"
             android:layout_height="35dp"
@@ -99,7 +100,8 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/btn_recipe_add"
+            android:stateListAnimator="@null"
             app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

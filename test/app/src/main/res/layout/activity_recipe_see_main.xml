@@ -293,18 +293,19 @@
                     app:layout_constraintStart_toStartOf="@id/expectationMaterialsToBeUsed"
                     app:layout_constraintTop_toBottomOf="@id/expectationMaterialsToBeUsed"/>
 
-
                 <!-- 냉장고 재료 관리하러 가기 버튼 -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/manageButton"
                     android:layout_width="210dp"
                     android:layout_height="40dp"
                     android:text="냉장고 재료 관리하러 가기"
+                    android:fontFamily="@font/pretendard_medium"
                     android:textSize="13sp"
                     android:textColor="#9B9B9B"
                     android:layout_marginTop="130dp"
                     android:layout_marginBottom="50dp"
                     android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
                     app:layout_constraintTop_toTopOf="@id/recyclerExpectedIngredients"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -350,7 +351,7 @@
                 android:visibility="gone"/>
 
             <!-- 아니요 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/no"
                 android:layout_width="115dp"
                 android:layout_height="33dp"
@@ -360,12 +361,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/ic_recipe_main_rect_no"
+                android:stateListAnimator="@null"
                 app:layout_constraintBottom_toBottomOf="@id/materialUseBox"
                 app:layout_constraintStart_toStartOf="@id/materialUseBox"
                 android:visibility="gone"/>
 
             <!-- 네 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/yes"
                 android:layout_width="115dp"
                 android:layout_height="33dp"
@@ -375,6 +377,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/ic_recipe_main_rect_yes"
+                android:stateListAnimator="@null"
                 app:layout_constraintBottom_toBottomOf="@id/materialUseBox"
                 app:layout_constraintEnd_toEndOf="@id/materialUseBox"
                 android:visibility="gone"/>
