@@ -98,32 +98,8 @@ class LoginActivity : AppCompatActivity() {
                                     }
                                 })
                             }
-
                             // 로그인 성공 후 LoginInfoActivity 또는 메인 화면으로 이동
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            FirebaseMessaging.getInstance().token
-                                .addOnSuccessListener { token ->
-                                    Log.d("FCM", "실행 시 토큰 확인: $token")
-                                    FirebaseMessaging.getInstance().token.addOnSuccessListener { fcmToken ->
-                                        Log.d("FCM", "FCM 토큰: $fcmToken")
-
-                                        val request = FcmTokenRequestDTO(token = fcmToken, platform = "ANDROID")
-                                        val authToken = App.prefs.token ?: return@addOnSuccessListener
-
-                                        RetrofitInstance.notificationApi.sendFcmToken(
-                                            "Bearer $authToken",
-                                            request
-                                        ).enqueue(object : Callback<Void> {
-                                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                                                Log.d("FCM", "FCM 토큰 서버 전송 성공")
-                                            }
-
-                                            override fun onFailure(call: Call<Void>, t: Throwable) {
-                                                Log.e("FCM", "FCM 토큰 서버 전송 실패", t)
-                                            }
-                                        })
-                                    }
-                                }
                             startActivity(intent)
                             finish()
                         } else {

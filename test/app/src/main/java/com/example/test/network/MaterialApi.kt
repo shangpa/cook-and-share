@@ -38,7 +38,7 @@ interface MaterialApi {
     fun requestComplete(
         @Header("Authorization") token: String,
         @Path("id") postId: Long
-    ): Call<Void>
+    ): Call<ResponseBody>
 
     @GET("/api/trade-posts/{id}/complete-requests")
     fun getCompleteRequestUsers(

@@ -19,6 +19,7 @@ import com.example.test.model.chat.ChatMessageDTO
 import com.example.test.model.chat.UsernameResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,6 +43,8 @@ class MaterialChatDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMaterialChatDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val opponentUsername = intent.getStringExtra("opponentNickname") ?: "상대방"
+        binding.chatDetailTitle.text = opponentUsername
 
 
         roomKey = intent.getStringExtra("roomKey") ?: return
@@ -50,25 +53,6 @@ class MaterialChatDetailActivity : AppCompatActivity() {
         chatAdapter = ChatAdapter(chatList, senderId)
         binding.recyclerView.adapter = chatAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val receiverId = intent.getLongExtra("receiverId", -1L)
-        val token = App.prefs.token.toString()
-        if (receiverId != -1L) {
-            RetrofitInstance.chatApi.getUserProfileById("Bearer $token", receiverId)
-                .enqueue(object : Callback<UsernameResponse> {
-                    override fun onResponse(call: Call<UsernameResponse>, response: Response<UsernameResponse>) {
-                        if (response.isSuccessful) {
-                            val username = response.body()?.username ?: "상대방"
-                            binding.chatDetailTitle.text = username
-                        } else {
-                            binding.chatDetailTitle.text = "상대방"
-                        }
-                    }
-
-                    override fun onFailure(call: Call<UsernameResponse>, t: Throwable) {
-                        Log.e("Chat", "상대 이름 조회 실패", t)
-                        binding.chatDetailTitle.text = "상대방"
-                    }
-                })        }
         connectStomp()
 
         binding.push.setOnClickListener {
@@ -96,11 +80,14 @@ class MaterialChatDetailActivity : AppCompatActivity() {
         val ownerId = roomParts.getOrNull(1)?.toLongOrNull()
         val myId = App.prefs.userId.toLong()
 
+        // ✅ 올바른 방향
         if (ownerId != null && myId == ownerId) {
-            binding.requestCompleteButton.visibility = View.VISIBLE
+            // 판매자라면 버튼 숨김
+            binding.requestCompleteButton.visibility = View.GONE
             Log.d("Chat", "👑 판매자이므로 거래완료 요청 버튼 숨김")
         } else {
-            binding.requestCompleteButton.visibility = View.GONE
+            // 구매자라면 버튼 보임
+            binding.requestCompleteButton.visibility = View.VISIBLE
             Log.d("Chat", "🛒 구매자이므로 거래완료 요청 버튼 보임")
         }
         binding.requestCompleteButton.setOnClickListener {
@@ -125,18 +112,30 @@ class MaterialChatDetailActivity : AppCompatActivity() {
             }
 
             RetrofitInstance.materialApi.requestComplete("Bearer $token", postId)
-                .enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                .enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
-                            Log.d("RequestComplete", "✅ 거래완료 요청 성공")
                             Toast.makeText(this@MaterialChatDetailActivity, "거래완료 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.e("RequestComplete", "❌ 요청 실패: ${response.code()}")
-                            Toast.makeText(this@MaterialChatDetailActivity, "이미 요청했거나 실패했습니다.", Toast.LENGTH_SHORT).show()
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("RequestComplete", "❌ 요청 실패: ${response.code()} / $errorBody")
+
+                            when {
+                                errorBody?.contains("포인트가 부족합니다") == true -> {
+                                    Toast.makeText(this@MaterialChatDetailActivity, "포인트가 부족해서 거래요청을 보내지 못합니다.", Toast.LENGTH_SHORT).show()
+                                }
+                                errorBody?.contains("이미 요청한 사용자입니다") == true -> {
+                                    Toast.makeText(this@MaterialChatDetailActivity, "이미 거래요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
+                                }
+                                else -> {
+                                    Log.e("RequestComplete", "📦 서버에서 받은 에러 내용: $errorBody")
+                                    Toast.makeText(this@MaterialChatDetailActivity, "서버 에러: $errorBody", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
 
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.e("RequestComplete", "❌ 요청 실패", t)
                         Toast.makeText(this@MaterialChatDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                     }
