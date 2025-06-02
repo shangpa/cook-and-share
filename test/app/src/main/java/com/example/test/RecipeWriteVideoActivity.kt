@@ -78,6 +78,8 @@ private lateinit var root: ConstraintLayout  // 전체 레이아웃
 private var createdRecipeId: Long? = null
 private var isPublic: Boolean = true //공개설정용
 private var recipe: RecipeRequest? = null
+private var currentIndex = 0
+
 class RecipeWriteVideoActivity : AppCompatActivity() {
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
@@ -377,12 +379,10 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         }
         // "계속하기" 버튼 클릭 시 화면 이동
         continueButton.setOnClickListener {
-            if (currentIndex < layouts.size - 1) {
-                // 현재 화면 숨기기
-                layouts[currentIndex].visibility = View.GONE
-                // 다음 화면 표시
+            if (currentIndex < layouts.size - 1 && currentIndex < textViews.size - 1) {
                 currentIndex++
-                layouts[currentIndex].visibility = View.VISIBLE
+
+                showOnlyLayout(layouts[currentIndex])
 
                 // 해당 TextView 색상 변경
                 textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
@@ -552,31 +552,25 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
-            val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
+            val currentLayout = layouts.find { it.visibility == View.VISIBLE }
+            val currentIdx = layouts.indexOf(currentLayout)
 
-            // 현재 화면이 recipeWriteTitleLayout이면 RecipeWriteMain.kt로 이동
-            if (recipeWriteTitleLayout.visibility == View.VISIBLE) {
-                val intent = Intent(this, RecipeWriteMain::class.java)
-                startActivity(intent)
-                finish()  // 현재 액티비티 종료 (선택 사항)
-            } else {
-                // 현재 보이는 레이아웃 찾기
-                val currentIndex = layouts.indexOfFirst { it.visibility == View.VISIBLE }
+            if (currentIdx == 0) {
+                startActivity(Intent(this, RecipeWriteMain::class.java))
+                finish()
+            } else if (currentIdx > 0) {
+                val prevLayout = layouts[currentIdx - 1]
+                currentIndex = currentIdx - 1
+                showOnlyLayout(prevLayout)
 
-                // 현재 화면이 첫 번째가 아니라면 이전 화면으로 이동
-                if (currentIndex > 0) {
-                    layouts[currentIndex].visibility = View.GONE  // 현재 화면 숨기기
-                    layouts[currentIndex - 1].visibility = View.VISIBLE  // 이전 화면 보이기
+                // ✅ 탭 색상 변경 - currentIndex만 사용해야 함
+                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
+                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
 
-                    // TextView 색상 변경
-                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                    textViews[currentIndex - 1].setTextColor(Color.parseColor("#2B2B2B"))
-
-                    // 바(View)의 위치 변경
-                    val targetX =
-                        textViews[currentIndex - 1].x + (textViews[currentIndex - 1].width / 2) - (indicatorBar.width / 2)
-                    indicatorBar.x = targetX
-                }
+                // ✅ indicatorBar 위치도 currentIndex 기준
+                val targetX =
+                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
+                indicatorBar.x = targetX
             }
         }
 
@@ -822,6 +816,50 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun showOnlyLayout(targetLayout: ConstraintLayout) {
+        val allLayouts = listOf(
+            findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteReplaceMaterialLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteHandlingMethodLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout),
+            findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout),
+            findViewById<ConstraintLayout>(R.id.contentCheckLayout)
+        )
+
+        // 버튼과 탭바 등
+        val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
+        val beforeButton = findViewById<AppCompatButton>(R.id.beforeButton)
+        val register = findViewById<AppCompatButton>(R.id.register)
+        val shareFixButton = findViewById<AppCompatButton>(R.id.shareFixButton)
+        val contentCheckTapBar = findViewById<View>(R.id.contentCheckTapBar)
+        val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
+        val divideRectangleBarTwo = findViewById<View>(R.id.divideRectangleBarTwo)
+
+        // 모든 레이아웃 숨기고 target만 표시
+        allLayouts.forEach { it.visibility = if (it == targetLayout) View.VISIBLE else View.GONE }
+
+        // contentCheckLayout이면 버튼 및 탭바 설정 다르게
+        if (targetLayout.id == R.id.contentCheckLayout) {
+            continueButton.visibility = View.GONE
+            beforeButton.visibility = View.VISIBLE
+            register.visibility = View.VISIBLE
+            shareFixButton.visibility = View.VISIBLE
+            contentCheckTapBar.visibility = View.VISIBLE
+            tapBar.visibility = View.GONE
+            divideRectangleBarTwo.visibility = View.GONE
+        } else {
+            continueButton.visibility = View.VISIBLE
+            beforeButton.visibility = View.VISIBLE
+            register.visibility = View.GONE
+            shareFixButton.visibility = View.GONE
+            contentCheckTapBar.visibility = View.GONE
+            tapBar.visibility = View.VISIBLE
+            divideRectangleBarTwo.visibility = View.VISIBLE
+        }
+    }
+
     private fun showVideoInfo(uri: Uri) {
         val fileName = contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
