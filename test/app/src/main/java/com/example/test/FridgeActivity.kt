@@ -474,19 +474,22 @@ class FridgeActivity : AppCompatActivity() {
         val items = mutableListOf<FridgeCreateRequest>()
 
         // 여기서 itemHeaderRegex 선언
-        val itemHeaderRegex = Regex("""\d{3}\s+([가-힣]+)""")
+        val itemHeaderRegex = Regex("""\d{3}\s+([가-힣]+)""")  // 예: 001 햇감자
 
         var index = 0
-        while (index < lines.size) {
+        while (index < lines.size - 1) {
             val line = lines[index].trim()
             val matchedName = itemHeaderRegex.find(line)?.groupValues?.get(1)
 
             if (matchedName != null && isValidIngredientName(matchedName)) {
-                var quantity = 1.0
-                if (index + 3 < lines.size) {
-                    val quantityLine = lines[index + 3].trim().replace(",", "")
-                    quantity = quantityLine.toDoubleOrNull() ?: 1.0
-                }
+                // 다음 줄(상품코드, 단가, 수량 등 포함된 줄)을 분석
+                val nextLine = lines.getOrNull(index + 1)?.trim() ?: ""
+                val tokens = nextLine.split(Regex("""\s+"""))  // 공백 기준 split
+
+                // 마지막에서 두 번째 값을 수량으로 사용 (예: 1,930 1 1,930)
+                val quantity = if (tokens.size >= 3) {
+                    tokens[tokens.size - 2].replace(",", "").toDoubleOrNull() ?: 1.0
+                } else 1.0
 
                 items.add(
                     FridgeCreateRequest(
@@ -499,7 +502,7 @@ class FridgeActivity : AppCompatActivity() {
                         unitCategory = "COUNT"
                     )
                 )
-                index += 1 // 한 줄씩 검사하도록 변경
+                index += 2  // 상품명 줄 + 가격 줄 건너뛰기
             } else {
                 index++
             }
