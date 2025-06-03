@@ -110,11 +110,24 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 }
             }
         }
+    private val videoTrimLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val trimmedUri = result.data?.getParcelableExtra<Uri>("trimmedUri")
+            trimmedUri?.let {
+                selectedVideoUri = it
+                showVideoInfo(it)
+                uploadVideoToServer(it)  // ✅ 트리밍된 영상 업로드
+            }
+        }
+    }
+
     private val videoPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            selectedVideoUri = uri
-            showVideoInfo(uri)         // 파일명 표시
-            uploadVideoToServer(uri)   // 서버 업로드
+        uri?.let {
+            val intent = Intent(this, VideoTrimActivity::class.java)
+            intent.putExtra("videoUri", it)
+            videoTrimLauncher.launch(intent)
         }
     }
 
