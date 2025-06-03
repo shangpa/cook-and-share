@@ -40,7 +40,7 @@ class FridgeHistoryAdapter(private var historyList: List<FridgeHistoryResponse>)
         }
         holder.quantityText.text = formattedQuantity
 
-        holder.unitText.text = "개" // 혹은 item.unit 이 있다면 그걸로 교체
+        holder.unitText.text = item.unit
 
         val color = if (item.actionType == "ADD") Color.parseColor("#409CFF") else Color.parseColor("#FF6961")
         holder.amountSign.setTextColor(color)

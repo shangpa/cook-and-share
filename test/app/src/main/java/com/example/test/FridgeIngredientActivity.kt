@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.*
@@ -31,7 +32,7 @@ class FridgeIngredientActivity : AppCompatActivity() {
         val dateDropBtn: ImageView = findViewById(R.id.DateDropBtn)
         val fridgeIngredientInput: EditText = findViewById(R.id.fridgeIngredientInput)
         val fridgeIngredientNumInput: EditText = findViewById(R.id.fridgeIngredientNumInput)
-        val fridgeAddButton: LinearLayout = findViewById(R.id.fridgeAddButton)
+        val fridgeAddButton : AppCompatButton = findViewById(R.id.fridgeAddButton)
         val backBtn: ImageView = findViewById(R.id.backBtn)
 
         val intentIngredientName = intent.getStringExtra("ingredientName") ?: ""

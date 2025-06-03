@@ -168,11 +168,11 @@
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="1dp" />
 
-                <!-- 개의 내역 -->
+                <!-- 개의 재료 -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="개의 내역"
+                    android:text="개의 재료"
                     android:textSize="12sp"
                     android:textColor="@color/black"
                     android:layout_marginTop="1dp" />
