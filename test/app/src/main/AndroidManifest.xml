@@ -696,6 +696,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- VideoTrimActivity -->
+        <activity
+            android:name=".VideoTrimActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
 <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
 <!--        <activity-->

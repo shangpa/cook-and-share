@@ -122,9 +122,13 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 
+    //동영상 편집용
+    implementation("androidx.media3:media3-transformer:1.3.1")
+    implementation("com.google.android.material:material:1.11.0")
+
     implementation("io.socket:socket.io-client:2.0.1") {
         exclude("org.json", "json")
-
+    }
     //이미지
     implementation("com.github.yalantis:ucrop:2.2.8")
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -133,8 +137,6 @@ dependencies {
     // 메인-냉장고
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
-    }
-    
 
 }
 
