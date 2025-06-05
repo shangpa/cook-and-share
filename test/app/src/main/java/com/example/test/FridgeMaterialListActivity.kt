@@ -34,7 +34,7 @@ class FridgeMaterialListActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mypage_fridge_material_list)
+        setContentView(R.layout.activity_fridge_material_list)
 
         resultCountTextView = findViewById(R.id.fridgeRecipeResultNumber)
         token = App.prefs.token.toString()

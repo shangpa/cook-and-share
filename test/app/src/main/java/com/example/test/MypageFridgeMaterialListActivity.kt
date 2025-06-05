@@ -3,6 +3,8 @@ package com.example.test
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +28,8 @@ class MypageFridgeMaterialListActivity : AppCompatActivity() {
     private lateinit var fullList: List<FridgeHistoryResponse>
     private lateinit var adapter: FridgeHistoryAdapter
     private lateinit var token: String
+    private lateinit var searchInput: EditText
+    private var currentKeyword: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +75,18 @@ class MypageFridgeMaterialListActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.backButton).setOnClickListener {
             finish()
         }
+
+        searchInput = findViewById(R.id.fridgeSearchInput)
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                currentKeyword = s.toString()
+                applyFilterAndSort()  // 검색 포함된 필터링 실행
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     private fun fetchAllFridgeHistories() {
@@ -96,6 +112,8 @@ class MypageFridgeMaterialListActivity : AppCompatActivity() {
             1 -> fullList.filter { it.actionType == "ADD" }
             2 -> fullList.filter { it.actionType == "USE" }
             else -> fullList
+        }.filter {
+            it.ingredientName.contains(currentKeyword, ignoreCase = true)
         }
 
         val sortedList = when (fridgeFilterText.text.toString()) {
@@ -106,8 +124,8 @@ class MypageFridgeMaterialListActivity : AppCompatActivity() {
 
         adapter.updateList(sortedList)
 
-        val itemCount = sortedList.size
-        resultCountTextView.text = "$itemCount"
+        val totalQuantity = sortedList.sumOf { it.quantity }
+        resultCountTextView.text = formatQuantity(totalQuantity)
     }
 
     private fun formatQuantity(q: Double): String {
