@@ -30,7 +30,8 @@ class FridgeHistoryAdapter(private var historyList: List<FridgeHistoryResponse>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = historyList[position]
 
-        holder.historyDate.text = item.actionDate.substring(0, 10)
+        val label = if (item.actionType == "ADD") "구매날짜" else "소비날짜"
+        holder.historyDate.text = "$label : ${item.actionDate.substring(0, 10)}"
         holder.ingredientNameText.text = item.ingredientName
         holder.amountSign.text = if (item.actionType == "ADD") "+" else "-"
         val formattedQuantity = if (item.quantity % 1.0 == 0.0) {
@@ -47,8 +48,9 @@ class FridgeHistoryAdapter(private var historyList: List<FridgeHistoryResponse>)
         holder.quantityText.setTextColor(color)
         holder.unitText.setTextColor(color)
 
-        // 구매일자는 actionDate와 같다고 가정
-        holder.purchaseDateText.text = "구매일자 : ${item.actionDate.substring(0, 10)}"
+        val optionLabel = item.dateOption ?: "날짜"
+        val displayDate = item.fridgeDate?.substring(0, 10) ?: "정보 없음"
+        holder.purchaseDateText.text = "$optionLabel : $displayDate"
     }
 
     override fun getItemCount(): Int = historyList.size

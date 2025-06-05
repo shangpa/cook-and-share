@@ -124,8 +124,7 @@ class MypageFridgeMaterialListActivity : AppCompatActivity() {
 
         adapter.updateList(sortedList)
 
-        val totalQuantity = sortedList.sumOf { it.quantity }
-        resultCountTextView.text = formatQuantity(totalQuantity)
+        resultCountTextView.text = "${sortedList.size}"
     }
 
     private fun formatQuantity(q: Double): String {
