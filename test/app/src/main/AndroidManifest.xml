@@ -706,7 +706,14 @@
             </intent-filter>
         </activity>
 
-<!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
+        <activity android:name=".PhotoEditorActivity" />
+
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
+
+
+        <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
 <!--        <activity-->
 <!--            android:name=".DrawEditorActivity"-->
 <!--            android:exported="true">-->

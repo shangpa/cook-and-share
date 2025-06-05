@@ -96,21 +96,27 @@
         private val pickImageLauncherForCamera =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri?.let {
-                    val destinationUri = Uri.fromFile(File(cacheDir, "cropped_${System.currentTimeMillis()}.jpg"))
-                    UCrop.of(it, destinationUri)
-                        .withMaxResultSize(800, 800)
-                        .start(this)
+                    val intent = Intent(this, PhotoEditorActivity::class.java).apply {
+                        putExtra("imageUri", it.toString())
+                        putExtra("isStepImage", true) // 조리순서인지 여부
+                    }
+                    startActivityForResult(intent, EDIT_IMAGE_REQUEST_CODE)
                 }
             }
+
+        companion object {
+            private const val EDIT_IMAGE_REQUEST_CODE = 1001
+        }
 
         // 대표사진 이미지 업로드
         private val pickImageLauncherForDetailSettle =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri?.let {
                     val destinationUri = Uri.fromFile(File(cacheDir, "cropped_represent_${System.currentTimeMillis()}.jpg"))
-                    UCrop.of(it, destinationUri)
-                        .withMaxResultSize(800, 800)
-                        .start(this)
+                    val intent = Intent(this, PhotoEditorActivity::class.java).apply {
+                        putExtra("imageUri", it.toString())
+                    }
+                    startActivityForResult(intent, EDIT_IMAGE_REQUEST_CODE)
                 }
             }
         private var isPickingRepresentImage = false
@@ -758,15 +764,16 @@
             stepContainer = findViewById(R.id.stepContainer) // stepContainer 초기화
 
             // stepCamera용 런처 (조리 순서 이미지)
-            pickImageLauncherForStepCamera = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                uri?.let {
-                    val destinationUri = Uri.fromFile(File(cacheDir, "cropped_step_${System.currentTimeMillis()}.jpg"))
-                    UCrop.of(it, destinationUri)
-                        .withMaxResultSize(800, 800)
-                        .start(this)
+            pickImageLauncherForStepCamera =
+                registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                    uri?.let {
+                        val intent = Intent(this, PhotoEditorActivity::class.java).apply {
+                            putExtra("imageUri", it.toString())
+                            putExtra("isStepImage", true)
+                        }
+                        startActivityForResult(intent, EDIT_IMAGE_REQUEST_CODE)
+                    }
                 }
-            }
-
 
             // 레시피 조리순서 새로운 STEP을 담을 ConstraintLayout 생성
             val newStepLayout = LayoutInflater.from(this).inflate(R.layout.item_step, stepContainer, false)
@@ -1056,52 +1063,41 @@
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)
 
-            if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
-                val resultUri = UCrop.getOutput(data!!)
-                resultUri?.let {
-                    when {
-                        selectedContainer != null -> {
-                            // ✅ 조리순서 이미지
-                            displaySelectedImage(it, selectedContainer!!)
-                            uploadImageToServer(it) { imageUrl ->
-                                if (imageUrl != null) {
-                                    stepImages[currentStep] = imageUrl
-                                    Log.d("StepImage", "STEP $currentStep -> $imageUrl")
-                                } else {
-                                    Log.e("Upload", "조리순서 이미지 업로드 실패")
-                                }
+            if (requestCode == EDIT_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+                val editedUriStr = data?.getStringExtra("editedImageUri")
+                val editedUri = editedUriStr?.let { Uri.parse(it) }
+
+                editedUri?.let {
+                    // 어디에 넣을지 판단
+                    if (isPickingRepresentImage) {
+                        displaySelectedImage(it, representImageContainer)
+                        uploadImageToServer(it) { imageUrl ->
+                            if (imageUrl != null) {
+                                mainImageUrl = imageUrl
                             }
-                            selectedContainer = null
                         }
-                        isPickingRepresentImage -> {
-                            // ✅ 대표 이미지
-                            displaySelectedImage(it, representImageContainer)
-                            uploadImageToServer(it) { imageUrl ->
-                                if (imageUrl != null) {
-                                    mainImageUrl = imageUrl
-                                    Log.d("Upload", "대표 이미지 업로드 성공! URL: $imageUrl")
-                                } else {
-                                    Log.e("Upload", "대표 이미지 업로드 실패")
-                                }
+                        isPickingRepresentImage = false
+                    } else if (selectedContainer != null) {
+                        displaySelectedImage(it, selectedContainer!!)
+                        uploadImageToServer(it) { imageUrl ->
+                            if (imageUrl != null) {
+                                stepImages[currentStep] = imageUrl
                             }
-                            isPickingRepresentImage = false
                         }
-                        else -> {
-                            // ✅ 일반 이미지 (예비 처리)
-                            displaySelectedImage(it, imageContainer)
-                            uploadImageToServer(it) { imageUrl ->
-                                if (imageUrl != null) {
-                                    stepImages[currentStep] = imageUrl
-                                }
+                        selectedContainer = null
+                    } else {
+                        // fallback
+                        displaySelectedImage(it, imageContainer)
+                        uploadImageToServer(it) { imageUrl ->
+                            if (imageUrl != null) {
+                                stepImages[currentStep] = imageUrl
                             }
                         }
                     }
                 }
-            } else if (resultCode == UCrop.RESULT_ERROR) {
-                val cropError = UCrop.getError(data!!)
-                Toast.makeText(this, "편집 오류: ${cropError?.message}", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         //재료, 대체 재료, 재료 처리 방법 추가
         private fun updateMaterialListView(materialView: View, ingredients: List<Pair<String, String>>, alternatives: List<Pair<String, String>>, handling: List<Pair<String, String>>) {

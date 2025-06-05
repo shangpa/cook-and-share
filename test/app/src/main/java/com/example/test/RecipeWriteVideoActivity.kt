@@ -80,6 +80,7 @@ private var isPublic: Boolean = true //공개설정용
 private var recipe: RecipeRequest? = null
 private var currentIndex = 0
 
+@androidx.media3.common.util.UnstableApi
 class RecipeWriteVideoActivity : AppCompatActivity() {
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수

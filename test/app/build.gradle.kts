@@ -8,11 +8,14 @@ plugins {
     //파이어 베이스 용
     id("com.google.gms.google-services")
 }
-val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(localPropertiesFile.inputStream())
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        load(file.inputStream())
+    }
 }
+
 android {
     namespace = "com.example.test"
     compileSdk = 34
@@ -25,11 +28,12 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        // ✅ local.properties에 등록된 GCP API KEY를 resValue로 추가
         resValue("string", "gcp_vision_api_key", localProperties["GCP_VISION_API_KEY"]?.toString() ?: "")
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -51,28 +55,20 @@ android {
     buildFeatures {
         dataBinding = true
     }
-    // ✅ Tmap SDK에서 JNI 접근 필요할 수 있음
-    sourceSets["main"].jniLibs.srcDir("libs")
 
-    sourceSets {
-        getByName("main").jniLibs.srcDirs("libs")
-        getByName("main").resources.srcDirs("libs")
+    // ✅ Tmap SDK에서 JNI 접근 필요할 수 있음
+    sourceSets["main"].apply {
+        jniLibs.srcDirs("libs")
+        resources.srcDirs("libs")
+        assets.srcDirs("libs")
     }
 
     packagingOptions {
-        resources.excludes.add("META-INF/*")
-    }
-
-/*    packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes.add("META-INF/*")
         }
-    }*/
-    sourceSets["main"].jniLibs.srcDir("libs")
-    sourceSets["main"].resources.srcDirs("libs")
-    sourceSets["main"].assets.srcDirs("libs")
+    }
 }
-
 
 dependencies {
     // 공식 라이브러리
@@ -113,7 +109,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     //firebase 알림용
     implementation("com.google.firebase:firebase-messaging")
-    
+
     //GCV 영수증
     implementation("com.google.cloud:google-cloud-vision:3.26.0")
 
@@ -122,13 +118,18 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 
+    //이미지 편집
+    implementation(files("libs/photoeditor-debug.aar"))
+    implementation ("com.github.CanHub:Android-Image-Cropper:4.3.2")
+
     //동영상 편집용
     implementation("androidx.media3:media3-transformer:1.3.1")
     implementation("com.google.android.material:material:1.11.0")
 
     implementation("io.socket:socket.io-client:2.0.1") {
-        exclude("org.json", "json")
+        exclude(group = "org.json", module = "json")
     }
+
     //이미지
     implementation("com.github.yalantis:ucrop:2.2.8")
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -136,7 +137,4 @@ dependencies {
 
     // 메인-냉장고
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-
-
 }
-
