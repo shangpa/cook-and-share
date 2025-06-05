@@ -207,20 +207,27 @@ class FridgeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            deleteTargets.forEach { fridge ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    val response = apiService.deleteFridge(fridge.id, token)
-                    withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(this@FridgeActivity, "삭제 완료!", Toast.LENGTH_SHORT).show()
-                            fetchFridgeData()
-                        } else {
-                            Toast.makeText(this@FridgeActivity, "삭제 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+            val ingredientNamesToDelete = deleteTargets.map { it.ingredientName }.distinct()
+
+            ingredientNamesToDelete.forEach { ingredientName ->
+                apiService.deleteFridgeByName(ingredientName, token)
+                    .enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(this@FridgeActivity, "'$ingredientName' 삭제 완료!", Toast.LENGTH_SHORT).show()
+                                fetchFridgeData()
+                            } else {
+                                Toast.makeText(this@FridgeActivity, "'$ingredientName' 삭제 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
-                }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Toast.makeText(this@FridgeActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
             }
         }
+
 
         findViewById<TextView>(R.id.fridgeEditText).setOnClickListener {
             if (selectedFridgeIds.size != 1) {

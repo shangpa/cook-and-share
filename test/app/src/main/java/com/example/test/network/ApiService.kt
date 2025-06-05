@@ -179,11 +179,11 @@ interface ApiService {
     ): Response<Void>
 
     // 냉장고 재료 삭제
-    @DELETE("api/fridges/{id}")
-    suspend fun deleteFridge(
-        @Path("id") id: Long,
+    @DELETE("api/fridges/delete-by-name")
+    fun deleteFridgeByName(
+        @Query("ingredientName") ingredientName: String,
         @Header("Authorization") token: String
-    ): Response<Void>
+    ): Call<Void>
 
     // 냉장고 재료 이력 조회
     @GET("/api/fridges/history")

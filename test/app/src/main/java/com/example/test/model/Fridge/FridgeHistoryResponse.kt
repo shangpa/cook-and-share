@@ -5,5 +5,7 @@ data class FridgeHistoryResponse(
     val quantity: Double,
     val unit: String,
     val actionType: String, // "ADD" or "USE"
-    val actionDate: String  // 예: "2025-05-21T13:14:00"
+    val actionDate: String, // 예: "2025-05-21T13:14:00"
+    val fridgeDate: String,
+    val dateOption: String
 )
