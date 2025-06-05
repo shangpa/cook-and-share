@@ -61,10 +61,6 @@ class MaterialSearchDetailActivity : AppCompatActivity() {
             Toast.makeText(this, "검색어가 없습니다.", Toast.LENGTH_SHORT).show()
         }
 
-        findViewById<ImageView>(R.id.searchBack).setOnClickListener {
-            finish()
-        }
-
         searchButton.setOnClickListener {
             val newKeyword = nameEditText.text.toString().trim()
             if (newKeyword.isNotEmpty()) {
@@ -72,6 +68,10 @@ class MaterialSearchDetailActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        findViewById<ImageView>(R.id.searchBack).setOnClickListener {
+            finish()
         }
     }
 

@@ -1030,6 +1030,14 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             }
         }
 
+        findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageButton>(R.id.registerRecipeBackArrow).setOnClickListener {
+            finish()
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

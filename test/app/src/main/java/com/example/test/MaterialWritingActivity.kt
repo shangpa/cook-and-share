@@ -440,6 +440,14 @@ class MaterialWritingActivity : AppCompatActivity() {
                 it.setTag(R.id.heartIcon, !isLiked)
             }
         }
+
+        findViewById<ImageView>(R.id.senddReviewBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.senddReviewBackTwo).setOnClickListener {
+            finish()
+        }
     }
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
         val file = uriToFile(this, uri) ?: return

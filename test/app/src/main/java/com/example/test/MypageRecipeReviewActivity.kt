@@ -38,6 +38,10 @@ class MypageRecipeReviewActivity : AppCompatActivity() {
         setupCategoryButtons()
         setupBackButton()
         loadMyReviews()
+
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupCategoryButtons() {

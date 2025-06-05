@@ -37,11 +37,6 @@ class MypageWritePostActivity : AppCompatActivity() {
 
         fridgeRecipeResultDropDownIcon.setOnClickListener { showDropdownMenu() }
 
-        backButton.setOnClickListener {
-            startActivity(Intent(this, MypageActivity::class.java))
-            finish()
-        }
-
         recyclerView = findViewById(R.id.recyclerViewMyPost)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -92,6 +87,10 @@ class MypageWritePostActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         loadMyPosts()
+
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
     }
 
     private fun showDropdownMenu() {

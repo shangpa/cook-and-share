@@ -97,6 +97,11 @@ class FridgeMaterialListActivity : AppCompatActivity() {
                 }
             })
 
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun formatQuantity(q: Double): String {

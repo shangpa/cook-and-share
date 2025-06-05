@@ -828,6 +828,10 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 Toast.makeText(this, "레시피 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
+
+        findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
     }
 
     private fun showOnlyLayout(targetLayout: ConstraintLayout) {

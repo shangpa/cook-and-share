@@ -40,8 +40,8 @@ class MaterialMyReviewActivity : AppCompatActivity() {
             switchTab(writeReviewTab, receiveReviewTab, writtenLayout, receivedLayout)
         }
 
-        // 뒤로가기
-        backBtn.setOnClickListener {
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.receivedReviewBack).setOnClickListener {
             finish()
         }
 

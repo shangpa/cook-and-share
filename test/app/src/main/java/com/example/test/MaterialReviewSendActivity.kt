@@ -29,6 +29,10 @@ class MaterialReviewSendActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        findViewById<ImageView>(R.id.senddReviewBack).setOnClickListener {
+            finish()
+        }
     }
     private fun loadMyReviews() {
         val token = App.prefs.token ?: return

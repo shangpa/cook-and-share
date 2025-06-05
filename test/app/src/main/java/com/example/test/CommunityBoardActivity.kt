@@ -121,6 +121,11 @@ class CommunityBoardActivity : AppCompatActivity() {
         }
         dropDownTwo.setOnClickListener { showSortMenu() }
         recommend.setOnClickListener { showSortMenu() }
+
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
     }
     private fun loadBoards(type: String, sort: String) {
         val token = App.prefs.token ?: ""

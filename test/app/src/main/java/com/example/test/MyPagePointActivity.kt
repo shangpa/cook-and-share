@@ -211,5 +211,9 @@ class MyPagePointActivity : AppCompatActivity() {
                 }
             })
 
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
+
     }
 }

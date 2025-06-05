@@ -80,6 +80,11 @@ class MaterialMyProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.otherProfileBack).setOnClickListener {
+            finish()
+        }
+
     }
 
 }

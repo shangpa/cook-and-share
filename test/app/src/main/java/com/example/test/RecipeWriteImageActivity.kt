@@ -1043,6 +1043,14 @@
                     Toast.makeText(this, "레시피를 먼저 작성해주세요.", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
+                finish()
+            }
+
+            findViewById<ImageButton>(R.id.registerRecipeBackArrow).setOnClickListener {
+                finish()
+            }
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

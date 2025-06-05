@@ -82,11 +82,6 @@ class SearchResultActivity : AppCompatActivity() {
         val searchText: EditText = findViewById(R.id.writeSearchTxt)
         searchText.setText(searchKeyword)
 
-        findViewById<ImageButton>(R.id.SearchResultBackIcon).setOnClickListener {
-            startActivity(Intent(this, SearchMainActivity::class.java))
-            finish()
-        }
-
         recyclerView = findViewById(R.id.searchResultRecyclerView)
         number = findViewById(R.id.number)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -147,6 +142,10 @@ class SearchResultActivity : AppCompatActivity() {
                         Log.e("SearchResult", "검색어 저장 실패", t)
                     }
                 })
+        }
+
+        findViewById<ImageView>(R.id.SearchResultBackIcon).setOnClickListener {
+            finish()
         }
     }
 

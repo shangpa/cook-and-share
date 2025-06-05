@@ -58,6 +58,69 @@ class FridgeRecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge_recipe)
 
+        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
+        tapVillageKitchenIcon.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
+        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
+        tapVillageKitchenText.setOnClickListener {
+            val intent = Intent(this, MaterialActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
+        tapRecipeIcon.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
+        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
+        tapRecipeText.setOnClickListener {
+            val intent = Intent(this, RecipeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapHomeIcon 클릭했을 때 MainActivity 이동
+        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+        tapHomeIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
+        tapCommunityIcon.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
+        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
+        tapCommunityText.setOnClickListener {
+            val intent = Intent(this, CommunityMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
+        tapFridgeIcon.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
+        tapFridgeText.setOnClickListener {
+            val intent = Intent(this, FridgeActivity::class.java)
+            startActivity(intent)
+        }
+
         TabBarUtils.setupTabBar(this)
 
         //재료 가져오기
@@ -223,13 +286,6 @@ class FridgeRecipeActivity : AppCompatActivity() {
             }
         }
 
-        val backBtn: ImageView = findViewById(R.id.backBtn)
-        backBtn.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
-        }
-
-
         val RecipeResultDropDownBtn: ImageView = findViewById(R.id.RecipeResultDropDownBtn)
         val RecipeResultFilterText: TextView = findViewById(R.id.RecipeResultFilterText)
         RecipeResultDropDownBtn.setOnClickListener {
@@ -271,6 +327,29 @@ class FridgeRecipeActivity : AppCompatActivity() {
                 }
             }
             popupMenu.show()
+        }
+
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+            finish()
+        }
+
+        val mypageIcon: ImageButton = findViewById(R.id.mypageIcon)
+        mypageIcon.setOnClickListener {
+            val intent = Intent(this, MypageActivity::class.java)
+            startActivity(intent)
+        }
+
+        val bellIcon: ImageButton = findViewById(R.id.bellIcon)
+        bellIcon.setOnClickListener {
+            val intent = Intent(this, NoticeActivity::class.java)
+            startActivity(intent)
+        }
+
+        val searchIcon: ImageButton = findViewById(R.id.searchIcon)
+        searchIcon.setOnClickListener {
+            val intent = Intent(this, SearchMainActivity::class.java)
+            startActivity(intent)
         }
     }
     //재료추가

@@ -175,6 +175,11 @@ class CommunityWritePostActivity : AppCompatActivity() {
                 })
         }*/
 
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
+
     }
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
         val file = uriToFile(this, uri) ?: return

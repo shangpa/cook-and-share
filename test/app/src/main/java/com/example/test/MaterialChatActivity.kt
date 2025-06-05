@@ -27,16 +27,12 @@ class MaterialChatActivity : AppCompatActivity() {
 
         TabBarUtils.setupTabBar(this)
 
-        // chatBack 클릭했을 때 MainActivity 이동
-        val chatBack: ImageView = findViewById(R.id.chatBack)
-        chatBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         loadChatRooms()
 
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.chatBack).setOnClickListener {
+            finish()
+        }
 
     }
     private fun loadChatRooms() {

@@ -74,9 +74,6 @@ class CommunityDetailActivity : AppCompatActivity() {
             popup.show()
         }
 
-
-
-
         val goodButtons = findViewById<ImageView>(R.id.good)
         val likeCountView = findViewById<TextView>(R.id.goodNumber)
 
@@ -119,6 +116,11 @@ class CommunityDetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             postComment(inputText)
+        }
+
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.backArrow).setOnClickListener {
+            finish()
         }
     }
     private fun loadPostDetail() {

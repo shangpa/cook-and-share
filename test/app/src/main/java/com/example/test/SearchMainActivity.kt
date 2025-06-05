@@ -86,5 +86,9 @@ class SearchMainActivity : AppCompatActivity() {
             }
         }
 
+        findViewById<ImageButton>(R.id.SearchMainBackIcon).setOnClickListener {
+            finish()
+        }
+
     }
 }

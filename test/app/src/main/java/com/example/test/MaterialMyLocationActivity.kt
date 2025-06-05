@@ -99,6 +99,11 @@ class MaterialMyLocationActivity : AppCompatActivity() {
                     }
                 })
         }
+
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.btn_close).setOnClickListener {
+            finish()
+        }
     }
 
 }
