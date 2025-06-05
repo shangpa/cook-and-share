@@ -33,6 +33,10 @@ class MaterialReviewActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        findViewById<ImageView>(R.id.receivedReviewBack).setOnClickListener {
+            finish()
+        }
     }
     private fun loadReceivedReviews() {
         val token = App.prefs.token ?: return

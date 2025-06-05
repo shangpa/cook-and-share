@@ -131,6 +131,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // tapHomeIcon 클릭했을 때 MainActivity 이동
+        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
+        tapHomeIcon.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
         // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
         val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
         tapCommunityIcon.setOnClickListener {

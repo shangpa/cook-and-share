@@ -150,5 +150,9 @@ class MaterialReviewWriteActivity : AppCompatActivity() {
                     }
                 })
         }
+
+        findViewById<ImageView>(R.id.reviewWriteBack).setOnClickListener {
+            finish()
+        }
     }
 }

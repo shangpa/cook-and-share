@@ -141,6 +141,10 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         loadLikedRecipes()
+
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
     }
 
     private fun toggleMaterialButton(button: Button) {

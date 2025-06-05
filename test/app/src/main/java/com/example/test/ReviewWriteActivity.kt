@@ -243,6 +243,9 @@ class ReviewWriteActivity : AppCompatActivity() {
             pickImageLauncherForCamera.launch("image/*")
         }
 
+        findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
 
     }
 

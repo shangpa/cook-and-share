@@ -22,12 +22,6 @@ class MaterialSearchActivity : AppCompatActivity() {
 
         TabBarUtils.setupTabBar(this)
 
-        // 뒤로가기
-        val searchBack = findViewById<ImageView>(R.id.searchBack)
-        searchBack.setOnClickListener {
-            finish()
-        }
-
         nameEditText = findViewById(R.id.nameEditText)
         val searchButton: ImageView = findViewById(R.id.seach)
         searchHistoryContainer = findViewById(R.id.searchHistoryContainer)
@@ -86,6 +80,10 @@ class MaterialSearchActivity : AppCompatActivity() {
         clearAllText.setOnClickListener {
             searchHistoryContainer.removeAllViews()
             clearAllSearchHistoryFromPreferences()
+        }
+
+        findViewById<ImageView>(R.id.searchBack).setOnClickListener {
+            finish()
         }
     }
 

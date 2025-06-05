@@ -141,6 +141,11 @@ class MaterialChatDetailActivity : AppCompatActivity() {
                     }
                 })
         }
+
+        // 뒤로가기 버튼
+        findViewById<ImageView>(R.id.chatDetailBack).setOnClickListener {
+            finish()
+        }
     }
     override fun onDestroy() {
         super.onDestroy()

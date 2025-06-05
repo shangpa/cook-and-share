@@ -588,6 +588,10 @@ class RecipeSeeActivity : AppCompatActivity() {
                 }
             })
 
+        findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun initSpeechRecognizer() {

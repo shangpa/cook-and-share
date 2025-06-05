@@ -96,6 +96,10 @@ class MaterialOtherProfileActivity : AppCompatActivity() {
             popup.show()
         }
 
+        // 뒤로가기
+        findViewById<ImageView>(R.id.otherProfileBack).setOnClickListener {
+            finish()
+        }
 
     }
 

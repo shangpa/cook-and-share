@@ -12,6 +12,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test.R
 import android.util.Log
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import retrofit2.Call
@@ -150,6 +151,10 @@ class MypagePersonalInfoActivity : AppCompatActivity() {
                     }
                 })
 
+        }
+
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
         }
 
     }

@@ -67,6 +67,10 @@ class MypageFridgeMaterialListActivity : AppCompatActivity() {
 
         updateCategorySelection(0)
         fetchAllFridgeHistories()
+
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
     }
 
     private fun fetchAllFridgeHistories() {

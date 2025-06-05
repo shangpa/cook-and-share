@@ -570,7 +570,9 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
             }
         })
 
-
+        findViewById<ImageView>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
 
     }
 

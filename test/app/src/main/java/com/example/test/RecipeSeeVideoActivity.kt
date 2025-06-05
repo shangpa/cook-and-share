@@ -580,6 +580,10 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                 }
             })
 
+        findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
+            finish()
+        }
+
     }
     private fun initializePlayer(videoUrl: String) {
         player = ExoPlayer.Builder(this).build()

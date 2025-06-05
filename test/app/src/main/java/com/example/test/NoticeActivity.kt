@@ -92,11 +92,11 @@ class NoticeActivity : AppCompatActivity() {
                 }
             }
         }
-
-        noticeBack.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
         loadNotifications()
+
+        findViewById<ImageView>(R.id.noticeBack).setOnClickListener {
+            finish()
+        }
 
     }
 
