@@ -3000,7 +3000,7 @@
 
                     <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
                     <LinearLayout
-                        android:id="@+id/imageContainer"
+                        android:id="@+id/VideoContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"

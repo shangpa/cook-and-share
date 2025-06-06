@@ -42,6 +42,7 @@ import com.example.test.Utils.TabBarUtils
 import com.example.test.model.CookingStep
 import com.example.test.model.Ingredient
 import com.example.test.model.RecipeRequest
+import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -996,18 +997,42 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 레시피 등록한 레시피 확인 (작은 등록하기 클릭시 화면 이동)
         register.setOnClickListener {
-            // 레시피가 완성되어 있으면 업로드 시도!
             if (recipe != null) {
-                // isPublic 값 반영!
                 val uploadRecipe = recipe!!.copy(isPublic = isPublic)
-                sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
-                    // 업로드 성공 후 해당 레시피 보기 화면으로 이동
-                    val intent = Intent(this, RecipeSeeMainActivity::class.java)
-                    intent.putExtra("recipeId", recipeId)
-                    startActivity(intent)
-                }, onFailure = {
-                    Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
-                })
+
+                // 대표 이미지가 비어 있으면 먼저 레시피를 업로드한 뒤, 썸네일 생성 → PATCH
+                if (uploadRecipe.mainImageUrl.isNullOrBlank()) {
+                    val tempRecipe = uploadRecipe.copy(mainImageUrl = "") // 빈 이미지로 우선 업로드
+
+                    sendRecipeToServer(tempRecipe, onSuccess = { recipeId ->
+                        // 업로드 성공 후 썸네일 생성 요청
+                        requestThumbnailIfEmpty(tempRecipe) { generatedImageUrl ->
+                            if (!generatedImageUrl.isNullOrBlank()) {
+                                updateRecipeThumbnail(recipeId, generatedImageUrl)
+                            }
+                        }
+
+                        // 바로 상세 화면으로 이동
+                        val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                        intent.putExtra("recipeId", recipeId)
+                        startActivity(intent)
+                        finish()
+                    }, onFailure = {
+                        Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                    })
+
+                } else {
+                    // 2️⃣ 대표 이미지가 이미 있으면 그냥 업로드
+                    sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
+                        val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                        intent.putExtra("recipeId", recipeId)
+                        startActivity(intent)
+                        finish()
+                    }, onFailure = {
+                        Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                    })
+                }
+
             } else {
                 Toast.makeText(this, "레시피를 먼저 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
@@ -1017,19 +1042,44 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         registerFixButton.setOnClickListener {
             if (recipe != null) {
                 val uploadRecipe = recipe!!.copy(isPublic = isPublic)
-                sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
-                    val intent = Intent(this, RecipeSeeMainActivity::class.java)
-                    startActivity(intent)
-                    Toast.makeText(this, "레시피가 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                    finish()
-                }, onFailure = {
-                    Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
-                })
+
+                // 대표 이미지가 비어 있으면 먼저 레시피를 업로드한 뒤, 썸네일 생성 → PATCH
+                if (uploadRecipe.mainImageUrl.isNullOrBlank()) {
+                    val tempRecipe = uploadRecipe.copy(mainImageUrl = "") // 빈 이미지로 우선 업로드
+
+                    sendRecipeToServer(tempRecipe, onSuccess = { recipeId ->
+                        // 업로드 성공 후 썸네일 생성 요청
+                        requestThumbnailIfEmpty(tempRecipe) { generatedImageUrl ->
+                            if (!generatedImageUrl.isNullOrBlank()) {
+                                updateRecipeThumbnail(recipeId, generatedImageUrl)
+                            }
+                        }
+
+                        // 바로 상세 화면으로 이동
+                        val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                        intent.putExtra("recipeId", recipeId)
+                        startActivity(intent)
+                        finish()
+                    }, onFailure = {
+                        Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                    })
+
+                } else {
+                    // 2️⃣ 대표 이미지가 이미 있으면 그냥 업로드
+                    sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
+                        val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                        intent.putExtra("recipeId", recipeId)
+                        startActivity(intent)
+                        finish()
+                    }, onFailure = {
+                        Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                    })
+                }
+
             } else {
                 Toast.makeText(this, "레시피를 먼저 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
-
         findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
             finish()
         }
@@ -1071,7 +1121,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             cursor.getString(nameIndex)
         } ?: "이름 없음"
 
-        val container = findViewById<LinearLayout>(R.id.imageContainer)
+        val container = findViewById<LinearLayout>(R.id.VideoContainer)
         container.removeAllViews()
 
         val textView = TextView(this).apply {
@@ -2245,5 +2295,51 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 onFailure?.invoke()
             }
         }
+    }
+    //썸네일 생성
+    private fun requestThumbnailIfEmpty(recipe: RecipeRequest, onComplete: (String?) -> Unit) {
+        if (recipe.mainImageUrl.isNotBlank()) {
+            onComplete(recipe.mainImageUrl)
+            return
+        }
+
+        val token = App.prefs.token ?: return
+        RetrofitInstance.apiService.generateThumbnail("Bearer $token", recipe)
+            .enqueue(object : Callback<ThumbnailResponse> {
+                override fun onResponse(call: Call<ThumbnailResponse>, response: Response<ThumbnailResponse>) {
+                    if (response.isSuccessful) {
+                        val imageUrl = response.body()?.imageUrl
+                        Log.d("Thumbnail", "썸네일 생성 성공: $imageUrl")
+                        onComplete(imageUrl)
+                    } else {
+                        Log.e("Thumbnail", "썸네일 응답 실패: ${response.errorBody()?.string()}")
+                        onComplete(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<ThumbnailResponse>, t: Throwable) {
+                    Log.e("Thumbnail", "썸네일 네트워크 실패", t)
+                    onComplete(null)
+                }
+            })
+    }
+    private fun updateRecipeThumbnail(recipeId: Long, imageUrl: String) {
+        val token = App.prefs.token ?: return
+        val body = mapOf("mainImageUrl" to imageUrl)
+        Log.d("Thumbnail", "📤 PATCH 요청 전송: recipeId=$recipeId, imageUrl=$imageUrl")
+        RetrofitInstance.apiService.updateRecipeThumbnail("Bearer $token", recipeId, body)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Log.d("Thumbnail", "✅ 썸네일 URL 업데이트 성공: $imageUrl")
+                    } else {
+                        Log.e("Thumbnail", "썸네일 URL 업데이트 실패 - 응답 코드: ${response.code()}, 오류: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.e("Thumbnail", "썸네일 URL 업데이트 실패", t)
+                }
+            })
     }
 }
