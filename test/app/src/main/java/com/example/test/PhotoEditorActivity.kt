@@ -3,6 +3,8 @@ package com.example.test
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +19,7 @@ import com.canhub.cropper.*
 import ja.burhanrashid52.photoeditor.PhotoEditor
 import ja.burhanrashid52.photoeditor.PhotoEditorView
 import java.io.File
+import java.io.FileOutputStream
 
 class PhotoEditorActivity : AppCompatActivity() {
 
@@ -67,8 +70,30 @@ class PhotoEditorActivity : AppCompatActivity() {
 
             photoEditor.saveAsFile(outputFile.absolutePath, object : PhotoEditor.OnSaveListener {
                 override fun onSuccess(imagePath: String) {
+                    val originalFile = File(imagePath)
+
+                    // 1. Bitmap으로 불러오기
+                    val bitmap = BitmapFactory.decodeFile(originalFile.absolutePath)
+
+                    // 2. 크기 줄이기 (예: 가로 1080 유지, 비율 따라 세로 자동 계산)
+                    val targetWidth = 1080
+                    val scale = targetWidth.toFloat() / bitmap.width
+                    val resizedBitmap = Bitmap.createScaledBitmap(
+                        bitmap,
+                        targetWidth,
+                        (bitmap.height * scale).toInt(),
+                        true
+                    )
+
+                    // 3. 압축 후 새 파일로 저장
+                    val compressedFile = File(cacheDir, "compressed_${System.currentTimeMillis()}.jpg")
+                    val outputStream = FileOutputStream(compressedFile)
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // 품질 80%
+                    outputStream.close()
+
+                    // 4. 결과 전달
                     val resultIntent = Intent().apply {
-                        putExtra("editedImageUri", Uri.fromFile(File(imagePath)).toString())
+                        putExtra("editedImageUri", Uri.fromFile(compressedFile).toString())
                     }
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
