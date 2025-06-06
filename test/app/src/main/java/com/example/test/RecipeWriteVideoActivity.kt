@@ -215,7 +215,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val deleteFour = findViewById<ImageButton>(R.id.deleteFour)
         val deleteFive = findViewById<ImageButton>(R.id.deleteFive)
         val deleteSix = findViewById<ImageButton>(R.id.deleteSix)
-        val addFixButton = findViewById<AppCompatButton>(R.id.addFixButton)
         val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
         val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
         val divideRectangleBarSeven = findViewById<View>(R.id.divideRectangleBarSeven)
@@ -335,11 +334,12 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 // 바(View)의 위치를 클릭한 TextView의 중앙으로 이동
                 val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
                 indicatorBar.x = targetX
+
+                currentIndex = index
             }
         }
 
         // 현재 활성화된 화면 인덱스 추적 변수
-        var currentIndex = 0
 
         fun updateMaterialList(
             materialContainer: LinearLayout,
@@ -395,7 +395,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         continueButton.setOnClickListener {
             if (currentIndex < layouts.size - 1 && currentIndex < textViews.size - 1) {
                 currentIndex++
-
                 showOnlyLayout(layouts[currentIndex])
 
                 // 해당 TextView 색상 변경
@@ -409,6 +408,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             } else {
                 // 마지막 화면이면 contentCheckLayout
                 //대표이미지 가져오기
+                showOnlyLayout(findViewById(R.id.contentCheckLayout))
                 val representativeImage = findViewById<ImageView>(R.id.representativeImage)
                 val fullImageUrl = RetrofitInstance.BASE_URL + mainImageUrl.trim()
                 Glide.with(this).load(fullImageUrl).into(representativeImage)
