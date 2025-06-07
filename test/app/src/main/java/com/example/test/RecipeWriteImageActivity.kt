@@ -105,7 +105,7 @@
             }
 
         companion object {
-            private const val EDIT_IMAGE_REQUEST_CODE = 1001
+            const val EDIT_IMAGE_REQUEST_CODE = 1001
         }
 
         // 대표사진 이미지 업로드
