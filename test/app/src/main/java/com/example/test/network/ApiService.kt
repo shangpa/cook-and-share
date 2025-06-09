@@ -465,4 +465,11 @@ interface ApiService {
     fun getMyPointHistory(
         @Header("Authorization") token: String
     ): Call<List<PointHistoryResponse>>
+
+    @Multipart
+    @POST("/api/vision/analyze")
+    fun detectAndSaveIngredients(
+        @Header("Authorization") token: String,
+        @Part image: MultipartBody.Part
+    ): Call<List<String>>
 }

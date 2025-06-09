@@ -34,6 +34,9 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -145,7 +148,7 @@ class FridgeActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.fridegeCameraText).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("사진 가져오기")
-                .setItems(arrayOf("카메라 촬영", "앨범에서 선택")) { _, which ->
+                .setItems(arrayOf("카메라 촬영", "앨범에서 선택","장본 사진으로 자동 등록")) { _, which ->
                     when (which) {
                         0 -> {
                             val photoFile = File.createTempFile("ocr_", ".jpg", cacheDir)
@@ -154,6 +157,12 @@ class FridgeActivity : AppCompatActivity() {
                         }
                         1 -> {
                             galleryLauncher.launch("image/*")
+                        }
+                        2 -> {
+                            // 장본 사진 분석 (Vision API)
+                            val photoFile = File.createTempFile("grocery_", ".jpg", cacheDir)
+                            imageUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
+                            groceryCameraLauncher.launch(imageUri)
                         }
                     }
                 }.show()
@@ -587,4 +596,44 @@ class FridgeActivity : AppCompatActivity() {
             resources.displayMetrics
         ).toInt()
     }
+    private val groceryCameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            val token = App.prefs.token ?: ""
+            Log.d("장바구니 토큰보내기", "장바구니 토큰: $token")
+            if (success) {
+                imageUri?.let { uri ->
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val requestBody = inputStream?.readBytes()
+                        ?.let { bytes -> bytes.toRequestBody("image/*".toMediaTypeOrNull()) }
+
+                    val multipart = requestBody?.let {
+                        MultipartBody.Part.createFormData("image", "grocery.jpg", it)
+                    }
+
+                    multipart?.let {
+                        RetrofitInstance.apiService.detectAndSaveIngredients("Bearer $token", it)
+                            .enqueue(object : Callback<List<String>> {
+                                override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                                    if (response.isSuccessful) {
+                                        val addedItems = response.body() ?: emptyList()
+                                        Toast.makeText(
+                                            this@FridgeActivity,
+                                            "추가된 재료: ${addedItems.joinToString()}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        fetchFridgeData()
+                                    } else {
+                                        Toast.makeText(this@FridgeActivity, "저장 실패", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                                    Toast.makeText(this@FridgeActivity, "오류 발생: ${t.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                    }
+                }
+            }
+        }
+
 }
