@@ -90,5 +90,26 @@ class SearchMainActivity : AppCompatActivity() {
             finish()
         }
 
+        val recyclerView = findViewById<RecyclerView>(R.id.seasonalRecipeRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        RetrofitInstance.apiService.getSeasonalRecipes().enqueue(object : Callback<List<Recipe>> {
+            override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
+                if (response.isSuccessful) {
+                    val recipes = response.body() ?: return
+                    val adapter = SeasonalRecipeAdapter(recipes) { recipe ->
+                        val intent = Intent(this@SearchMainActivity, RecipeSeeActivity::class.java)
+                        intent.putExtra("recipeId", recipe.recipeId)
+                        startActivity(intent)
+                    }
+                    recyclerView.adapter = adapter
+                }
+            }
+
+            override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
+                Toast.makeText(this@SearchMainActivity, "제철 요리 불러오기 실패", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 }

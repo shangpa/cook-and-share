@@ -129,9 +129,7 @@ interface ApiService {
 
     // 제철 음식 추천
     @GET("/api/recipes/seasonal")
-    fun getSeasonalRecipes(
-        @Header("Authorization") token: String
-    ): Call<List<Recipe>>
+    fun getSeasonalRecipes(): Call<List<Recipe>>
 
     // 인기 검색어
     @GET("api/search/popular-keywords")

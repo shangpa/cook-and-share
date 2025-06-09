@@ -6,43 +6,46 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.test.R
 import com.example.test.model.Recipe
 
 class SeasonalRecipeAdapter(
-    private val recipes: List<Recipe>,
-    private val onItemClick: (Long) -> Unit
-) : RecyclerView.Adapter<SeasonalRecipeAdapter.ViewHolder>() {
+    private val recipeList: List<Recipe>,
+    private val onItemClick: (Recipe) -> Unit
+) : RecyclerView.Adapter<SeasonalRecipeAdapter.SeasonalRecipeViewHolder>() {
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.findViewById(R.id.imageRecipe)
-        val title: TextView = view.findViewById(R.id.textRecipeTitle)
+    inner class SeasonalRecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val recipeImage: ImageView = itemView.findViewById(R.id.seasonalRecipeImage)
+        val recipeTitle: TextView = itemView.findViewById(R.id.seasonalRecipeTitle)
+    }
 
-        init {
-            view.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    onItemClick(recipes[position].recipeId)
-                }
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeasonalRecipeViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_seasonal_recipe, parent, false)
+        return SeasonalRecipeViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SeasonalRecipeViewHolder, position: Int) {
+        val recipe = recipeList[position]
+
+        holder.recipeTitle.text = recipe.title
+        holder.recipeImage.setImageResource(getImageResourceByTitle(recipe.title))
+
+        holder.itemView.setOnClickListener {
+            onItemClick(recipe)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_seasonal_recipe, parent, false)
-        return ViewHolder(view)
-    }
+    override fun getItemCount(): Int = recipeList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val recipe = recipes[position]
-        holder.title.text = recipe.title
-        Glide.with(holder.itemView.context)
-            .load(recipe.mainImageUrl)
-            .placeholder(R.drawable.image_the_recipe_saw_recently_one) // 기본 이미지
-            .into(holder.image)
+    private fun getImageResourceByTitle(title: String): Int {
+        return when (title) {
+            "삼계탕" -> R.drawable.img_seasonal_food1
+            "초계국수" -> R.drawable.img_seasonal_food2
+            "콩국수" -> R.drawable.img_seasonal_food3
+            "물회" -> R.drawable.img_seasonal_food4
+            "오이냉국" -> R.drawable.img_seasonal_food5
+            else -> R.drawable.img_seasonal_food1 // 기본 이미지 지정 (없으면 새로 추가해도 됨)
+        }
     }
-
-    override fun getItemCount() = recipes.size
 }
