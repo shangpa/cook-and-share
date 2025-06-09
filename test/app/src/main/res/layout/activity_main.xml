@@ -2,7 +2,9 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -1396,7 +1398,7 @@
                             android:layout_height="wrap_content"
                             android:text="동네 주민과 주방 용품을 공유해보세요"
                             android:textSize="13sp"
-                            android:textColor="#9B9B9B"/>
+                            android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -1410,23 +1412,26 @@
                     android:layout_marginBottom="20dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/popularTradeRecycler"
+                        android:id="@+id/hotTradeRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:scrollbars="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:layout_marginBottom="41dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_trade_post"
+                        tools:itemCount="3" />
 
                 </GridLayout>
 
-                <!-- 구분선 -->
+<!--                &lt;!&ndash; 구분선 &ndash;&gt;
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#F5F6F7"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="41dp"/>
+                    android:layout_marginBottom="41dp"/>-->
 
                 <!-- 선호하는 레시피 -->
                 <TextView
@@ -1438,7 +1443,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
-                    android:layout_marginBottom="21dp"/>
+                    android:layout_marginBottom="25dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerLikedRecipes"
@@ -1510,7 +1515,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
-                    android:layout_marginBottom="21dp"/>
+                    android:layout_marginBottom="25dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerLikedVideoRecipes"

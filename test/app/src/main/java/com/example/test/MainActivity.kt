@@ -39,15 +39,21 @@ import com.example.test.model.TradePost.TradePostSimpleResponse
 import java.text.DecimalFormat
 import android.Manifest
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.test.adapter.LikedRecipeAdapter
 import com.example.test.adapter.LikedVideoRecipeAdapter
+import com.example.test.adapter.TradePostAdapter
+import com.example.test.adapter.TradePostSimpleAdapter
 import com.example.test.model.LoginInfoResponse
+import com.example.test.model.TradePost.TradePostResponse
 
 lateinit var binding: ActivityMainBinding
 private var currentPage = 0
 private lateinit var sliderHandler: Handler
 private lateinit var sliderRunnable: Runnable
 private lateinit var bannerPagerAdapter: BannerPagerAdapter
+private lateinit var hotTradeRecyclerView: RecyclerView
+private lateinit var hotTradeAdapter: TradePostSimpleAdapter
 
 data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
 data class RecipeCardViewIds(
@@ -269,8 +275,18 @@ class MainActivity : AppCompatActivity() {
 
         val token = App.prefs.token.toString()
         val call = RetrofitInstance.apiService.getMainMessage("Bearer $token")
-        loadPopularKitchenPosts()
 
+        //동네주방
+        hotTradeRecyclerView = findViewById(R.id.hotTradeRecyclerView)
+        hotTradeAdapter = TradePostSimpleAdapter(mutableListOf()) { post ->
+            val intent = Intent(this, MaterialDetailActivity::class.java)
+            intent.putExtra("postId", post.tradePostId)  // 이 필드명 주의
+            startActivity(intent)
+        }
+        hotTradeRecyclerView.adapter = hotTradeAdapter
+        loadHotTradePosts()
+
+        //냉장고 재료
         call.enqueue(object : Callback<Map<String, String>> {
             override fun onResponse(
                 call: Call<Map<String, String>>,
@@ -611,52 +627,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     //동네주방
-    private fun loadPopularKitchenPosts() {
-        val token = App.prefs.token ?: return
-        val container = findViewById<GridLayout>(R.id.kitchenList)
+    private fun loadHotTradePosts() {
+        val apiService = RetrofitInstance.apiService
 
-        RetrofitInstance.apiService.getPopularTradePosts("Bearer $token")
+        val token = App.prefs.token.toString()
+        RetrofitInstance.apiService.getPopularTradePosts("Bearer ${App.prefs.token}")
             .enqueue(object : Callback<List<TradePostSimpleResponse>> {
                 override fun onResponse(
                     call: Call<List<TradePostSimpleResponse>>,
                     response: Response<List<TradePostSimpleResponse>>
                 ) {
-                    if (response.isSuccessful && response.body() != null) {
-                        val posts = response.body()!!
-                        container.removeAllViews()
-
-                        for (post in posts) {
-                            val postView = layoutInflater.inflate(R.layout.item_main_trade_post, container, false)
-
-                            val imageView = postView.findViewById<ImageView>(R.id.itemImage)
-                            val titleView = postView.findViewById<TextView>(R.id.itemTitle)
-                            val priceView = postView.findViewById<TextView>(R.id.itemPrice)
-
-                            val distanceText = postView.findViewById<TextView>(R.id.distanceText)
-
-                            titleView.text = post.title
-                            val formatter = DecimalFormat("#,###")
-                            priceView.text = if (post.price == 0) {
-                                "나눔"
-                            } else {
-                                "${formatter.format(post.price)} P"
-                            }
-
-                            Glide.with(this@MainActivity)
-                                .load(post.firstImageUrl)
-                                .placeholder(R.drawable.img_kitchen1)
-                                .into(imageView)
-
-                            // 숨김 처리
-                            distanceText.visibility = View.GONE
-
-                            container.addView(postView)
-                        }
+                    if (response.isSuccessful) {
+                        val hotPosts = response.body() ?: emptyList()
+                        hotTradeAdapter.updateData(hotPosts.toMutableList())
+                    } else {
+                        Log.e("HOT_TRADE", "서버 응답 실패: ${response.code()}")
                     }
                 }
 
                 override fun onFailure(call: Call<List<TradePostSimpleResponse>>, t: Throwable) {
-                    Log.e("MainActivity", "인기 거래글 불러오기 실패", t)
+                    Log.e("HOT_TRADE", "네트워크 오류: ${t.message}")
                 }
             })
     }
