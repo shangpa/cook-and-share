@@ -1,107 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
 
+    <!-- STEP 1 텍스트 -->
     <TextView
         android:id="@+id/stepOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
         android:text="STEP 1"
         android:textColor="#2B2B2B"
         android:textSize="15sp"
-        android:layout_marginStart="23dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 카메라 -->
+    <!-- 카메라 버튼 -->
     <ImageButton
         android:id="@+id/stepCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="0dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@android:color/transparent"
         android:src="@drawable/ic_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/stepOne" />
+
+    <!-- 이미지가 들어갈 영역 -->
     <LinearLayout
         android:id="@+id/cookOrderRecipeContainerAdd"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/stepCamera"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 1-1 텍스트 -->
     <TextView
         android:id="@+id/stepLittleOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
         android:text="1-1"
         android:textColor="#2B2B2B"
         android:textSize="13sp"
-        android:layout_marginTop="33dp"
-        android:layout_marginStart="23dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stepOne"/>
+        app:layout_constraintTop_toBottomOf="@id/cookOrderRecipeContainerAdd"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- 입력 EditText -->
     <EditText
         android:id="@+id/cookOrderRecipeWrite"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="20dp"
+        android:background="@null"
+        android:backgroundTint="#A1A9AD"
         android:hint="레시피를 입력해주세요."
         android:textSize="13sp"
-        android:backgroundTint="#A1A9AD"
-        android:background="@null"
-        android:layout_marginStart="7dp"
         app:layout_constraintStart_toEndOf="@id/stepLittleOne"
-        app:layout_constraintTop_toTopOf="@id/stepLittleOne"/>
+        app:layout_constraintTop_toTopOf="@id/stepLittleOne"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 1-1. 레시피를 입력해주세요. 아래 구분바 -->
+    <!-- 밑줄 바 -->
     <View
         android:id="@+id/divideRectangleBarSeventeen"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="12dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/bar_rectangle"
-        app:layout_constraintTop_toBottomOf="@id/cookOrderRecipeWrite" />
+        app:layout_constraintTop_toBottomOf="@id/cookOrderRecipeWrite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- 내용 추가하기 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/contentAddTwo"
+        android:layout_width="131dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="100dp"
+        android:text="내용 추가하기"
+        android:textSize="12sp"
+        android:textColor="#9B9B9B"
+        android:background="@drawable/btn_recipe_add"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/timerAddTwo" />
 
-        <!-- 내용 추가하기 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/contentAddTwo"
-            android:layout_width="131dp"
-            android:layout_height="35dp"
-            android:text="내용 추가하기"
-            android:textSize="12sp"
-            android:textColor="#9B9B9B"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="7dp"
-            android:background="@drawable/btn_recipe_add"
-            android:stateListAnimator="@null"
-            app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
-            app:layout_constraintEnd_toStartOf="@id/timerAddTwo" />
+    <!-- 타이머 추가하기 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/timerAddTwo"
+        android:layout_width="131dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:text="타이머 추가하기"
+        android:textSize="12sp"
+        android:textColor="#9B9B9B"
+        android:background="@drawable/btn_recipe_add"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- 타이머 추가하기 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/timerAddTwo"
-            android:layout_width="131dp"
-            android:layout_height="35dp"
-            android:text="타이머 추가하기"
-            android:textSize="12sp"
-            android:textColor="#9B9B9B"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/btn_recipe_add"
-            android:stateListAnimator="@null"
-            app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
