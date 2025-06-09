@@ -259,6 +259,7 @@ class MainActivity : AppCompatActivity() {
         //좋아요 버튼(안채워진거)
         setupHeartToggle(
             listOf(
+                findViewById(R.id.fridgeHeart),
                 findViewById(R.id.fridgeHeartTwo),
                 findViewById(R.id.fridgeHeartThree),
                 findViewById(R.id.fridgeHeartFour)
@@ -402,14 +403,19 @@ class MainActivity : AppCompatActivity() {
                                                 val playBtn =
                                                     findViewById<ImageView>(playBtnId)
 
-                                                // 이미지는 그대로 유지
-                                                if (recipe.mainImageUrl.isNullOrBlank()) {
-                                                    imageView.setImageResource(R.drawable.image_recently_stored_materials_food)
+                                                val baseUrl = RetrofitInstance.BASE_URL
+
+                                                val imageUrl = if (recipe.mainImageUrl?.startsWith("http") == true) {
+                                                    recipe.mainImageUrl
                                                 } else {
-                                                    Glide.with(this@MainActivity)
-                                                        .load(recipe.mainImageUrl)
-                                                        .into(imageView)
+                                                    baseUrl + recipe.mainImageUrl
                                                 }
+
+                                                Glide.with(this@MainActivity)
+                                                    .load(imageUrl)
+                                                    .placeholder(R.drawable.image_recently_stored_materials_food)
+                                                    .error(R.drawable.image_recently_stored_materials_food)
+                                                    .into(imageView)
 
                                                 nameView.text = recipe.title
                                                 difficultyView.text = recipe.difficulty
