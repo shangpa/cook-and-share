@@ -36,8 +36,8 @@ class ExpectedIngredientAdapter(
         val needed = amountInRecipe * servings
 
         holder.name.text = item.name
-        holder.amountNeeded.text = "필요: ${needed.toInt()}개"
-        holder.totalAmount.text = "보유: ${amountInFridge.toInt()}개"
+        holder.amountNeeded.text = "필요: ${needed.toInt()}${item.unit ?: ""}"
+        holder.totalAmount.text = "보유: ${amountInFridge.toInt()}${item.unit ?: ""}"
         holder.date.text = "구매일자: ${item.date}"
     }
 
