@@ -6,18 +6,17 @@
     android:layout_marginEnd="16dp">
 
     <ImageView
-        android:id="@+id/imageRecipe"
+        android:id="@+id/seasonalRecipeImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_the_recipe_saw_recently_one" />
+        android:src="@drawable/img_seasonal_food1"/>
 
     <TextView
-        android:id="@+id/textRecipeTitle"
+        android:id="@+id/seasonalRecipeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="레시피 제목"
-        android:textSize="11sp"
         android:textColor="#2B2B2B"
-        android:layout_marginTop="6dp" />
+        android:textSize="11sp"
+        android:layout_marginTop="6dp"/>
 </LinearLayout>
