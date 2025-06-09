@@ -1,7 +1,10 @@
 package com.example.test
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -97,6 +100,12 @@ class FridgeIngredientActivity : AppCompatActivity() {
         val fridgeIngredientNumInput: EditText = findViewById(R.id.fridgeIngredientNumInput)
         val fridgeAddButton : AppCompatButton = findViewById(R.id.fridgeAddButton)
         val backBtn: ImageView = findViewById(R.id.backBtn)
+        val nameInput = findViewById<EditText>(R.id.fridgeIngredientInput)
+        val countInput = findViewById<EditText>(R.id.fridgeIngredientNumInput)
+        val dateInput = findViewById<EditText>(R.id.fridgeDateInput)
+        val unitText = findViewById<TextView>(R.id.fridgeIngredientUnit)
+        val unitText2 = findViewById<TextView>(R.id.fridgeIngredientUnit2)
+        val addButton = findViewById<AppCompatButton>(R.id.fridgeAddButton)
 
         val intentIngredientName = intent.getStringExtra("ingredientName") ?: ""
         if (intentIngredientName.isNotEmpty()) {
@@ -222,11 +231,42 @@ class FridgeIngredientActivity : AppCompatActivity() {
             }
         }
 
-        backBtn.setOnClickListener {
-            startActivity(Intent(this, FridgeActivity::class.java))
+        Log.d("FridgeIngredientActivity", "수정용 fridgeId: $intentFridgeId")
+
+        // 입력값 확인 후 버튼 상태 갱신 함수
+        fun updateButtonState() {
+            val nameFilled = nameInput.text.toString().trim().isNotEmpty()
+            val countFilled = countInput.text.toString().trim().isNotEmpty()
+            val dateFilled = dateInput.text.toString().trim().isNotEmpty()
+            val unitFilled = unitText.text.toString().trim() != "선택"
+
+            if (nameFilled && countFilled && dateFilled && unitFilled) {
+                addButton.setBackgroundResource(R.drawable.btn_big_green)
+                addButton.setTextColor(Color.parseColor("#FFFFFF"))
+            } else {
+                addButton.setBackgroundResource(R.drawable.btn_number_of_people)
+                addButton.setTextColor(Color.parseColor("#A1A9AD"))
+            }
         }
 
-        Log.d("FridgeIngredientActivity", "수정용 fridgeId: $intentFridgeId")
+        // TextWatcher 공통 등록 함수
+        val watcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) = updateButtonState()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        }
+
+        // EditText에 TextWatcher 등록
+        nameInput.addTextChangedListener(watcher)
+        countInput.addTextChangedListener(watcher)
+        dateInput.addTextChangedListener(watcher)
+
+        // 단위 선택 시 unitText 값이 변경되면 updateButtonState 호출 필요
+        unitText.setOnClickListener {
+            // 예: 단위 선택 다이얼로그 후 선택 시
+            // unitText.text = "개"
+            updateButtonState()
+        }
 
         // 뒤로가기 버튼
         findViewById<ImageView>(R.id.backBtn).setOnClickListener {

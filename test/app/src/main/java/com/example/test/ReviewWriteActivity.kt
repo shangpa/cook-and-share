@@ -2,9 +2,12 @@ package com.example.test
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -222,6 +225,24 @@ class ReviewWriteActivity : AppCompatActivity() {
                 })
         }
 
+        //내용 입력하면 버튼 색 바뀜
+        reviewContentWrite.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val isNotEmpty = !s.isNullOrEmpty()
+                if (isNotEmpty) {
+                    registerButton.setBackgroundResource(R.drawable.btn_big_green)
+                    registerButton.setTextColor(Color.parseColor("#FFFFFF"))
+                } else {
+                    // 원래 색상으로 복구
+                    registerButton.setBackgroundResource(R.drawable.btn_number_of_people)
+                    registerButton.setTextColor(Color.parseColor("#A1A9AD"))
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) { }
+        })
 
         val stars = listOf(
             findViewById<ImageButton>(R.id.star),

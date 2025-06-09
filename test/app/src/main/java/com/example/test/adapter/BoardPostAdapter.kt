@@ -7,6 +7,7 @@ import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,12 @@ import com.bumptech.glide.Glide
 import com.example.test.R
 import com.example.test.model.community.CommunityDetailResponse
 import com.example.test.network.RetrofitInstance
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import com.example.test.App
+
 
 class BoardPostAdapter(
     private val onPostClick: (Long) -> Unit
@@ -46,6 +53,48 @@ class BoardPostAdapter(
             // 저장/좋아요 상태 UI 바인딩
             saveBtn.setImageResource(if (item.liked) R.drawable.ic_store_fill else R.drawable.ic_store)
             goodBtn.setImageResource(if (item.liked) R.drawable.ic_good_fill else R.drawable.ic_good)
+
+            // 저장
+            var isSaved = item.liked
+
+            saveBtn.setOnClickListener {
+                isSaved = !isSaved
+                saveBtn.setImageResource(
+                    if (isSaved) R.drawable.ic_store_fill else R.drawable.ic_store
+                )
+            }
+
+            // 좋아요
+            var isLiked = item.liked
+            var likeCountVal = item.likeCount
+
+            goodBtn.setOnClickListener {
+                if (isLiked) {
+                    Toast.makeText(itemView.context, "이미 추천한 게시글입니다.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val token = "Bearer ${App.prefs.token}"
+                RetrofitInstance.communityApi.likePost(token, item.id)
+                    .enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            if (response.isSuccessful) {
+                                isLiked = true
+                                likeCountVal += 1
+
+                                goodBtn.setImageResource(R.drawable.ic_good_fill)
+                                goodCount.text = likeCountVal.toString()
+                                Toast.makeText(itemView.context, "해당 게시글을 추천했습니다.", Toast.LENGTH_SHORT).show()
+                            } else if (response.code() == 400) {
+                                Toast.makeText(itemView.context, "이미 추천한 게시글입니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(itemView.context, "서버 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
 
             // ----- 이미지 바인딩 -----
             imageContainer.removeAllViews() // 항상 초기화!

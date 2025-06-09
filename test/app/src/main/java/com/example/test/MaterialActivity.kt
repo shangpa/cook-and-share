@@ -378,8 +378,6 @@ class MaterialActivity : AppCompatActivity() {
         numberTextView.text = list.size.toString()
     }
 
-
-
     private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
         val category = button.text.toString()
         listOf(
@@ -495,6 +493,11 @@ class MaterialActivity : AppCompatActivity() {
         }
 
         selectedDistance = distanceKm
+
+        val distanceLayout = findViewById<LinearLayout>(R.id.distance)
+        distanceLayout.visibility = View.GONE
+        isDistanceVisible = false
+
         val token = App.prefs.token.toString()
 
         if (token != "null" && token.isNotBlank()) {

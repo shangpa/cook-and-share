@@ -272,30 +272,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
-                    <!-- 음성 버튼 -->
-                    <ImageButton
-                        android:id="@+id/voice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_voice"
-                        app:layout_constraintTop_toBottomOf="@id/material"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <!-- 음성 버블 -->
-                    <View
-                        android:id="@+id/voiceBubble"
-                        android:layout_width="225dp"
-                        android:layout_height="80dp"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginBottom="0dp"
-                        android:background="@drawable/image_speech_bubble"
-                        app:layout_constraintBottom_toTopOf="@id/voice"
-                        app:layout_constraintEnd_toStartOf="@id/voice"
-                        android:visibility="gone"/>
-
                     <!-- 이전 스텝으로 가기 -->
                     <TextView
                         android:id="@+id/beforeStep"
@@ -360,7 +336,6 @@
                         app:layout_constraintEnd_toEndOf="@id/nextStep"
                         app:layout_constraintTop_toBottomOf="@id/nextStep" />
 
-
                     <!-- 재료 탭 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/materialTap"
@@ -377,6 +352,37 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        app:layout_constraintTop_toBottomOf="@id/materialTap"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <!-- 음성 버튼 -->
+                    <ImageButton
+                        android:id="@+id/voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="37dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_voice"
+                        app:layout_constraintTop_toBottomOf="@id/material"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- 음성 버블 -->
+                    <View
+                        android:id="@+id/voiceBubble"
+                        android:layout_width="225dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="@drawable/image_speech_bubble"
+                        app:layout_constraintBottom_toTopOf="@id/voice"
+                        app:layout_constraintEnd_toStartOf="@id/voice"
+                        android:visibility="gone"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </ScrollView>
@@ -388,7 +394,8 @@
             android:id="@+id/tapBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:visibility="gone">
 
             <!-- 끝내기, 다음으로 -->
             <androidx.constraintlayout.widget.ConstraintLayout
