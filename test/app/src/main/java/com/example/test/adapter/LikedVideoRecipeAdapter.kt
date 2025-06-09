@@ -31,9 +31,17 @@ class LikedVideoRecipeAdapter(
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val recipe = recipeList[position]
-        Glide.with(holder.itemView.context)
-            .load(recipe.mainImageUrl)
+        val context = holder.itemView.context
+
+        val imageUrl = recipe.mainImageUrl?.let {
+            if (it.startsWith("http")) it
+            else com.example.test.network.RetrofitInstance.BASE_URL.trimEnd('/') + "/" + it.trimStart('/')
+        }
+
+        Glide.with(context)
+            .load(imageUrl)
             .placeholder(R.drawable.image_recently_stored_materials_food)
+            .error(R.drawable.image_recently_stored_materials_food)
             .into(holder.image)
 
         holder.title.text = recipe.title

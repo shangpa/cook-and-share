@@ -51,9 +51,15 @@ class LikedRecipeAdapter(
         holder.time.text = "${recipe.cookingTime}분"
         holder.difficulty.text = recipe.difficulty
 
+        val imageUrl = recipe.mainImageUrl?.let {
+            if (it.startsWith("http")) it
+            else RetrofitInstance.BASE_URL.trimEnd('/') + "/" + it.trimStart('/')
+        }
+
         Glide.with(context)
-            .load(recipe.mainImageUrl)
+            .load(imageUrl)
             .placeholder(R.drawable.image_recently_stored_materials_food)
+            .error(R.drawable.image_recently_stored_materials_food)
             .into(holder.image)
 
         holder.heartIcon.setImageResource(
