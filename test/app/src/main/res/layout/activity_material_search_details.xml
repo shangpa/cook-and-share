@@ -100,7 +100,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="재료"
+                        android:text="카테고리"
                         android:textSize="11sp"
                         android:textColor="#8A8F9C"
                         android:layout_marginEnd="4dp" />

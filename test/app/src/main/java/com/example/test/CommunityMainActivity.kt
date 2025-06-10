@@ -212,11 +212,16 @@ class CommunityMainActivity : AppCompatActivity() {
                                 RetrofitInstance.BASE_URL + it
                             }
 
-                            Glide.with(this@CommunityMainActivity)
-                                .load(imageUrl)
-                                .placeholder(R.drawable.img_kitchen1)
-                                .into(imageView)
 
+                            if (imageUrl != null) {
+                                imageView.visibility = View.VISIBLE
+                                Glide.with(this@CommunityMainActivity)
+                                    .load(imageUrl)
+                                    .placeholder(R.drawable.img_kitchen1)
+                                    .into(imageView)
+                            } else {
+                                imageView.visibility = View.GONE
+                            }
                             titleText.text = post.content.take(20) + "..."
                             authorText.text = post.writer
                             likeCount.text = post.likeCount.toString()
@@ -290,16 +295,22 @@ class CommunityMainActivity : AppCompatActivity() {
                 setPadding(0, dp(7), 0, 0)
             }
 
-            // 이미지
             val imageView = ImageView(context).apply {
                 layoutParams = LinearLayout.LayoutParams(dp(56), dp(56))
                 scaleType = ImageView.ScaleType.CENTER_CROP
-                val imageUrl = post.imageUrls.firstOrNull()?.let { RetrofitInstance.BASE_URL + it }
+            }
+
+            val imageUrl = post.imageUrls.firstOrNull()?.let { RetrofitInstance.BASE_URL + it }
+            if (imageUrl != null) {
+                imageView.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(imageUrl)
                     .placeholder(R.drawable.img_kitchen1)
-                    .into(this)
+                    .into(imageView)
+            } else {
+                imageView.visibility = View.GONE
             }
+
 
             // 텍스트 세로 레이아웃
             val textLayout = LinearLayout(context).apply {
@@ -421,12 +432,19 @@ class CommunityMainActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                val imageUrl = post.imageUrls.firstOrNull()?.let { RetrofitInstance.BASE_URL + it }
+            }
+
+            val imageUrl = post.imageUrls.firstOrNull()?.let { RetrofitInstance.BASE_URL + it }
+            if (imageUrl != null) {
+                imageView.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(imageUrl)
                     .placeholder(R.drawable.img_kitchen1)
-                    .into(this)
+                    .into(imageView)
+            } else {
+                imageView.visibility = View.GONE
             }
+
 
             // 4. 텍스트(수직)
             val textVerticalLayout = LinearLayout(context).apply {
@@ -550,12 +568,19 @@ class CommunityMainActivity : AppCompatActivity() {
                     dp(100)
                 )
                 scaleType = ImageView.ScaleType.CENTER_CROP
-                val imageUrl = post.imageUrls.firstOrNull()?.let { RetrofitInstance.BASE_URL + it }
+            }
+
+            val imageUrl = post.imageUrls.firstOrNull()?.let { RetrofitInstance.BASE_URL + it }
+            if (imageUrl != null) {
+                imageView.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(imageUrl)
                     .placeholder(R.drawable.img_kitchen1)
-                    .into(this)
+                    .into(imageView)
+            } else {
+                imageView.visibility = View.GONE
             }
+
 
             // 게시글 내용 (2줄로 보이게)
             val contentText = TextView(context).apply {
