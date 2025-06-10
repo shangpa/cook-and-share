@@ -428,7 +428,8 @@
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="40dp"/>
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"/>
 
         </LinearLayout>
     </ScrollView>

@@ -445,6 +445,15 @@ class MaterialActivity : AppCompatActivity() {
         selectedFilterLayout.visibility = View.VISIBLE
         if (selectedFilterLayout.children.any { it.tag == "material-$text" }) return
         val badge = layoutInflater.inflate(R.layout.filter_badge, null)
+
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            setMargins(0, 0, 15, 0) // 오른쪽 마진 5dp
+        }
+        badge.layoutParams = layoutParams
+
         val badgeText = badge.findViewById<TextView>(R.id.filterText)
         val badgeClose = badge.findViewById<ImageView>(R.id.filterClose)
 
@@ -493,6 +502,25 @@ class MaterialActivity : AppCompatActivity() {
         }
 
         selectedDistance = distanceKm
+
+        for (i in selectedFilterLayout.childCount - 1 downTo 0) {
+            val badge = selectedFilterLayout.getChildAt(i)
+            if (badge.tag == "distance") selectedFilterLayout.removeView(badge)
+        }
+
+        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
+        badge.tag = "distance"
+        badge.findViewById<TextView>(R.id.filterText).text = button.text.toString()
+        badge.findViewById<ImageView>(R.id.filterClose).setOnClickListener {
+            selectedFilterLayout.removeView(badge)
+            selectedDistance = null
+            buttons.forEach {
+                it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                it.setTextColor(Color.parseColor("#8A8F9C"))
+            }
+        }
+        selectedFilterLayout.addView(badge)
+        selectedFilterLayout.visibility = View.VISIBLE
 
         val distanceLayout = findViewById<LinearLayout>(R.id.distance)
         distanceLayout.visibility = View.GONE

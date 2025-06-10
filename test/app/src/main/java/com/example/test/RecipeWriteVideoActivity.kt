@@ -280,7 +280,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // 레시피 세부설정 선언
         val recipeWriteDetailSettleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
-        val levelBoxChoice = findViewById<ConstraintLayout>(R.id.levelBoxChoice)
         val requiredTimeAndTag = findViewById<ConstraintLayout>(R.id.requiredTimeAndTag)
         val detailSettleCamera = findViewById<ImageButton>(R.id.detailSettleCamera)
         val elementaryLevel = findViewById<TextView>(R.id.elementaryLevel)
@@ -797,17 +796,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             popup.show()
         }
 
-        // 레시피 세부설정 드롭다운 내부의 TextView 클릭 이벤트 설정
-        for (i in 0 until levelBoxChoice.childCount) {
-            val child = levelBoxChoice.getChildAt(i)
-            if (child is TextView) {
-                child.setOnClickListener {
-                    elementaryLevel.text = child.text.toString() // 선택한 값으로 변경
-                    elementaryLevel.setTextColor(Color.parseColor("#2B2B2B")) // 색깔 변경
-                    detailSettleCloseDropDown(levelBoxChoice, requiredTimeAndTag)
-                }
-            }
-        }
         var isCheckedOne = false
         var isCheckedTwo = false
         uncheck.setOnClickListener {
