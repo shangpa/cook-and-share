@@ -110,5 +110,12 @@
         android:stateListAnimator="@null"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarSeventeen"
         app:layout_constraintEnd_toEndOf="parent" />
-
+    <LinearLayout
+        android:id="@+id/timerInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/timerAddTwo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

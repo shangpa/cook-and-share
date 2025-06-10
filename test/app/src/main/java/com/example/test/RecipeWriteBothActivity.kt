@@ -850,6 +850,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 val minute = minutePicker.value
                 stepTimerMap[currentStep] = hour to minute
                 Toast.makeText(this, "STEP $currentStep 타이머 저장됨 ($hour:$minute)", Toast.LENGTH_SHORT).show()
+                timerLayout.visibility= View.GONE
             }
             stepContainer.addView(timerLayout)
         }
@@ -1958,7 +1959,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val timerAddTwo = newStepLayout.findViewById<AppCompatButton>(R.id.timerAddTwo)
 
         timerAddTwo.setOnClickListener {
-            val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
+            val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.timerInput)
 
             // 🔁 기존 타이머가 있다면 제거 (중복 방지)
             for (i in 0 until dynamicRecipeInputContainer.childCount) {
