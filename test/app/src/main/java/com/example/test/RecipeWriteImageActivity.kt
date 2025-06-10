@@ -1,4 +1,5 @@
     /*레시피 이미지*/
+    //todo 타이머 수정해야함
     package com.example.test
 
     import android.animation.ObjectAnimator
