@@ -14,6 +14,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -25,6 +27,7 @@ import android.widget.GridLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -189,7 +192,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
         val recipeTitleWrite = findViewById<EditText>(R.id.recipeTitleWrite)
         val downArrow = findViewById<ImageButton>(R.id.downArrow)
-        val categoryDropDown = findViewById<ConstraintLayout>(R.id.categoryDropDown)
         val recipeName = findViewById<ConstraintLayout>(R.id.recipeName)
         val koreanFood = findViewById<TextView>(R.id.koreanFood)
         val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
@@ -232,6 +234,9 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val dropDownFour = findViewById<ImageButton>(R.id.dropDownFour)
         val dropDownFive = findViewById<ImageButton>(R.id.dropDownFive)
         val dropDownSix = findViewById<ImageButton>(R.id.dropDownSix)
+        val foodName = findViewById<TextView>(R.id.foodName)
+        val materialKoreanFood = findViewById<TextView>(R.id.materialKoreanFood)
+
 
         // 레시피 대체재료 선언
         val recipeWriteReplaceMaterialLayout =
@@ -245,6 +250,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val replaceMaterialDeleteTwo = findViewById<ImageButton>(R.id.replaceMaterialDeleteTwo)
         val divideRectangleBarThirteen = findViewById<View>(R.id.divideRectangleBarThirteen)
         val replaceMaterialAddFixButton = findViewById<AppCompatButton>(R.id.replaceMaterialAddFixButton)
+        val replaceMaterialFoodName = findViewById<TextView>(R.id.replaceMaterialfoodName)
+        val replaceMaterialKoreanFood = findViewById<TextView>(R.id.replaceMaterialKoreanFood)
 
         // 레시피 처리방법 선언
         val recipeWriteHandlingMethodLayout =
@@ -258,12 +265,18 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val handlingMethodDeleteTwo = findViewById<ImageButton>(R.id.handlingMethodDeleteTwo)
         val divideRectangleBarSixteen = findViewById<View>(R.id.divideRectangleBarSixteen)
         val handlingMethodAddFixButton = findViewById<AppCompatButton>(R.id.handlingMethodAddFixButton)
+        val handlingMethodFoodName = findViewById<TextView>(R.id.handlingMethodFoodName)
+        val handlingMethodKoreanFood = findViewById<TextView>(R.id.handlingMethodKoreanFood)
+
 
         // 레시피 조리영상 선언
         val root = findViewById<ConstraintLayout>(R.id.root)
         val recipeWriteCookVideoLayout = findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout)
         val imageContainer = findViewById<LinearLayout>(R.id.imageContainer)
         val cookVideoCamera = findViewById<ImageButton>(R.id.cookVideoCamera)
+        val cookVideoFoodName = findViewById<TextView>(R.id.cookVideoFoodName)
+        val cookVideoKoreanFood = findViewById<TextView>(R.id.cookVideoKoreanFood)
+
 
         // 레시피 세부설정 선언
         val recipeWriteDetailSettleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
@@ -275,6 +288,9 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val zero = findViewById<EditText>(R.id.zero)
         val halfHour = findViewById<EditText>(R.id.halfHour)
         val detailSettleRecipeTitleWrite = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)
+        val detailSettleFoodName = findViewById<TextView>(R.id.detailSettleFoodName)
+        val detailSettleKoreanFood = findViewById<TextView>(R.id.detailSettleKoreanFood)
+
 
         // 작성한 내용 확인 선언
         val contentCheckLayout = findViewById<ConstraintLayout>(R.id.contentCheckLayout)
@@ -588,29 +604,44 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
 
+        recipeTitleWrite.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                foodName.text = text
+                replaceMaterialFoodName.text = text
+                handlingMethodFoodName.text = text
+                cookVideoFoodName.text = text
+                detailSettleFoodName.text = text
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
         // 레시피 타이틀 드롭다운 버튼 클릭 시 열기/닫기 토글
         downArrow.setOnClickListener {
-            if (categoryDropDown.visibility == View.VISIBLE) {
-                closeDropDown(categoryDropDown, recipeName)
-            } else {
-                openDropDown(categoryDropDown, recipeName)
+            val popup = PopupMenu(this, it)
+
+            val categories = listOf("전체", "한식", "양식", "일식", "중식", "채식", "간식", "안주", "반찬", "기타")
+            categories.forEach { category ->
+                popup.menu.add(category)
             }
+
+            popup.setOnMenuItemClickListener { menuItem ->
+                koreanFood.text = menuItem.title
+                koreanFood.setTextColor(Color.parseColor("#2B2B2B")) // 선택 시 진한 텍스트 색상으로 변경
+
+                checkAndUpdateContinueButton()
+                true
+            }
+
+            popup.show()
         }
 
-        // 레시피 타이틀 드롭다운 내부의 TextView(카테고리) 클릭 이벤트 설정
-        for (i in 0 until categoryDropDown.childCount) {
-            val child = categoryDropDown.getChildAt(i)
-            if (child is TextView) {
-                child.setOnClickListener {
-                    koreanFood.text = child.text.toString() // 선택한 값으로 변경
-                    koreanFood.setTextColor(Color.parseColor("#2B2B2B")) // 색깔 변경
-                    closeDropDown(categoryDropDown, recipeName)
-                }
-            }
-        }// 레시피 재료 materialDropDown을 findViewById로 제대로 연결
-        val materialDropDown = findViewById<ConstraintLayout>(R.id.materialDropDown)
+        /// 드롭다운 항목
+        val unitOptions = listOf("개", "컵", "큰솔", "작은솔", "티스푼", "리터", "g", "kg", "덩어리", "묶음", "주머니", "봉지", "통", "팩", "한 줌", "한 술")
 
-        // 레시피 재료 드롭다운 버튼과 연결할 unit을 관리하는 Map
+        // 버튼 ID → 텍스트뷰 ID 맵핑
         val buttonToUnitMap = mapOf(
             R.id.dropDown to R.id.unit,
             R.id.dropDownTwo to R.id.unitTwo,
@@ -620,31 +651,40 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             R.id.dropDownSix to R.id.unitSix
         )
 
-        // 레시피 재료 드롭다운 버튼 클릭 시 동작 설정
+        // 각 버튼에 대해 PopupMenu 설정
         buttonToUnitMap.forEach { (buttonId, unitId) ->
             val button = findViewById<ImageButton>(buttonId)
             val unit = findViewById<TextView>(unitId)
-            val materialDropDown = findViewById<ConstraintLayout>(R.id.materialDropDown)
 
             button.setOnClickListener {
-                // 드롭다운 열기
-                materialDropDown.visibility = View.VISIBLE
+                val popup = PopupMenu(this@RecipeWriteVideoActivity, button)
 
-                // 드롭다운에서 텍스트를 선택할 때의 이벤트 처리
-                for (i in 0 until materialDropDown.childCount) {
-                    val child = materialDropDown.getChildAt(i)
-                    if (child is TextView) {
-                        child.setOnClickListener {
-                            // 선택된 텍스트를 해당 unit에 설정
-                            unit.text = child.text.toString()
-                            unit.setTextColor(Color.parseColor("#2B2B2B")) // 색상 변경
-
-                            // 드롭다운 닫기
-                            materialDropDown.visibility = View.GONE
-                        }
-                    }
+                unitOptions.forEach { option ->
+                    popup.menu.add(option)
                 }
+
+                popup.setOnMenuItemClickListener { menuItem ->
+                    unit.text = menuItem.title
+                    unit.setTextColor(Color.parseColor("#2B2B2B"))
+                    true
+                }
+
+                popup.show()
             }
+        }
+
+        // 한식 바뀜
+        fun updateKoreanFoodTextViews(text: String) {
+            materialKoreanFood.text = text
+            replaceMaterialKoreanFood.text = text
+            handlingMethodKoreanFood.text = text
+            cookVideoKoreanFood.text = text
+            detailSettleKoreanFood.text = text
+        }
+
+        // koreanFood 값이 변경될 때 자동 반영
+        koreanFood.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            updateKoreanFoodTextViews(koreanFood.text.toString())
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -737,13 +777,24 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             pickImageLauncherForDetailSettle.launch("image/*")
         }
 
-        // 레시피 세부설정 드롭다운 버튼 클릭 시 열기/닫기 토글
+        // 세부설정 난이도 열기
         detailSettleDownArrow.setOnClickListener {
-            if (levelBoxChoice.visibility == View.VISIBLE) {
-                detailSettleCloseDropDown(levelBoxChoice, requiredTimeAndTag)
-            } else {
-                detailSettleOpenDropDown(levelBoxChoice, requiredTimeAndTag)
+            val popup = PopupMenu(this, it)
+
+            val categories = listOf("초급", "중급", "상급")
+            categories.forEach { category ->
+                popup.menu.add(category)
             }
+
+            popup.setOnMenuItemClickListener { menuItem ->
+                elementaryLevel.text = menuItem.title
+                elementaryLevel.setTextColor(Color.parseColor("#2B2B2B")) // 선택 시 진한 텍스트 색상으로 변경
+
+                checkAndUpdateContinueButton()
+                true
+            }
+
+            popup.show()
         }
 
         // 레시피 세부설정 드롭다운 내부의 TextView 클릭 이벤트 설정
@@ -833,6 +884,15 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
             finish()
         }
+    }
+
+    private fun checkAndUpdateContinueButton() {
+        val recipeTitleEditText = findViewById<EditText>(R.id.recipeTitleWrite)
+        val koreanFoodTextView = findViewById<TextView>(R.id.koreanFood)
+        val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
+
+        val titleFilled = recipeTitleEditText.text.toString().isNotBlank()
+        val koreanFoodSelected = koreanFoodTextView.text.toString().isNotBlank()
     }
 
     private fun showOnlyLayout(targetLayout: ConstraintLayout) {
@@ -957,30 +1017,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         return (dp * resources.displayMetrics.density).toInt()
     }
 
-    // 레시피 재료 레이아웃 위치 업데이트 함수
-    private fun updateDropdownPosition(button: ImageButton) {
-        val layout = findViewById<ConstraintLayout>(R.id.materialDropDown)
-        val layoutParams = layout.layoutParams as? ConstraintLayout.LayoutParams
-
-        if (layoutParams != null) {
-            layoutParams.topToBottom = button.id  // 버튼의 아래로 레이아웃을 배치
-            layoutParams.topMargin = (7 * resources.displayMetrics.density).toInt()  // 7dp 간격을 px로 변환
-            layout.layoutParams = layoutParams
-        }
-    }
-
-    // 레시피 재료 텍스트뷰 위치 업데이트 함수
-    private fun updateDropdownTextPosition(textView: TextView) {
-        val layout = findViewById<ConstraintLayout>(R.id.materialDropDown)
-        val layoutParams = layout.layoutParams as? ConstraintLayout.LayoutParams
-
-        if (layoutParams != null) {
-            layoutParams.topToBottom = textView.id  // 텍스트뷰의 아래로 레이아웃을 배치
-            layoutParams.topMargin = (7 * resources.displayMetrics.density).toInt()  // 7dp 간격을 px로 변환
-            layout.layoutParams = layoutParams
-        }
-    }
-
     // 레시피 재료 내용 추가하기 클릭시 내용 추가
     private fun addNewItem() {
         // 새로운 ConstraintLayout 생성
@@ -1079,11 +1115,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             setBackgroundResource(android.R.color.transparent) // 배경 투명
         }
 
-        // 🔹 드롭다운 버튼 클릭 이벤트 설정
-        dropDownSix.setOnClickListener {
-            showDropdownMenu(unitSix) // 드롭다운 표시
-        }
-
         // 삭제 버튼 클릭 시 해당 레이아웃 삭제 & 버튼 위치 조정
         deleteSix.setOnClickListener {
             materialContainer.removeView(newItemLayout)
@@ -1126,27 +1157,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // 부모 레이아웃에 추가
         materialContainer.addView(newItemLayout)
         itemCount++
-    }
-
-    // 🔹 드롭다운을 표시하는 함수
-    private fun showDropdownMenu(unitView: TextView) {
-        val materialDropDown = findViewById<ConstraintLayout>(R.id.materialDropDown)
-
-        // 드롭다운 열기
-        materialDropDown.visibility = View.VISIBLE
-
-        // 드롭다운 내부의 TextView(옵션) 클릭 이벤트 설정
-        for (i in 0 until materialDropDown.childCount) {
-            val child = materialDropDown.getChildAt(i)
-            if (child is TextView) {
-                child.setOnClickListener {
-                    // 선택한 텍스트를 unitView에 설정
-                    unitView.text = child.text.toString()
-                    unitView.setTextColor(Color.parseColor("#2B2B2B")) // 색상 변경
-                    materialDropDown.visibility = View.GONE // 드롭다운 닫기
-                }
-            }
-        }
     }
 
     // 레시피 재료 내용 추가 버튼 클릭시 버튼 아래로 이동

@@ -90,7 +90,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="60dp"
             android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@id/recipeTap">
+            app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -336,6 +336,12 @@
                 app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintTop_toBottomOf="@id/materialTap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <!-- 조리순서 탭 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -357,9 +363,14 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintTop_toBottomOf="@id/cookOrderTap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <!-- 리뷰 탭 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -433,10 +444,17 @@
                     android:text="리뷰 작성하러 가기"
                     android:textSize="13sp"
                     android:textColor="#9B9B9B"
-                    android:layout_marginTop="106dp"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/btn_recipe_add"
                     android:stateListAnimator="@null"
                     app:layout_constraintTop_toBottomOf="@id/reviewRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintTop_toBottomOf="@id/reviewWriteButton"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
