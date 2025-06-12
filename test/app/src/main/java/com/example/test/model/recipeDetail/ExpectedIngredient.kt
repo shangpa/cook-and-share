@@ -5,6 +5,7 @@ data class ExpectedIngredient(
     val amountInRecipe: String,
     val amountInFridge: String,
     val unit: String,
-    val date: String
+    val date: String,
+    val dateOption: String
 )
 
