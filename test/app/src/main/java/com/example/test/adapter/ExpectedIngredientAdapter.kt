@@ -32,13 +32,13 @@ class ExpectedIngredientAdapter(
 
         val amountInRecipe = parseDouble(item.amountInRecipe)  // 문자열 정리 후 double
         val amountInFridge = parseDouble(item.amountInFridge)
-
         val needed = amountInRecipe * servings
 
         holder.name.text = item.name
         holder.amountNeeded.text = "필요: ${needed.toInt()}${item.unit ?: ""}"
         holder.totalAmount.text = "보유: ${amountInFridge.toInt()}${item.unit ?: ""}"
         holder.date.text = "구매일자: ${item.date}"
+        holder.date.text = "${item.dateOption ?: ""} : ${item.date ?: ""}"
     }
 
     fun updateServings(newServings: Int) {
