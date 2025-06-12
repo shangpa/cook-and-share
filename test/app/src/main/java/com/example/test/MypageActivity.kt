@@ -90,6 +90,7 @@ class MypageActivity : AppCompatActivity() {
         // 토큰 가져오기
         val token = App.prefs.token.toString()
         val userPointText: TextView = findViewById(R.id.myPoint) //포인트 표시할 TextView
+
         // 사용자 정보 요청
         // 1. 사용자 이름 불러오기
         if (token.isNotEmpty()) {
@@ -99,14 +100,15 @@ class MypageActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val userInfo = response.body()
                             userInfo?.let {
-                                userNameText.text = it.name
+                                userNameText.text = "${it.name} 님"
+                                logoutText.text ="로그아웃"
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
-                        userNameText.text = "사용자"
-                        logoutText.text ="로그인"
+                        userNameText.text = "로그인을 해주세요"
+                        logoutText.text ="로그인하러 가기"
                     }
                 })
 
@@ -132,6 +134,14 @@ class MypageActivity : AppCompatActivity() {
             userNameText.text = "로그인을 해주세요"
             userPointText.text = "0"
             logoutText.text ="로그인하러 가기"
+        }
+
+        // userEditIcon 클릭했을 때 MypagePersonalInfoActivity 이동
+        val userEditIcon = findViewById<ImageButton>(R.id.userEditIcon)
+
+        userEditIcon.setOnClickListener {
+            val intent = Intent(this, MypagePersonalInfoActivity::class.java)
+            startActivity(intent)
         }
 
         // editInformation 클릭했을 때 MypagePersonalInfoActivity 이동

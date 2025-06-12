@@ -15,7 +15,6 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.test.Utils.TabBarUtils
 import com.example.test.model.Fridge.FridgeRecommendRequest
@@ -207,7 +206,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
                 }
             }
             if (isAllChecked) {
-                fridgeAllCheckIcon.setImageResource(R.drawable.btn_fridge_checked)
+                fridgeAllCheckIcon.setImageResource(R.drawable.ic_fridge_checked)
             } else {
                 fridgeAllCheckIcon.setImageResource(R.drawable.ic_fridge_check)
             }
