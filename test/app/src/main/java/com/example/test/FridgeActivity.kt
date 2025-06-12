@@ -55,6 +55,15 @@ class FridgeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 🔐 로그인 여부 확인
+        if (App.prefs.token.isNullOrEmpty()) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            return
+        }
+
         setContentView(R.layout.activity_fridge)
 
         // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
@@ -269,7 +278,7 @@ class FridgeActivity : AppCompatActivity() {
                 icon.setImageResource(R.drawable.ic_fridge_check)
             } else {
                 selectedFridgeIds.addAll(filteredIds)
-                icon.setImageResource(R.drawable.btn_fridge_checked)
+                icon.setImageResource(R.drawable.ic_fridge_checked)
             }
 
             fridgeAdapter.notifyDataSetChanged()

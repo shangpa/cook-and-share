@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingStart="30dp"
-    android:paddingEnd="30dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
     android:layout_marginBottom="20dp">
 
     <!-- 사각 도형 -->

@@ -10,8 +10,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.test.model.Fridge.FridgeRequest
+import com.example.test.model.LoginInfoResponse
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FridgeIngredientActivity : AppCompatActivity() {
 
@@ -272,6 +276,28 @@ class FridgeIngredientActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.backBtn).setOnClickListener {
             finish()
         }
+
+        val fridgeUserText = findViewById<TextView>(R.id.fridgeUserText)
+        val token = "Bearer ${getTokenFromPreferences()}"
+        val call = RetrofitInstance.apiService.getUserInfo(token)
+
+        call.enqueue(object : Callback<LoginInfoResponse> {
+            override fun onResponse(
+                call: Call<LoginInfoResponse>,
+                response: Response<LoginInfoResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val userName = response.body()?.name
+                    fridgeUserText.text = "$userName 님이 가진 재료를 입력해보세요!"
+                } else {
+                    fridgeUserText.text = "로그인 후 가지고 있는 재료를 입력해보세요!"
+                }
+            }
+
+            override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
+                fridgeUserText.text = "오류 발생"
+            }
+        })
 
     }
 
