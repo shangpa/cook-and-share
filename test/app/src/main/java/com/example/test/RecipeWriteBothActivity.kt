@@ -876,7 +876,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 레시피 조리순서 타이머 버튼 클릭시
         timerAdd.setOnClickListener {
-            val timerLayout = LayoutInflater.from(this).inflate(R.layout.timer_step_layout, stepContainer, false)
+            val timerLayout = LayoutInflater.from(this)
+                .inflate(R.layout.timer_step_layout, stepContainer, false)
 
             val hourPicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker1)
             val minutePicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker2)
@@ -896,6 +897,19 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 timerLayout.visibility= View.GONE
             }
             stepContainer.addView(timerLayout)
+
+            // 🧩 타이머 추가 후 버튼 위치 재조정
+            timerLayout.post {
+                val timerHeight = timerLayout.measuredHeight
+                val layoutParamsTimer = timerAdd.layoutParams as ViewGroup.MarginLayoutParams
+                val layoutParamsContent = contentAdd.layoutParams as ViewGroup.MarginLayoutParams
+
+                layoutParamsTimer.topMargin = timerLayout.bottom + 20.dpToPx()
+                layoutParamsContent.topMargin = timerLayout.bottom + 20.dpToPx()
+
+                timerAdd.layoutParams = layoutParamsTimer
+                contentAdd.layoutParams = layoutParamsContent
+            }
         }
 
 
