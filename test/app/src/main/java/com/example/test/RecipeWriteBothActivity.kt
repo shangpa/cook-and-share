@@ -851,8 +851,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 val minute = minutePicker.value
                 stepTimerMap[currentStep] = hour to minute
                 Toast.makeText(this, "STEP $currentStep 타이머 저장됨 ($hour:$minute)", Toast.LENGTH_SHORT).show()
+                timerLayout.visibility= View.GONE
             }
-
             stepContainer.addView(timerLayout)
 
             // 🧩 타이머 추가 후 버튼 위치 재조정
@@ -1933,11 +1933,9 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 🚀 버튼 위치 조정 (입력 칸과 70dp 떨어지게 설정)
         val buttonParams = addButton.layoutParams as ViewGroup.MarginLayoutParams
-        buttonParams.topMargin += 15 // 🔽 입력 칸과 70dp 간격 유지
         addButton.requestLayout()
 
         val timerParams = timerButton.layoutParams as ViewGroup.MarginLayoutParams
-        timerParams.topMargin += 15 // 🔽 동일하게 70dp 유지
         timerButton.requestLayout()
 
         // 🔽 UI에 추가
@@ -1973,8 +1971,9 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val contentAddTwo = newStepLayout.findViewById<AppCompatButton>(R.id.contentAddTwo)
 
         val timerAddTwo = newStepLayout.findViewById<AppCompatButton>(R.id.timerAddTwo)
+
         timerAddTwo.setOnClickListener {
-            val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.cookOrderRecipeContainerAdd)
+            val dynamicRecipeInputContainer = newStepLayout.findViewById<LinearLayout>(R.id.timerInput)
 
             // 🔁 기존 타이머가 있다면 제거 (중복 방지)
             for (i in 0 until dynamicRecipeInputContainer.childCount) {
@@ -1987,7 +1986,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
             // 🔧 새 타이머 뷰 생성
             val timerLayout = LayoutInflater.from(this).inflate(R.layout.timer_step_layout, null).apply {
-                tag = "timer_$step" // 태그로 중복 방지
+                tag = "timer_$step"
             }
 
             val hourPicker = timerLayout.findViewById<NumberPicker>(R.id.numberPicker1)
@@ -2005,25 +2004,22 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 val minute = minutePicker.value
                 stepTimerMap[step] = hour to minute
                 Toast.makeText(this, "STEP $step 타이머 저장됨 (${hour}시간 ${minute}분)", Toast.LENGTH_SHORT).show()
+                timerLayout.visibility = View.GONE
             }
 
             // 타이머 뷰 추가
             dynamicRecipeInputContainer.addView(timerLayout)
 
+            // 레이아웃 마진 조정
             timerLayout.post {
-                val baseMarginDp = 32
-
                 val layoutParamsContent = contentAddTwo.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParamsContent.topMargin = baseMarginDp.dpToPx() + timerLayout.height + 15.dpToPx()
                 contentAddTwo.layoutParams = layoutParamsContent
 
                 val layoutParamsTimer = timerAddTwo.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParamsTimer.topMargin = baseMarginDp.dpToPx() + timerLayout.height + 15.dpToPx()
                 timerAddTwo.layoutParams = layoutParamsTimer
             }
-
-
         }
+
 
         // 버튼이 보이도록 설정
         stepCamera.visibility = View.VISIBLE
@@ -2095,11 +2091,9 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
                 // 🚀 버튼 위치 조정 (구분선 아래 70dp 위치)
                 val buttonParams = contentAddTwo.layoutParams as ViewGroup.MarginLayoutParams
-                buttonParams.topMargin = dividerBottom + dpToPx(15) // 구분선 아래 70dp
                 contentAddTwo.requestLayout()
 
                 val timerParams = timerAddTwo.layoutParams as ViewGroup.MarginLayoutParams
-                timerParams.topMargin = dividerBottom + dpToPx(15) // 동일하게 조정
                 timerAddTwo.requestLayout()
             }
         }
@@ -2252,13 +2246,18 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     }
     //이미지선택
     private fun displaySelectedImage(uri: Uri, targetContainer: LinearLayout) {
-        val imageView = ImageView(this)
-        imageView.setImageURI(uri)
-        val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
-        imageView.layoutParams = layoutParams
-        targetContainer.addView(imageView) // 선택한 컨테이너에 이미지 추가
+        val imageView = ImageView(this).apply {
+            setImageURI(uri)
+            layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx()).apply {
+                setMargins(0, 16.dpToPx(), 0, 16.dpToPx())
+            }
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            adjustViewBounds = true
+        }
+        targetContainer.addView(imageView)
         Log.d("RecipeWriteImageActivity", "이미지 추가 완료! 대상 컨테이너: ${targetContainer.id}")
     }
+
 
     //백엔드 서버에 이미지 업로드
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
