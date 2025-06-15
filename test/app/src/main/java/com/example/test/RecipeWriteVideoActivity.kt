@@ -82,6 +82,7 @@ private var createdRecipeId: Long? = null
 private var isPublic: Boolean = true //공개설정용
 private var recipe: RecipeRequest? = null
 private var currentIndex = 0
+private lateinit var layouts: List<ConstraintLayout>
 
 @androidx.media3.common.util.UnstableApi
 class RecipeWriteVideoActivity : AppCompatActivity() {
@@ -321,15 +322,15 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.six)
         )
 
-        // ConstraintLayout 리스트 (TextView와 1:1 매칭)
-        val layouts = listOf(
-            findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteReplaceMaterialLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteHandlingMethodLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout),
-            findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
+        layouts = listOf(
+            findViewById(R.id.recipeWriteTitleLayout),
+            findViewById(R.id.recipeWriteMaterialLayout),
+            findViewById(R.id.recipeWriteReplaceMaterialLayout),
+            findViewById(R.id.recipeWriteHandlingMethodLayout),
+            findViewById(R.id.recipeWriteCookVideoLayout),
+            findViewById(R.id.recipeWriteDetailSettleLayout)
         )
+
 
         // 카테고리 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
         textViews.forEachIndexed { index, textView ->
@@ -355,7 +356,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         }
 
         // 현재 활성화된 화면 인덱스 추적 변수
-
         fun updateMaterialList(
             materialContainer: LinearLayout,
             ingredients: List<Pair<String, String>>
@@ -392,6 +392,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 materialContainer.addView(itemLayout)
             }
         }
+
         fun mapCategoryToEnum(category: String): String {
             return when (category) {
                 "한식" -> "koreaFood"
@@ -406,6 +407,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 else -> "etc" // 예외 처리
             }
         }
+
         // "계속하기" 버튼 클릭 시 화면 이동
         continueButton.setOnClickListener {
             if (currentIndex < layouts.size - 1 && currentIndex < textViews.size - 1) {
@@ -420,6 +422,9 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 val targetX =
                     textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
                 indicatorBar.x = targetX
+
+                // 새로운 레이아웃으로 전환된 후 버튼 상태를 재확인
+                checkAndUpdateContinueButton()
             } else {
                 // 마지막 화면이면 contentCheckLayout
                 //대표이미지 가져오기
@@ -539,8 +544,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                     playButton.visibility = View.GONE
                     playerView.visibility = View.GONE
                 }
-
-
                 // Gson 인스턴스 생성
                 val gson = Gson()
 
@@ -600,6 +603,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 val targetX =
                     textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
                 indicatorBar.x = targetX
+            }
+
+            // 💡 레이아웃이 완전히 바뀐 뒤 버튼 상태 갱신
+            beforeButton.post {
+                checkAndUpdateContinueButton()
             }
         }
 
@@ -665,6 +673,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 popup.setOnMenuItemClickListener { menuItem ->
                     unit.text = menuItem.title
                     unit.setTextColor(Color.parseColor("#2B2B2B"))
+                    checkAndUpdateContinueButton() // ✅ 선택 후 버튼 상태 갱신
                     true
                 }
 
@@ -684,6 +693,80 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // koreanFood 값이 변경될 때 자동 반영
         koreanFood.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             updateKoreanFoodTextViews(koreanFood.text.toString())
+        }
+
+        //재료 채워지면 계속하기 버튼 바뀜
+        material.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        measuring.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        unit.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> checkAndUpdateContinueButton() }
+
+        //대체재료 채워지면 계속하기 바뀜
+        replaceMaterialName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        replaceMaterial.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        //처리방법 채워지면 계속하기 바뀜
+        handlingMethodName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        handlingMethod.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        //세부설정 채워지면 계속하기 바뀜
+        val cookingTimeEditText = findViewById<EditText>(R.id.zero)
+        val tagEditText = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)
+
+        cookingTimeEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        tagEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // 난이도 선택은 메뉴 선택 후 호출
+        elementaryLevel.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            checkAndUpdateContinueButton()
         }
 
         // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -872,15 +955,113 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
             finish()
         }
-    }
 
-    private fun checkAndUpdateContinueButton() {
         val recipeTitleEditText = findViewById<EditText>(R.id.recipeTitleWrite)
         val koreanFoodTextView = findViewById<TextView>(R.id.koreanFood)
-        val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
 
-        val titleFilled = recipeTitleEditText.text.toString().isNotBlank()
-        val koreanFoodSelected = koreanFoodTextView.text.toString().isNotBlank()
+        // 제목 입력 감지
+        recipeTitleEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // "한식"이 아닌 다른 텍스트로 변경되면 호출되게 (예: 다이얼로그에서 선택 시)
+        koreanFoodTextView.setOnClickListener {
+            // 예: 선택 다이얼로그 띄우고 결과 텍스트 설정 후 호출
+            // koreanFoodTextView.text = "중식" 같은 거 하고 나서
+            checkAndUpdateContinueButton()
+        }
+
+        //탭바로 이동해도 채워져있으면 계속하기 버튼 바껴져 있음
+        checkAndUpdateContinueButton()
+
+    }
+
+    //계속하기 버튼 색 바뀜
+    private fun checkAndUpdateContinueButton() {
+        val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
+        val currentLayout = layouts.find { it.visibility == View.VISIBLE }
+
+        var isValid = false
+
+        when (currentLayout?.id) {
+            R.id.recipeWriteTitleLayout -> {
+                val titleView = currentLayout.findViewById<EditText?>(R.id.recipeTitleWrite)
+                val categoryView = currentLayout.findViewById<TextView?>(R.id.koreanFood)
+
+                if (titleView != null && categoryView != null) {
+                    val title = titleView.text.toString()
+                    val category = categoryView.text.toString()
+                    isValid = title.isNotBlank() && category.isNotBlank()
+                }
+            }
+
+            R.id.recipeWriteMaterialLayout -> {
+                val materialView = currentLayout.findViewById<EditText?>(R.id.material)
+                val measuringView = currentLayout.findViewById<EditText?>(R.id.measuring)
+                val unitView = currentLayout.findViewById<TextView?>(R.id.unit)
+
+                if (materialView != null && measuringView != null && unitView != null) {
+                    val material = materialView.text.toString()
+                    val measuring = measuringView.text.toString()
+                    val unit = unitView.text.toString()
+                    isValid = material.isNotBlank() && measuring.isNotBlank() && unit != "단위"
+                }
+            }
+
+            R.id.recipeWriteReplaceMaterialLayout -> {
+                val nameView = currentLayout.findViewById<EditText?>(R.id.replaceMaterialName)
+                val materialView = currentLayout.findViewById<EditText?>(R.id.replaceMaterial)
+
+                if (nameView != null && materialView != null) {
+                    val name = nameView.text.toString()
+                    val material = materialView.text.toString()
+                    isValid = name.isNotBlank() && material.isNotBlank()
+                }
+            }
+
+            R.id.recipeWriteHandlingMethodLayout -> {
+                val nameView = currentLayout.findViewById<EditText?>(R.id.handlingMethodName)
+                val methodView = currentLayout.findViewById<EditText?>(R.id.handlingMethod)
+
+                if (nameView != null && methodView != null) {
+                    val name = nameView.text.toString()
+                    val method = methodView.text.toString()
+                    isValid = name.isNotBlank() && method.isNotBlank()
+                }
+            }
+
+            R.id.recipeWriteCookVideoLayout -> {
+                val container = currentLayout.findViewById<LinearLayout?>(R.id.VideoContainer)
+                isValid = container?.childCount ?: 0 > 0
+            }
+
+            R.id.recipeWriteDetailSettleLayout -> {
+                val levelView = currentLayout.findViewById<TextView?>(R.id.elementaryLevel)
+                val timeView = currentLayout.findViewById<EditText?>(R.id.zero)
+                val tagView = currentLayout.findViewById<EditText?>(R.id.detailSettleRecipeTitleWrite)
+
+                if (levelView != null && timeView != null && tagView != null) {
+                    val level = levelView.text.toString()
+                    val time = timeView.text.toString()
+                    val tag = tagView.text.toString()
+                    isValid = level.isNotBlank() && level != "난이도" && time.isNotBlank() && tag.isNotBlank()
+                }
+            }
+        }
+
+        if (isValid) {
+            continueButton.setBackgroundResource(R.drawable.btn_big_green)
+            continueButton.setTextColor(Color.WHITE)
+        } else {
+            continueButton.setBackgroundResource(R.drawable.btn_number_of_people)
+            continueButton.setTextColor(Color.parseColor("#A1A9AD"))
+        }
+        // 버튼은 항상 클릭 가능
+        continueButton.isEnabled = true
     }
 
     private fun showOnlyLayout(targetLayout: ConstraintLayout) {
