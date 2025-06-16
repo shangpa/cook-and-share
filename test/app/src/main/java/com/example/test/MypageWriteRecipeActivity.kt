@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -205,7 +207,7 @@ class MypageWriteRecipeActivity : AppCompatActivity() {
             })
     }
 
-    private fun showMorePopup(item: MyWriteRecipe) {
+    @OptIn(UnstableApi::class) private fun showMorePopup(item: MyWriteRecipe) {
         val popup = PopupMenu(this, writeRecipeDropDownIcon)
         popup.menu.add("수정")
         popup.menu.add("삭제")

@@ -54,11 +54,17 @@ class MypageLoveRecipeAdapter(private val onUnliked: (newCount: Int) -> Unit) :
         holder.rating.text = "5.0"
         holder.reviewCount.text = "(0)"
         holder.writer.text = recipe.writer
-
-        Glide.with(context)
-            .load(recipe.mainImageUrl)
-            .into(holder.thumbnail)
-
+        val imageUrl = recipe.mainImageUrl?.let {
+            if (it.startsWith("http")) it
+            else RetrofitInstance.BASE_URL.trimEnd('/') + "/" + it.trimStart('/')
+        }
+        if (!imageUrl.isNullOrBlank()) {
+            Glide.with(context)
+                .load(imageUrl)
+                .into(holder.thumbnail)
+        }else {
+            holder.thumbnail.visibility = View.GONE
+        }
         holder.heart.setImageResource(R.drawable.image_search_result_list_heart_fill)
 
         // 하트 클릭 시 찜 해제 요청
