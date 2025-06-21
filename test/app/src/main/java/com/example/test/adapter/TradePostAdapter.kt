@@ -44,6 +44,7 @@ class TradePostAdapter(
         if (
             userLat != null && userLng != null &&
             tradePost.latitude != null && tradePost.longitude != null &&
+            userLat != 0.0 && userLng != 0.0 &&
             tradePost.latitude != 0.0 && tradePost.longitude != 0.0
         ) {
             val distance = calculateDistance(userLat, userLng, tradePost.latitude, tradePost.longitude)
@@ -53,10 +54,10 @@ class TradePostAdapter(
             } else {
                 String.format("%.2f km", distance)
             }
-
             holder.distanceText.visibility = View.VISIBLE
         } else {
-            holder.distanceText.visibility = View.GONE
+            holder.distanceText.text = "위치 설정 후 거리를 확인해보세요!"
+            holder.distanceText.visibility = View.VISIBLE
         }
 
         // 이미지 로딩
