@@ -2,6 +2,7 @@ package com.example.test.network
 
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.TradePost.UserProfileResponseDTO
 import com.example.test.model.UserSimpleResponse
 import com.example.test.model.review.TpReviewRequestDTO
 import com.example.test.model.review.TpReviewResponseDTO
@@ -86,4 +87,8 @@ interface MaterialApi {
         @Path("username") username: String
     ): Call<List<TradePostSimpleResponse>>
 
+    @GET("/api/trade-posts/info")
+    fun getUserProfile(
+        @Header("Authorization") token: String
+    ): Call<UserProfileResponseDTO>
 }

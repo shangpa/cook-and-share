@@ -2,25 +2,20 @@ package com.example.test
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.Utils.TabBarUtils
+import com.example.test.model.TradePost.UserProfileResponseDTO
 import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Stack
 
 
@@ -28,20 +23,12 @@ import java.util.Stack
 class MaterialMyProfileActivity : AppCompatActivity() {
 
 
-    private lateinit var buttons: List<Button> // 거리 버튼 리스트
-    private lateinit var selectedFilterLayout: LinearLayout
-
-    private var selectedMaterial: Button? = null
-    private var selectedDistance: Button? = null
 
     private lateinit var profile: LinearLayout
-    private lateinit var saleHistory: LinearLayout
-    private lateinit var purchaseHistory: LinearLayout
-    private lateinit var reviewContainer: ConstraintLayout
-    private lateinit var savePost: ConstraintLayout
-    private lateinit var review: LinearLayout
-
-    private val viewStack = Stack<View>()
+    private lateinit var userNameText: TextView
+    private lateinit var reviewCountText: TextView
+    private lateinit var ratingText: TextView
+    private lateinit var transactionHistoryText: TextView
 
 
     @SuppressLint("WrongViewCast")
@@ -85,8 +72,38 @@ class MaterialMyProfileActivity : AppCompatActivity() {
             finish()
         }
 
-    }
+        userNameText = findViewById(R.id.userName)
+        reviewCountText = findViewById(R.id.reviewCount)
+        ratingText = findViewById(R.id.reviewCount1)
+        transactionHistoryText = findViewById(R.id.transactionHistory)
 
+        loadUserProfile(token)
+    }
+    private fun loadUserProfile(authToken: String) {
+        RetrofitInstance.materialApi.getUserProfile(authToken)
+            .enqueue(object : Callback<UserProfileResponseDTO> {
+                override fun onResponse(
+                    call: Call<UserProfileResponseDTO>,
+                    response: Response<UserProfileResponseDTO>
+                ) {
+                    if (response.isSuccessful) {
+                        val user = response.body() ?: return
+                        Log.d("UserInfo", " 유저 정보: $user")
+
+                        userNameText.text = user.username
+                        ratingText.text = "${user.rating}  |"
+                        reviewCountText.text = "후기 ${user.reviewCount}  |"
+                        transactionHistoryText.text = "거래내역 ${user.transactionCount}"
+                    } else {
+                        Log.e("UserInfo", " 응답 실패: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<UserProfileResponseDTO>, t: Throwable) {
+                    Log.e("UserInfo", " 서버 연결 실패", t)
+                }
+            })
+    }
 }
 
 
