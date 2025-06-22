@@ -733,6 +733,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
                         android:gravity="center">
 
@@ -743,8 +744,9 @@
                             <!-- rice 이미지 -->
                             <ImageView
                                 android:id="@+id/fridgeMainRecipeImage1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="170dp"
+                                android:layout_height="170dp"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/image_recently_stored_materials_food" />
 
                             <!-- 재생 버튼 (왼쪽 위에 위치) -->
@@ -846,6 +848,7 @@
                         android:id="@+id/fridgeMainRecipe2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="vertical"
                         android:gravity="center">
 
@@ -856,8 +859,9 @@
                             <!-- bread 이미지 -->
                             <ImageView
                                 android:id="@+id/fridgeMainRecipeImage2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="170dp"
+                                android:layout_height="170dp"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/image_recently_stored_materials_bread" />
 
                             <!-- 재생 버튼 (왼쪽 위에 위치) -->
@@ -1123,6 +1127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
                         android:gravity="center">
 
@@ -1133,8 +1138,9 @@
                             <!-- rice 이미지 -->
                             <ImageView
                                 android:id="@+id/fridgeMainRecipeImage3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="170dp"
+                                android:layout_height="170dp"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/image_recently_stored_materials_food" />
 
                             <!-- 재생 버튼 (왼쪽 위에 위치) -->
@@ -1236,6 +1242,7 @@
                         android:id="@+id/fridgeMainRecipe4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="vertical"
                         android:gravity="center">
 
@@ -1246,8 +1253,9 @@
                             <!-- bread 이미지 -->
                             <ImageView
                                 android:id="@+id/fridgeMainRecipeImage4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="170dp"
+                                android:layout_height="170dp"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/image_recently_stored_materials_bread" />
 
                             <!-- 재생 버튼 (왼쪽 위에 위치) -->
