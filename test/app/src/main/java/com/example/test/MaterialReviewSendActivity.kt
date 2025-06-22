@@ -56,6 +56,7 @@ class MaterialReviewSendActivity : AppCompatActivity() {
                             itemView.findViewById<TextView>(R.id.reviewDate).text =
                                 review.createdAt.replace("T", " ").substring(0, 16)
                             itemView.findViewById<TextView>(R.id.reviewRating).text = "${review.rating}"
+                            itemView.findViewById<TextView>(R.id.itemSubTitle).text = review.tradeTitle
                             itemView.findViewById<ImageView>(R.id.itemImage).visibility = View.GONE
 
                             reviewContainer.addView(itemView)

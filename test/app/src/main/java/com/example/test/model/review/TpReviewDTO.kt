@@ -10,5 +10,6 @@ data class TpReviewResponseDTO(
     val content: String,
     val rating: Int,
     val createdAt: String,
-    val username: String
+    val username: String,
+    val tradeTitle: String
 )
