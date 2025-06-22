@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">회원가입</string>
+    <string name="app_name">쿡앤쉐어</string>
     <string name="back_button">뒤로가기</string>
     <string name="signup">회원가입</string>
 </resources>
