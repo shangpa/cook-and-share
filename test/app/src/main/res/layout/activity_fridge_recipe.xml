@@ -11,49 +11,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity=""
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp" >
+        android:layout_marginEnd="30dp">
 
-        <!-- 뒤로가기 아이콘 -->
-        <ImageButton
-            android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
+        <!-- 왼쪽: 뒤로가기 아이콘 -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_fridge"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginTop="3dp"/>
+            android:layout_weight="1"
+            android:gravity="start">
 
-        <!-- 검색 버튼 -->
-        <ImageButton
-            android:id="@+id/searchIcon"
-            android:layout_width="29dp"
-            android:layout_height="29dp"
-            android:src="@drawable/ic_search"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="230dp" />
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back_fridge"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="3dp" />
+        </LinearLayout>
 
-        <!-- 알림 버튼 -->
-        <ImageButton
-            android:id="@+id/bellIcon"
-            android:layout_width="29dp"
-            android:layout_height="29dp"
-            android:src="@drawable/ic_bell"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="10dp" />
+        <!-- 오른쪽: 검색, 알림, 마이페이지 아이콘 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:spacing="10dp">
 
-        <!-- 마이페이지 버튼 -->
-        <ImageButton
-            android:id="@+id/mypageIcon"
-            android:layout_width="29dp"
-            android:layout_height="29dp"
-            android:src="@drawable/ic_person"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="10dp" />
+            <ImageButton
+                android:id="@+id/searchIcon"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:src="@drawable/ic_search"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <ImageButton
+                android:id="@+id/bellIcon"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:src="@drawable/ic_bell"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginStart="10dp" />
+
+            <ImageButton
+                android:id="@+id/mypageIcon"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:src="@drawable/ic_person"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
 
     </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -78,29 +91,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity=""
                 android:layout_marginTop="35dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp" >
+                android:layout_marginEnd="30dp">
 
-                <!-- 선택한 재료 텍스트 -->
+                <!-- 왼쪽 텍스트 -->
                 <TextView
                     android:id="@+id/selectIngredientTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="선택한 재료"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- 드롭다운 아이콘 -->
+                <!-- 오른쪽 아이콘 -->
                 <ImageButton
                     android:id="@+id/IngredientDropDownBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_dropdown"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:layout_marginStart="255dp" />
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </LinearLayout>
+
 
             <!-- 구분선 -->
             <View
@@ -235,36 +248,44 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:layout_marginStart="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginEnd="30dp">
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="20dp">
 
-                    <!-- 전체선택 아이콘 -->
-                    <ImageButton
-                        android:id="@+id/fridgeAllCheckIcon"
-                        android:layout_width="wrap_content"
+                    <!-- 왼쪽: 아이콘 + 전체선택 텍스트 묶음 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_fridge_check"
-                        android:background="?attr/selectableItemBackgroundBorderless" />
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="start|center_vertical">
 
-                    <!-- 전체선택 텍스트 -->
-                    <TextView
-                        android:id="@+id/fridgeAllCheckText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="전체선택"
-                        android:textSize="13sp"
-                        android:textColor="#454A52"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="260dp" />
+                        <ImageButton
+                            android:id="@+id/fridgeAllCheckIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_fridge_check"
+                            android:background="?attr/selectableItemBackgroundBorderless" />
 
-                    <!-- 삭제 텍스트 -->
+                        <TextView
+                            android:id="@+id/fridgeAllCheckText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="전체선택"
+                            android:textSize="13sp"
+                            android:textColor="#454A52"
+                            android:layout_marginStart="3dp" />
+                    </LinearLayout>
+
+                    <!-- 오른쪽: 삭제 텍스트 -->
                     <TextView
                         android:id="@+id/fridgeDeleteText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="삭제"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp"
+                        android:textColor="#454A52" />
                 </LinearLayout>
+
 
                 <!-- 가로 스크롤 가능하도록 감싸는 부분 -->
                 <HorizontalScrollView
@@ -532,18 +553,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="20dp">
 
-                <!-- 총 몇개의 레시피-->
+                <!-- 왼쪽: 총 몇개의 레시피 -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <!-- 총 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -552,7 +573,6 @@
                         android:textColor="@color/black"
                         android:layout_marginTop="1dp" />
 
-                    <!-- 갯수 -->
                     <TextView
                         android:id="@+id/recipeSearchResultNum"
                         android:layout_width="wrap_content"
@@ -563,7 +583,6 @@
                         android:layout_marginStart="3dp"
                         android:layout_marginTop="1dp" />
 
-                    <!-- 개의 레시피 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -571,17 +590,15 @@
                         android:textSize="12sp"
                         android:textColor="@color/black"
                         android:layout_marginTop="1dp" />
-
                 </LinearLayout>
 
-                <!-- 필터링 -->
+                <!-- 오른쪽: 필터링 -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginStart="214dp">
+                    android:gravity="end|center_vertical">
 
-                    <!-- 필터링 텍스트 -->
                     <TextView
                         android:id="@+id/RecipeResultFilterText"
                         android:layout_width="wrap_content"
@@ -591,16 +608,15 @@
                         android:textColor="@color/black"
                         android:layout_marginTop="1dp"/>
 
-                    <!-- 드롭다운 아이콘 -->
                     <ImageView
                         android:id="@+id/RecipeResultDropDownBtn"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_dropdown"
                         android:contentDescription="드롭다운 아이콘" />
-
                 </LinearLayout>
             </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/fridgeRecipeList"
