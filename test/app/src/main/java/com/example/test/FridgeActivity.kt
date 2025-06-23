@@ -537,8 +537,6 @@ class FridgeActivity : AppCompatActivity() {
             Toast.makeText(this, "인식된 재료가 없습니다.", Toast.LENGTH_SHORT).show()
             return
         }
-
-        saveItemsToServerSequentially(items)
     }
 
 
@@ -547,38 +545,6 @@ class FridgeActivity : AppCompatActivity() {
         if (name.length !in 2..6) return false
         if (excludedWords.any { name.contains(it) }) return false
         return true
-    }
-    private fun saveItemsToServerSequentially(items: List<FridgeCreateRequest>, index: Int = 0) {
-        if (index >= items.size) {
-            Log.d("OCR_SAVE_DEBUG", "모든 아이템 저장 완료")
-            fetchFridgeData()
-            return
-        }
-
-        val token = "Bearer ${App.prefs.token}"
-        val api = RetrofitInstance.apiService
-        val item = items[index]
-
-        Log.d("OCR_SAVE_DEBUG", "아이템 ${index} 저장 시도: ${item.ingredientName}")
-
-        api.createFridgeByOCR(item, token).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    Log.d("OCR_SAVE_DEBUG", "아이템 ${index} 저장 완료: ${item.ingredientName}")
-                    saveItemsToServerSequentially(items, index + 1)  // 재귀 호출
-                } else {
-                    Log.e("OCR_SAVE_DEBUG", "아이템 ${index} 저장 실패 코드: ${response.code()}")
-                }
-            }
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                val message = t.message ?: "알 수 없는 네트워크 오류"
-                Log.e("OCR_SAVE_DEBUG", "아이템 $index 저장 실패 에러: $message", t)
-                runOnUiThread {
-                    Toast.makeText(this@FridgeActivity, "네트워크 오류: $message", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        })
     }
 
 
@@ -608,7 +574,6 @@ class FridgeActivity : AppCompatActivity() {
     private val groceryCameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             val token = App.prefs.token ?: ""
-            Log.d("장바구니 토큰보내기", "장바구니 토큰: $token")
             if (success) {
                 imageUri?.let { uri ->
                     val inputStream = contentResolver.openInputStream(uri)
@@ -624,13 +589,15 @@ class FridgeActivity : AppCompatActivity() {
                             .enqueue(object : Callback<List<String>> {
                                 override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                                     if (response.isSuccessful) {
-                                        val addedItems = response.body() ?: emptyList()
-                                        Toast.makeText(
-                                            this@FridgeActivity,
-                                            "추가된 재료: ${addedItems.joinToString()}",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        fetchFridgeData()
+                                        val items = response.body() ?: emptyList()
+                                        if (items.isNotEmpty()) {
+                                            val intent = Intent(this@FridgeActivity, FridgeIngredientActivity::class.java)
+                                            intent.putExtra("ingredientName", items[0])
+                                            intent.putExtra("fridgeDate", getTodayDate())
+                                            startActivity(intent)
+                                        } else {
+                                            Toast.makeText(this@FridgeActivity, "인식된 재료가 없습니다.", Toast.LENGTH_SHORT).show()
+                                        }
                                     } else {
                                         Toast.makeText(this@FridgeActivity, "저장 실패", Toast.LENGTH_SHORT).show()
                                     }
@@ -645,4 +612,7 @@ class FridgeActivity : AppCompatActivity() {
             }
         }
 
+    private fun getTodayDate(): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    }
 }
