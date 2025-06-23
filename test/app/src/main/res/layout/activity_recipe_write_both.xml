@@ -1633,22 +1633,23 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 조리순서 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recipeWriteCookOrderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
         <ScrollView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="101dp"
-            android:visibility="gone">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/recipeWriteCookOrderLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/recipeWriteCookOrder"
@@ -2057,10 +2058,9 @@
                             app:layout_constraintStart_toStartOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 조리순서 생성 바 -->
         <androidx.constraintlayout.widget.ConstraintLayout
