@@ -19,8 +19,7 @@
         android:columnCount="1"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="150dp">
+        android:layout_marginStart="20dp">
 
         <LinearLayout
             android:id="@+id/one"
@@ -869,8 +868,6 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bar_recipe_see_material" />
-
-
 
         </LinearLayout>
 
