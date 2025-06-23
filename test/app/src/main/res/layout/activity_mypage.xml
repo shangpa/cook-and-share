@@ -322,17 +322,17 @@
                 android:layout_marginEnd="30dp"
                 android:layout_marginTop="15dp" />
 
-            <!-- 동네재료 -->
+            <!-- 동네주방 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="동네재료"
+                android:text="동네주방"
                 android:textSize="11sp"
                 android:textColor="#A1A9AD"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"/>
 
-            <!-- 동네재료 내역 -->
+            <!-- 동네주방 내역 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -341,19 +341,19 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp">
 
-                <!-- 동네재료 아이콘 -->
+                <!-- 동네주방 아이콘 -->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_mypage_material"
-                    android:contentDescription="동네재료 아이콘" />
+                    android:contentDescription="동네주방 아이콘" />
 
-                <!--  동네재료 내역 텍스트 -->
+                <!--  동네주방 내역 텍스트 -->
                 <TextView
                     android:id="@+id/MaterialListText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="동네재료 내역"
+                    android:text="동네주방 내역"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"/>
