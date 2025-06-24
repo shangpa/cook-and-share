@@ -246,21 +246,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         }
                         ingredientContainer.addView(titleText)
 
-                        val voiceButtons = ImageButton(this@RecipeSeeNoTimerActivity).apply {
-                            setImageResource(R.drawable.ic_voice)
-                            background = null
-                            layoutParams = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                            ).apply {
-                                gravity = Gravity.END
-                                topMargin = 12.dpToPx()
-                                marginEnd = 10.dpToPx()
-                            }
-                        }
-
-                        ingredientContainer.addView(voiceButtons)
-
                         val thickDivider = View(this@RecipeSeeNoTimerActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -468,26 +453,17 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         val stepContainer = findViewById<LinearLayout>(R.id.stepContainer)
                         stepContainer.removeAllViews()
 
-                        val voiceButton = ImageButton(this@RecipeSeeNoTimerActivity).apply {
-                            setImageResource(R.drawable.ic_voice)
-                            background = null
-                            layoutParams = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                            ).apply {
-                                gravity = Gravity.END
-                                topMargin = 12.dpToPx()
-                                marginEnd = 10.dpToPx()
-                            }
-                        }
-
-                        stepContainer.addView(voiceButton)
-
                         val steps = gson.fromJson<List<CookingStep>>(
                             recipe.cookingSteps, object : TypeToken<List<CookingStep>>() {}.type
                         ).map { step ->
-                            step.copy(mediaUrl = RetrofitInstance.BASE_URL + step.mediaUrl.trim())
+                            val trimmedUrl = step.mediaUrl?.trim()
+                            if (trimmedUrl.isNullOrEmpty()) {
+                                step.copy(mediaUrl = "")  // ✅ null 대신 빈 문자열
+                            } else {
+                                step.copy(mediaUrl = RetrofitInstance.BASE_URL + trimmedUrl)
+                            }
                         }
+
                         steps.forEach { step ->
                             // STEP 타이틀
                             val stepTitle = TextView(this@RecipeSeeNoTimerActivity).apply {
@@ -498,28 +474,12 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                 setTypeface(null, Typeface.BOLD)
                             }
 
-                            // 설명
+                            // 설명 (이미지 없으면 paddingBottom 20dp, 있으면 6dp)
                             val description = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = step.description
                                 textSize = 13f
                                 setTextColor(Color.DKGRAY)
-                                setPadding(0, 0, 0, 6.dpToPx())
-                            }
-
-                            // 이미지
-                            val imageView = ImageView(this@RecipeSeeNoTimerActivity).apply {
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    200.dpToPx()
-                                ).apply {
-                                    bottomMargin = 12.dpToPx()
-                                }
-                                scaleType = ImageView.ScaleType.CENTER_CROP
-                                visibility = if (step.mediaUrl.isNullOrBlank()) View.GONE else View.VISIBLE
-                                if (!step.mediaUrl.isNullOrBlank()) {
-                                    Glide.with(this@RecipeSeeNoTimerActivity).load(step.mediaUrl).into(this)
-                                    Log.d("mediaUrl", step.mediaUrl)
-                                }
+                                setPadding(0, 0, 0, if (step.mediaUrl.isNullOrBlank()) 20.dpToPx() else 6.dpToPx())
                             }
 
                             // 구분선
@@ -533,10 +493,26 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                 setBackgroundResource(R.drawable.bar_recipe_see_material)
                             }
 
-                            // 전체 묶기
+                            // 추가
                             stepContainer.addView(stepTitle)
                             stepContainer.addView(description)
-                            stepContainer.addView(imageView)
+
+                            // 이미지 있을 때만 생성 및 추가
+                            if (!step.mediaUrl.isNullOrBlank()) {
+                                val imageView = ImageView(this@RecipeSeeNoTimerActivity).apply {
+                                    layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        200.dpToPx()
+                                    ).apply {
+                                        bottomMargin = 12.dpToPx()
+                                    }
+                                    scaleType = ImageView.ScaleType.CENTER_CROP
+                                }
+                                Glide.with(this@RecipeSeeNoTimerActivity).load(step.mediaUrl).into(imageView)
+                                Log.d("mediaUrl", step.mediaUrl)
+                                stepContainer.addView(imageView)
+                            }
+
                             stepContainer.addView(divider)
                         }
                     }
