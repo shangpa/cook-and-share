@@ -63,6 +63,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.Stack
 import android.widget.PopupMenu
+import android.widget.ProgressBar
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -1162,13 +1163,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         register.setOnClickListener {
             if (recipe != null) {
                 val uploadRecipe = recipe!!.copy(isPublic = isPublic)
-
+                showProgressBar() // 업로드 시작 전 프로그레스바 표시
                 sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
+                    hideProgressBar()
                     val intent = Intent(this, RecipeSeeMainActivity::class.java)
                     intent.putExtra("recipeId", recipeId)
                     startActivity(intent)
                     finish()
                 }, onFailure = {
+                    hideProgressBar()
                     Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
                 })
 
@@ -1180,13 +1183,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         registerFixButton.setOnClickListener {
             if (recipe != null) {
                 val uploadRecipe = recipe!!.copy(isPublic = isPublic)
-
+                showProgressBar()
                 sendRecipeToServer(uploadRecipe, onSuccess = { recipeId ->
+                    hideProgressBar()
                     val intent = Intent(this, RecipeSeeMainActivity::class.java)
                     intent.putExtra("recipeId", recipeId)
                     startActivity(intent)
                     finish()
                 }, onFailure = {
+                    hideProgressBar()
                     Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
                 })
 
@@ -2531,4 +2536,11 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         }
     }
     //썸네일 생성
+    private fun showProgressBar() {
+        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+    }
 }
