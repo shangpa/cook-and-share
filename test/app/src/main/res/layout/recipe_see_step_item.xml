@@ -96,72 +96,76 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- 타이머 시 -->
+
+    <!-- 콜론 : -->
     <TextView
         android:id="@+id/hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="28dp"
         android:text="00"
         android:textColor="#3F3F3F"
         android:textSize="64sp"
-        app:layout_constraintStart_toStartOf="@id/timerBar"
-        app:layout_constraintTop_toTopOf="@id/timerBar"/>
+        app:layout_constraintEnd_toStartOf="@id/colon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/timerBar" />
 
-    <!-- 콜론 : -->
     <TextView
         android:id="@+id/colon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
         android:text=":"
         android:textColor="#3F3F3F"
         android:textSize="64sp"
         app:layout_constraintTop_toTopOf="@id/timerBar"
-        app:layout_constraintStart_toEndOf="@id/hour"/>
+        app:layout_constraintStart_toEndOf="@id/hour"
+        app:layout_constraintEnd_toStartOf="@id/minute"/>
 
     <!-- 타이머 분 -->
     <TextView
         android:id="@+id/minute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
         android:text="00"
         android:textColor="#3F3F3F"
         android:textSize="64sp"
         app:layout_constraintTop_toTopOf="@id/timerBar"
-        app:layout_constraintStart_toEndOf="@id/colon"/>
+        app:layout_constraintStart_toEndOf="@id/colon"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <!-- 정지 버튼 -->
     <Button
         android:id="@+id/stop"
-        android:layout_width="86dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
+        android:layout_marginEnd="8dp"
         android:text="정지"
         android:textSize="14sp"
         android:textColor="#35A825"
         android:textStyle="bold"
-        android:layout_marginStart="110dp"
-        android:layout_marginBottom="27dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/ic_step_recipe_see_five_stop"
         app:layout_constraintBottom_toBottomOf="@id/timerBar"
-        app:layout_constraintStart_toStartOf="@id/timerBar" />
+        app:layout_constraintEnd_toStartOf="@id/start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
 
     <!-- 시작 버튼 -->
     <Button
         android:id="@+id/start"
-        android:layout_width="86dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="50dp"
         android:text="시작"
         android:textSize="14sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:layout_marginEnd="110dp"
-        android:layout_marginBottom="27dp"
         android:background="@drawable/ic_step_recipe_see_five_start"
         app:layout_constraintBottom_toBottomOf="@id/timerBar"
-        app:layout_constraintEnd_toEndOf="@id/timerBar" />
+        app:layout_constraintStart_toEndOf="@id/stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
