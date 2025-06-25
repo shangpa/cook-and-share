@@ -61,11 +61,14 @@ class RecipeSeeMainActivity : AppCompatActivity() {
         }
 
         val viewWithTimer: TextView = findViewById(R.id.viewWithTimer)
+        val divideRectangleBarTwo: View = findViewById(R.id.divideRectangleBarTwo)
         val rigthArrow: ImageButton = findViewById(R.id.rigthArrow)
         val viewWithoutTimer: TextView = findViewById(R.id.viewWithoutTimer)
+        val divideRectangleBarThree: View = findViewById(R.id.divideRectangleBarThree)
         val rigthArrowTwo: ImageButton = findViewById(R.id.rigthArrowTwo)
         val videoSee: TextView = findViewById(R.id.videoSee)
         val rigthArrowThree: ImageButton = findViewById(R.id.rigthArrowThree)
+        val divideRectangleBarFour: View = findViewById(R.id.divideRectangleBarFour)
 
 
         var nextActivityIntent: Intent? = null
@@ -73,10 +76,13 @@ class RecipeSeeMainActivity : AppCompatActivity() {
         val viewToActivityMap = mapOf(
             viewWithTimer to RecipeSeeActivity::class.java,
             rigthArrow to RecipeSeeActivity::class.java,
+            divideRectangleBarTwo to RecipeSeeActivity::class.java,
             viewWithoutTimer to RecipeSeeNoTimerActivity::class.java,
-            rigthArrowTwo to RecipeSeeNoTimerActivity::class.java,
+            rigthArrow to RecipeSeeActivity::class.java,
+            divideRectangleBarThree to RecipeSeeNoTimerActivity::class.java,
             videoSee to RecipeSeeVideoActivity::class.java,
-            rigthArrowThree to RecipeSeeVideoActivity::class.java
+            rigthArrowThree to RecipeSeeVideoActivity::class.java,
+            divideRectangleBarFour to RecipeSeeActivity::class.java
         )
 
         viewToActivityMap.forEach { (view, activityClass) ->
@@ -152,8 +158,10 @@ class RecipeSeeMainActivity : AppCompatActivity() {
                             recipeTitleTextView.text = recipe?.title ?: "제목 없음"
                             if (recipe?.cookingSteps.isNullOrBlank() || recipe?.cookingSteps == "[]") {
                                 viewWithTimer.visibility = View.GONE
+                                divideRectangleBarTwo.visibility = View.GONE
                                 rigthArrow.visibility = View.GONE
                                 viewWithoutTimer.visibility = View.GONE
+                                divideRectangleBarThree.visibility = View.GONE
                                 rigthArrowTwo.visibility = View.GONE
                                 Log.d("RecipeSeeMain", "cookingSteps 비어있어서 타이머 보기 숨김 처리됨")
                             }

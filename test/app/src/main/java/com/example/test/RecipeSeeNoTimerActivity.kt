@@ -335,7 +335,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             recipe.alternativeIngredients, object : TypeToken<List<Ingredient>>() {}.type
                         )
 
-                        alternativeIngredients.forEach { ingredient ->
+                        alternativeIngredients.withIndex().forEach { (index, ingredient) ->
                             val itemLayout = LinearLayout(this@RecipeSeeNoTimerActivity).apply {
                                 orientation = LinearLayout.HORIZONTAL
                                 layoutParams = LinearLayout.LayoutParams(
@@ -363,16 +363,18 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             itemLayout.addView(amountText)
                             ingredientContainer.addView(itemLayout)
 
-                            val thinDivider = View(this@RecipeSeeNoTimerActivity).apply {
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    2.dpToPx()
-                                ).apply {
-                                    setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                            if (index != alternativeIngredients.lastIndex) {
+                                val thinDivider = View(this@RecipeSeeNoTimerActivity).apply {
+                                    layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        2.dpToPx()
+                                    ).apply {
+                                        setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                                    }
+                                    setBackgroundResource(R.drawable.bar_recipe_see_material)
                                 }
-                                setBackgroundResource(R.drawable.bar_recipe_see_material)
+                                ingredientContainer.addView(thinDivider)
                             }
-                            ingredientContainer.addView(thinDivider)
                         }
                         // 대체 재료 끝난 후 여백
                         ingredientContainer.addView(View(this@RecipeSeeNoTimerActivity).apply {
@@ -404,8 +406,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             recipe.handlingMethods, object : TypeToken<List<String>>() {}.type
                         )
 
-                        handlingMethods.forEach { method ->
-                            val parts = method.split(" : ")
+                        handlingMethods.withIndex().forEach { (index, method) ->                            val parts = method.split(" : ")
                             val name = parts.getOrNull(0) ?: ""
                             val handling = parts.getOrNull(1) ?: ""
 
@@ -436,17 +437,18 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             itemLayout.addView(handlingText)
                             ingredientContainer.addView(itemLayout)
 
-                            val thinDivider = View(this@RecipeSeeNoTimerActivity).apply {
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    2.dpToPx()
-                                ).apply {
-                                    setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                            if (index != handlingMethods.lastIndex) {
+                                val thinDivider = View(this@RecipeSeeNoTimerActivity).apply {
+                                    layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        2.dpToPx()
+                                    ).apply {
+                                        setMargins(20.dpToPx(), 15.dpToPx(), 20.dpToPx(), 0)
+                                    }
+                                    setBackgroundResource(R.drawable.bar_recipe_see_material)
                                 }
-                                setBackgroundResource(R.drawable.bar_recipe_see_material)
+                                ingredientContainer.addView(thinDivider)
                             }
-                            ingredientContainer.addView(thinDivider)
-
                         }
 
                         //조리순서
