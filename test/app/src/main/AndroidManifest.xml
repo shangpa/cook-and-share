@@ -521,7 +521,8 @@
         <!-- RecipeWriteBothActivity -->
         <activity
             android:name=".RecipeWriteBothActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
