@@ -537,8 +537,40 @@ class FridgeActivity : AppCompatActivity() {
             Toast.makeText(this, "인식된 재료가 없습니다.", Toast.LENGTH_SHORT).show()
             return
         }
+        saveItemsToServerSequentially(items)
     }
+    private fun saveItemsToServerSequentially(items: List<FridgeCreateRequest>, index: Int = 0) {
+        if (index >= items.size) {
+            Log.d("OCR_SAVE_DEBUG", "모든 아이템 저장 완료")
+            fetchFridgeData()
+            return
+        }
 
+        val token = "Bearer ${App.prefs.token}"
+        val api = RetrofitInstance.apiService
+        val item = items[index]
+
+        Log.d("OCR_SAVE_DEBUG", "아이템 ${index} 저장 시도: ${item.ingredientName}")
+
+        api.createFridgeByOCR(item, token).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Log.d("OCR_SAVE_DEBUG", "아이템 ${index} 저장 완료: ${item.ingredientName}")
+                    saveItemsToServerSequentially(items, index + 1)  // 재귀 호출
+                } else {
+                    Log.e("OCR_SAVE_DEBUG", "아이템 ${index} 저장 실패 코드: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                val message = t.message ?: "알 수 없는 네트워크 오류"
+                Log.e("OCR_SAVE_DEBUG", "아이템 $index 저장 실패 에러: $message", t)
+                runOnUiThread {
+                    Toast.makeText(this@FridgeActivity, "네트워크 오류: $message", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        })
+    }
 
     fun isValidIngredientName(name: String): Boolean {
         val excludedWords = listOf("계산원", "고객", "카드", "영수증", "권미경", "신용카드", "판매일")
