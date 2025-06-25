@@ -40,6 +40,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import com.example.test.Utils.RecommendUtils
+import com.example.test.Utils.TabBarUtils
 
 private lateinit var player: ExoPlayer
 private lateinit var playerView: PlayerView
@@ -73,6 +74,8 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
             val intent = Intent(this, ReviewWriteActivity::class.java)
             startActivity(intent)
         }
+
+        TabBarUtils.setupTabBar(this)
 
         if (androidx.core.content.ContextCompat.checkSelfPermission(
                 this,

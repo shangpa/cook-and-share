@@ -77,11 +77,14 @@ class MaterialChatDetailActivity : AppCompatActivity() {
         }
         loadPreviousMessages()
         val roomParts = roomKey.split("-")
-        val ownerId = roomParts.getOrNull(1)?.toLongOrNull()
+        val seller = roomParts.getOrNull(0)?.toLongOrNull()     // 구매자 ID
+        val buyer = roomParts.getOrNull(1)?.toLongOrNull()   // 판매자 ID
+        val postId = roomParts.getOrNull(2)?.toLongOrNull()       // 게시글 ID
         val myId = App.prefs.userId.toLong()
-
+        Log.d("ChatDebug", "🧾 내 ID (myId): $myId")
+        Log.d("ChatDebug", "📦 게시물 작성자 ID (receiverId): $seller")
         // ✅ 올바른 방향
-        if (ownerId != null && myId == ownerId) {
+        if (seller != null && myId == seller) {
             // 판매자라면 버튼 숨김
             binding.requestCompleteButton.visibility = View.GONE
             Log.d("Chat", "👑 판매자이므로 거래완료 요청 버튼 숨김")
