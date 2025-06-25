@@ -1378,7 +1378,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             cursor.moveToFirst()
             cursor.getString(nameIndex)
-        } ?: "이름 없음"
+        } ?: "편집된 동영상"
 
         val container = findViewById<LinearLayout>(R.id.VideoContainer)
         container.removeAllViews()
