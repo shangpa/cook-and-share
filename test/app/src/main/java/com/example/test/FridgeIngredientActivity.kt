@@ -233,6 +233,7 @@ class FridgeIngredientActivity : AppCompatActivity() {
                     }
                 }
             }
+
         }
 
         Log.d("FridgeIngredientActivity", "수정용 fridgeId: $intentFridgeId")
@@ -242,9 +243,8 @@ class FridgeIngredientActivity : AppCompatActivity() {
             val nameFilled = nameInput.text.toString().trim().isNotEmpty()
             val countFilled = countInput.text.toString().trim().isNotEmpty()
             val dateFilled = dateInput.text.toString().trim().isNotEmpty()
-            val unitFilled = unitText.text.toString().trim() != "선택"
 
-            if (nameFilled && countFilled && dateFilled && unitFilled) {
+            if (nameFilled && countFilled && dateFilled) {
                 addButton.setBackgroundResource(R.drawable.btn_big_green)
                 addButton.setTextColor(Color.parseColor("#FFFFFF"))
             } else {
