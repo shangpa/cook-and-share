@@ -92,6 +92,28 @@
                     android:text="01.15"
                     android:textSize="12sp"
                     android:textColor="#8A8A8A"/>
+
+                <!-- 끌어올리기 드롭다운 메뉴 -->
+                <LinearLayout
+                    android:id="@+id/liftDropdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="end"
+                    android:background="@drawable/dropdown_background"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:id="@+id/liftMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="끌어올리기"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
+                        android:padding="6dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- 가격 + 거래완료 아이콘 -->
