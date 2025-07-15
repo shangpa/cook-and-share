@@ -2386,6 +2386,15 @@
                         android:orientation="vertical"
                         android:layout_gravity="center"/>
 
+                    <androidx.media3.ui.PlayerView
+                        android:id="@+id/videoPlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="12dp"
+                        android:visibility="gone"
+                        app:use_controller="true"
+                        android:background="#000000"/>
+
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
