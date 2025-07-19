@@ -270,11 +270,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
-                    android:layout_marginEnd="11dp"
                     android:text="한식"
                     android:textColor="#A1A9AD"
                     android:textSize="13sp"
-                    app:layout_constraintEnd_toStartOf="@id/downArrow"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBar"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBar"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- 한식 아래 바 -->
@@ -328,10 +328,10 @@
                         android:textSize="13sp"
                         android:gravity="center"
                         android:layout_marginTop="0dp"
-                        android:layout_marginEnd="8dp"
                         android:backgroundTint="#A1A9AD"
                         android:background="@null"
                         android:inputType="text"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThree"
                         app:layout_constraintTop_toTopOf="@id/recipeTitle"/>
 
@@ -1646,7 +1646,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="101dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/cookOrderTapBar"
             android:fillViewport="true">
 
             <LinearLayout
@@ -2524,11 +2523,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:layout_marginEnd="4dp"
                     android:text="초급"
                     android:textColor="#A1A9AD"
                     android:textSize="13sp"
-                    app:layout_constraintEnd_toStartOf="@id/detailSettleDownArrow"
+                    app:layout_constraintStart_toStartOf="@+id/divideRectangleBarNineteen"
+                    app:layout_constraintEnd_toEndOf="@+id/divideRectangleBarNineteen"
                     app:layout_constraintTop_toTopOf="@id/level" />
 
                 <!-- 초급 아래 바 -->
@@ -2584,6 +2583,7 @@
                     android:layout_height="wrap_content"
                     android:hint="0"
                     android:textSize="13sp"
+                    android:gravity="center"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="#A1A9AD"
                     android:background="@null"
@@ -2622,6 +2622,7 @@
                     android:layout_height="wrap_content"
                     android:hint="30"
                     android:textSize="13sp"
+                    android:gravity="center"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="#A1A9AD"
                     android:background="@null"
@@ -2675,10 +2676,10 @@
                     android:textSize="13sp"
                     android:gravity="center"
                     android:layout_marginTop="0dp"
-                    android:layout_marginEnd="41dp"
                     android:backgroundTint="#A1A9AD"
                     android:background="@null"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentytwo"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentytwo"
                     app:layout_constraintTop_toTopOf="@id/detailSettleRecipeTitle"/>
 
                 <!-- 태그명을 입력해주세요 아래 바 -->
@@ -2797,11 +2798,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
-                        android:layout_marginEnd="0dp"
                         android:text=""
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyseven"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyseven"
                         app:layout_constraintTop_toBottomOf="@id/representativeImage" />
 
                     <!-- 한식 아래 바 -->
