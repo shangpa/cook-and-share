@@ -255,11 +255,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
-                    android:layout_marginEnd="11dp"
                     android:text="한식"
                     android:textColor="#A1A9AD"
                     android:textSize="13sp"
-                    app:layout_constraintEnd_toStartOf="@id/downArrow"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBar"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBar"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- 한식 아래 바 -->
@@ -311,11 +311,12 @@
                         android:layout_height="wrap_content"
                         android:hint="레시피 제목을 입력해주세요"
                         android:textSize="13sp"
+                        android:gravity="center"
                         android:layout_marginTop="0dp"
-                        android:layout_marginEnd="8dp"
                         android:backgroundTint="#A1A9AD"
                         android:background="@null"
                         android:inputType="text"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThree"
                         app:layout_constraintTop_toTopOf="@id/recipeTitle"/>
 
@@ -1871,11 +1872,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:layout_marginEnd="4dp"
                     android:text="초급"
                     android:textColor="#A1A9AD"
                     android:textSize="13sp"
-                    app:layout_constraintEnd_toStartOf="@id/detailSettleDownArrow"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBarNineteen"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBarNineteen"
                     app:layout_constraintTop_toTopOf="@id/level" />
 
                 <!-- 초급 아래 바 -->
@@ -1929,11 +1930,12 @@
                     android:layout_height="wrap_content"
                     android:hint="0"
                     android:textSize="13sp"
+                    android:gravity="center"
                     android:layout_marginTop="0dp"
-                    android:layout_marginStart="233dp"
                     android:backgroundTint="#A1A9AD"
                     android:background="@null"
-                    app:layout_constraintStart_toEndOf="@id/requiredTime"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwenty"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwenty"
                     app:layout_constraintTop_toTopOf="@id/requiredTime"/>
 
                 <!-- 0 바 -->
@@ -1953,11 +1955,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="3dp"
                     android:text="시간"
                     android:textColor="#2B2B2B"
                     android:textSize="13sp"
-                    app:layout_constraintStart_toEndOf="@id/zero"
+                    app:layout_constraintEnd_toStartOf="@id/divideRectangleBartTwentyone"
                     app:layout_constraintTop_toTopOf="@id/requiredTime" />
 
                 <!-- 30 -->
@@ -1967,11 +1969,12 @@
                     android:layout_height="wrap_content"
                     android:hint="30"
                     android:textSize="13sp"
+                    android:gravity="center"
                     android:layout_marginTop="0dp"
-                    android:layout_marginStart="10dp"
                     android:backgroundTint="#A1A9AD"
                     android:background="@null"
-                    app:layout_constraintStart_toEndOf="@id/detailSettlTime"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBartTwentyone"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBartTwentyone"
                     app:layout_constraintTop_toTopOf="@id/requiredTime"/>
 
                 <!-- 30 바 -->
@@ -1980,9 +1983,9 @@
                     android:layout_width="32dp"
                     android:layout_height="1dp"
                     android:background="@drawable/bar_number_of_people"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
                     android:layout_marginTop="25dp"
-                    app:layout_constraintStart_toEndOf="@id/detailSettlTime"
+                    app:layout_constraintEnd_toStartOf="@id/detailSettleMinute"
                     app:layout_constraintTop_toTopOf="@id/zero"/>
 
                 <!-- 분 -->
@@ -2018,11 +2021,12 @@
                     android:layout_height="wrap_content"
                     android:hint="태그명을 입력해주세요"
                     android:textSize="13sp"
+                    android:gravity="center"
                     android:layout_marginTop="0dp"
-                    android:layout_marginEnd="41dp"
                     android:backgroundTint="#A1A9AD"
                     android:background="@null"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentytwo"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentytwo"
                     app:layout_constraintTop_toTopOf="@id/detailSettleRecipeTitle"/>
 
                 <!-- 태그명을 입력해주세요 아래 바 -->
@@ -2144,11 +2148,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
-                        android:layout_marginEnd="0dp"
                         android:text="채식"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentythree"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentythree"
                         app:layout_constraintTop_toBottomOf="@id/representativeImage" />
 
                     <!-- 한식 아래 바 -->
@@ -2181,14 +2185,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_marginEnd="0dp"
                         android:text="그릴드 벨 페퍼 샌드위치"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyfour"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyfour"
                         app:layout_constraintTop_toTopOf="@id/checkRecipeTitle" />
 
-                    <!-- 소세지야채볶음 아래 바 -->
+                    <!-- 그릴드 벨 페퍼 샌드위치 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentyfour"
                         android:layout_width="137dp"
@@ -2218,14 +2222,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_marginEnd="0dp"
                         android:text="중급"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyfive"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyfive"
                         app:layout_constraintTop_toTopOf="@id/checkLevel" />
 
-                    <!-- 초급 아래 바 -->
+                    <!-- 중급 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentyfive"
                         android:layout_width="43dp"
@@ -2255,11 +2259,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_marginStart="231dp"
                         android:text="0"
                         android:textColor="#A1A9AD"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toEndOf="@id/checkRequiredTime"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentysix"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentysix"
                         app:layout_constraintTop_toTopOf="@id/checkRequiredTime" />
 
                     <!-- 0 바 -->
@@ -2279,11 +2283,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="3dp"
                         android:text="시간"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toEndOf="@id/checkZero"
+                        app:layout_constraintEnd_toStartOf="@id/divideRectangleBarTwentyseven"
                         app:layout_constraintTop_toTopOf="@id/checkRequiredTime" />
 
                     <!-- 35 -->
@@ -2292,22 +2296,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_marginStart="11dp"
                         android:text="35"
                         android:textColor="#A1A9AD"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toEndOf="@id/time"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyseven"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyseven"
                         app:layout_constraintTop_toTopOf="@id/checkRequiredTime" />
 
-                    <!-- 30 바 -->
+                    <!-- 35 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentyseven"
                         android:layout_width="32dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
-                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:layout_marginTop="25dp"
-                        app:layout_constraintStart_toEndOf="@id/time"
+                        app:layout_constraintEnd_toStartOf="@id/minute"
                         app:layout_constraintTop_toTopOf="@id/checkZero"/>
 
                     <!-- 분 -->
@@ -2342,14 +2346,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
-                        android:layout_marginEnd="0dp"
                         android:text="치즈, 샌드위치, 빵"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="@id/representativeImage"
+                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyeight"
+                        app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyeight"
                         app:layout_constraintTop_toTopOf="@id/tag" />
 
-                    <!-- 소세지, 야채 아래 바 -->
+                    <!-- 치즈, 샌드위치, 빵 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentyeight"
                         android:layout_width="113dp"
@@ -2451,6 +2455,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThirtytwo"/>
+
                     <androidx.media3.ui.PlayerView
                         android:id="@+id/videoPlayerView"
                         android:layout_width="0dp"
@@ -2463,6 +2468,7 @@
                         android:visibility="gone"
                         app:use_controller="true"
                         app:resize_mode="fit" />
+
                     <!-- 재생 버튼 -->
                     <ImageButton
                         android:id="@+id/btnVideo"
@@ -2474,6 +2480,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/image"
                         app:layout_constraintBottom_toBottomOf="@id/image"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                        app:layout_constraintTop_toBottomOf="@id/image"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

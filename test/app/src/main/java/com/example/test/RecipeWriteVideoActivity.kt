@@ -62,6 +62,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.test.Utils.TabBarUtils
+import java.util.Stack
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -83,6 +84,9 @@ private var isPublic: Boolean = true //공개설정용
 private var recipe: RecipeRequest? = null
 private var currentIndex = 0
 private lateinit var layouts: List<ConstraintLayout>
+private val layoutHistoryStack = Stack<ConstraintLayout>()
+private var lastPushedLayout: ConstraintLayout? = null
+private var isNavigatingBack = false
 
 @androidx.media3.common.util.UnstableApi
 class RecipeWriteVideoActivity : AppCompatActivity() {
@@ -141,6 +145,12 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_video)
+
+        //화면 저장
+        layoutHistoryStack.clear()
+        val firstLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
+        layoutHistoryStack.push(firstLayout)
+        lastPushedLayout = firstLayout
 
         TabBarUtils.setupTabBar(this)
 
@@ -335,11 +345,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // 카테고리 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
         textViews.forEachIndexed { index, textView ->
             textView.setOnClickListener {
-                // 모든 ConstraintLayout 숨김
-                layouts.forEach { it.visibility = View.GONE }
-
-                // 클릭된 TextView에 해당하는 ConstraintLayout만 표시
-                layouts[index].visibility = View.VISIBLE
+                showOnlyLayout(layouts[index])
 
                 // 모든 TextView 색상 초기화
                 textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
@@ -584,30 +590,32 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // "이전으로" 버튼 클릭 시 화면 이동
         beforeButton.setOnClickListener {
-            val currentLayout = layouts.find { it.visibility == View.VISIBLE }
-            val currentIdx = layouts.indexOf(currentLayout)
+            if (layoutHistoryStack.isNotEmpty()) {
+                isNavigatingBack = true
 
-            if (currentIdx == 0) {
+                val previousLayout = layoutHistoryStack.pop()
+                showOnlyLayout(previousLayout)
+
+                isNavigatingBack = false
+
+                val index = layouts.indexOf(previousLayout)
+                if (index != -1) {
+                    currentIndex = index
+                    textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
+                    textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
+
+                    val targetX =
+                        textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
+                    indicatorBar.x = targetX
+                }
+
+                beforeButton.post {
+                    checkAndUpdateContinueButton()
+                }
+            } else {
+                // 스택 비었으면 맨 처음으로
                 startActivity(Intent(this, RecipeWriteMain::class.java))
                 finish()
-            } else if (currentIdx > 0) {
-                val prevLayout = layouts[currentIdx - 1]
-                currentIndex = currentIdx - 1
-                showOnlyLayout(prevLayout)
-
-                // ✅ 탭 색상 변경 - currentIndex만 사용해야 함
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
-
-                // ✅ indicatorBar 위치도 currentIndex 기준
-                val targetX =
-                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
-            }
-
-            // 💡 레이아웃이 완전히 바뀐 뒤 버튼 상태 갱신
-            beforeButton.post {
-                checkAndUpdateContinueButton()
             }
         }
 
@@ -1083,6 +1091,23 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val contentCheckTapBar = findViewById<View>(R.id.contentCheckTapBar)
         val tapBar = findViewById<ConstraintLayout>(R.id.tapBar)
         val divideRectangleBarTwo = findViewById<View>(R.id.divideRectangleBarTwo)
+
+        // 현재 보여지고 있는 레이아웃을 히스토리에 저장
+        val currentlyVisible = allLayouts.find { it.visibility == View.VISIBLE }
+        if (
+            !isNavigatingBack &&
+            currentlyVisible != null &&
+            currentlyVisible.visibility == View.VISIBLE &&
+            currentlyVisible != targetLayout &&
+            currentlyVisible.id != R.id.contentCheckLayout &&
+            currentlyVisible != lastPushedLayout // 이 조건 꼭 있어야 함
+        ) {
+            layoutHistoryStack.push(currentlyVisible)
+            lastPushedLayout = currentlyVisible // 마지막으로 push한 레이아웃 저장
+
+            Log.d("HistoryStack", "push: ${resources.getResourceEntryName(currentlyVisible.id)}")
+            Log.d("HistoryStack", "stack: ${layoutHistoryStack.map { resources.getResourceEntryName(it.id) }}")
+        }
 
         // 모든 레이아웃 숨기고 target만 표시
         allLayouts.forEach { it.visibility = if (it == targetLayout) View.VISIBLE else View.GONE }
