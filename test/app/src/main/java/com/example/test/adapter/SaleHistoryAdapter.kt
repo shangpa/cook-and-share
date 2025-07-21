@@ -1,6 +1,7 @@
 package com.example.test.adapter
 
 import App.Companion.context
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,9 @@ class SaleHistoryAdapter(
         val priceItem: TextView = itemView.findViewById(R.id.itemPrice)
         val completedIcon: ImageView = itemView.findViewById(R.id.completedIcon)
         val completeButtonLayout: View = itemView.findViewById(R.id.completeButtonLayout)
+        val liftDropdown: View = itemView.findViewById(R.id.liftDropdown)
+        val liftMenu: TextView = itemView.findViewById(R.id.liftMenu)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SaleHistoryViewHolder {
@@ -43,6 +48,7 @@ class SaleHistoryAdapter(
         return SaleHistoryViewHolder(view)
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onBindViewHolder(holder: SaleHistoryViewHolder, position: Int) {
         val item = tradeList[position]
 
@@ -102,10 +108,32 @@ class SaleHistoryAdapter(
         }
         // 더보기 버튼 클릭 리스너 (필요하면 연결)
         holder.moreButton.setOnClickListener {
-            // TODO: 수정/삭제 팝업 띄우기
+            val context = holder.itemView.context
+            val popupView = LayoutInflater.from(context).inflate(R.layout.popup_lift_menu, null)
+            val popupWindow = PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true // focusable: 바깥 터치 시 닫힘
+            )
+
+            // 끌어올리기 메뉴 클릭 처리
+            val liftMenu = popupView.findViewById<TextView>(R.id.liftMenu)
+            liftMenu.setOnClickListener {
+                Toast.makeText(context, "끌어올리기 완료", Toast.LENGTH_SHORT).show()
+                popupWindow.dismiss()
+
+                // 서버 요청 예시
+                // RetrofitInstance.materialApi.liftPost(token, item.id)...
+            }
+
+            // 버튼 아래에 띄우기
+            popupWindow.elevation = 10f
+            popupWindow.showAsDropDown(holder.moreButton, 0, 10) // (x, y offset)
         }
 
     }
+    // TODO: 수정/삭제 팝업 띄우기
     private fun requestCompleteTradePost(context: Context, postId: Long, buyerId: Long, position: Int) {
         Log.d("✅ buyer_final", "postId: $postId, buyerId: $buyerId")
         RetrofitInstance.materialApi.completeTradePost(token, postId, buyerId)
