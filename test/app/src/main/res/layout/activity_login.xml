@@ -143,7 +143,12 @@
             android:background="@drawable/btn_number_of_people"
             android:stateListAnimator="@null"
             android:layout_marginTop="60dp"/>
-
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btnGoogleLogin"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
         <!-- 회원가입 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

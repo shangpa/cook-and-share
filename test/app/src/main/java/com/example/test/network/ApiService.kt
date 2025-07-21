@@ -455,4 +455,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
     ): Call<List<String>>
+
+    @POST("/api/auth/google-login")
+    fun googleLogin(@Body request: GoogleLoginRequest): Call<LoginResponse>
 }
