@@ -697,6 +697,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <!-- VideoTrimActivity -->
         <activity
             android:name=".VideoTrimActivity"
@@ -710,6 +711,20 @@
         <activity
             android:name=".PhotoEditorActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ShortsActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".VideoPlayerAdapter"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name=".VideoPlayerFragment"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
 
 
         <activity
