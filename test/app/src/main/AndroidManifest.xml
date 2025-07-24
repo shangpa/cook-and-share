@@ -708,6 +708,17 @@
             </intent-filter>
         </activity>
 
+        <!-- MyProfileActivity -->
+        <activity
+            android:name=".MyProfileActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".PhotoEditorActivity"
             android:exported="true" />

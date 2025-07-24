@@ -19,6 +19,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.bumptech.glide.Glide
+import android.view.View
+
 
 class MypageActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -28,6 +31,9 @@ class MypageActivity : AppCompatActivity() {
 
         TabBarUtils.setupTabBar(this)
 
+        val profileArea = findViewById<LinearLayout>(R.id.profileArea)
+        val nicknameText = findViewById<TextView>(R.id.nicknameText)
+        val profileImage = findViewById<ImageView>(R.id.profileImage)
 
         // logoutText 클릭했을 때 LoginActivity 이동
         val logoutText: TextView = findViewById(R.id.logoutText)
@@ -92,7 +98,7 @@ class MypageActivity : AppCompatActivity() {
         val userPointText: TextView = findViewById(R.id.myPoint) //포인트 표시할 TextView
 
         // 사용자 정보 요청
-        // 1. 사용자 이름 불러오기
+        // 1. 사용자 정보 요청
         if (token.isNotEmpty()) {
             RetrofitInstance.apiService.getUserInfo("Bearer $token")
                 .enqueue(object : Callback<LoginInfoResponse> {
@@ -100,19 +106,31 @@ class MypageActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val userInfo = response.body()
                             userInfo?.let {
-                                userNameText.text = "${it.name} 님"
-                                logoutText.text ="로그아웃"
+                                // 상단 텍스트 숨김, 프로필 영역 표시
+                                userNameText.visibility = View.GONE
+                                profileArea.visibility = View.VISIBLE
+
+                                nicknameText.text = "${it.name}님"
+                                logoutText.text = "로그아웃"
+
+                                if (!it.profileImageUrl.isNullOrEmpty()) {
+                                    Glide.with(this@MypageActivity)
+                                        .load(it.profileImageUrl)
+                                        .placeholder(R.drawable.ic_cicrle_profile)
+                                        .circleCrop()
+                                        .into(profileImage)
+                                }
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
                         userNameText.text = "로그인을 해주세요"
-                        logoutText.text ="로그인하러 가기"
+                        logoutText.text = "로그인하러 가기"
                     }
                 })
 
-            // 2. 🔥 사용자 포인트 불러오기
+            // 2. 사용자 포인트 요청
             RetrofitInstance.apiService.getMyPoint("Bearer $token")
                 .enqueue(object : Callback<Int> {
                     override fun onResponse(call: Call<Int>, response: Response<Int>) {
@@ -128,13 +146,12 @@ class MypageActivity : AppCompatActivity() {
                         userPointText.text = "?"
                     }
                 })
-
         } else {
-            // 로그인 안 되어있을 때
             userNameText.text = "로그인을 해주세요"
             userPointText.text = "0"
-            logoutText.text ="로그인하러 가기"
+            logoutText.text = "로그인하러 가기"
         }
+
 
         // userEditIcon 클릭했을 때 MypagePersonalInfoActivity 이동
         val userEditIcon = findViewById<ImageButton>(R.id.userEditIcon)
@@ -177,6 +194,13 @@ class MypageActivity : AppCompatActivity() {
         val myPoint: TextView = findViewById(R.id.myPoint)
         myPoint.setOnClickListener {
             val intent = Intent(this, MyPagePointActivity::class.java)
+            startActivity(intent)
+        }
+
+        // myChannelLink 클릭했을 때 MyProfileActivity 이동
+        val myChannelLink: TextView = findViewById(R.id.myChannelLink)
+        myChannelLink.setOnClickListener {
+            val intent = Intent(this, MyProfileActivity::class.java)
             startActivity(intent)
         }
     }

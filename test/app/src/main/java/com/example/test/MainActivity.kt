@@ -244,7 +244,7 @@ class MainActivity : AppCompatActivity() {
 
         // logoButton 클릭했을 때 ShortsActivity 이동
         val logoButton: ImageView = findViewById(R.id.logoButton)
-        themeRecipe.setOnClickListener {
+        logoButton.setOnClickListener {
             val intent = Intent(this, ShortsActivity::class.java)
             startActivity(intent)
         }

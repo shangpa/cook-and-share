@@ -24,6 +24,7 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.upstream.DefaultAllocator
 import com.example.test.databinding.FragmentVideoPlayerBinding
+import java.io.Serializable
 
 @UnstableApi
 class VideoPlayerFragment : Fragment() {
@@ -34,13 +35,13 @@ class VideoPlayerFragment : Fragment() {
     private lateinit var shortObject: ShortObject
 
     companion object {
-        fun newInstance(mediaUrl: ShortObject?): VideoPlayerFragment {
+        fun newInstance(mediaUrl: ShortObject): VideoPlayerFragment {
             val args = Bundle().apply {
-                putSerializable("mediaUrl", mediaUrl)
+                putSerializable("mediaUrl", mediaUrl as Serializable)
             }
-            val fragment = VideoPlayerFragment()
-            fragment.arguments = args
-            return fragment
+            return VideoPlayerFragment().apply {
+                arguments = args
+            }
         }
     }
 
@@ -94,7 +95,7 @@ class VideoPlayerFragment : Fragment() {
 
     private fun setContents() {
         binding.tvNickname.text = shortObject.userName
-        binding.tvTextShort.text = shortObject.contents
+        binding.tvVideoTitle.text = shortObject.contents
     }
 
     private fun initializePlayer() {
@@ -110,7 +111,10 @@ class VideoPlayerFragment : Fragment() {
             .build().also { exoPlayer ->
                 binding.playerView.player = exoPlayer
                 binding.playerView.useController = false
-                val mediaSource = buildMediaSource(Uri.parse(shortObject.url))
+
+                val videoUrl = "https://your-server.com/videos/${shortObject.filename}"
+                val mediaSource = buildMediaSource(Uri.parse(videoUrl))
+
                 exoPlayer.setMediaSource(mediaSource)
                 exoPlayer.prepare()
                 exoPlayer.playWhenReady = true
