@@ -183,7 +183,7 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
         // btnRecipeMore 클릭했을 때 RecipeActivity 이동
         val btnRecipeMore: LinearLayout = findViewById(R.id.btnRecipeMore)
         btnRecipeMore.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
+            val intent = Intent(this, RecipeTapActivity::class.java)
             startActivity(intent)
         }
 

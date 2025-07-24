@@ -11,12 +11,12 @@ object TabBarUtils {
 
     fun setupTabBar(activity: Activity) {
         activity.findViewById<ImageView>(R.id.tapRecipeIcon)?.setOnClickListener {
-            activity.startActivity(Intent(activity, RecipeActivity::class.java))
+            activity.startActivity(Intent(activity, RecipeTapActivity::class.java))
             activity.finish()
         }
 
         activity.findViewById<TextView>(R.id.tapRecipeText)?.setOnClickListener {
-            activity.startActivity(Intent(activity, RecipeActivity::class.java))
+            activity.startActivity(Intent(activity, RecipeTapActivity::class.java))
             activity.finish()
         }
 

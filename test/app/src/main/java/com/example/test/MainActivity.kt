@@ -126,14 +126,14 @@ class MainActivity : AppCompatActivity() {
         // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
         val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
         tapRecipeIcon.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
+            val intent = Intent(this, RecipeTapActivity::class.java)
             startActivity(intent)
         }
 
         // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
         val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
         tapRecipeText.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
+            val intent = Intent(this, RecipeTapActivity::class.java)
             startActivity(intent)
         }
 
@@ -231,14 +231,14 @@ class MainActivity : AppCompatActivity() {
         // moreSeeRecipe 클릭했을 때 RecipeActivity 이동
         val moreSeeRecipe: LinearLayout = findViewById(R.id.moreSeeRecipe)
         moreSeeRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
+            val intent = Intent(this, RecipeTapActivity::class.java)
             startActivity(intent)
         }
 
         // themeRecipe 클릭했을 때 RecipeActivity 이동
         val themeRecipe: TextView = findViewById(R.id.themeRecipe)
         themeRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
+            val intent = Intent(this, RecipeTapActivity::class.java)
             startActivity(intent)
         }
         //테마별 레시피
@@ -256,7 +256,7 @@ class MainActivity : AppCompatActivity() {
 
         categoryMap.forEach { (viewId, categoryValue) ->
             findViewById<LinearLayout>(viewId).setOnClickListener {
-                val intent = Intent(this, RecipeActivity::class.java)
+                val intent = Intent(this, RecipeTapActivity::class.java)
                 intent.putExtra("selectedCategory", categoryValue)
                 startActivity(intent)
             }
