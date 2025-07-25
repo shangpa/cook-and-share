@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.example.test.model.GoogleLoginRequest
 import com.example.test.model.LoginRequest
 import com.example.test.model.LoginResponse
 import com.example.test.model.notification.FcmTokenRequestDTO
@@ -21,13 +22,24 @@ import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("207116637821-9s9rbj2mn86707fg9khds5o2b78m7h2q.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
         val loginButton = findViewById<AppCompatButton>(R.id.btnLogin)
         val loginId = findViewById<EditText>(R.id.etLoginId)
         val loginPassword = findViewById<EditText>(R.id.etLoginPassword)
@@ -121,6 +133,14 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
         }
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        val googleLoginButton = findViewById<SignInButton>(R.id.btnGoogleLogin)
+
+        googleLoginButton.setOnClickListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
     }
 
     // 로그인 성공 시 SharedPreferences에 사용자 ID와 JWT 토큰 저장
@@ -129,6 +149,54 @@ class LoginActivity : AppCompatActivity() {
         prefs.userId = userId
         prefs.token = token
         Log.e("LoginActivity", "토큰 저장 성공: $token, userId: $userId")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val idToken = account.idToken
+                if (idToken != null) {
+                    sendIdTokenToServer(idToken)
+                }
+            } catch (e: ApiException) {
+                Log.e("GoogleLogin", "Google 로그인 실패", e)
+            }
+        }
+
+    }
+    private fun sendIdTokenToServer(idToken: String) {
+        val request = GoogleLoginRequest(idToken)
+        RetrofitInstance.apiService.googleLogin(request).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                Log.d("GOOGLE", "response.isSuccessful: ${response.isSuccessful}")
+                Log.d("GOOGLE", "response.body(): ${response.body()}")
+
+                if (response.isSuccessful && response.body() != null) {
+                    val loginResponse = response.body()!!
+                    Log.d("GoogleLogin", "로그인 성공: ${loginResponse.token}, ${loginResponse.userId}")
+
+                    App.prefs.token = loginResponse.token
+                    App.prefs.userId = loginResponse.userId
+
+                    Toast.makeText(this@LoginActivity, "구글 로그인 성공", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("GoogleLogin", "구글 로그인 실패: code=${response.code()}, error=$errorBody")
+                    Toast.makeText(this@LoginActivity, "구글 로그인 실패", Toast.LENGTH_SHORT).show()
+                }            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("GoogleLogin", "서버 전송 실패", t)
+                Toast.makeText(this@LoginActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
 }

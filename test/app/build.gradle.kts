@@ -113,6 +113,9 @@ dependencies {
     //GCV 영수증
     implementation("com.google.cloud:google-cloud-vision:3.26.0")
 
+    //구글로그인
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+
     //채팅용
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")

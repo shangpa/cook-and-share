@@ -64,6 +64,9 @@ import java.io.InputStream
 import java.util.Stack
 import android.widget.PopupMenu
 import android.widget.ProgressBar
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -91,7 +94,7 @@ private var currentSubStep = 1
 private var recipeStepCount = 1 // 조리 순서 번호 관리 (1-1, 1-2, ...)
 private var isPublic: Boolean = true
 private var recipe: RecipeRequest? = null
-
+private var exoPlayer: ExoPlayer? = null
 @androidx.media3.common.util.UnstableApi
 class RecipeWriteBothActivity : AppCompatActivity() {
     //조리순서 이미지 선택된거
@@ -146,6 +149,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             trimmedUri?.let {
                 selectedVideoUri = it
                 showVideoInfo(it)
+                showVideoPreview(it)
                 uploadVideoToServer(it)  // ✅ 트리밍된 영상 업로드
             }
         }
@@ -2542,5 +2546,18 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
     private fun hideProgressBar() {
         findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+    }
+    private fun showVideoPreview(uri: Uri) {
+        val playerView = findViewById<PlayerView>(R.id.videoPlayerView)
+        playerView.visibility = View.VISIBLE
+
+        exoPlayer?.release() // 이전 player 해제
+        exoPlayer = ExoPlayer.Builder(this).build()
+        playerView.player = exoPlayer
+
+        val mediaItem = MediaItem.fromUri(uri)
+        exoPlayer?.setMediaItem(mediaItem)
+        exoPlayer?.prepare()
+        exoPlayer?.playWhenReady = false // 자동 재생 X
     }
 }

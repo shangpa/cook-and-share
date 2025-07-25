@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.example.test.Utils.TabBarUtils
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.model.LoginInfoResponse
 import com.example.test.network.RetrofitInstance
@@ -26,68 +27,7 @@ class FridgeIngredientActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fridge_ingredient)
 
-        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
-        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
-        tapVillageKitchenIcon.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
-        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
-        tapVillageKitchenText.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
-        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
-        tapRecipeIcon.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
-        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
-        tapRecipeText.setOnClickListener {
-            val intent = Intent(this, RecipeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapHomeIcon 클릭했을 때 MainActivity 이동
-        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
-        tapHomeIcon.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
-        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
-        tapCommunityIcon.setOnClickListener {
-            val intent = Intent(this, CommunityMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
-        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
-        tapCommunityText.setOnClickListener {
-            val intent = Intent(this, CommunityMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
-        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
-        tapFridgeIcon.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapFridgeText 클릭했을 때 FridgeActivity 이동
-        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
-        tapFridgeText.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
-        }
+        TabBarUtils.setupTabBar(this)
 
         apiService = RetrofitInstance.apiService
 
