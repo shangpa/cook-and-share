@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.Utils.TabBarUtils
 
 class RecipeWriteMain : AppCompatActivity() {
@@ -37,54 +38,37 @@ class RecipeWriteMain : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // bothWrite 클릭했을 때 RecipeWriteBothActivity 이동
-        val bothWrite: TextView = findViewById(R.id.bothWrite)
-        bothWrite.setOnClickListener {
+        // both 클릭했을 때 RecipeWriteBothActivity 이동
+        val both: ConstraintLayout = findViewById(R.id.both)
+        both.setOnClickListener {
             val intent = Intent(this, RecipeWriteBothActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // imageWrite 클릭했을 때 RecipeWriteImageActivity 이동
-        val imageWrite: TextView = findViewById(R.id.imageWrite)
-        imageWrite.setOnClickListener {
+        // image 클릭했을 때 RecipeWriteImageActivity 이동
+        val image: ConstraintLayout = findViewById(R.id.image)
+        image.setOnClickListener {
             val intent = Intent(this, RecipeWriteImageActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // videoWrite 클릭했을 때 RecipeWriteVideoActivity 이동
-        val videoWrite: TextView = findViewById(R.id.videoWrite)
-        videoWrite.setOnClickListener {
+        // video 클릭했을 때 RecipeWriteVideoActivity 이동
+        val video: ConstraintLayout = findViewById(R.id.video)
+        video.setOnClickListener {
             val intent = Intent(this, RecipeWriteVideoActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // rigthArrow 클릭했을 때 RecipeWriteVideoActivity 이동
-        val rigthArrow: View = findViewById(R.id.rigthArrow)
-        rigthArrow.setOnClickListener {
-            val intent = Intent(this, RecipeWriteBothActivity::class.java)
+        // oneMinute 클릭했을 때 RecipeWriteOneMinuteActivity 이동
+        val oneMinute: ConstraintLayout = findViewById(R.id.oneMinute)
+        oneMinute.setOnClickListener {
+            val intent = Intent(this, RecipeWriteOneMinuteActivity::class.java)
             startActivity(intent)
             finish()
         }
-
-        // rigthArrowTwo 클릭했을 때 RecipeWriteImageActivity 이동
-        val rigthArrowTwo: View = findViewById(R.id.rigthArrowTwo)
-        rigthArrowTwo.setOnClickListener {
-            val intent = Intent(this, RecipeWriteImageActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        // rigthArrowThree 클릭했을 때 RecipeWriteVideoActivity 이동
-        val rigthArrowThree: View = findViewById(R.id.rigthArrowThree)
-        rigthArrowThree.setOnClickListener {
-            val intent = Intent(this, RecipeWriteVideoActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
 
     }
 }
