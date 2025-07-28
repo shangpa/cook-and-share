@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTmap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+        <!-- 뒤로가기, 레시피 작성, 카테고리 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recipeWrite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 뒤로가기, 1분 레시피 작성 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recipeWriteUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 뒤로가기 -->
+                <ImageButton
+                    android:id="@+id/backArrow"
+                    android:background="@drawable/ic_lelft_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"  />
+
+                <!-- 1분 레시피 작성 -->
+                <TextView
+                    android:id="@+id/oneMinuteRecipeWrite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="1분 레시피 작성"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 레시피 작성 아래 구분바 -->
+            <View
+                android:id="@+id/divideRectangleBarOne"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bar_recipe_title"
+                app:layout_constraintTop_toBottomOf="@id/recipeWriteUp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 타이틀 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recipeWriteTitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="101dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recipeCategoryTitleWrite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 1분 레시피의 -->
+                <TextView
+                    android:id="@+id/oneMinuteRecipe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginStart="23dp"
+                    android:text="1분 레시피의"
+                    android:textColor="#2B2B2B"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 제목을 입력 후 동영상을 업로드해주세요 -->
+                <TextView
+                    android:id="@+id/writeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="23dp"
+                    android:text="제목을 입력 후 동영상을 업로드해주세요"
+                    android:textColor="#2B2B2B"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/oneMinuteRecipe"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/categoryAndRecipeWrite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="66dp"
+                app:layout_constraintTop_toBottomOf="@+id/recipeCategoryTitleWrite">
+
+                <!-- 레시피 제목 -->
+                <TextView
+                    android:id="@+id/recipeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="41dp"
+                    android:text="레시피 제목"
+                    android:textColor="#2B2B2B"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 레시피 제목을 입력해주세요 -->
+                <EditText
+                    android:id="@+id/recipeTitleWrite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="레시피 제목을 입력해주세요"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp"
+                    android:backgroundTint="#A1A9AD"
+                    android:background="@null"
+                    android:inputType="text"
+                    app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
+                    app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThree"
+                    app:layout_constraintTop_toTopOf="@id/recipeTitle"/>
+
+                <!-- 레시피 제목을 입력해주세요 아래 바 -->
+                <View
+                    android:id="@+id/divideRectangleBarThree"
+                    android:layout_width="165dp"
+                    android:layout_height="1dp"
+                    android:background="@drawable/bar_number_of_people"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/recipeTitleWrite"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recipeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeTitle">
+
+                    <!-- 동영상 업로드하기 -->
+                    <TextView
+                        android:id="@+id/uproadVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="41dp"
+                        android:text="동영상 업로드하기"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 카메라 버튼 -->
+                    <ImageButton
+                        android:id="@+id/camera"
+                        android:background="@drawable/ic_camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="28dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/uproadVideo"  />
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginTop="1dp"
+                        app:layout_constraintTop_toBottomOf="@id/camera"
+                        android:padding="16dp">
+
+                        <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
+                        <LinearLayout
+                            android:id="@+id/imageContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 탭바 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tapBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tapFix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/bottomTabBar">
+
+                <ImageView
+                    android:id="@+id/tapFixBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bar_tap_bg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- 공개설정 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/shareFixButton"
+                    android:layout_width="119dp"
+                    android:layout_height="50dp"
+                    android:text="공개설정"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="13sp"
+                    android:textColor="#9B9B9B"
+                    android:layout_marginStart="27dp"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    android:drawableStart="@drawable/ic_cogwheel"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="26dp"
+                    app:layout_constraintTop_toTopOf="@id/tapFixBar"
+                    app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
+                    app:layout_constraintStart_toStartOf="@id/tapFixBar" />
+
+                <!-- 등록하기 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/registerFixButton"
+                    android:layout_width="223dp"
+                    android:layout_height="50dp"
+                    android:text="등록하기"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="27dp"
+                    android:background="@drawable/btn_number_of_people"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toTopOf="@id/tapFixBar"
+                    app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
+                    app:layout_constraintEnd_toEndOf="@id/tapFixBar" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 공개설정 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/shareSettle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
+
+                <!-- 회색 배경 View -->
+                <View
+                    android:id="@+id/dimView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#80000000"/>
+
+                <!-- 공유설정 상자 -->
+                <View
+                    android:id="@+id/shareSettleBox"
+                    android:layout_width="280dp"
+                    android:layout_height="294dp"
+                    android:layout_marginTop="300dp"
+                    android:background="@drawable/ic_activity_recipe_content_check_rect"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- 공개 설정 -->
+                <TextView
+                    android:id="@+id/shareSettleTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="공개 설정"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/shareSettleBox"/>
+
+                <!-- 전체공개 -->
+                <TextView
+                    android:id="@+id/totalShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="111dp"
+                    android:layout_marginStart="30dp"
+                    android:text="전체공개"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/shareSettleBox"
+                    app:layout_constraintTop_toTopOf="@id/shareSettleBox"/>
+
+                <!-- 미선택 -->
+                <ImageButton
+                    android:id="@+id/uncheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_uncheck"
+                    app:layout_constraintEnd_toEndOf="@id/shareSettleBox"
+                    app:layout_constraintTop_toTopOf="@id/totalShare"/>
+
+                <!-- 나만보기 -->
+                <TextView
+                    android:id="@+id/justLookMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginStart="30dp"
+                    android:text="나만보기"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/shareSettleBox"
+                    app:layout_constraintTop_toTopOf="@id/totalShare"/>
+
+                <!-- 미선택 -->
+                <ImageButton
+                    android:id="@+id/uncheckTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_uncheck"
+                    app:layout_constraintEnd_toEndOf="@id/shareSettleBox"
+                    app:layout_constraintTop_toTopOf="@id/justLookMe"/>
+
+                <!-- 취소 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancel"
+                    android:layout_width="115dp"
+                    android:layout_height="33dp"
+                    android:text="취소"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="11sp"
+                    android:textColor="#000000"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/ic_recipe_main_rect_no"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/shareSettleBox"
+                    app:layout_constraintStart_toStartOf="@id/shareSettleBox" />
+
+                <!-- 설정 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/settle"
+                    android:layout_width="115dp"
+                    android:layout_height="33dp"
+                    android:text="설정"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/ic_recipe_main_rect_yes"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/shareSettleBox"
+                    app:layout_constraintEnd_toEndOf="@id/shareSettleBox" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 레시피 등록 여부 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recipeRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
+
+                <!-- 회색 배경 View -->
+                <View
+                    android:id="@+id/registerDimView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#80000000"/>
+
+                <!-- 레시피를 등록하시겠습니까? 상자 -->
+                <View
+                    android:id="@+id/recipeRegisterBox"
+                    android:layout_width="280dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="300dp"
+                    android:background="@drawable/ic_activity_recipe_content_check_rect"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- 레시피를 등록하시겠습니까? -->
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:text="레시피를 등록하시겠습니까?"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/recipeRegisterBox"/>
+
+                <!-- 취소 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancelTwo"
+                    android:layout_width="115dp"
+                    android:layout_height="33dp"
+                    android:text="취소"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="11sp"
+                    android:textColor="#000000"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/ic_recipe_main_rect_no"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/recipeRegisterBox"
+                    app:layout_constraintStart_toStartOf="@id/recipeRegisterBox"/>
+
+                <!-- 등록 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/register"
+                    android:layout_width="115dp"
+                    android:layout_height="33dp"
+                    android:text="등록"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/ic_recipe_main_rect_yes"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/recipeRegisterBox"
+                    app:layout_constraintEnd_toEndOf="@id/recipeRegisterBox"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 탭바 전체 배경 -->
+            <FrameLayout
+                android:id="@+id/bottomTabBar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <!-- 탭바 배경 이미지 -->
+                <ImageView
+                    android:id="@+id/mainTapBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/bar_tap_bg"
+                    android:scaleType="fitXY" />
+
+                <!-- 탭바 버튼 그룹 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="5">
+
+                    <!-- 동네주방 탭 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/tapVillageKitchenIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_village_kitchen" />
+
+                        <TextView
+                            android:id="@+id/tapVillageKitchenText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="동네주방"
+                            android:textColor="#B9BEC1"
+                            android:textSize="10sp"
+                            android:layout_marginBottom="4dp" />
+                    </LinearLayout>
+
+                    <!-- 레시피 탭 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center|top">
+
+                        <ImageView
+                            android:id="@+id/tapRecipeIcon"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_recipe"
+                            app:tint="#2B2B2B"
+                            android:layout_marginTop="14dp"/>
+
+
+                        <TextView
+                            android:id="@+id/tapRecipeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="레시피"
+                            android:textColor="#2B2B2B"
+                            android:textSize="10sp"
+                            android:layout_marginTop="6dp"/>
+                    </LinearLayout>
+
+                    <!-- 홈 탭 -->
+                    <LinearLayout
+                        android:id="@+id/tapHome"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/tapHomeIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_home"
+                            android:layout_marginBottom="15dp"/>
+                    </LinearLayout>
+
+                    <!-- 커뮤니티 탭 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/tapCommunityIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_community" />
+
+                        <TextView
+                            android:id="@+id/tapCommunityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="커뮤니티"
+                            android:textColor="#B9BEC1"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+
+                    <!-- 냉장고 탭 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center|top">
+
+                        <ImageView
+                            android:id="@+id/tapFridgeIcon"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_refrigerator"
+                            android:layout_marginTop="14dp"/>
+
+                        <TextView
+                            android:id="@+id/tapFridgeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="냉장고"
+                            android:textColor="#B9BEC1"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
