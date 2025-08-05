@@ -719,6 +719,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <!-- VideoTrimActivity -->
         <activity
             android:name=".VideoTrimActivity"
@@ -729,9 +730,34 @@
             </intent-filter>
         </activity>
 
+        <!-- MyProfileActivity -->
+        <activity
+            android:name=".MyProfileActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".PhotoEditorActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ShortsActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".VideoPlayerAdapter"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name=".VideoPlayerFragment"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
 
 
         <activity
