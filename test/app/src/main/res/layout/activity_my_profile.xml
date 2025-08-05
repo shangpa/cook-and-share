@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 상단 바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_fridge"
+            android:contentDescription="뒤로가기" />
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageView
+            android:id="@+id/seachButton"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_search"
+            android:layout_marginLeft="310dp"
+            android:contentDescription="검색" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
