@@ -619,6 +619,17 @@
             </intent-filter>
         </activity>
 
+        <!-- RecipeTapActivity -->
+        <activity
+            android:name=".RecipeTapActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- SearchMain -->
         <activity
             android:name=".SearchMainActivity"
