@@ -56,7 +56,7 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
 
     private val videoPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
-            val intent = Intent(this, VideoTrimActivity::class.java)
+            val intent = Intent(this, ShortsTrimActivity::class.java)
             intent.putExtra("videoUri", it)
             videoTrimLauncher.launch(intent)
         }

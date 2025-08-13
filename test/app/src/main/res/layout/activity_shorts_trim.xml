@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <FrameLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp">
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        <!-- 실시간 가이드 박스 -->
+        <com.example.test.ui.CropGuideView
+            android:id="@+id/cropGuide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false" />
+    </FrameLayout>
+    <com.google.android.material.slider.Slider
+        android:id="@+id/cropOffsetSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="100"
+        android:value="50"
+        app:labelBehavior="gone"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 2) 줌 슬라이더 -->
+    <com.google.android.material.slider.Slider
+        android:id="@+id/cropZoomSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="100"
+        android:valueTo="300"
+        android:value="100"
+        app:labelBehavior="gone"
+        android:layout_marginBottom="8dp" />
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rangeSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Button
+        android:id="@+id/btnTrim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="자르기 실행"
+        android:layout_marginTop="24dp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+</LinearLayout>
