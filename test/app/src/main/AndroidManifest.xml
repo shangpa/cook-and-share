@@ -764,6 +764,12 @@
             android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
 
+        <activity
+            android:name=".OtherProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+
 
         <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
 <!--        <activity-->

@@ -1,39 +1,54 @@
 package com.example.test
 
-import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlin.math.roundToInt
 
-class MyProfileActivity : AppCompatActivity() {
+class OtherProfileActivity : AppCompatActivity() {
 
     private lateinit var tabRecipe: TextView
     private lateinit var tabVideo: TextView
     private lateinit var indicator: View
+    private lateinit var followButton: Button
 
     private enum class Tab { RECIPE, VIDEO }
     private var currentTab = Tab.RECIPE
 
+    private var userId: Long = -1L // 상대방 사용자 ID
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_profile)
+        setContentView(R.layout.activity_other_profile)
+
+        // 전달받은 상대 유저 ID (없으면 -1)
+        userId = intent.getLongExtra("userId", -1)
+
+        findViewById<android.widget.ImageView>(R.id.backButton).setOnClickListener { finish() }
 
         tabRecipe = findViewById(R.id.tabRecipe)
         tabVideo  = findViewById(R.id.tabVideo)
         indicator = findViewById(R.id.indicator)
+        followButton = findViewById(R.id.followButton)
 
-        // 최초 탭 로드(레시피)
+        // 팔로우 버튼 토글
+        followButton.setOnClickListener {
+            followButton.isSelected = !followButton.isSelected
+            followButton.text = if (followButton.isSelected) "팔로우중" else "팔로우"
+            // TODO: 서버 호출(팔로우/언팔로우) 넣을 위치
+        }
+
+
+        // 최초 탭 로드
         if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.tabContainer, RecipeTabFragment.newInstance())
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.tabContainer, RecipeTabFragment.newInstance(/* userId 등 전달 필요시 */))
                 .commit()
         }
         highlightTab(Tab.RECIPE, moveIndicator = false)
@@ -42,15 +57,8 @@ class MyProfileActivity : AppCompatActivity() {
         tabRecipe.setOnClickListener { switchTab(Tab.RECIPE) }
         tabVideo.setOnClickListener  { switchTab(Tab.VIDEO) }
 
-        // 인디케이터 초기 폭/위치
+        // 인디케이터 초기
         initIndicatorWidthAndPosition()
-
-        // backButton 클릭했을 때 MypageActivity 이동
-        val backButton: ImageView = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun switchTab(tab: Tab) {
@@ -166,7 +174,4 @@ class MyProfileActivity : AppCompatActivity() {
     /** dp → px */
     private fun dp(value: Int): Int =
         (value * resources.displayMetrics.density).roundToInt()
-
 }
-
-
