@@ -769,6 +769,12 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".OtherProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+
 
         <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
 <!--        <activity-->
