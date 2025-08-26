@@ -146,4 +146,8 @@ dependencies {
     implementation("androidx.media3:media3-datasource:1.3.1")
     implementation("androidx.media3:media3-exoplayer-hls:1.3.1")
     implementation("androidx.media3:media3-exoplayer-dash:1.3.1")
+
+    //도넛형 그래프
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }

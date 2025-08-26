@@ -7,6 +7,7 @@ import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.model.Fridge.FridgeResponse
+import com.example.test.model.Fridge.FridgeStatsResponse
 import com.example.test.model.Fridge.UsedIngredientRequest
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
@@ -190,12 +191,18 @@ interface ApiService {
         @Query("ingredientName") ingredientName: String
     ): Call<List<FridgeHistoryResponse>>
 
-    //영수증으로 재료추가
+    // 영수증으로 재료추가
     @POST("/api/fridges/ocr")
     fun createFridgeByOCR(
         @Body body: FridgeCreateRequest,
         @Header("Authorization") token: String
     ): Call<Void>
+
+    // 냉장고 통계
+    @GET("/api/fridges/stats/my")
+    suspend fun getFridgeStats(
+        @Header("Authorization") token: String
+    ): Response<FridgeStatsResponse>
 
     @POST("/api/fridges/ocr/batch")
     fun createFridgesByOCRBatch(
