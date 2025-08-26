@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFoodType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeColor="#DFDFDF"
+        app:strokeWidth="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="25dp">
+
+            <TextView
+                android:id="@+id/titleFoodType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="식품 유형"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="0dp"
+                android:layout_height="240dp"
+                android:contentDescription="식품 유형 도넛 차트 (냉장, 냉동, 실외)"
+                app:layout_constraintTop_toBottomOf="@id/titleFoodType"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/legendRow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/pieChart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- 냉장 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="start|center_vertical">
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="#99D89F"
+                        android:contentDescription="냉장 색상 표시점" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="냉장"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- 냉동 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center|center_vertical">
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="#9CCAFF"
+                        android:contentDescription="냉동 색상 표시점" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="냉동"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- 실외 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="end|center_vertical">
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="#FFD48A"
+                        android:contentDescription="실외 색상 표시점" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="실온"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</merge>

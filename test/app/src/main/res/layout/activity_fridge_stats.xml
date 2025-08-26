@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 스크롤 영역: 탭바 위까지만 차지 -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 👉 여기에 기존의 화면 내용 ConstraintLayout 통째로 넣어두면 됨 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 상단 바 (ConstraintLayout로 변경) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_back_fridge"
+                    android:contentDescription="뒤로가기"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/fridgeIngredientTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분석"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toEndOf="@id/backBtn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--            &lt;!&ndash; 오른쪽 여백 대용 &ndash;&gt;
+                <View
+                    android:id="@+id/spaceView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/fridgeIngredientTitle"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 구분선 -->
+            <View
+                android:id="@+id/topDivider"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="#F5F6F7"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="70dp"
+                app:layout_constraintTop_toBottomOf="@id/topBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 섹션 타이틀 -->
+            <TextView
+                android:id="@+id/sectionMainFridge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="메인 냉장고"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/topDivider"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 카드: 종합 분석 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOverview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:strokeColor="#DFDFDF"
+                app:strokeWidth="2dp"
+                app:layout_constraintTop_toBottomOf="@id/sectionMainFridge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="25dp">
+
+                    <TextView
+                        android:id="@+id/titleOverview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="종합 분석"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <View
+                        android:id="@+id/dividerOverview"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#1A000000"
+                        app:layout_constraintTop_toBottomOf="@id/titleOverview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- 행 1 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/nowMaterial"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/dividerOverview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/nowMaterialIc"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_now_material"
+                            android:contentDescription="지금 냉장고에 보관된 재료 수 아이콘"
+                            tools:ignore="MissingConstraints" />
+
+                        <TextView
+                            android:id="@+id/nowMaterialLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="지금 냉장고에 보관된 재료"
+                            android:textSize="14sp"
+                            android:layout_marginStart="20dp"
+                            app:layout_constraintStart_toEndOf="@id/nowMaterialIc"
+                            app:layout_constraintEnd_toStartOf="@id/nowMaterialValue"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nowMaterialValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="#30C763"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- 행 2 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/expirationDateEat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/nowMaterial"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/expirationDateEatIc"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_expiration_date_eat"
+                            android:contentDescription="유통기한 내에 먹은 재료 수 아이콘"
+                            tools:ignore="MissingConstraints" />
+
+                        <TextView
+                            android:id="@+id/expirationDateEatLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="유통기한 내에 먹은 재료 수"
+                            android:textSize="14sp"
+                            android:layout_marginStart="20dp"
+                            app:layout_constraintStart_toEndOf="@id/expirationDateEatIc"
+                            app:layout_constraintEnd_toStartOf="@id/expirationDateEatValue"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/expirationDateEatValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="#30C763"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- 행 3 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/expirationDateNot"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/expirationDateEat"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/expirationDateNotIc"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_expiration_date_not"
+                            android:contentDescription="유통기한 내에 지키지 못한 음식 수 아이콘"
+                            tools:ignore="MissingConstraints" />
+
+                        <TextView
+                            android:id="@+id/expirationDateNotLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="유통기한을 지키지 못한 재료 수"
+                            android:textSize="14sp"
+                            android:layout_marginStart="20dp"
+                            app:layout_constraintStart_toEndOf="@id/expirationDateNotIc"
+                            app:layout_constraintEnd_toStartOf="@id/expirationDateNotValue"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/expirationDateNotValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="#30C763"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 기존 include 대신 컨테이너 + include -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fridgeGraphContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@id/cardOverview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <include
+                    layout="@layout/fridge_graph"/>
+                <!-- ⚠️ 여기엔 제약/마진 주지 말 것: merge라 무시됨 -->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 하단 여백(탭바와 겹침 방지용) -->
+            <Space
+                android:id="@+id/bottomSpacer"
+                android:layout_width="20dp"
+                android:layout_height="32dp"
+                app:layout_constraintTop_toBottomOf="@id/fridgeGraphContainer"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 하단 탭바: 고정 -->
+    <FrameLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/mainTapBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bar_tap_bg"
+            android:scaleType="fitXY" />
+
+        <!-- 탭바 버튼 그룹 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="5">
+
+            <!-- 동네주방 탭 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/tapVillageKitchenIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_village_kitchen" />
+
+                <TextView
+                    android:id="@+id/tapVillageKitchenText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="동네주방"
+                    android:textColor="#B9BEC1"
+                    android:textSize="10sp"
+                    android:layout_marginBottom="4dp" />
+            </LinearLayout>
+
+            <!-- 레시피 탭 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center|top">
+
+                <ImageView
+                    android:id="@+id/tapRecipeIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_recipe"
+                    android:layout_marginTop="14dp"/>
+
+
+                <TextView
+                    android:id="@+id/tapRecipeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="레시피"
+                    android:textColor="#B9BEC1"
+                    android:textSize="10sp"
+                    android:layout_marginTop="6dp"/>
+            </LinearLayout>
+
+            <!-- 홈 탭 -->
+            <LinearLayout
+                android:id="@+id/tapHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/tapHomeIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_home"
+                    android:layout_marginBottom="15dp"/>
+            </LinearLayout>
+
+            <!-- 커뮤니티 탭 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/tapCommunityIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_community" />
+
+                <TextView
+                    android:id="@+id/tapCommunityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="커뮤니티"
+                    android:textColor="#B9BEC1"
+                    android:textSize="10sp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- 냉장고 탭 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center|top">
+
+                <ImageView
+                    android:id="@+id/tapFridgeIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_refrigerator"
+                    app:tint="#2B2B2B"
+                    android:layout_marginTop="14dp"/>
+
+                <TextView
+                    android:id="@+id/tapFridgeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="냉장고"
+                    android:textColor="#2B2B2B"
+                    android:textSize="10sp"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
