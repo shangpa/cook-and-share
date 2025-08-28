@@ -81,6 +81,11 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         val cancelTwoButton = findViewById<AppCompatButton>(R.id.cancelTwo)
         val recipeRegister = findViewById<ConstraintLayout>(R.id.recipeRegister)
 
+        // 숏츠로 이동 (플로팅)
+        findViewById<AppCompatButton>(R.id.register).setOnClickListener {
+            startActivity(Intent(this, ShortsActivity::class.java))
+        }
+
         videoCameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val videoUri = result.data?.data

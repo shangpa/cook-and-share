@@ -52,10 +52,24 @@ class RecipeTapActivity : AppCompatActivity() {
             startActivity(Intent(this, SearchMainActivity::class.java))
         }
 
-
-        // 작성 (플로팅)
+        // 레시피 작성 (플로팅)
         findViewById<TextView>(R.id.circleRecipe).setOnClickListener {
             startActivity(Intent(this, RecipeWriteMain::class.java))
+        }
+
+        // 숏츠 작성 (플로팅)
+        findViewById<TextView>(R.id.circleShortVideo).setOnClickListener {
+            startActivity(Intent(this, RecipeWriteOneMinuteActivity::class.java))
+        }
+
+        // 더보기 클릭시 숏츠로 이동
+        findViewById<TextView>(R.id.add).setOnClickListener {
+            startActivity(Intent(this, ShortsActivity::class.java))
+        }
+
+        // 더보기 클릭시 숏츠로 이동
+        findViewById<TextView>(R.id.add).setOnClickListener {
+            startActivity(Intent(this, ShortsActivity::class.java))
         }
 
         val scrollView = findViewById<ScrollView>(R.id.scrollView)
