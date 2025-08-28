@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -14,11 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.RecipeSearchAdapter
+import com.example.test.adapter.SuggestRecipeAdapter
 import com.example.test.model.Recipe
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
@@ -27,15 +26,20 @@ import retrofit2.Response
 
 class RecipeTapActivity : AppCompatActivity() {
 
-    private lateinit var categoryButtons: List<AppCompatButton>
+    private lateinit var categoryButtons: List<AppCompatButton> // “레시피 둘러보기” 카테고리 버튼들
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecipeSearchAdapter
+
     private lateinit var sortTextView: TextView
     private var currentSelectedCategory: String? = null
     private var sortOrder: String? = null
-    private lateinit var categoryButton: List<AppCompatButton>
-    private var selectedButton: AppCompatButton? = null
 
+    // “레시피 이거 어때요?” 상단 카테고리 버튼들
+    private lateinit var suggestButtons: List<AppCompatButton>
+
+    // “레시피 이거 어때요?” 가로 리스트
+    private lateinit var suggestRecycler: RecyclerView
+    private lateinit var suggestAdapter: SuggestRecipeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,44 +47,120 @@ class RecipeTapActivity : AppCompatActivity() {
 
         TabBarUtils.setupTabBar(this)
 
-        // searchIcon 클릭했을 때 SearchMainActivity 이동
-        val searchIcon: ImageButton = findViewById(R.id.searchIcon)
-        searchIcon.setOnClickListener {
-            val intent = Intent(this, SearchMainActivity::class.java)
-            startActivity(intent)
+        // 상단 우측 검색
+        findViewById<ImageButton>(R.id.searchIcon).setOnClickListener {
+            startActivity(Intent(this, SearchMainActivity::class.java))
         }
 
-        // recipeCard 클릭했을 때 SearchMainActivity 이동
-        val recipeCard: ConstraintLayout = findViewById(R.id.recipeCard)
-        recipeCard.setOnClickListener {
-            val intent = Intent(this, RecipeSeeVideoActivity::class.java)
-            startActivity(intent)
+
+        // 작성 (플로팅)
+        findViewById<TextView>(R.id.circleRecipe).setOnClickListener {
+            startActivity(Intent(this, RecipeWriteMain::class.java))
         }
 
-        // recipeCardTwo 클릭했을 때 SearchMainActivity 이동
-        val recipeCardTwo: ConstraintLayout = findViewById(R.id.recipeCardTwo)
-        recipeCardTwo.setOnClickListener {
-            val intent = Intent(this, RecipeSeeActivity::class.java)
-            startActivity(intent)
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        val writeRecipe = findViewById<ConstraintLayout>(R.id.writeRecipe)
+        val writeRecipeAdd = findViewById<ConstraintLayout>(R.id.writeRecipeAdd)
+        val writeIcon = findViewById<ImageButton>(R.id.writeIcon)
+        val write = findViewById<TextView>(R.id.write)
+
+        // 화면 스크롤 시 플로팅 같이 이동
+        scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val y = scrollView.scrollY.toFloat()
+            writeRecipe.translationY = y
+            writeRecipeAdd.translationY = y
+        }
+        val toggleWrite = {
+            writeRecipeAdd.visibility =
+                if (writeRecipeAdd.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
+        writeRecipe.setOnClickListener { toggleWrite() }
+        writeIcon.setOnClickListener { toggleWrite() }
+        write.setOnClickListener { toggleWrite() }
+
+        // --- “레시피 이거 어때요?” 영역 세팅 ---
+        suggestRecycler = findViewById(R.id.suggestRecycler) // 레이아웃에 이 ID가 있어야 합니다.
+        suggestRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        suggestAdapter = SuggestRecipeAdapter { recipe ->
+            Intent(this, RecipeSeeMainActivity::class.java).apply {
+                putExtra("recipeId", recipe.recipeId)
+                startActivity(this)
+            }
+        }
+        suggestRecycler.adapter = suggestAdapter
+
+        // 상단 카테고리 버튼들 참조 및 클릭 연결
+        val btnLate = findViewById<AppCompatButton>(R.id.lateNightMeal)
+        val btnRain = findViewById<AppCompatButton>(R.id.rainsDay)
+        val btnCool = findViewById<AppCompatButton>(R.id.cool)
+        val btnHeat = findViewById<AppCompatButton>(R.id.heat)
+        val btnVegan = findViewById<AppCompatButton>(R.id.vegan)
+        val btnSimple = findViewById<AppCompatButton>(R.id.superSimple)
+
+        suggestButtons = listOf(btnLate, btnRain, btnCool, btnHeat, btnVegan, btnSimple)
+
+        fun selectSuggestButton(selected: AppCompatButton) {
+            suggestButtons.forEach { b ->
+                if (b == selected) {
+                    val d = GradientDrawable().apply {
+                        cornerRadius = dpToPx(40f)
+                        setColor(Color.parseColor("#35A825"))
+                    }
+                    b.background = d
+                    b.setTextColor(Color.WHITE)
+                } else {
+                    b.setBackgroundResource(R.drawable.btn_recipe_add)
+                    b.setTextColor(Color.parseColor("#8A8F9C"))
+                }
+            }
         }
 
-        // recipeCardThree 클릭했을 때 SearchMainActivity 이동
-        val recipeCardThree: ConstraintLayout = findViewById(R.id.recipeCardThree)
-        recipeCardThree.setOnClickListener {
-            val intent = Intent(this, RecipeSeeVideoActivity::class.java)
-            startActivity(intent)
+        btnLate.setOnClickListener { selectSuggestButton(btnLate); loadSuggest("lateNightMeal") }
+        btnRain.setOnClickListener { selectSuggestButton(btnRain); loadSuggest("rainsDay") }
+        btnCool.setOnClickListener { selectSuggestButton(btnCool); loadSuggest("cool") }
+        btnHeat.setOnClickListener { selectSuggestButton(btnHeat); loadSuggest("heat") }
+        btnVegan.setOnClickListener { selectSuggestButton(btnVegan); loadSuggest("vegan") }
+        btnSimple.setOnClickListener { selectSuggestButton(btnSimple); loadSuggest("superSimple") }
+
+        // 처음 진입 시 기본 선택
+        selectSuggestButton(btnLate)
+        loadSuggest("lateNightMeal")
+
+        // --- 아래 “레시피 둘러보기” 리스트 세팅 ---
+        recyclerView = findViewById(R.id.searchResultRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = RecipeSearchAdapter(emptyList()) { recipe ->
+            Intent(this, RecipeSeeMainActivity::class.java).apply {
+                putExtra("recipeId", recipe.recipeId)
+                startActivity(this)
+            }
+        }
+        recyclerView.adapter = adapter
+
+        // 정렬 팝업
+        sortTextView = findViewById(R.id.elementaryLevel)
+        val sortButton = findViewById<ImageButton>(R.id.dowArrow)
+        sortButton.setOnClickListener {
+            val popup = android.widget.PopupMenu(this, sortButton)
+            popup.menuInflater.inflate(R.menu.recipe_result_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                sortOrder = when (item.itemId) {
+                    R.id.menu_view_count -> "viewCount"
+                    R.id.menu_likes -> "likes"
+                    R.id.menu_latest -> "latest"
+                    R.id.menu_cooking_time_short -> "shortTime"
+                    R.id.menu_cooking_time_long -> "longTime"
+                    else -> null
+                }
+                sortTextView.text = item.title
+                filterByCategory(currentSelectedCategory)
+                true
+            }
+            popup.show()
         }
 
-        // circleRecipe 클릭했을 때 SearchMainActivity 이동
-        val circleRecipe: TextView = findViewById(R.id.circleRecipe)
-        circleRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeWriteMain::class.java)
-            startActivity(intent)
-        }
-
-        val heartButton = findViewById<ImageButton>(R.id.heartButton)
-        val heartButtonTwo = findViewById<ImageButton>(R.id.heartButtonTwo)
-        val heartButtonThree = findViewById<ImageButton>(R.id.heartButtonThree)
+        // “레시피 둘러보기” 카테고리 버튼들
         val allBtn = findViewById<AppCompatButton>(R.id.allBtn)
         val krBtn = findViewById<AppCompatButton>(R.id.krBtn)
         val wsBtn = findViewById<AppCompatButton>(R.id.wsBtn)
@@ -90,89 +170,23 @@ class RecipeTapActivity : AppCompatActivity() {
         val snBtn = findViewById<AppCompatButton>(R.id.snBtn)
         val asBtn = findViewById<AppCompatButton>(R.id.asBtn)
         val sdBtn = findViewById<AppCompatButton>(R.id.sdBtn)
-        val scrollView = findViewById<ScrollView>(R.id.scrollView)
-        val writeRecipe = findViewById<ConstraintLayout>(R.id.writeRecipe)
-        val writeRecipeAdd = findViewById<ConstraintLayout>(R.id.writeRecipeAdd)
-        val writeIcon = findViewById<ImageButton>(R.id.writeIcon)
-        val write = findViewById<TextView>(R.id.write)
 
-        // 레시피 이거 어때요 카테고리 리스트
-        categoryButton = listOf(
-            findViewById(R.id.lateNightMeal),
-            findViewById(R.id.rainsDay),
-            findViewById(R.id.cool),
-            findViewById(R.id.heat),
-            findViewById(R.id.vegan),
-            findViewById(R.id.superSimple)
-        )
-
-        //레시피 이거 어때요 카테고리 버튼 클릭시
-        categoryButton.forEach { button ->
-            button.setOnClickListener {
-                setCategoryButtonStyleTwo(button)
-            }
-        }
-
-        // 하트 버튼 초기 태그 세팅
-        heartButton.tag = "filled"         // 하트 채워진거
-        heartButtonTwo.tag = "empty"       // 하트 비어있는거
-        heartButtonThree.tag = "empty"
-
-        heartButton.setOnClickListener { toggleHeart(it as ImageButton) }
-        heartButtonTwo.setOnClickListener { toggleHeart(it as ImageButton) }
-        heartButtonThree.setOnClickListener { toggleHeart(it as ImageButton) }
-
-
-        // 레시피 둘러보기 카테고리 버튼 세팅
         categoryButtons = listOf(allBtn, krBtn, wsBtn, jpBtn, cnBtn, vgBtn, snBtn, asBtn, sdBtn)
 
-        allBtn.setOnClickListener { setCategoryButtonStyle(allBtn); filterByCategory(null) }
-        krBtn.setOnClickListener { setCategoryButtonStyle(krBtn); filterByCategory("koreaFood") }
-        wsBtn.setOnClickListener { setCategoryButtonStyle(wsBtn); filterByCategory("westernFood") }
-        jpBtn.setOnClickListener { setCategoryButtonStyle(jpBtn); filterByCategory("japaneseFood") }
-        cnBtn.setOnClickListener { setCategoryButtonStyle(cnBtn); filterByCategory("chineseFood") }
-        vgBtn.setOnClickListener { setCategoryButtonStyle(vgBtn); filterByCategory("vegetarianDiet") }
-        snBtn.setOnClickListener { setCategoryButtonStyle(snBtn); filterByCategory("snack") }
-        asBtn.setOnClickListener { setCategoryButtonStyle(asBtn); filterByCategory("alcoholSnack") }
-        sdBtn.setOnClickListener { setCategoryButtonStyle(sdBtn); filterByCategory("sideDish") }
+        allBtn.setOnClickListener { setBrowseCategoryStyle(allBtn); filterByCategory(null) }
+        krBtn.setOnClickListener { setBrowseCategoryStyle(krBtn); filterByCategory("koreaFood") }
+        wsBtn.setOnClickListener { setBrowseCategoryStyle(wsBtn); filterByCategory("westernFood") }
+        jpBtn.setOnClickListener { setBrowseCategoryStyle(jpBtn); filterByCategory("japaneseFood") }
+        cnBtn.setOnClickListener { setBrowseCategoryStyle(cnBtn); filterByCategory("chineseFood") }
+        vgBtn.setOnClickListener { setBrowseCategoryStyle(vgBtn); filterByCategory("vegetarianDiet") }
+        snBtn.setOnClickListener { setBrowseCategoryStyle(snBtn); filterByCategory("snack") }
+        asBtn.setOnClickListener { setBrowseCategoryStyle(asBtn); filterByCategory("alcoholSnack") }
+        sdBtn.setOnClickListener { setBrowseCategoryStyle(sdBtn); filterByCategory("sideDish") }
 
-        // 레시피 둘러보기 리사이클러뷰 세팅
-        recyclerView = findViewById(R.id.searchResultRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = RecipeSearchAdapter(emptyList()) { recipe ->
-            val intent = Intent(this, RecipeSeeMainActivity::class.java)
-            intent.putExtra("recipeId", recipe.recipeId)
-            startActivity(intent)
-        }
-        recyclerView.adapter = adapter
+        // 인텐트에서 초기 카테고리 받기
+        val initialCategory: String? = intent.getStringExtra("selectedCategory")
 
-        // 레시피 둘러보기 정렬 텍스트뷰 & 드롭다운
-        sortTextView = findViewById(R.id.elementaryLevel)
-        val sortButton: ImageButton = findViewById(R.id.dowArrow)
-
-        sortButton.setOnClickListener {
-            val popup = android.widget.PopupMenu(this, sortButton)
-            popup.menuInflater.inflate(R.menu.recipe_result_menu, popup.menu)
-
-            popup.setOnMenuItemClickListener { menuItem ->
-                sortOrder = when (menuItem.itemId) {
-                    R.id.menu_view_count -> "viewCount"
-                    R.id.menu_likes -> "likes"
-                    R.id.menu_latest -> "latest"
-                    R.id.menu_cooking_time_short -> "shortTime"
-                    R.id.menu_cooking_time_long -> "longTime"
-                    else -> null
-                }
-                sortTextView.text = menuItem.title
-                filterByCategory(currentSelectedCategory)
-                true
-            }
-            popup.show()
-        }
-
-        val initialCategory = intent.getStringExtra("selectedCategory")
-
-        val categoryMap = mapOf(
+        val map: Map<String?, AppCompatButton> = mapOf(
             null to allBtn,
             "koreaFood" to krBtn,
             "westernFood" to wsBtn,
@@ -184,100 +198,73 @@ class RecipeTapActivity : AppCompatActivity() {
             "sideDish" to sdBtn
         )
 
-        val selectedBtn = categoryMap[initialCategory] ?: allBtn
-        setCategoryButtonStyle(selectedBtn)
+        val initialBtn = map[initialCategory] ?: allBtn
+        setBrowseCategoryStyle(initialBtn)
         filterByCategory(initialCategory)
-
-
-        // 화면 아래로 내리면 작성하기도 같이 내려감
-        scrollView.viewTreeObserver.addOnScrollChangedListener {
-            val scrollY = scrollView.scrollY
-            writeRecipe.translationY = scrollY.toFloat()
-            writeRecipeAdd.translationY = scrollY.toFloat()
-        }
-
-        // 작성 아이콘 누르면 레시피, 숏폼 작성 나타남
-        val toggleWriteRecipeAdd = {
-            writeRecipeAdd.visibility =
-                if (writeRecipeAdd.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        }
-
-        writeRecipe.setOnClickListener { toggleWriteRecipeAdd() }
-        writeIcon.setOnClickListener { toggleWriteRecipeAdd() }
-        write.setOnClickListener { toggleWriteRecipeAdd() }
-
     }
 
-    // 레시피 이건 어때요 카테고리 버튼
-    private fun setCategoryButtonStyleTwo(selectedButton: AppCompatButton) {
-        categoryButton.forEach { button ->
-            if (button == selectedButton) {
-                val selectedDrawable = GradientDrawable().apply {
+    // “레시피 둘러보기” 카테고리 버튼 스타일
+    private fun setBrowseCategoryStyle(selected: AppCompatButton) {
+        categoryButtons.forEach { b ->
+            if (b == selected) {
+                val d = GradientDrawable().apply {
                     cornerRadius = dpToPx(40f)
-                    setColor(Color.parseColor("#35A825")) // 선택된 버튼 배경색
+                    setColor(ContextCompat.getColor(this@RecipeTapActivity, R.color.black))
                 }
-                button.background = selectedDrawable
-                button.setTextColor(Color.WHITE)
+                b.background = d
+                b.setTextColor(Color.WHITE)
             } else {
-                button.setBackgroundResource(R.drawable.btn_recipe_add) // 기본 버튼 배경 복원
-                button.setTextColor(Color.parseColor("#8A8F9C")) // 기본 글자색 복원
+                b.setBackgroundResource(R.drawable.btn_recipe_add)
+                b.setTextColor(Color.parseColor("#8A8F9C"))
             }
         }
     }
 
-    // 하트 버튼 클릭시
-    private fun toggleHeart(button: ImageButton) {
-        val tag = button.tag as? String
-        if (tag == "filled") {
-            button.setImageResource(R.drawable.ic_heart_list)
-            button.tag = "empty"
-        } else {
-            button.setImageResource(R.drawable.ic_heart_fill)
-            button.tag = "filled"
-        }
-    }
-
+    // 공개 레시피 + 정렬 + 카테고리 필터
     private fun filterByCategory(category: String?) {
-        val token = "Bearer ${App.prefs.token}"
+        val token: String = App.prefs.token?.let { "Bearer $it" } ?: ""
         currentSelectedCategory = category
-        RetrofitInstance.apiService.getAllPublicRecipes(token = token,sort = sortOrder)
+
+        RetrofitInstance.apiService.getAllPublicRecipes(token = token, sort = sortOrder)
             .enqueue(object : Callback<List<Recipe>> {
                 override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
-                    if (response.isSuccessful) {
-                        val recipeList = response.body()?.filter {
-                            category == null || it.category == category
-                        } ?: emptyList()
-
-                        adapter.updateData(recipeList)
-                    } else {
-                        Toast.makeText(this@RecipeTapActivity, "레시피 불러오기 실패", Toast.LENGTH_SHORT).show()
+                    if (!response.isSuccessful) {
+                        Toast.makeText(this@RecipeTapActivity, "레시피 불러오기 실패(${response.code()})", Toast.LENGTH_SHORT).show()
+                        adapter.updateData(emptyList())
+                        return
                     }
+                    val list = response.body().orEmpty()
+                    val filtered = list.filter { category == null || it.category == category }
+                    adapter.updateData(filtered)
                 }
 
                 override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
                     Toast.makeText(this@RecipeTapActivity, "서버 통신 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+                    adapter.updateData(emptyList())
                 }
             })
     }
 
-    // 레시피 둘러보기 카테고리 버튼
-    private fun setCategoryButtonStyle(selectedButton: AppCompatButton) {
-        categoryButtons.forEach { button ->
-            if (button == selectedButton) {
-                val selectedDrawable = GradientDrawable().apply {
-                    cornerRadius = dpToPx(40f)
-                    setColor(ContextCompat.getColor(this@RecipeTapActivity, R.color.black))
+    // “레시피 이거 어때요?” 추천 호출
+    private fun loadSuggest(type: String) {
+        val token: String = App.prefs.token?.let { "Bearer $it" } ?: ""
+        RetrofitInstance.apiService.suggestRecipes(token = token, type = type)
+            .enqueue(object : Callback<List<Recipe>> {
+                override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
+                    if (!response.isSuccessful) {
+                        Toast.makeText(this@RecipeTapActivity, "추천 로드 실패(${response.code()})", Toast.LENGTH_SHORT).show()
+                        suggestAdapter.submit(emptyList())
+                        return
+                    }
+                    suggestAdapter.submit(response.body().orEmpty())
                 }
-                button.background = selectedDrawable
-                button.setTextColor(Color.WHITE)
-            } else {
-                button.setBackgroundResource(R.drawable.btn_recipe_add)
-                button.setTextColor(Color.parseColor("#8A8F9C"))
-            }
-        }
+
+                override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
+                    Toast.makeText(this@RecipeTapActivity, "서버 통신 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+                    suggestAdapter.submit(emptyList())
+                }
+            })
     }
 
-    private fun dpToPx(dp: Float): Float {
-        return dp * resources.displayMetrics.density
-    }
+    private fun dpToPx(dp: Float): Float = dp * resources.displayMetrics.density
 }
