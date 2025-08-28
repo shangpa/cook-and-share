@@ -91,6 +91,13 @@ interface ApiService {
         @Query("sort") sort: String? = null
     ): Call<List<Recipe>>
 
+    // 레시피 탭 - 이거 어때요?
+    @GET("/api/recipes/suggest")
+    fun suggestRecipes(
+        @Header("Authorization") token: String,
+        @Query("type") type: String
+    ): Call<List<Recipe>>
+
     // 레시피 작성 요청 (토큰 필요)
     @POST("api/recipes")
     fun createRecipe(
