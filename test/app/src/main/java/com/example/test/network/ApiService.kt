@@ -23,6 +23,7 @@ import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.model.review.TpReviewResponseDTO
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -472,4 +473,17 @@ interface ApiService {
 
     @POST("/api/auth/google-login")
     fun googleLogin(@Body request: GoogleLoginRequest): Call<LoginResponse>
+
+    @Multipart
+    @POST("/api/shorts/upload-file")
+    fun uploadShortsFileOnly(
+        @Part video: MultipartBody.Part,
+        @Header("Authorization") bearer: String
+    ): Call<ResponseBody>
+
+    @POST("/api/shorts/register")
+    fun registerShorts(
+        @Body body: ShortsCreateRequest,
+        @Header("Authorization") bearer: String
+    ): Call<Long>
 }

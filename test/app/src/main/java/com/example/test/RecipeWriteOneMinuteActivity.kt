@@ -22,25 +22,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.media3.common.util.UnstableApi
 import com.example.test.Utils.TabBarUtils
+import com.example.test.model.ShortsCreateRequest
 import com.example.test.network.RetrofitInstance
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-private lateinit var videoCameraLauncher: ActivityResultLauncher<Intent>
-
 class RecipeWriteOneMinuteActivity : AppCompatActivity() {
     private var selectedVideoUri: Uri? = null
     private var isVideoUploading = false // 업로드 중 여부 체크
     private var recipeVideoUrl: String? = null  // 서버에 업로드된 영상 URL 저장용
     private var targetContainer: LinearLayout? = null  // 선택한 이미지가 추가될 컨테이너 저장
-
+    private var isPublicFlag: Boolean = true
+    private lateinit var videoCameraLauncher: ActivityResultLauncher<Intent>
     private val videoTrimLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -49,7 +51,7 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             trimmedUri?.let {
                 selectedVideoUri = it
                 showVideoInfo(it)
-                uploadVideoToServer(it)  // ✅ 트리밍된 영상 업로드
+                uploadVideoFileOnly(it)  // ✅ 변경: 파일만 업로드
             }
         }
     }
@@ -92,7 +94,7 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                 if (videoUri != null) {
                     selectedVideoUri = videoUri
                     showVideoInfo(videoUri)
-                    uploadVideoToServer(videoUri)
+                    uploadVideoFileOnly(videoUri)  // ✅ 변경
                 }
             }
         }
@@ -132,6 +134,36 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        registerFixButton.setOnClickListener {
+            if (isVideoUploading) {
+                Toast.makeText(this, "영상 업로드 중입니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val title = findViewById<EditText>(R.id.recipeTitleWrite).text.toString().trim()
+            val videoUrl = recipeVideoUrl
+            if (title.isBlank() || videoUrl.isNullOrBlank()) {
+                Toast.makeText(this, "제목과 영상을 입력하세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val token = App.prefs.token.orEmpty()
+            val body = ShortsCreateRequest(title, videoUrl, isPublicFlag)
+
+            RetrofitInstance.apiService.registerShorts(body, "Bearer $token")
+                .enqueue(object : Callback<Long> {
+                    override fun onResponse(call: Call<Long>, response: Response<Long>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 성공!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 실패(${response.code()})", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<Long>, t: Throwable) {
+                        Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
 
         // 공개설정 클릭시 공개설정 박스 나타남
         shareFixButton.setOnClickListener {
@@ -140,14 +172,15 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
 
         // 공개설정에서 체크 클릭시
         val checkButtons = listOf(uncheck, uncheckTwo)
-
-        for (button in checkButtons) {
-            button.setOnClickListener {
-                // 모든 버튼을 uncheck 상태로
-                checkButtons.forEach { it.setImageResource(R.drawable.ic_uncheck) }
-                // 현재 누른 버튼만 check 상태로
-                button.setImageResource(R.drawable.ic_check)
-            }
+        uncheck.setOnClickListener {
+            checkButtons.forEach { it.setImageResource(R.drawable.ic_uncheck) }
+            uncheck.setImageResource(R.drawable.ic_check)
+            isPublicFlag = true
+        }
+        uncheckTwo.setOnClickListener {
+            checkButtons.forEach { it.setImageResource(R.drawable.ic_uncheck) }
+            uncheckTwo.setImageResource(R.drawable.ic_check)
+            isPublicFlag = false
         }
 
         //공개설정에서 취소 클릭시 공개설정 박스 없어짐
@@ -170,6 +203,21 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
             finish()
         }
+        updateRegisterButtonState()
+    }
+    private fun updateRegisterButtonState() {
+        val btn = findViewById<AppCompatButton>(R.id.registerFixButton)
+        val titleFilled = findViewById<EditText>(R.id.recipeTitleWrite).text.toString().isNotBlank()
+        val videoReady = !recipeVideoUrl.isNullOrBlank()
+        val enabled = titleFilled && videoReady && !isVideoUploading
+
+        // 디자인만 바꾸고 클릭은 유지(지금 UX 유지)
+        if (enabled) {
+            btn.setBackgroundResource(R.drawable.btn_big_green)
+        } else {
+            btn.setBackgroundResource(R.drawable.btn_number_of_people)
+        }
+        btn.isEnabled = true
     }
 
     private fun launchVideoCamera() {
@@ -195,40 +243,101 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         container.addView(textView)
     }
 
-    private fun uploadVideoToServer(uri: Uri) {
-        Log.d("Upload", "영상 업로드 시작")
+    private fun uploadVideoFileOnly(uri: Uri) {
+        Log.d("Upload", "숏츠 파일 업로드 시작")
         isVideoUploading = true
-        val inputStream = contentResolver.openInputStream(uri) ?: return
+
+        val inputStream = contentResolver.openInputStream(uri) ?: run {
+            isVideoUploading = false
+            Toast.makeText(this, "영상 파일을 열 수 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // 캐시에 mp4 임시 파일 생성
         val file = File(cacheDir, "upload_video.mp4")
-        file.outputStream().use { inputStream.copyTo(it) }
+        file.outputStream().use { output ->
+            inputStream.copyTo(output)
+        }
 
         val requestFile = file.asRequestBody("video/*".toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("video", file.name, requestFile)
 
-        val token = App.prefs.token ?: ""
-        Log.d("JWT", "보내는 토큰: Bearer $token")
+        val token = App.prefs.token.orEmpty()
+        if (token.isBlank()) {
+            isVideoUploading = false
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        // ✅ RecipeWriteVideoActivity에서 쓰던 것처럼 동일 엔드포인트 사용
         RetrofitInstance.apiService.uploadVideo(body, "Bearer $token")
             .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
                     isVideoUploading = false
                     if (response.isSuccessful && response.body() != null) {
-                        val responseBody = response.body()!!
-                        val videoUrl = responseBody.string()
-                        Log.d("Upload", "영상 업로드 성공: $videoUrl")
-                        recipeVideoUrl = videoUrl
-                        Log.d("Upload", "recipeVideoUrl 저장됨: $recipeVideoUrl")
-                        Toast.makeText(this@RecipeWriteOneMinuteActivity, "동영상 업로드 성공!", Toast.LENGTH_SHORT).show()
+                        val raw = response.body()!!.string().trim()  // 서버가 돌려준 URL(상대/절대 모두 가능)
+                        recipeVideoUrl = raw
+
+                        Toast.makeText(
+                            this@RecipeWriteOneMinuteActivity,
+                            "영상 업로드 성공!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // ✅ 프리뷰는 절대 URL로 변환해서 보여주기
+                        showVideoPreview(resolveFullUrl(raw))
+                        updateRegisterButtonState()
                     } else {
-                        Log.e("Upload", "업로드 실패 - 응답 없음 또는 실패 응답: ${response.code()}")
-                        Toast.makeText(this@RecipeWriteOneMinuteActivity, "동영상 업로드 실패!", Toast.LENGTH_SHORT).show()
+                        Log.e(
+                            "Upload",
+                            "실패 code=${response.code()} msg=${response.errorBody()?.string()}"
+                        )
+                        Toast.makeText(
+                            this@RecipeWriteOneMinuteActivity,
+                            "영상 업로드 실패!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    isVideoUploading = false
                     Log.e("Upload", "업로드 실패: ${t.message}")
-                    Toast.makeText(this@RecipeWriteOneMinuteActivity, "동영상 업로드 실패!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@RecipeWriteOneMinuteActivity,
+                        "업로드 실패: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
+    // 서버가 '/uploads/..' 같은 상대경로를 주면 BASE_URL 붙여서 절대 URL로 변환
+    private fun resolveFullUrl(serverValue: String): String {
+        return if (serverValue.startsWith("http://") || serverValue.startsWith("https://")) {
+            serverValue
+        } else {
+            "${RetrofitInstance.BASE_URL}$serverValue"
+        }
+    }
+    private fun showVideoPreview(videoUrl: String) {
+        val container = findViewById<LinearLayout>(R.id.imageContainer)
+        container.removeAllViews()
+
+        val videoView = android.widget.VideoView(this).apply {
+            setVideoURI(Uri.parse(videoUrl)) // ← 그대로 사용 (BASE_URL 더하지 않음)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 600
+            )
+            setOnPreparedListener { mp ->
+                mp.isLooping = true
+                start()
+            }
+        }
+        container.addView(videoView)
+    }
+
+
 }

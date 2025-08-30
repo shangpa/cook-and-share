@@ -153,8 +153,8 @@ class ShortsTrimActivity : AppCompatActivity() {
         showProgressBar()
 
         val (w, h) = getVideoSize(inputUri!!)
-        val rectN = computeNormalizedCropRect(w, h, cropOffsetPercent, cropZoomPercent)
-        val cropEffect: Effect = Crop(rectN.left, rectN.top, rectN.right, rectN.bottom)
+        // ✅ 여기만 교체!
+        val cropEffect = buildAdjustableCrop16by9Effect(w, h, cropOffsetPercent, cropZoomPercent)
 
         // 1) MediaItem에 트리밍 설정 (1.3.1 방식)
         val clipping = MediaItem.ClippingConfiguration.Builder()
@@ -206,7 +206,8 @@ class ShortsTrimActivity : AppCompatActivity() {
         })
 
         transformer.start(composition, outputFile.absolutePath)
-    }    private fun showProgressBar() {
+    }
+    private fun showProgressBar() {
         findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
     }
     private fun hideProgressBar() {
@@ -269,6 +270,16 @@ class ShortsTrimActivity : AppCompatActivity() {
         val right = left + cropWidth
         val bottom = top + cropHeight
 
-        return Crop(left, top, right, bottom) // 0~1 정규화 좌표
+        // ✅ 보정: 항상 좌표 정상화 + 최소 크기 보장
+        val finalLeft = minOf(left, right).coerceIn(0f, 1f)
+        val finalRight = maxOf(left, right).coerceIn(0f, 1f)
+        val finalTop = minOf(top, bottom).coerceIn(0f, 1f)
+        val finalBottom = maxOf(top, bottom).coerceIn(0f, 1f)
+
+        if (finalRight - finalLeft < 0.01f || finalBottom - finalTop < 0.01f) {
+            return Crop(0f, 0f, 1f, 1f) // fallback: 전체 화면
+        }
+
+        return Crop(finalLeft, finalRight, finalTop, finalBottom)
     }
 }
