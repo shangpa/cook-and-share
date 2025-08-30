@@ -67,11 +67,6 @@ class RecipeTapActivity : AppCompatActivity() {
             startActivity(Intent(this, ShortsActivity::class.java))
         }
 
-        // 더보기 클릭시 숏츠로 이동
-        findViewById<TextView>(R.id.add).setOnClickListener {
-            startActivity(Intent(this, ShortsActivity::class.java))
-        }
-
         val scrollView = findViewById<ScrollView>(R.id.scrollView)
         val writeRecipe = findViewById<ConstraintLayout>(R.id.writeRecipe)
         val writeRecipeAdd = findViewById<ConstraintLayout>(R.id.writeRecipeAdd)

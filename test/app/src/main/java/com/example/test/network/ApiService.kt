@@ -474,16 +474,27 @@ interface ApiService {
     @POST("/api/auth/google-login")
     fun googleLogin(@Body request: GoogleLoginRequest): Call<LoginResponse>
 
+    /*//쇼츠만 영상 업로드 안쓰는중
     @Multipart
     @POST("/api/shorts/upload-file")
     fun uploadShortsFileOnly(
         @Part video: MultipartBody.Part,
         @Header("Authorization") bearer: String
-    ): Call<ResponseBody>
+    ): Call<ResponseBody>*/
 
+    //쇼츠 등록
     @POST("/api/shorts/register")
     fun registerShorts(
         @Body body: ShortsCreateRequest,
         @Header("Authorization") bearer: String
     ): Call<Long>
+
+    //쇼츠 재생
+    @GET("api/shorts/random")
+    fun getShorts(
+        @Query("seed") seed: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int = 10,
+        @Header("Authorization") bearer: String
+    ): Call<List<ShortObject>>
 }

@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:use_controller="false"
-            app:resize_mode="fit"
+            app:resize_mode="fill"
             android:background="@android:color/black" />
 
         <!-- 닉네임과 설명 (좌측 하단) -->
