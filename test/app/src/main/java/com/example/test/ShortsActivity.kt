@@ -12,6 +12,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.viewpager2.widget.ViewPager2
 import com.example.test.databinding.ActivityShortBinding
 import com.example.test.model.ShortObject
+import com.example.test.model.shorts.ShortVideoDto
+import com.example.test.model.shorts.ShortVideoListResponse
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,15 +26,26 @@ class ShortsActivity : AppCompatActivity() {
     private lateinit var adapter: VideoPlayerAdapter
     private val items = mutableListOf<ShortObject>()
 
+
+    private var mode: String? = null        // "random" | "user"
+    private var userIdArg: Int = -1
+    private var sortArg: String = "latest"
+    private var startIndexArg: Int = 0
+
     private var page = 0
     private var isLoading = false
     private val pageSize = 10
-    // ✅ 안정 랜덤용 seed (앱 켜진 동안/액티비티 생명주기 동안 유지)
     private val seed: String by lazy { UUID.randomUUID().toString() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_short)
+
+        // ✅ 인텐트 값 파싱 (이게 없어 랜덤 모드로 갔던 것)
+        mode = intent.getStringExtra("mode")                  // "user" | "random"
+        userIdArg = intent.getIntExtra("userId", -1)
+        sortArg = intent.getStringExtra("sort") ?: "latest"
+        startIndexArg = intent.getIntExtra("startIndex", 0)
 
         // 전체화면 immersive
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -78,6 +91,49 @@ class ShortsActivity : AppCompatActivity() {
 
         val bearer = App.prefs.token?.let { "Bearer $it" } ?: ""
 
+        if (mode == "user" && userIdArg > 0) {
+            // ✅ 유저 숏츠 모드
+            RetrofitInstance.apiService.getUserShorts(
+                bearer = bearer,
+                userId = userIdArg,
+                sort = sortArg,
+                page = page,
+                size = pageSize
+            ).enqueue(object : Callback<ShortVideoListResponse> {
+                override fun onResponse(
+                    call: Call<ShortVideoListResponse>,
+                    response: Response<ShortVideoListResponse>
+                ) {
+                    val list = response.body()?.videos.orEmpty()
+
+                    if (list.isEmpty() && page == 0) {
+                        Toast.makeText(this@ShortsActivity, "영상이 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else if (list.isNotEmpty()) {
+                        val start = items.size
+                        val mapped = list.map { it.toShortObject() }
+                        items.addAll(mapped)
+                        adapter.notifyItemRangeInserted(start, mapped.size)
+                        page += 1
+
+                        if (start == 0) {
+                            // 사용자가 누른 카드부터 재생
+                            val initial = startIndexArg.coerceIn(0, items.lastIndex)
+                            binding.shortsVP.post {
+                                binding.shortsVP.setCurrentItem(initial, false)
+                                playOnly(initial)
+                            }
+                        }
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<ShortVideoListResponse>, t: Throwable) {
+                    t.printStackTrace()
+                    isLoading = false
+                }
+            })
+            return
+        }
         RetrofitInstance.apiService.getShorts(
             seed = seed,
             page = page,
@@ -151,4 +207,17 @@ class ShortsActivity : AppCompatActivity() {
                         or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
         }
     }
+    // ShortVideoDto -> ShortObject 변환
+    private fun ShortVideoDto.toShortObject(): ShortObject {
+        return ShortObject(
+            id        = this.id.toInt(),
+            userName  = "",
+            contents  = this.title,
+            videoUrl  = this.videoUrl ?: "",
+            viewCount = this.viewCount,
+            likeCount = this.likeCount
+        )
+    }
+
+
 }

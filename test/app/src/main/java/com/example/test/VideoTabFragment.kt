@@ -1,5 +1,6 @@
 package com.example.test
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
@@ -8,19 +9,29 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.test.model.shorts.ShortVideoDto
+import com.example.test.model.shorts.ShortVideoListResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class VideoTabFragment : Fragment() {
 
-    companion object { fun newInstance() = VideoTabFragment() }
+    companion object {
+        private const val ARG_USER_ID = "arg_user_id"
+        fun newInstance(userId: Int) = VideoTabFragment().apply {
+            arguments = Bundle().apply { putInt(ARG_USER_ID, userId) }
+        }
+    }
 
-    // 개발 중: false(더미), 서버 붙일 때: true (fetch 주석 해제)
-    private val USE_REMOTE = false
+    private var targetUserId: Int = -1
 
     private lateinit var rv: RecyclerView
     private lateinit var adapter: VideoGridAdapter
-    private val videos: MutableList<LocalVideo> = mutableListOf()
+    private val videos: MutableList<ShortVideoDto> = mutableListOf()
 
-    // 정렬 버튼
     private lateinit var latestLayout: LinearLayout
     private lateinit var popularityLayout: LinearLayout
     private lateinit var dateLayout: LinearLayout
@@ -31,22 +42,27 @@ class VideoTabFragment : Fragment() {
     private enum class Sort { LATEST, POPULARITY, DATE }
     private var currentSort = Sort.LATEST
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_video_tab, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        inflater.inflate(R.layout.fragment_video_tab, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // RecyclerView
+        targetUserId = arguments?.getInt(ARG_USER_ID, -1) ?: -1
+
         rv = view.findViewById(R.id.videoRecycler)
         val spanCount = 3
         rv.layoutManager = GridLayoutManager(requireContext(), spanCount)
-
-        // ⬇아이템 간격(좌우/상하) 균일하게
         val spacingPx = (resources.displayMetrics.density * 8).toInt()
         rv.addItemDecoration(GridSpacingItemDecoration(spanCount, spacingPx))
 
-        adapter = VideoGridAdapter(videos, spanCount, spacingPx) { item ->
-            Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT).show()
+        adapter = VideoGridAdapter(videos, spanCount, spacingPx) { position, item ->
+            // 바로 쇼츠 재생 화면으로 이동
+            val intent = Intent(requireContext(), ShortsActivity::class.java).apply {
+                putExtra("mode", "user")                // ← 유저 쇼츠 모드
+                putExtra("userId", targetUserId)        // ← 현재 프로필 주인 ID
+                putExtra("sort", currentSortKey())      // ← latest|views|date
+                putExtra("startIndex", position)        // ← 사용자가 클릭한 인덱스부터 재생
+            }
+            startActivity(intent)
         }
         rv.adapter = adapter
 
@@ -62,40 +78,58 @@ class VideoTabFragment : Fragment() {
         popularityLayout.setOnClickListener { onSortSelected(Sort.POPULARITY) }
         dateLayout.setOnClickListener { onSortSelected(Sort.DATE) }
 
-        // 초기 상태
         applySortUI(Sort.LATEST)
-
-        if (USE_REMOTE) {
-            // fetchVideosFromServer("latest")  // ← 백엔드 붙일 때 주석 해제
-            Toast.makeText(requireContext(), "백엔드 연결 코드 주석 해제 필요", Toast.LENGTH_SHORT).show()
-        } else {
-            loadDummy(count = 8) // 더미 개수만 바꾸면 자동 반영
-        }
+        fetchVideosFromServer("latest")
     }
 
     private fun onSortSelected(sort: Sort) {
         if (currentSort == sort) return
         currentSort = sort
-
         val key = when (sort) {
             Sort.LATEST -> "latest"
             Sort.POPULARITY -> "views"
             Sort.DATE -> "date"
         }
-
-        when (key) {
-            "latest" -> videos.sortByDescending { it.createdAt }
-            "views"  -> videos.sortByDescending { it.views }
-            "date"   -> videos.sortBy { it.createdAt }
-        }
-        adapter.notifyDataSetChanged()
         applySortUI(sort)
-
-        if (USE_REMOTE) {
-            // fetchVideosFromServer(key)  // ← 백엔드 붙일 때 주석 해제
-        }
+        fetchVideosFromServer(key)
     }
 
+    private fun fetchVideosFromServer(sort: String, page: Int = 0) {
+        val token = App.prefs.token
+        if (token.isNullOrBlank()) {
+            Toast.makeText(requireContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (targetUserId == -1) {
+            Toast.makeText(requireContext(), "대상 유저 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        RetrofitInstance.apiService.getUserShorts("Bearer $token", targetUserId, sort, page, 30)
+            .enqueue(object : Callback<ShortVideoListResponse> {
+                override fun onResponse(
+                    call: Call<ShortVideoListResponse>,
+                    response: Response<ShortVideoListResponse>
+                ) {
+                    if (!isAdded) return
+                    if (response.isSuccessful) {
+                        val list = response.body()?.videos ?: emptyList()
+                        videos.clear()
+                        videos.addAll(list)
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(requireContext(), "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ShortVideoListResponse>, t: Throwable) {
+                    if (!isAdded) return
+                    Toast.makeText(requireContext(), "통신 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    /** 정렬 UI (✅ VideoTabFragment.Sort 사용) */
     private fun applySortUI(sort: Sort) {
         val selectedTextColor = ContextCompat.getColor(requireContext(), R.color.white)
         val unselectedTextColor = 0xFF8A8F9C.toInt()
@@ -106,58 +140,20 @@ class VideoTabFragment : Fragment() {
             container.background = if (selected) bgSelected else bgUnselected
             tv.setTextColor(if (selected) selectedTextColor else unselectedTextColor)
         }
+
         setSel(latestLayout, latestText, sort == Sort.LATEST)
         setSel(popularityLayout, popularityText, sort == Sort.POPULARITY)
         setSel(dateLayout, dateText, sort == Sort.DATE)
     }
 
-    // ───────────── 더미/백엔드 전환 유틸 ─────────────
-
-    private fun loadDummy(count: Int) {
-        videos.clear()
-        videos.addAll(generateDummyVideos(count))
-        videos.sortByDescending { it.createdAt }  // 기본 최신순
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun generateDummyVideos(count: Int): List<LocalVideo> {
-        val base = 20250821
-        return (1..count).map { i ->
-            LocalVideo(
-                id = i.toLong(),
-                title = "영상 $i",
-                createdAt = base - i,
-                views = (500..15000).random()
-            )
-        }
-    }
-
-    @Suppress("unused")
-    private fun fetchVideosFromServer(sort: String) {
-        // Retrofit 사용 시 여기 주석 해제해 연결 (현재는 더미만 사용)
-        Toast.makeText(requireContext(), "백엔드 연결 준비 완료(주석 해제 필요)", Toast.LENGTH_SHORT).show()
-    }
-
-    // ───────────── 내부 모델 & 어댑터 & 데코레이션 ─────────────
-
-    private data class LocalVideo(
-        val id: Long,
-        val title: String,
-        val createdAt: Int,   // YYYYMMDD
-        val views: Int
-    )
-
-    /** 아이템 간격용 데코레이션(좌우/상하 균일) */
+    /** 3열 그리드 간격 */
     private class GridSpacingItemDecoration(
         private val spanCount: Int,
         private val spacing: Int
     ) : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
-        ) {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             val position = parent.getChildAdapterPosition(view)
             val column = position % spanCount
-
             outRect.left = spacing - column * spacing / spanCount
             outRect.right = (column + 1) * spacing / spanCount
             outRect.top = spacing
@@ -165,40 +161,39 @@ class VideoTabFragment : Fragment() {
         }
     }
 
-    /** 9:16 세로 카드, 하단 오버레이(제목/조회수), 3열 */
+    /** 썸네일 카드 어댑터 */
     private class VideoGridAdapter(
-        private val items: List<LocalVideo>,
+        private val items: List<ShortVideoDto>,
         private val spanCount: Int,
         private val spacingPx: Int,
-        private val onClick: (LocalVideo) -> Unit
+        private val onClick: (Int, ShortVideoDto) -> Unit
     ) : RecyclerView.Adapter<VideoGridAdapter.VH>() {
 
         class VH(
             val root: FrameLayout,
-            val thumb: View,
+            val thumb: ImageView,
             val title: TextView,
             val meta: TextView
         ) : RecyclerView.ViewHolder(root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-            // 가용 너비 = 부모너비 - 패딩 - (간격*(열-1))
             val parentWidth = parent.measuredWidth.takeIf { it > 0 }
                 ?: parent.resources.displayMetrics.widthPixels
             val available = parentWidth - parent.paddingLeft - parent.paddingRight - spacingPx * (spanCount - 1)
             val width = available / spanCount
-            val height = (width * 16f / 9f).toInt() // 9:16 세로 카드
+            val height = (width * 16f / 9f).toInt()
+
             val root = FrameLayout(parent.context).apply {
                 layoutParams = ViewGroup.LayoutParams(width, height)
             }
-
-            val img = View(parent.context).apply {
+            val img = ImageView(parent.context).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
+                scaleType = ImageView.ScaleType.CENTER_CROP
                 setBackgroundColor(0xFFEFEFEF.toInt())
             }
-
             val overlay = LinearLayout(parent.context).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = FrameLayout.LayoutParams(
@@ -209,21 +204,18 @@ class VideoTabFragment : Fragment() {
                 setPadding(12, 8, 12, 8)
                 setBackgroundColor(0x66000000)
             }
-
             val title = TextView(parent.context).apply {
                 textSize = 12f
                 setTextColor(0xFFFFFFFF.toInt())
                 maxLines = 1
                 ellipsize = android.text.TextUtils.TruncateAt.END
             }
-
             val meta = TextView(parent.context).apply {
                 textSize = 10f
                 setTextColor(0xFFEFEFEF.toInt())
                 maxLines = 1
                 ellipsize = android.text.TextUtils.TruncateAt.END
             }
-
             overlay.addView(title)
             overlay.addView(meta)
 
@@ -235,18 +227,30 @@ class VideoTabFragment : Fragment() {
         override fun onBindViewHolder(holder: VH, position: Int) {
             val item = items[position]
             holder.title.text = item.title
-            holder.meta.text = "조회수 ${formatViews(item.views)}"
-            holder.root.setOnClickListener { onClick(item) }
+            holder.meta.text  = "조회수 ${formatViews(item.viewCount)}"
+
+            val url = item.thumbnailUrl?.trim()
+            if (!url.isNullOrEmpty()) {
+                Glide.with(holder.thumb.context)
+                    .load(url)
+                    .placeholder(R.drawable.ic_writer_badge)
+                    .centerCrop()
+                    .into(holder.thumb)
+            } else {
+                holder.thumb.setImageResource(R.drawable.ic_writer_badge)
+            }
+
+            holder.root.setOnClickListener { onClick(position, item) } // ← position 같이 전달
         }
 
         override fun getItemCount() = items.size
 
-        private fun formatViews(v: Int): String {
-            return when {
-                v >= 1_000_000 -> String.format("%.1f만", v / 10_000f)
-                v >= 10_000    -> String.format("%.1f만", v / 10_000f)
-                else           -> v.toString()
-            }
-        }
+        private fun formatViews(v: Int): String =
+            if (v >= 10_000) String.format("%.1f만", v / 10_000f) else v.toString()
+    }
+    private fun currentSortKey(): String = when (currentSort) {
+        Sort.LATEST -> "latest"
+        Sort.POPULARITY -> "views"
+        Sort.DATE -> "date"
     }
 }

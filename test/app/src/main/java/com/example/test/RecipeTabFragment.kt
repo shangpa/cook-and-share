@@ -21,7 +21,19 @@ import retrofit2.Response
 
 class RecipeTabFragment : Fragment() {
 
-    companion object { fun newInstance() = RecipeTabFragment() }
+    companion object {
+        private const val ARG_USER_ID = "arg_user_id"
+
+        // ① 내 레시피용 (기존과 동일)
+        fun newInstance() = RecipeTabFragment()
+
+        // ② 타인 레시피용
+        fun newInstance(userId: Int) = RecipeTabFragment().apply {
+            arguments = Bundle().apply { putInt(ARG_USER_ID, userId) }
+        }
+    }
+
+    private var targetUserId: Int = -1
 
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: MyWriteRecipeAdapter
@@ -60,6 +72,7 @@ class RecipeTabFragment : Fragment() {
         latestLayout.setOnClickListener { onSortSelected(Sort.LATEST) }
         popularityLayout.setOnClickListener { onSortSelected(Sort.POPULARITY) }
         dateLayout.setOnClickListener { onSortSelected(Sort.DATE) }
+        targetUserId = arguments?.getInt(ARG_USER_ID, -1) ?: -1
 
         applySortUI(Sort.LATEST)
         fetchMyRecipes("latest")
@@ -112,6 +125,50 @@ class RecipeTabFragment : Fragment() {
             dateText.setTextColor(unselectedTextColor)
         }
     }
+    private fun fetchRecipes(sort: String) {
+        val rawToken = App.prefs.token
+        if (rawToken.isNullOrBlank()) {
+            Toast.makeText(requireContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val token = "Bearer $rawToken"
+
+        // 액티비티가 넣어준 대상 유저 ID (없거나 <=0 이면 null)
+        val targetId: Int? = activity
+            ?.intent
+            ?.getIntExtra("targetUserId", -1)
+            ?.takeIf { it > 0 }
+
+        RetrofitInstance.apiService.getMyRecipes(
+            token,
+            sort = sort,
+            categories = emptyList(),
+            userId = targetId              // ← 내 프로필이면 null, 타인이면 해당 ID
+        ).enqueue(object : Callback<MyWriteRecipeResponse> {
+            override fun onResponse(
+                call: Call<MyWriteRecipeResponse>,
+                response: Response<MyWriteRecipeResponse>
+            ) {
+                if (!isAdded) return
+                if (response.isSuccessful) {
+                    val body = response.body() ?: return
+                    recipeList = body.recipes
+                    adapter = MyWriteRecipeAdapter(recipeList) { item ->
+                        Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT).show()
+                    }
+                    recycler.adapter = adapter
+                } else {
+                    Toast.makeText(requireContext(), "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<MyWriteRecipeResponse>, t: Throwable) {
+                if (!isAdded) return
+                Toast.makeText(requireContext(), "통신 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun fetchMyRecipes(sort: String) {
         val token = App.prefs.token

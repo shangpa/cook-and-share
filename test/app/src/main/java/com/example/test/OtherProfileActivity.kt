@@ -21,7 +21,8 @@ class OtherProfileActivity : AppCompatActivity() {
     private enum class Tab { RECIPE, VIDEO }
     private var currentTab = Tab.RECIPE
 
-    private var userId: Long = -1L // 상대방 사용자 ID
+    /** 상대방 사용자 ID (인텐트로 넘어옴) */
+    private var userId: Long = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,27 +38,27 @@ class OtherProfileActivity : AppCompatActivity() {
         indicator = findViewById(R.id.indicator)
         followButton = findViewById(R.id.followButton)
 
-        // 팔로우 버튼 토글
+        // 팔로우 버튼 토글 (백엔드 연동은 아래 주석 참고)
         followButton.setOnClickListener {
             followButton.isSelected = !followButton.isSelected
             followButton.text = if (followButton.isSelected) "팔로우중" else "팔로우"
-            // TODO: 서버 호출(팔로우/언팔로우) 넣을 위치
+            // TODO: Retrofit 호출로 팔로우 토글 API 연동
+            // ex) RetrofitInstance.apiService.toggleFollow("Bearer $token", userId.toInt())
         }
 
-
-        // 최초 탭 로드
+        // ✅ 최초 탭 로드: "타인 레시피"가 보이도록 userId 전달
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.tabContainer, RecipeTabFragment.newInstance(/* userId 등 전달 필요시 */))
+                .replace(R.id.tabContainer, RecipeTabFragment.newInstance(userId.toInt()))
                 .commit()
         }
         highlightTab(Tab.RECIPE, moveIndicator = false)
 
-        // 클릭 리스너
+        // 탭 클릭
         tabRecipe.setOnClickListener { switchTab(Tab.RECIPE) }
         tabVideo.setOnClickListener  { switchTab(Tab.VIDEO) }
 
-        // 인디케이터 초기
+        // 인디케이터 초기화
         initIndicatorWidthAndPosition()
     }
 
@@ -67,15 +68,13 @@ class OtherProfileActivity : AppCompatActivity() {
 
         when (tab) {
             Tab.RECIPE -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.tabContainer, RecipeTabFragment.newInstance())
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.tabContainer, RecipeTabFragment.newInstance(userId.toInt()))
                     .commit()
             }
             Tab.VIDEO -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.tabContainer, VideoTabFragment.newInstance())
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.tabContainer, VideoTabFragment.newInstance(userId.toInt()))
                     .commit()
             }
         }
@@ -117,7 +116,7 @@ class OtherProfileActivity : AppCompatActivity() {
                         indicator.requestLayout()
                     }
 
-                    // 초기 위치(레시피 탭 텍스트 중앙 하단)
+                    // 초기 위치(레시피 탭)
                     moveIndicatorTo(Tab.RECIPE, animate = false)
                 }
             }
@@ -128,18 +127,12 @@ class OtherProfileActivity : AppCompatActivity() {
     private fun moveIndicatorTo(tab: Tab, animate: Boolean) {
         val target = if (tab == Tab.RECIPE) tabRecipe else tabVideo
 
-        // 인디케이터 반쪽 폭
         val indicatorHalf = (indicator.layoutParams.width.takeIf { it > 0 } ?: dp(120)) / 2f
-
-        // 부모/자식 좌표계를 윈도우 기준으로 통일
         val parent = indicator.parent as View
         val parentLoc = IntArray(2)
         parent.getLocationInWindow(parentLoc)
 
-        // 텍스트의 실제 중심 X (윈도우 기준)
         val textCenterXInWindow = getTextCenterXInWindow(target)
-
-        // parent 기준 '왼쪽 X' = (텍스트중앙X - 부모왼쪽X - 인디케이터반폭)
         val leftX = textCenterXInWindow - parentLoc[0] - indicatorHalf
 
         if (animate) {
@@ -167,7 +160,6 @@ class OtherProfileActivity : AppCompatActivity() {
 
             return tvLeftInWindow + textStartInTv + textWidth / 2f
         }
-        // 폴백: 뷰 중앙
         return tvLeftInWindow + tv.width / 2f
     }
 

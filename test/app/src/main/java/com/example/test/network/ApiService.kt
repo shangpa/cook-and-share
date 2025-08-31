@@ -23,6 +23,7 @@ import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.model.review.TpReviewResponseDTO
+import com.example.test.model.shorts.ShortVideoListResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -402,12 +403,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<RecipeDetailResponse>>
 
-    //마이페이지 - 작성한 레시피
     @GET("user/recipes")
     fun getMyRecipes(
         @Header("Authorization") token: String,
         @Query("sort") sort: String,
-        @Query("categories") categories: List<String>
+        @Query("categories") categories: List<String>,
+        @Query("userId") userId: Int? = null   //  없으면 내 레시피, 있으면 해당 유저 레시피
     ): Call<MyWriteRecipeResponse>
 
     //마이페이지 - 작성한 레시피 삭제
@@ -513,4 +514,14 @@ interface ApiService {
         @Path("userId") userId: Int,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    @GET("api/shorts/{userId}")
+    fun getUserShorts(
+        @Header("Authorization") bearer: String,
+        @Path("userId") userId: Int,
+        @Query("sort") sort: String,        // latest | views | date
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 30
+    ): Call<ShortVideoListResponse>
+
 }

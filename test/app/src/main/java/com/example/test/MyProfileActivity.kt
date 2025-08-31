@@ -142,7 +142,7 @@ class MyProfileActivity : AppCompatActivity() {
             Tab.VIDEO -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.tabContainer, VideoTabFragment.newInstance())
+                    .replace(R.id.tabContainer, VideoTabFragment.newInstance(targetUserId))
                     .commit()
             }
         }
