@@ -8,8 +8,14 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.test.model.profile.ProfileSummaryResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.math.roundToInt
 
 class MyProfileActivity : AppCompatActivity() {
@@ -18,8 +24,16 @@ class MyProfileActivity : AppCompatActivity() {
     private lateinit var tabVideo: TextView
     private lateinit var indicator: View
 
+    private lateinit var tvNickname: TextView
+    private lateinit var tvFollowerCount: TextView
+    private lateinit var tvRecipeCount: TextView
+    private lateinit var tvVideoCount: TextView
+
     private enum class Tab { RECIPE, VIDEO }
     private var currentTab = Tab.RECIPE
+
+    // ✅ 이 화면에서 볼 대상 유저 ID (내 프로필이면 로그인 유저 ID를 넣으세요)
+    private var targetUserId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +42,18 @@ class MyProfileActivity : AppCompatActivity() {
         tabRecipe = findViewById(R.id.tabRecipe)
         tabVideo  = findViewById(R.id.tabVideo)
         indicator = findViewById(R.id.indicator)
+
+        tvNickname       = findViewById(R.id.profileName)
+        tvFollowerCount  = findViewById(R.id.follow)   // "팔로우 수" TextView
+        tvRecipeCount    = findViewById(R.id.recipe)   // 레시피 수 숫자
+        tvVideoCount     = findViewById(R.id.video)    // 동영상(쇼츠) 수 숫자
+
+
+        targetUserId = intent.getIntExtra("targetUserId", -1)
+        if (targetUserId == -1) {
+            // fallback: 내 프로필이라면 Prefs에서 가져오기
+            targetUserId = App.prefs.userId.toInt()
+        }
 
         // 최초 탭 로드(레시피)
         if (savedInstanceState == null) {
@@ -51,6 +77,55 @@ class MyProfileActivity : AppCompatActivity() {
             val intent = Intent(this, MypageActivity::class.java)
             startActivity(intent)
         }
+
+        // ✅ 프로필 요약 로드
+        loadProfileSummary()
+    }
+
+    // ----- 프로필 요약 불러오기 -----
+    private fun loadProfileSummary() {
+        val token = App.prefs.token
+        if (token.isNullOrBlank()) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (targetUserId == -1) {
+            Toast.makeText(this, "대상 유저 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        RetrofitInstance.apiService.getProfileSummary(targetUserId, "Bearer $token")
+            .enqueue(object : Callback<ProfileSummaryResponse> {
+                override fun onResponse(
+                    call: Call<ProfileSummaryResponse>,
+                    response: Response<ProfileSummaryResponse>
+                ) {
+                    val body = response.body()
+                    if (!response.isSuccessful || body == null) {
+                        Toast.makeText(this@MyProfileActivity, "프로필 로딩 실패", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    bindSummary(body)
+                }
+
+                override fun onFailure(call: Call<ProfileSummaryResponse>, t: Throwable) {
+                    Toast.makeText(this@MyProfileActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+    private fun bindSummary(data: ProfileSummaryResponse) {
+        // 닉네임
+        tvNickname.text = data.nickname
+
+        // 팔로워 수 (UI에 "팔로우"라고 라벨이 있으니 숫자만 꽂음)
+        tvFollowerCount.text = data.followersCount.toString()
+
+        // 레시피/동영상 수
+        tvRecipeCount.text = data.recipeCount.toString()
+        tvVideoCount.text  = data.shortsCount.toString()
+
+        // TODO: 타인 프로필이면 팔로우 버튼 추가 시 data.following / data.mine 으로 상태 제어
+        // if (!data.mine) { btnFollow.visibility = View.VISIBLE ... }
     }
 
     private fun switchTab(tab: Tab) {

@@ -107,6 +107,7 @@ class MypageActivity : AppCompatActivity() {
                             val userInfo = response.body()
                             userInfo?.let {
                                 // 상단 텍스트 숨김, 프로필 영역 표시
+                                App.prefs.userId = it.id
                                 userNameText.visibility = View.GONE
                                 profileArea.visibility = View.VISIBLE
 
@@ -201,6 +202,7 @@ class MypageActivity : AppCompatActivity() {
         val myChannelLink: TextView = findViewById(R.id.myChannelLink)
         myChannelLink.setOnClickListener {
             val intent = Intent(this, MyProfileActivity::class.java)
+            intent.putExtra("targetUserId", App.prefs.userId.toInt())
             startActivity(intent)
         }
     }

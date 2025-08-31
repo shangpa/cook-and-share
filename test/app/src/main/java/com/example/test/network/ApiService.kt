@@ -14,6 +14,7 @@ import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import com.example.test.model.TradePost.TradeUserResponse
 import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
 import com.example.test.model.recipeDetail.RecipeDetailResponse
@@ -388,6 +389,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: UpdateUserRequest
     ): Call<Void>
+
     @POST("/api/user/check-password")
     fun checkPassword(
         @Header("Authorization") token: String,
@@ -497,4 +499,18 @@ interface ApiService {
         @Query("size") size: Int = 10,
         @Header("Authorization") bearer: String
     ): Call<List<ShortObject>>
+
+    //프로필요약
+    @GET("api/profile/{userId}/summary")
+    fun getProfileSummary(
+        @Path("userId") userId: Int,
+        @Header("Authorization") token: String
+    ): Call<ProfileSummaryResponse>
+
+    //팔로우, 팔로우 해제 토글
+    @POST("api/profile/{userId}/follow-toggle")
+    fun toggleFollow(
+        @Path("userId") userId: Int,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
 }
