@@ -19,6 +19,7 @@ import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.RecipeSearchAdapter
 import com.example.test.adapter.SuggestRecipeAdapter
 import com.example.test.model.Recipe
+import com.example.test.model.shorts.ShortsCardDto
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -210,6 +211,8 @@ class RecipeTapActivity : AppCompatActivity() {
         val initialBtn = map[initialCategory] ?: allBtn
         setBrowseCategoryStyle(initialBtn)
         filterByCategory(initialCategory)
+
+        loadOneMinuteRandom3()
     }
 
     // “레시피 둘러보기” 카테고리 버튼 스타일
@@ -273,6 +276,76 @@ class RecipeTapActivity : AppCompatActivity() {
                     suggestAdapter.submit(emptyList())
                 }
             })
+    }
+
+    private fun loadOneMinuteRandom3() {
+        val bearer = App.prefs.token?.let { "Bearer $it" }
+        RetrofitInstance.apiService.getShortsRandom3(bearer)
+            .enqueue(object : Callback<List<ShortsCardDto>> {
+                override fun onResponse(
+                    call: Call<List<ShortsCardDto>>,
+                    response: Response<List<ShortsCardDto>>
+                ) {
+                    if (!response.isSuccessful) {
+                        Toast.makeText(
+                            this@RecipeTapActivity,
+                            "1분 레시피 로드 실패(${response.code()})",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
+
+                    val list = response.body().orEmpty()
+                    if (list.isEmpty()) return
+
+                    val slots = list.take(3) // 최대 3개까지만
+                    val ids = arrayOf(
+                        Triple(R.id.oneMinuterecipeCard, R.id.video, R.id.title),
+                        Triple(R.id.oneMinuterecipeCardTwo, R.id.videoTwo, R.id.titleTwo),
+                        Triple(R.id.oneMinuterecipeCardThree, R.id.videoThree, R.id.titleThree)
+                    )
+                    slots.forEachIndexed { idx, item ->
+                        val (c, img, title) = ids[idx]
+                        bindOneMinuteCard(c, img, title, item)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ShortsCardDto>>, t: Throwable) {
+                    Toast.makeText(
+                        this@RecipeTapActivity,
+                        "1분 레시피 로드 실패: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun bindOneMinuteCard(
+        containerId: Int,
+        imageId: Int,
+        titleId: Int,
+        item: ShortsCardDto
+    ) {
+        val card = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(containerId)
+        val imageView = card.findViewById<android.widget.ImageView>(imageId)
+        val titleView = card.findViewById<TextView>(titleId)
+
+        titleView.text = item.title
+
+        try {
+            com.bumptech.glide.Glide.with(this)
+                .load(item.thumbnailUrl ?: R.drawable.image_one_minute)
+                .into(imageView)
+        } catch (_: Throwable) { }
+
+        card.setOnClickListener {
+            startActivity(
+                Intent(this, ShortsActivity::class.java).apply {
+                    putExtra("mode", "random")
+                    putExtra("focusId", item.id.toInt())
+                }
+            )
+        }
     }
 
     private fun dpToPx(dp: Float): Float = dp * resources.displayMetrics.density

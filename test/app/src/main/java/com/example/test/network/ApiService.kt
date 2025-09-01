@@ -24,6 +24,7 @@ import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.model.review.TpReviewResponseDTO
 import com.example.test.model.shorts.ShortVideoListResponse
+import com.example.test.model.shorts.ShortsCardDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -100,6 +101,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("type") type: String
     ): Call<List<Recipe>>
+
+    // 레시피 탭 - 1분 레시피(랜덤 3개)
+    @GET("/api/shorts/random3")
+    fun getShortsRandom3(
+        @Header("Authorization") bearer: String? = null
+    ): Call<List<ShortsCardDto>>
 
     // 레시피 작성 요청 (토큰 필요)
     @POST("api/recipes")
