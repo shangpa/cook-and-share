@@ -1,6 +1,7 @@
 @file:OptIn(androidx.media3.common.util.UnstableApi::class)
 package com.example.test
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -85,8 +86,20 @@ class VideoPlayerFragment : Fragment() {
         // DataBinding은 id를 camelCase로 매핑함 (tv_nickname → tvNickname)
         binding.tvNickname.text = shortObject.userName
         binding.tvNicknameBottom.text = shortObject.userName
-        binding.tvVideoTitle.text = shortObject.contents
-        binding.tvDescription.text = shortObject.contents
+        binding.tvVideoTitle.text = shortObject.title
+        //유저네임 클릭 시 프로필 화면으로 이동
+        val goProfile = View.OnClickListener {
+            val intent = Intent(requireContext(), MyProfileActivity::class.java).apply {
+                putExtra("targetUserId", shortObject.userId) // ← 반드시 userId
+            }
+            startActivity(intent)
+        }
+
+        // ✅ 실제로 달아주기
+        binding.tvNickname.setOnClickListener(goProfile)
+        binding.tvNicknameBottom.setOnClickListener(goProfile)
+        binding.imgProfile.setOnClickListener(goProfile)
+
         // 조회수/프로필은 실제 데이터에 맞게 갱신
         binding.tvViews.text = "조회수 ${shortObject.viewCount}회"
     }

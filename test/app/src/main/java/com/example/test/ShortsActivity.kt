@@ -212,10 +212,11 @@ class ShortsActivity : AppCompatActivity() {
         return ShortObject(
             id        = this.id.toInt(),
             userName  = "",
-            contents  = this.title,
+            title  = this.title,
             videoUrl  = this.videoUrl ?: "",
             viewCount = this.viewCount,
-            likeCount = this.likeCount
+            likeCount = this.likeCount,
+            userId = this.userId.toInt()
         )
     }
 

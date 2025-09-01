@@ -7,6 +7,7 @@ data class ShortVideoDto(
     val viewCount: Int,
     val videoUrl: String?,
     val likeCount: Int,
+    val userId: Long,
     val createdAt: String?
 )
 
