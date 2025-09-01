@@ -37,6 +37,8 @@ class ShortsActivity : AppCompatActivity() {
     private val pageSize = 10
     private val seed: String by lazy { UUID.randomUUID().toString() }
 
+    private val focusId: Int by lazy { intent.getIntExtra("focusId", -1) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_short)
@@ -158,7 +160,15 @@ class ShortsActivity : AppCompatActivity() {
                     adapter.notifyItemRangeInserted(start, data.size)
                     page += 1
 
-                    if (start == 0) binding.shortsVP.post { playOnly(0) }
+                    if (start == 0) {
+                        binding.shortsVP.post {
+                            val initial = if (focusId > 0) {
+                                items.indexOfFirst { it.id == focusId }.takeIf { it >= 0 } ?: 0
+                            } else 0
+                            binding.shortsVP.setCurrentItem(initial, false)
+                            playOnly(initial)
+                        }
+                    }
                 }
 
                 isLoading = false
