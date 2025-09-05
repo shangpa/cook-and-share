@@ -212,6 +212,17 @@
             </intent-filter>
         </activity>
 
+        <!-- MaterialDetailMyProfileActivity 추가 -->
+        <activity
+            android:name=".MaterialDetailMyProfileActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- FridgeActivity -->
         <activity
             android:name=".FridgeActivity"

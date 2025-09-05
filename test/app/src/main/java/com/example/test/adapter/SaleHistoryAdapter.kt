@@ -23,6 +23,8 @@ import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.content.Intent
+import com.example.test.MaterialDetailMyProfileActivity
 
 class SaleHistoryAdapter(
     private var tradeList: List<TradeItem>,
@@ -69,6 +71,13 @@ class SaleHistoryAdapter(
             .load(item.imageUrl)
             .placeholder(R.drawable.ic_launcher_background)  // 임시 기본 이미지
             .into(holder.imageItem)
+
+        holder.itemView.setOnClickListener {
+            val ctx = it.context
+            val intent = Intent(ctx, MaterialDetailMyProfileActivity::class.java)
+            intent.putExtra("postId", item.id)   // postId 전달
+            ctx.startActivity(intent)
+        }
 
         // 거래완료 상태에 따라 뷰 조정
         if (item.isCompleted) {
