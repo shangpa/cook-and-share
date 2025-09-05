@@ -7,14 +7,12 @@ import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.model.Fridge.FridgeResponse
-import com.example.test.model.Fridge.FridgeStatsResponse
 import com.example.test.model.Fridge.UsedIngredientRequest
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import com.example.test.model.TradePost.TradeUserResponse
 import com.example.test.model.community.CommunityDetailResponse
-import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
 import com.example.test.model.recipeDetail.RecipeDetailResponse
@@ -23,10 +21,7 @@ import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.model.review.TpReviewResponseDTO
-import com.example.test.model.shorts.ShortVideoListResponse
-import com.example.test.model.shorts.ShortsCardDto
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -94,19 +89,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("sort") sort: String? = null
     ): Call<List<Recipe>>
-
-    // 레시피 탭 - 이거 어때요?
-    @GET("/api/recipes/suggest")
-    fun suggestRecipes(
-        @Header("Authorization") token: String,
-        @Query("type") type: String
-    ): Call<List<Recipe>>
-
-    // 레시피 탭 - 1분 레시피(랜덤 3개)
-    @GET("/api/shorts/random3")
-    fun getShortsRandom3(
-        @Header("Authorization") bearer: String? = null
-    ): Call<List<ShortsCardDto>>
 
     // 레시피 작성 요청 (토큰 필요)
     @POST("api/recipes")
@@ -208,18 +190,12 @@ interface ApiService {
         @Query("ingredientName") ingredientName: String
     ): Call<List<FridgeHistoryResponse>>
 
-    // 영수증으로 재료추가
+    //영수증으로 재료추가
     @POST("/api/fridges/ocr")
     fun createFridgeByOCR(
         @Body body: FridgeCreateRequest,
         @Header("Authorization") token: String
     ): Call<Void>
-
-    // 냉장고 통계
-    @GET("/api/fridges/stats/my")
-    suspend fun getFridgeStats(
-        @Header("Authorization") token: String
-    ): Response<FridgeStatsResponse>
 
     @POST("/api/fridges/ocr/batch")
     fun createFridgesByOCRBatch(
@@ -397,7 +373,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: UpdateUserRequest
     ): Call<Void>
-
     @POST("/api/user/check-password")
     fun checkPassword(
         @Header("Authorization") token: String,
@@ -410,12 +385,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<RecipeDetailResponse>>
 
+    //마이페이지 - 작성한 레시피
     @GET("user/recipes")
     fun getMyRecipes(
         @Header("Authorization") token: String,
         @Query("sort") sort: String,
-        @Query("categories") categories: List<String>,
-        @Query("userId") userId: Int? = null   //  없으면 내 레시피, 있으면 해당 유저 레시피
+        @Query("categories") categories: List<String>
     ): Call<MyWriteRecipeResponse>
 
     //마이페이지 - 작성한 레시피 삭제
@@ -483,52 +458,4 @@ interface ApiService {
 
     @POST("/api/auth/google-login")
     fun googleLogin(@Body request: GoogleLoginRequest): Call<LoginResponse>
-
-    /*//쇼츠만 영상 업로드 안쓰는중
-    @Multipart
-    @POST("/api/shorts/upload-file")
-    fun uploadShortsFileOnly(
-        @Part video: MultipartBody.Part,
-        @Header("Authorization") bearer: String
-    ): Call<ResponseBody>*/
-
-    //쇼츠 등록
-    @POST("/api/shorts/register")
-    fun registerShorts(
-        @Body body: ShortsCreateRequest,
-        @Header("Authorization") bearer: String
-    ): Call<Long>
-
-    //쇼츠 재생
-    @GET("api/shorts/random")
-    fun getShorts(
-        @Query("seed") seed: String,
-        @Query("page") page: Int,
-        @Query("size") size: Int = 10,
-        @Header("Authorization") bearer: String
-    ): Call<List<ShortObject>>
-
-    //프로필요약
-    @GET("api/profile/{userId}/summary")
-    fun getProfileSummary(
-        @Path("userId") userId: Int,
-        @Header("Authorization") token: String
-    ): Call<ProfileSummaryResponse>
-
-    //팔로우, 팔로우 해제 토글
-    @POST("api/profile/{userId}/follow-toggle")
-    fun toggleFollow(
-        @Path("userId") userId: Int,
-        @Header("Authorization") token: String
-    ): Call<ResponseBody>
-
-    @GET("api/shorts/{userId}")
-    fun getUserShorts(
-        @Header("Authorization") bearer: String,
-        @Path("userId") userId: Int,
-        @Query("sort") sort: String,        // latest | views | date
-        @Query("page") page: Int = 0,
-        @Query("size") size: Int = 30
-    ): Call<ShortVideoListResponse>
-
 }

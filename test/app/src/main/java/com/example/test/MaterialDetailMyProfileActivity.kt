@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -30,7 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 
-class MaterialDetailActivity : AppCompatActivity() {
+class MaterialDetailMyProfileActivity : AppCompatActivity() {
 
     private lateinit var imagePager: ViewPager2
     private lateinit var imageCount: TextView
@@ -41,7 +42,7 @@ class MaterialDetailActivity : AppCompatActivity() {
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_material_detail) // MaterialDetailActivity의 레이아웃 파일 연결
+        setContentView(R.layout.activity_material_my_profile_detail) // MaterialDetailActivity의 레이아웃 파일 연결
 
         val tradePostId = intent.getLongExtra("tradePostId", -1L)
 
@@ -90,6 +91,7 @@ class MaterialDetailActivity : AppCompatActivity() {
             finish() // 현재 Activity 닫기
         }
 
+
         if (tradePostId != -1L) {
             RetrofitInstance.apiService.getTradePostById(token, tradePostId)
                 .enqueue(object : Callback<TradePostResponse> {
@@ -122,7 +124,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                                 val images = parseImageUrls(post.imageUrls)
                                 imageCountTwo.text = "/${images.size}"
 
-                                val adapter = ImagePagerAdapter(this@MaterialDetailActivity, images)
+                                val adapter = ImagePagerAdapter(this@MaterialDetailMyProfileActivity, images)
                                 imagePager.adapter = adapter
 
                                 imagePager.registerOnPageChangeCallback(object :
@@ -133,12 +135,12 @@ class MaterialDetailActivity : AppCompatActivity() {
                                 })
                             }
                         } else {
-                            Toast.makeText(this@MaterialDetailActivity, "조회 실패", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MaterialDetailMyProfileActivity, "조회 실패", Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<TradePostResponse>, t: Throwable) {
-                        Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MaterialDetailMyProfileActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                     }
                 })
         }
@@ -168,12 +170,12 @@ class MaterialDetailActivity : AppCompatActivity() {
                                 if (isSaved) R.drawable.ic_heart_fill else R.drawable.ic_heart
                             )
                             val message = if (isSaved) "관심 거래글로 저장되었습니다." else "관심 목록에서 제거되었습니다."
-                            Toast.makeText(this@MaterialDetailActivity, message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MaterialDetailMyProfileActivity, message, Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MaterialDetailMyProfileActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                     }
                 })
         }
@@ -185,49 +187,6 @@ class MaterialDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        // chatButton 클릭했을 때 MaterialChatDetailActivity 이동
-        val chatButton: Button = findViewById(R.id.chatButton)
-        chatButton.setOnClickListener {
-            fetchMyNickname { myNickname ->
-                if (myNickname == null) {
-                    Toast.makeText(this, "사용자 정보 조회 실패", Toast.LENGTH_SHORT).show()
-                    return@fetchMyNickname
-                }
-
-                if (::currentPost.isInitialized && currentPost.writer == myNickname) {
-                    Toast.makeText(this, "자신의 게시글에는 채팅할 수 없습니다.", Toast.LENGTH_SHORT).show()
-                    return@fetchMyNickname
-                }
-
-                RetrofitInstance.chatApi.createOrGetRoom(token, tradePostId)
-                    .enqueue(object : Callback<ChatRoomResponse> {
-                        override fun onResponse(call: Call<ChatRoomResponse>, response: Response<ChatRoomResponse>) {
-                            if (response.isSuccessful) {
-                                val body = response.body() ?: return
-                                val roomKey = body.roomKey
-                                val receiverId = if (App.prefs.userId.toLong() == body.userAId) body.userBId else body.userAId
-                                println(" App.prefs.userId"+App.prefs.userId)
-
-                                val intent = Intent(this@MaterialDetailActivity, MaterialChatDetailActivity::class.java)
-                                intent.putExtra("roomKey", roomKey)
-                                println("roomKey"+ roomKey)
-                                intent.putExtra("postId", tradePostId)
-                                println("postId"+ tradePostId)
-                                intent.putExtra("receiverId", receiverId)
-                                println("receiverId"+ receiverId)
-                                startActivity(intent)
-                            } else {
-                                Toast.makeText(this@MaterialDetailActivity, "채팅방 생성 실패", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ChatRoomResponse>, t: Throwable) {
-                            Toast.makeText(this@MaterialDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-            }
-        }
         // imageSearch 클릭했을 때 MaterialSearchActivity 이동
         val imageSearch: ImageView = findViewById(R.id.imageSearch)
         imageSearch.setOnClickListener {
@@ -267,6 +226,12 @@ class MaterialDetailActivity : AppCompatActivity() {
             }
 
             popup.show()
+        }
+
+        val postId = intent.getLongExtra("postId", -1L)
+        if (postId != -1L) {
+            // postId로 서버 API 호출해서 상세 정보 불러오기
+            Log.d("DetailActivity", "받은 postId = $postId")
         }
 
     }

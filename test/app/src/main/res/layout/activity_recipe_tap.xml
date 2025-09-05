@@ -163,18 +163,323 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/suggestRecycler"
+            <!-- 레시피 카테고리 -->
+            <HorizontalScrollView
+                android:id="@+id/categoryScrollTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 android:layout_marginTop="15dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="16dp"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/categoryScroll"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:listitem="@layout/item_suggest_recipe" />
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/categoryScroll">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingEnd="16dp">
+
+                    <!-- 음식1 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/recipeCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <!-- 음식 이미지 -->
+                        <ImageView
+                            android:id="@+id/foodImage"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/image_the_recipe_saw_recently_one"
+                            android:layout_marginTop="15dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <!-- 재생 버튼 -->
+                        <ImageButton
+                            android:id="@+id/playButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginStart="7dp"
+                            android:src="@drawable/ic_video_play"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:layout_constraintTop_toTopOf="@id/foodImage"
+                            app:layout_constraintStart_toStartOf="@id/foodImage"/>
+
+                        <!-- 하트 버튼 -->
+                        <ImageButton
+                            android:id="@+id/heartButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_heart_fill"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:layout_constraintBottom_toBottomOf="@id/foodImage"
+                            app:layout_constraintEnd_toEndOf="@id/foodImage"/>
+
+                        <!-- 음식 이름 -->
+                        <TextView
+                            android:id="@+id/foodNameOne"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="11dp"
+                            android:layout_marginStart="0dp"
+                            android:text="알배추전골과 구운 두부 버섯\n샐러드"
+                            android:textColor="#2B2B2B"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/foodImage"
+                            app:layout_constraintStart_toStartOf="@id/foodImage"/>
+
+                        <!-- 난이도 이미지 -->
+                        <ImageView
+                            android:id="@+id/levelImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/image_recently_stored_materials_step"
+                            app:layout_constraintTop_toBottomOf="@id/foodNameOne"
+                            app:layout_constraintStart_toStartOf="@id/foodNameOne"/>
+
+                        <!-- 난이도 텍스트 -->
+                        <TextView
+                            android:id="@+id/level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="초급"
+                            android:textColor="#9B9B9B"
+                            android:textSize="11sp"
+                            app:layout_constraintTop_toTopOf="@id/levelImage"
+                            app:layout_constraintBottom_toBottomOf="@id/levelImage"
+                            app:layout_constraintStart_toEndOf="@id/levelImage"/>
+
+                        <!-- 시간 이미지 -->
+                        <ImageView
+                            android:id="@+id/timeImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/image_recently_stored_materials_time"
+                            app:layout_constraintTop_toBottomOf="@id/foodNameOne"
+                            app:layout_constraintStart_toEndOf="@id/level"/>
+
+                        <!-- 시간 텍스트 -->
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30분"
+                            android:textColor="#9B9B9B"
+                            android:textSize="11sp"
+                            android:layout_marginStart="3dp"
+                            app:layout_constraintTop_toTopOf="@id/timeImage"
+                            app:layout_constraintBottom_toBottomOf="@id/timeImage"
+                            app:layout_constraintStart_toEndOf="@id/timeImage"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- 음식2 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/recipeCardTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        app:layout_constraintTop_toTopOf="@id/categoryScroll"
+                        app:layout_constraintStart_toEndOf="@id/recipeCard">
+
+                        <!-- 음식 이미지 -->
+                        <ImageView
+                            android:id="@+id/foodImageTwo"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/image_the_recipe_saw_recently_one"
+                            android:layout_marginTop="15dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <!-- 하트 버튼 -->
+                        <ImageButton
+                            android:id="@+id/heartButtonTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_heart_list"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:layout_constraintBottom_toBottomOf="@id/foodImageTwo"
+                            app:layout_constraintEnd_toEndOf="@id/foodImageTwo"/>
+
+                        <!-- 음식 이름 -->
+                        <TextView
+                            android:id="@+id/foodNameTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="11dp"
+                            android:layout_marginStart="0dp"
+                            android:text="알배추전골과 구운 두부 버섯\n샐러드"
+                            android:textColor="#2B2B2B"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/foodImageTwo"
+                            app:layout_constraintStart_toStartOf="@id/foodImageTwo"/>
+
+                        <!-- 난이도 이미지 -->
+                        <ImageView
+                            android:id="@+id/levelImageTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/image_recently_stored_materials_step"
+                            app:layout_constraintTop_toBottomOf="@id/foodNameTwo"
+                            app:layout_constraintStart_toStartOf="@id/foodNameTwo"/>
+
+                        <!-- 난이도 텍스트 -->
+                        <TextView
+                            android:id="@+id/levelTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="초급"
+                            android:textColor="#9B9B9B"
+                            android:textSize="11sp"
+                            app:layout_constraintTop_toTopOf="@id/levelImageTwo"
+                            app:layout_constraintBottom_toBottomOf="@id/levelImageTwo"
+                            app:layout_constraintStart_toEndOf="@id/levelImageTwo"/>
+
+                        <!-- 시간 이미지 -->
+                        <ImageView
+                            android:id="@+id/timeImageTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/image_recently_stored_materials_time"
+                            app:layout_constraintTop_toBottomOf="@id/foodNameTwo"
+                            app:layout_constraintStart_toEndOf="@id/levelTwo"/>
+
+                        <!-- 시간 텍스트 -->
+                        <TextView
+                            android:id="@+id/timeTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30분"
+                            android:textColor="#9B9B9B"
+                            android:textSize="11sp"
+                            android:layout_marginStart="3dp"
+                            app:layout_constraintTop_toTopOf="@id/timeImageTwo"
+                            app:layout_constraintBottom_toBottomOf="@id/timeImageTwo"
+                            app:layout_constraintStart_toEndOf="@id/timeImageTwo"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- 음식3 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/recipeCardThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="parent">
+
+                        <!-- 음식 이미지 -->
+                        <ImageView
+                            android:id="@+id/foodImageThree"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/image_the_recipe_saw_recently_one"
+                            android:layout_marginTop="15dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <!-- 재생 버튼 -->
+                        <ImageButton
+                            android:id="@+id/playButtonThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginStart="7dp"
+                            android:src="@drawable/ic_video_play"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:layout_constraintTop_toTopOf="@id/foodImageThree"
+                            app:layout_constraintStart_toStartOf="@id/foodImageThree"/>
+
+                        <!-- 하트 버튼 -->
+                        <ImageButton
+                            android:id="@+id/heartButtonThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_heart_list"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:layout_constraintBottom_toBottomOf="@id/foodImageThree"
+                            app:layout_constraintEnd_toEndOf="@id/foodImageThree"/>
+
+                        <!-- 음식 이름 -->
+                        <TextView
+                            android:id="@+id/foodNameThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="11dp"
+                            android:layout_marginStart="0dp"
+                            android:text="알배추전골과 구운 두부 버섯\n샐러드"
+                            android:textColor="#2B2B2B"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toBottomOf="@id/foodImageThree"
+                            app:layout_constraintStart_toStartOf="@id/foodImageThree"/>
+
+                        <!-- 난이도 이미지 -->
+                        <ImageView
+                            android:id="@+id/levelImageThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/image_recently_stored_materials_step"
+                            app:layout_constraintTop_toBottomOf="@id/foodNameThree"
+                            app:layout_constraintStart_toStartOf="@id/foodNameThree"/>
+
+                        <!-- 난이도 텍스트 -->
+                        <TextView
+                            android:id="@+id/levelThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="초급"
+                            android:textColor="#9B9B9B"
+                            android:textSize="11sp"
+                            app:layout_constraintTop_toTopOf="@id/levelImageThree"
+                            app:layout_constraintBottom_toBottomOf="@id/levelImageThree"
+                            app:layout_constraintStart_toEndOf="@id/levelImageThree"/>
+
+                        <!-- 시간 이미지 -->
+                        <ImageView
+                            android:id="@+id/timeImageThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/image_recently_stored_materials_time"
+                            app:layout_constraintTop_toBottomOf="@id/foodNameThree"
+                            app:layout_constraintStart_toEndOf="@id/levelThree"/>
+
+                        <!-- 시간 텍스트 -->
+                        <TextView
+                            android:id="@+id/timeThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30분"
+                            android:textColor="#9B9B9B"
+                            android:textSize="11sp"
+                            android:layout_marginStart="3dp"
+                            app:layout_constraintTop_toTopOf="@id/timeImageThree"
+                            app:layout_constraintBottom_toBottomOf="@id/timeImageThree"
+                            app:layout_constraintStart_toEndOf="@id/timeImageThree"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <!-- 레시피 이거 어때요? 아래 구분선 -->
             <View
@@ -185,7 +490,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/suggestRecycler"
+                app:layout_constraintTop_toBottomOf="@id/categoryScrollTwo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -612,7 +917,6 @@
                 android:id="@+id/writeRecipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="490dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -623,6 +927,7 @@
                     android:layout_height="73dp"
                     android:elevation="8dp"
                     android:background="@drawable/ic_tap_circle"
+                    android:layout_marginTop="490dp"
                     android:layout_marginEnd="20dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>

@@ -140,11 +140,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         }
     }
 
-    private val tabCompleted = BooleanArray(6) { false }
-    private lateinit var progressBars: List<View>
-    private var selectedIndex = 0
-    private lateinit var textViews: List<TextView>
-
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -328,7 +323,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         }
 
         // 카테고리 TextView 리스트
-        textViews = listOf(
+        val textViews = listOf(
             findViewById<TextView>(R.id.one),
             findViewById<TextView>(R.id.two),
             findViewById<TextView>(R.id.three),
@@ -346,31 +341,23 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             findViewById(R.id.recipeWriteDetailSettleLayout)
         )
 
-        progressBars = listOf(
-            findViewById(R.id.barOne),
-            findViewById(R.id.barTwo),
-            findViewById(R.id.barThree),
-            findViewById(R.id.barFour),
-            findViewById(R.id.barFive),
-            findViewById(R.id.barSix)
-        )
 
         // 카테고리 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
-        textViews.forEachIndexed { index, tv ->
-            tv.setOnClickListener {
+        textViews.forEachIndexed { index, textView ->
+            textView.setOnClickListener {
                 showOnlyLayout(layouts[index])
 
-                // 인덱스 갱신
-                selectedIndex = index
-                currentIndex = index
+                // 모든 TextView 색상 초기화
+                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
 
-                // 인디케이터 이동
-                val targetX = tv.x + (tv.width / 2f) - (indicatorBar.width / 2f)
+                // 클릭된 TextView만 색상 변경 (#2B2B2B)
+                textView.setTextColor(Color.parseColor("#2B2B2B"))
+
+                // 바(View)의 위치를 클릭한 TextView의 중앙으로 이동
+                val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
                 indicatorBar.x = targetX
 
-                // ✅ 색상은 항상 완료/선택 규칙으로만
-                updateSelectedTab(tv)      // 또는 checkTabs() 호출(내부에서 updateSelectedTab 호출됨)
-                checkAndUpdateContinueButton()
+                currentIndex = index
             }
         }
 
@@ -599,41 +586,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                     handlingMethods.map { it.split(" : ")[0] to it.split(" : ")[1] }
                 )
             }
-
-            selectedIndex = currentIndex
-            checkTabs()
-            return@setOnClickListener
-
-            if (currentIndex in 0 until layouts.lastIndex) {
-                val nextIndex = currentIndex + 1
-                val nextLayout = layouts[nextIndex]
-                val nextTab = textViews[nextIndex]
-
-                // 히스토리 저장
-                layoutHistoryStack.push(layouts[currentIndex])
-
-                // 레이아웃 전환
-                showOnlyLayout(nextLayout)
-
-                // 탭 색상 업데이트
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                nextTab.setTextColor(Color.parseColor("#2B2B2B"))
-
-                // 인디케이터 바 이동
-                val targetX = nextTab.x + (nextTab.width / 2f) - (indicatorBar.width / 2f)
-                indicatorBar.x = targetX
-
-                // ✅ 인덱스 갱신 + 바/색 즉시 반영
-                selectedIndex = nextIndex
-                checkTabs()
-
-                // 버튼 상태 갱신
-                checkAndUpdateContinueButton()
-            } else {
-                // 마지막 위치면 그래도 탭/바 즉시 재반영
-                selectedIndex = currentIndex
-                checkTabs()
-            }
         }
 
         // "이전으로" 버튼 클릭 시 화면 이동
@@ -650,7 +602,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 if (index != -1) {
                     currentIndex = index
                     textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                    textViews[currentIndex].setTextColor(Color.parseColor("#35A825"))
+                    textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
 
                     val targetX =
                         textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
@@ -675,7 +627,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 handlingMethodFoodName.text = text
                 cookVideoFoodName.text = text
                 detailSettleFoodName.text = text
-                checkTabs()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -694,7 +645,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 koreanFood.text = menuItem.title
                 koreanFood.setTextColor(Color.parseColor("#2B2B2B")) // 선택 시 진한 텍스트 색상으로 변경
-                checkTabs()
+
                 checkAndUpdateContinueButton()
                 true
             }
@@ -730,7 +681,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 popup.setOnMenuItemClickListener { menuItem ->
                     unit.text = menuItem.title
                     unit.setTextColor(Color.parseColor("#2B2B2B"))
-                    checkTabs()
                     checkAndUpdateContinueButton() // ✅ 선택 후 버튼 상태 갱신
                     true
                 }
@@ -757,7 +707,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         material.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkAndUpdateContinueButton()
-                checkTabs()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -766,7 +715,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         measuring.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkAndUpdateContinueButton()
-                checkTabs()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -778,7 +726,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         replaceMaterialName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkAndUpdateContinueButton()
-                checkTabs()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -787,7 +734,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         replaceMaterial.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkAndUpdateContinueButton()
-                checkTabs()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -797,7 +743,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         handlingMethodName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkAndUpdateContinueButton()
-                checkTabs()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -806,7 +751,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         handlingMethod.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkAndUpdateContinueButton()
-                checkTabs()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -817,15 +761,13 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val tagEditText = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)
 
         cookingTimeEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton()
-                checkTabs()}
+            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         tagEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton()
-                checkTabs()}
+            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -937,7 +879,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 elementaryLevel.text = menuItem.title
                 elementaryLevel.setTextColor(Color.parseColor("#2B2B2B")) // 선택 시 진한 텍스트 색상으로 변경
-                checkTabs()
+
                 checkAndUpdateContinueButton()
                 true
             }
@@ -1044,92 +986,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         //탭바로 이동해도 채워져있으면 계속하기 버튼 바껴져 있음
         checkAndUpdateContinueButton()
 
-    }
-
-    private fun checkTabs() {
-        // ===== 1번 탭: 타이틀 =====
-        val titleView = findViewById<EditText?>(R.id.recipeTitleWrite)
-        val categoryView = findViewById<TextView?>(R.id.koreanFood)
-
-        if (titleView != null && categoryView != null) {
-            val hasTitle = titleView.text.isNotBlank()
-            val hasCategory = categoryView.text.isNotBlank() && categoryView.text != "카테고리 선택"
-            tabCompleted[0] = hasTitle && hasCategory
-        }
-
-        // ===== 2번 탭: 재료 =====
-        val materialView = findViewById<EditText?>(R.id.material)
-        val measuringView = findViewById<EditText?>(R.id.measuring)
-        val unitView = findViewById<TextView?>(R.id.unit)
-
-        if (materialView != null && measuringView != null && unitView != null) {
-            val hasMaterial = materialView.text.isNotBlank()
-            val hasMeasuring = measuringView.text.isNotBlank()
-            val hasUnit = unitView.text.isNotBlank() && unitView.text != "단위"
-            tabCompleted[1] = hasMaterial && hasMeasuring && hasUnit
-        }
-
-        // ===== 3번 탭: 대체재료 =====
-        val replaceMaterialNameView = findViewById<EditText?>(R.id.replaceMaterialName)
-        val replaceMaterialView = findViewById<EditText?>(R.id.replaceMaterial)
-        if (replaceMaterialNameView != null && replaceMaterialView != null) {
-            val hasReplaceName = replaceMaterialNameView.text.isNotBlank()
-            val hasReplace = replaceMaterialView.text.isNotBlank()
-            tabCompleted[2] = hasReplaceName && hasReplace
-        }
-
-        // ===== 4번 탭: 처리방법 =====
-        val handlingMethodNameView = findViewById<EditText?>(R.id.handlingMethodName)
-        val handlingMethodView = findViewById<EditText?>(R.id.handlingMethod)
-        if (handlingMethodNameView != null && handlingMethodView != null) {
-            val hasHandlingName = handlingMethodNameView.text.isNotBlank()
-            val hasHandling = handlingMethodView.text.isNotBlank()
-            tabCompleted[3] = hasHandlingName && hasHandling
-        }
-
-        // ===== 5번 탭: 조리영상 =====
-        val imageContainer = findViewById<LinearLayout?>(R.id.imageContainer)
-
-        if (imageContainer != null) {
-            // imageContainer 안에 자식 View(이미지)가 하나라도 있으면 완료 처리
-            val hasImage = imageContainer.childCount > 0
-            tabCompleted[4] = hasImage
-        }
-
-        // ===== 6번: 세부설정 =====
-        val levelView = findViewById<TextView?>(R.id.elementaryLevel)
-        val timeView = findViewById<EditText?>(R.id.halfHour)
-        val tagView = findViewById<EditText?>(R.id.detailSettleRecipeTitleWrite)
-        if (levelView != null && timeView != null && tagView != null) {
-            val hasLevel = levelView.text.isNotBlank() && levelView.text !in listOf("난이도", "선택")
-            val hasTime = timeView.text.isNotBlank()
-            val hasTag = tagView.text.isNotBlank()
-            tabCompleted[5] = hasLevel && hasTime && hasTag
-        }
-
-        //바
-        progressBars.forEachIndexed { index, bar ->
-            if (index < tabCompleted.size) {
-                bar.visibility = if (tabCompleted[index]) View.VISIBLE else View.GONE
-            }
-        }
-
-        // ✅ 조건 만족 즉시 색상 반영
-        if (::textViews.isInitialized && selectedIndex in textViews.indices) {
-            updateSelectedTab(textViews[selectedIndex])
-        }
-    }
-
-    // 탭 색상 업데이트
-    private fun updateSelectedTab(selected: TextView) {
-        textViews.forEachIndexed { index, tab ->
-            val color = when {
-                tabCompleted[index] -> "#2B2B2B" // 완료됨
-                tab == selected -> "#35A825" // 현재 선택
-                else -> "#A1A9AD" // 기본
-            }
-            tab.setTextColor(Color.parseColor(color))
-        }
     }
 
     //계속하기 버튼 색 바뀜

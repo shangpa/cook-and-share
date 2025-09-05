@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import android.util.Log
 import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.TradePostAdapter
 import com.example.test.model.TradePost.TradeUserResponse
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,13 +44,15 @@ class MaterialActivity : AppCompatActivity() {
 
     private var tradePosts: List<TradePostResponse> = listOf()
     private lateinit var tradePostAdapter: TradePostAdapter
+    private lateinit var recyclerView: RecyclerView
+    private var skipReloadOnce = false
+    private var keepAtTop: Boolean = false
+    private var rvState: Parcelable? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_material)
-
-        fetchUserLocationAndLoadPosts()
 
         TabBarUtils.setupTabBar(this)
 
@@ -57,7 +61,7 @@ class MaterialActivity : AppCompatActivity() {
         sortText = findViewById(R.id.materailMainFilterText)
         sortArrow = findViewById(R.id.sortArrow)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
+        recyclerView = findViewById(R.id.tradePostRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         materialFilter = findViewById(R.id.materialFilter)
@@ -92,6 +96,8 @@ class MaterialActivity : AppCompatActivity() {
             findViewById(R.id.onefiveThousand),
             findViewById(R.id.twoThousand)
         )
+
+        fetchUserLocationAndLoadPosts()
 
         //내위치 이동
         val myLocationButton: LinearLayout = findViewById(R.id.myLocation)
@@ -242,6 +248,56 @@ class MaterialActivity : AppCompatActivity() {
             findViewById<ImageView>(R.id.aa).visibility = if (isPlusMenuVisible) View.VISIBLE else View.GONE
             findViewById<ImageView>(R.id.bb).visibility = if (isPlusMenuVisible) View.VISIBLE else View.GONE
         }
+
+        keepAtTop = getKeepTopSticky()
+
+        val lm = recyclerView.layoutManager as LinearLayoutManager
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                val first = (rv.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                keepAtTop = (first == 0) // 첫 아이템 완전 노출이면 Top 고정 유지
+            }
+        })
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        skipReloadOnce = intent?.getBooleanExtra("skipReloadOnce", false) == true
+
+        intent?.getStringExtra("newTradePost")?.let { json ->
+            val newPost = Gson().fromJson(json, TradePostResponse::class.java)
+            addPostOnTop(newPost)
+        }
+    }
+
+    private fun addPostOnTop(post: TradePostResponse) {
+        if (!::tradePostAdapter.isInitialized) return
+        // 어댑터에 헬퍼 메서드가 있다면:
+        tradePostAdapter.addPostOnTop(post)
+        recyclerView.scrollToPosition(0)
+        setKeepTopSticky(true)
+    }
+
+    private fun setKeepTopSticky(enabled: Boolean) {
+        keepAtTop = enabled
+        getSharedPreferences("material_prefs", MODE_PRIVATE)
+            .edit().putBoolean("keep_top_sticky", enabled).apply()
+    }
+
+    private fun getKeepTopSticky(): Boolean =
+        getSharedPreferences("material_prefs", MODE_PRIVATE)
+            .getBoolean("keep_top_sticky", false)
+
+    private fun applyPinnedFirst(raw: List<TradePostResponse>): List<TradePostResponse> {
+        val pinnedIds = PinStore.getPinnedOrder(this)
+        if (pinnedIds.isEmpty()) return raw
+
+        // pinned 순서대로 맨 위에 정렬, 나머지는 원래 순서 유지
+        val mapById = raw.associateBy { it.tradePostId }
+        val pinnedItems = pinnedIds.mapNotNull { mapById[it] }
+        val others = raw.filterNot { pinnedIds.contains(it.tradePostId) }
+        return pinnedItems + others
     }
 
     private fun setSelectedButton(selectedButton: Button) {
@@ -289,13 +345,14 @@ class MaterialActivity : AppCompatActivity() {
     private fun setRecyclerViewAdapter(list: List<TradePostResponse>) {
         tradePosts = list
 
-        val recyclerView = findViewById<RecyclerView>(R.id.tradePostRecyclerView)
-
         tradePostAdapter = TradePostAdapter(
             list.toMutableList(),
             onItemClick = { tradePost ->
                 val token = App.prefs.token.toString()
-                RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
+                RetrofitInstance.apiService.increaseViewCount(
+                    tradePost.tradePostId,
+                    "Bearer $token"
+                )
                     .enqueue(object : Callback<Void> {
                         override fun onResponse(call: Call<Void>, response: Response<Void>) {
                             Log.d("ViewCount", "조회수 증가 성공")
@@ -316,6 +373,44 @@ class MaterialActivity : AppCompatActivity() {
 
         recyclerView.adapter = tradePostAdapter
         numberTextView.text = list.size.toString()
+
+        val display = applyPinnedFirst(list)
+        tradePosts = display
+
+        // 2) 어댑터 '한 번만' 생성 (클릭 리스너 포함)
+        tradePostAdapter = TradePostAdapter(
+            display.toMutableList(),
+            onItemClick = { tradePost ->
+                val token = App.prefs.token.toString()
+                RetrofitInstance.apiService.increaseViewCount(tradePost.tradePostId, "Bearer $token")
+                    .enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            Log.d("ViewCount", "조회수 증가 성공")
+                        }
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.e("ViewCount", "조회수 증가 실패", t)
+                        }
+                    })
+
+                val intent = Intent(this, MaterialDetailActivity::class.java)
+                intent.putExtra("tradePostId", tradePost.tradePostId)
+                startActivity(intent)
+            },
+            userLat = userLatitude,
+            userLng = userLongitude
+        )
+        recyclerView.adapter = tradePostAdapter
+        numberTextView.text = display.size.toString()
+
+        // 3) 레이아웃 끝난 뒤 스크롤 적용
+        val lm = recyclerView.layoutManager as LinearLayoutManager
+        recyclerView.post {
+            if (keepAtTop || getKeepTopSticky()) {
+                lm.scrollToPositionWithOffset(0, 0)
+            } else {
+                rvState?.let { lm.onRestoreInstanceState(it); rvState = null }
+            }
+        }
     }
 
     private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
@@ -510,6 +605,12 @@ class MaterialActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        if (skipReloadOnce) {        // 🔥 이번 1회는 새로고침 생략
+            skipReloadOnce = false
+            if (keepAtTop) recyclerView.scrollToPosition(0)
+            return
+        }
+
         val token = App.prefs.token.toString()
         RetrofitInstance.apiService.getNearbyTradePosts("Bearer $token", 1.0)
             .enqueue(object : Callback<List<TradePostResponse>> {
@@ -530,6 +631,13 @@ class MaterialActivity : AppCompatActivity() {
                     Log.e("거리필터", "요청 실패", t)
                 }
             })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!keepAtTop) {
+            rvState = recyclerView.layoutManager?.onSaveInstanceState()
+        }
     }
 
     private val LOCATION_REQUEST_CODE = 1001

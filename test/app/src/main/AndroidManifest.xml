@@ -212,6 +212,17 @@
             </intent-filter>
         </activity>
 
+        <!-- MaterialDetailMyProfileActivity 추가 -->
+        <activity
+            android:name=".MaterialDetailMyProfileActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- FridgeActivity -->
         <activity
             android:name=".FridgeActivity"
@@ -252,17 +263,6 @@
         <!-- FridgeRecipeActivity -->
         <activity
             android:name=".FridgeRecipeActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- FridgeStatsActivity -->
-        <activity
-            android:name=".FridgeStatsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -730,7 +730,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <!-- VideoTrimActivity -->
         <activity
             android:name=".VideoTrimActivity"
@@ -741,50 +740,14 @@
             </intent-filter>
         </activity>
 
-        <!-- MyProfileActivity -->
-        <activity
-            android:name=".MyProfileActivity"
-            android:exported="true"
-            tools:ignore="Instantiatable">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name=".PhotoEditorActivity"
             android:exported="true" />
-
-        <activity
-            android:name=".ShortsActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".VideoPlayerAdapter"
-            android:exported="true"
-            tools:ignore="Instantiatable" />
-
-        <activity
-            android:name=".VideoPlayerFragment"
-            android:exported="true"
-            tools:ignore="Instantiatable" />
 
 
         <activity
             android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
-
-        <activity
-            android:name=".ShortsTrimActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".OtherProfileActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
 
 
         <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->

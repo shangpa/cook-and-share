@@ -88,59 +88,15 @@
                         android:textColor="#ffffff"
                         android:layout_marginTop="2dp"/>
 
-                    <!-- 프로필 이미지 및 내 채널로 바로가기 -->
-                    <LinearLayout
-                        android:id="@+id/profileArea"
-                        android:layout_width="match_parent"
+<!--                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="start"
-                        android:layout_marginEnd="30dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/profileImage"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:src="@drawable/ic_cicrle_profile"
-                            android:scaleType="centerCrop"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginStart="10dp">
-
-                            <TextView
-                                android:id="@+id/nicknameText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="닉네임"
-                                android:textColor="#FFFFFF"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/myChannelLink"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="내 채널로 바로가기 >"
-                                android:textColor="#B9BEC1"
-                                android:textSize="14sp"
-                                android:layout_marginTop="2dp"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-                    <!--                    <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="님"
-                                            android:textSize="14sp"
-                                            android:textStyle="bold"
-                                            android:layout_marginStart="1dp"
-                                            android:textColor="#ffffff"
-                                            android:layout_marginTop="2dp"/>-->
+                        android:text="님"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="1dp"
+                        android:textColor="#ffffff"
+                        android:layout_marginTop="2dp"/>-->
 
                     <!-- 개인정보수정 아이콘 -->
                     <ImageButton

@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- 뒤로가기, 레시피 작성 -->
+            <!-- 뒤로가기, 레시피 작성, 임시저장 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/recipeWriteUp"
                 android:layout_width="match_parent"
@@ -56,6 +56,21 @@
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/temporaryStorage"
+                    android:layout_width="69dp"
+                    android:layout_height="25dp"
+                    android:text="임시저장"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/btn_step_recipe_see_next"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toTopOf="@id/writeReview"
+                    app:layout_constraintBottom_toBottomOf="@id/writeReview"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -174,75 +189,6 @@
                 android:background="@drawable/bar_rectangle"
                 app:layout_constraintTop_toBottomOf="@+id/recipeWriteCategory" />
 
-            <!-- 프로그래스 바 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/barCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/divideRectangleBarTwentythree">
-
-                <!-- 바1 -->
-                <View
-                    android:id="@+id/barOne"
-                    android:layout_width="83dp"
-                    android:layout_height="3dp"
-                    android:background="@drawable/bar_recipe"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:visibility="gone"/>
-
-                <!-- 바2 -->
-                <View
-                    android:id="@+id/barTwo"
-                    android:layout_width="62dp"
-                    android:layout_height="3dp"
-                    android:background="@drawable/bar_recipe"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/barOne"
-                    android:visibility="gone"/>
-
-                <!-- 바3 -->
-                <View
-                    android:id="@+id/barThree"
-                    android:layout_width="62dp"
-                    android:layout_height="3dp"
-                    android:background="@drawable/bar_recipe"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/barTwo"
-                    android:visibility="gone"/>
-
-                <!-- 바4 -->
-                <View
-                    android:id="@+id/barFour"
-                    android:layout_width="62dp"
-                    android:layout_height="3dp"
-                    android:background="@drawable/bar_recipe"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/barThree"
-                    android:visibility="gone"/>
-
-                <!-- 바5 -->
-                <View
-                    android:id="@+id/barFive"
-                    android:layout_width="62dp"
-                    android:layout_height="3dp"
-                    android:background="@drawable/bar_recipe"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/barFour"
-                    android:visibility="gone"/>
-
-                <!-- 바6 -->
-                <View
-                    android:id="@+id/barSix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="3dp"
-                    android:background="@drawable/bar_recipe"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/barFive"
-                    android:visibility="gone"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <!-- 바 -->
             <View
                 android:id="@+id/divideRectangleBarTwentythree"
@@ -250,7 +196,7 @@
                 android:layout_height="3dp"
                 android:layout_marginTop="13dp"
                 android:layout_marginStart="13dp"
-                android:background="@drawable/bar_recipe_green"
+                android:background="@drawable/bar_recipe"
                 app:layout_constraintTop_toBottomOf="@+id/recipeWriteCategory"
                 app:layout_constraintStart_toStartOf="parent"/>
 

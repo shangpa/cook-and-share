@@ -95,6 +95,16 @@ class TradePostAdapter(
         notifyDataSetChanged()
     }
 
+    fun addPostOnTop(post: TradePostResponse) {
+        val dupIdx = tradePosts.indexOfFirst { it.tradePostId == post.tradePostId }
+        if (dupIdx >= 0) {
+            tradePosts.removeAt(dupIdx)
+            notifyItemRemoved(dupIdx)
+        }
+        tradePosts.add(0, post)
+        notifyItemInserted(0)
+    }
+
     private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val r = 6371 // 지구 반지름 (km)
         val dLat = Math.toRadians(lat2 - lat1)

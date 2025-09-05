@@ -87,13 +87,6 @@ class FridgeActivity : AppCompatActivity() {
         val categoryRoom = findViewById<LinearLayout>(R.id.categoryRoom)
         val categoryViews = listOf(categoryAll, categoryFridge, categoryFreeze, categoryRoom)
 
-        val fridgeStatsLayout = findViewById<LinearLayout>(R.id.fridgeStats)
-
-        fridgeStatsLayout.setOnClickListener {
-            val intent = Intent(this, FridgeStatsActivity::class.java)
-            startActivity(intent)
-        }
-
         setCategorySelected(categoryAll, categoryViews)
         categoryViews.forEach { container ->
             container.setOnClickListener {
@@ -101,7 +94,7 @@ class FridgeActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<LinearLayout>(R.id.fridgeCamera).setOnClickListener {
+        findViewById<TextView>(R.id.fridegeCameraText).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("사진 가져오기")
                 .setItems(arrayOf("카메라 촬영", "앨범에서 선택","장본 사진으로 자동 등록")) { _, which ->

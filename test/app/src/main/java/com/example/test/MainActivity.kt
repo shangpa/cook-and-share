@@ -241,14 +241,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RecipeTapActivity::class.java)
             startActivity(intent)
         }
-
-        // logoButton 클릭했을 때 ShortsActivity 이동
-        val logoButton: ImageView = findViewById(R.id.logoButton)
-        logoButton.setOnClickListener {
-            val intent = Intent(this, ShortsActivity::class.java)
-            startActivity(intent)
-        }
-
         //테마별 레시피
         val categoryMap = mapOf(
             R.id.total to null,

@@ -167,10 +167,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         const val EDIT_IMAGE_REQUEST_CODE = 1001
     }
 
-    private val tabCompleted = BooleanArray(7) { false }
-    private lateinit var progressBars: List<View>
-    private var selectedIndex = 0
-
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -397,16 +393,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         six.setOnClickListener { changeLayout(recipeWriteCookVideoLayout) }
         five.setOnClickListener { changeLayout(recipeWriteCookOrderLayout) }
         seven.setOnClickListener{ changeLayout(recipeWriteDetailSettleLayout)}
-
-        progressBars = listOf(
-            findViewById(R.id.barOne),
-            findViewById(R.id.barTwo),
-            findViewById(R.id.barThree),
-            findViewById(R.id.barFour),
-            findViewById(R.id.barFive),
-            findViewById(R.id.barSix),
-            findViewById(R.id.barSeven)
-        )
 
         // 레시피 이전으로 버튼 클릭시 이전 화면으로 이동
         beforeButton.setOnClickListener {
@@ -646,10 +632,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     val cookingStepList: List<CookingStep> = gson.fromJson(localRecipe.cookingSteps, type)
                     addCookingSteps(this, cookingStepList)
                 }
-
-                selectedIndex = currentIndex
-                checkTabs()
-                return@setOnClickListener
             }
 
             // 기본 흐름: 다음 인덱스가 존재할 때만
@@ -662,11 +644,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 changeLayout(nextLayout)
                 updateSelectedTab(correspondingTab)
                 moveUnderlineBar(correspondingTab)
-
-                selectedIndex = nextIndex   // ✅ 현재 인덱스 갱신
-                checkTabs()                 // ✅ 여기서 다음 바 나타남
-            } else {
-                checkTabs()
             }
         }
 
@@ -678,16 +655,12 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
             indicatorBar.x = targetX
         }
-
         // 레시피 탭바 텍스트 클릭시 해당 텍스트 색 바뀌고 바 아래로 움직임
-        textViewList.forEachIndexed { i, tv ->
-            tv.setOnClickListener {
-                if (selectedIndex == i) return@setOnClickListener
-                selectedIndex = i
-                updateSelectedTab(tv)
-                moveUnderlineBar(tv)
-                changeLayout(layoutList[i])
-                checkTabs()
+        textViewList.forEachIndexed { index, textView ->
+            textView.setOnClickListener {
+                updateSelectedTab(textView)
+                moveUnderlineBar(textView)
+                changeLayout(layoutList[index]) // 🔥 중요: 히스토리 스택에 push
             }
         }
 
@@ -703,7 +676,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 cookOrderFoodName.text = text
                 cookVideoFoodName.text = text
                 detailSettleFoodName.text = text
-                checkTabs()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -722,7 +694,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 koreanFood.text = menuItem.title
                 koreanFood.setTextColor(Color.parseColor("#2B2B2B")) // 선택 시 진한 텍스트 색상으로 변경
-                checkTabs()
+
                 checkAndUpdateContinueButton()
                 true
             }
@@ -758,7 +730,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 popup.setOnMenuItemClickListener { menuItem ->
                     unit.text = menuItem.title
                     unit.setTextColor(Color.parseColor("#2B2B2B"))
-                    checkTabs()
                     checkAndUpdateContinueButton() // ✅ 선택 후 버튼 상태 갱신
                     true
                 }
@@ -785,7 +756,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         //재료 채워지면 계속하기 버튼 바뀜
         material.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkAndUpdateContinueButton()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -794,7 +764,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         measuring.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkAndUpdateContinueButton()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -806,7 +775,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         //대체재료 채워지면 계속하기 바뀜
         replaceMaterialName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkAndUpdateContinueButton()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -815,7 +783,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         replaceMaterial.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkAndUpdateContinueButton()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -825,7 +792,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         //처리방법 채워지면 계속하기 바뀜
         handlingMethodName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkAndUpdateContinueButton()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -834,7 +800,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         handlingMethod.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkAndUpdateContinueButton()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -846,9 +811,9 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         stepEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                checkTabs()
                 checkCookOrderAndUpdateEndButton()
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -859,15 +824,13 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val tagEditText = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)
 
         cookingTimeEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton()
-                checkTabs() }
+            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         tagEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton()
-                checkTabs() }
+            override fun afterTextChanged(s: Editable?) { checkAndUpdateContinueButton() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -1148,7 +1111,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 elementaryLevel.text = menuItem.title
                 elementaryLevel.setTextColor(Color.parseColor("#2B2B2B")) // 선택 시 진한 텍스트 색상으로 변경
-                checkTabs()
+
                 checkAndUpdateContinueButton()
                 true
             }
@@ -1308,90 +1271,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun checkTabs() {
-        // ===== 1번 탭: 타이틀 =====
-        val titleView = findViewById<EditText?>(R.id.recipeTitleWrite)
-        val categoryView = findViewById<TextView?>(R.id.koreanFood)
-
-        if (titleView != null && categoryView != null) {
-            val hasTitle = titleView.text.isNotBlank()
-            val hasCategory = categoryView.text.isNotBlank() && categoryView.text != "카테고리 선택"
-            tabCompleted[0] = hasTitle && hasCategory
-        }
-
-        // ===== 2번 탭: 재료 =====
-        val materialView = findViewById<EditText?>(R.id.material)
-        val measuringView = findViewById<EditText?>(R.id.measuring)
-        val unitView = findViewById<TextView?>(R.id.unit)
-
-        if (materialView != null && measuringView != null && unitView != null) {
-            val hasMaterial = materialView.text.isNotBlank()
-            val hasMeasuring = measuringView.text.isNotBlank()
-            val hasUnit = unitView.text.isNotBlank() && unitView.text != "단위"
-            tabCompleted[1] = hasMaterial && hasMeasuring && hasUnit
-        }
-
-        // ===== 3번 탭: 대체재료 =====
-        val replaceMaterialNameView = findViewById<EditText?>(R.id.replaceMaterialName)
-        val replaceMaterialView = findViewById<EditText?>(R.id.replaceMaterial)
-        if (replaceMaterialNameView != null && replaceMaterialView != null) {
-            val hasReplaceName = replaceMaterialNameView.text.isNotBlank()
-            val hasReplace = replaceMaterialView.text.isNotBlank()
-            tabCompleted[2] = hasReplaceName && hasReplace
-        }
-
-        // ===== 4번 탭: 처리방법 =====
-        val handlingMethodNameView = findViewById<EditText?>(R.id.handlingMethodName)
-        val handlingMethodView = findViewById<EditText?>(R.id.handlingMethod)
-        if (handlingMethodNameView != null && handlingMethodView != null) {
-            val hasHandlingName = handlingMethodNameView.text.isNotBlank()
-            val hasHandling = handlingMethodView.text.isNotBlank()
-            tabCompleted[3] = hasHandlingName && hasHandling
-        }
-
-        // ===== 5번 탭: 조리순서 =====
-        val cookOrderView = findViewById<EditText?>(R.id.cookOrderRecipeWrite)
-        if (cookOrderView != null) {
-            val hasCookOrder = cookOrderView.text.isNotBlank()
-            tabCompleted[4] = hasCookOrder
-        }
-
-        // ===== 6번: 세부설정 =====
-        val levelView = findViewById<TextView?>(R.id.elementaryLevel)
-        val timeView = findViewById<EditText?>(R.id.halfHour)
-        val tagView = findViewById<EditText?>(R.id.detailSettleRecipeTitleWrite)
-        if (levelView != null && timeView != null && tagView != null) {
-            val hasLevel = levelView.text.isNotBlank() && levelView.text !in listOf("난이도", "선택")
-            val hasTime = timeView.text.isNotBlank()
-            val hasTag = tagView.text.isNotBlank()
-            tabCompleted[5] = hasLevel && hasTime && hasTag
-        }
-
-        //바
-        progressBars.forEachIndexed { index, bar ->
-            if (index < tabCompleted.size) {
-                bar.visibility = if (tabCompleted[index]) View.VISIBLE else View.GONE
-            }
-        }
-
-        // ✅ 조건 만족 즉시 색상 반영
-        if (::textViewList.isInitialized && selectedIndex in textViewList.indices) {
-            updateSelectedTab(textViewList[selectedIndex])
-        }
-    }
-
-    // 탭 색상 업데이트
-    private fun updateSelectedTab(selected: TextView) {
-        textViewList.forEachIndexed { index, tab ->
-            val color = when {
-                tabCompleted[index] -> "#2B2B2B" // 완료됨
-                tab == selected -> "#35A825" // 현재 선택
-                else -> "#A1A9AD" // 기본
-            }
-            tab.setTextColor(Color.parseColor(color))
         }
     }
 
@@ -1751,6 +1630,14 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         layoutList.forEach { it.visibility = View.GONE }
         target.visibility = View.VISIBLE
         currentLayout = target
+    }
+
+    // 탭바 선택한 해당 텍스트 색 바뀜
+    private fun updateSelectedTab(selected: TextView) {
+        textViewList.forEach {
+            it.setTextColor(Color.parseColor("#A1A9AD"))
+        }
+        selected.setTextColor(Color.parseColor("#2B2B2B"))
     }
 
     // 탭바 선택한 텍스트 아래로 바 이동

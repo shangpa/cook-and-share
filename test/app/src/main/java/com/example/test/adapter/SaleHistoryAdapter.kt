@@ -4,6 +4,7 @@ import App.Companion.context
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test.App
+import com.example.test.MaterialDetailMyProfileActivity
 import com.example.test.R
 import com.example.test.model.TradePost.TradeItem
 import com.example.test.model.TradePost.TradePostSimpleResponse
@@ -69,6 +71,13 @@ class SaleHistoryAdapter(
             .load(item.imageUrl)
             .placeholder(R.drawable.ic_launcher_background)  // 임시 기본 이미지
             .into(holder.imageItem)
+
+        holder.itemView.setOnClickListener {
+            val ctx = it.context
+            val intent = Intent(ctx, MaterialDetailMyProfileActivity::class.java)
+            intent.putExtra("postId", item.id)   // postId 전달
+            ctx.startActivity(intent)
+        }
 
         // 거래완료 상태에 따라 뷰 조정
         if (item.isCompleted) {

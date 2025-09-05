@@ -555,10 +555,10 @@
         app:layout_constraintStart_toEndOf="@id/bar"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/chatButton"
+        android:id="@+id/pullingUpButton"
         android:layout_width="145dp"
         android:layout_height="45dp"
-        android:text="채팅하기"
+        android:text="끌어올리기"
         android:textSize="14sp"
         android:textColor="@android:color/white"
         android:background="@drawable/rounded_button"
@@ -567,19 +567,6 @@
         app:layout_constraintTop_toTopOf="@id/tapFixBarThree"
         app:layout_constraintBottom_toBottomOf="@id/tapFixBarThree"
         app:layout_constraintEnd_toEndOf="@id/tapFixBarThree"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/pullingUpButton"
-        android:layout_width="145dp"
-        android:layout_height="45dp"
-        android:text="끌어올리기"
-        android:textSize="14sp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/rounded_button"
-        android:stateListAnimator="@null"
-        app:layout_constraintTop_toTopOf="@id/tapFixBarThree"
-        app:layout_constraintBottom_toBottomOf="@id/tapFixBarThree"
-        app:layout_constraintEnd_toStartOf="@id/chatButton"/>
 
     <!-- 끌어올리기 확인 -->
     <androidx.constraintlayout.widget.ConstraintLayout
