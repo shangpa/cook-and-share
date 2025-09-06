@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTmap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+        <!-- 뒤로가기, 임시저장한 레시피, 카테고리 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/transientStorage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 뒤로가기, 임시저장한 레시피 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/transientStorageUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 뒤로가기 -->
+                <ImageButton
+                    android:id="@+id/backArrow"
+                    android:background="@drawable/ic_lelft_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"  />
+
+                <!-- 임시저장한 레시피 -->
+                <TextView
+                    android:id="@+id/transientStorageRecipe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="임시저장한 레시피"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 임시저장한 레시피 아래 구분바 -->
+            <View
+                android:id="@+id/divideRectangleBarOne"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#F5F6F7"
+                app:layout_constraintTop_toBottomOf="@id/transientStorageUp" />
+
+            <!-- 카테고리 버튼들을 가로 스크롤로 감싸기 -->
+            <HorizontalScrollView
+                android:id="@+id/categoryScroll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="17dp">
+
+                <LinearLayout
+                    android:id="@+id/categoryButtonContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <!-- 전체 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/allBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="전체"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 한식 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/krBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="한식"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 양식 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/wsBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="양식"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 일식 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/jpBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="일식"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 중식 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/cnBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="중식"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 채식 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/vgBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="채식"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 간식 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/snBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="간식"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 안주 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/asBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:text="안주"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                    <!-- 밑반찬 -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/sdBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:text="밑반찬"
+                        android:textSize="11sp"
+                        android:textColor="#8A8F9C"
+                        android:background="@drawable/btn_recipe_add"
+                        android:stateListAnimator="@null"
+                        android:layout_marginEnd="6dp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 임시저장 레시피 리스트 -->
+        <ScrollView
+            android:id="@+id/transientStorageListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginTop="126dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 총 -->
+                <TextView
+                    android:id="@+id/total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="23dp"
+                    android:text="총"
+                    android:textColor="#2B2B2B"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 150 -->
+                <TextView
+                    android:id="@+id/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text=""
+                    android:textColor="#35A825"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toEndOf="@id/total"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 개 검색결과 -->
+                <TextView
+                    android:id="@+id/searchResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:text="개 레시피"
+                    android:textColor="#2B2B2B"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toEndOf="@id/number"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 레시피 리스트1 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recipeList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/total"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <!-- 이미지 -->
+                    <ImageView
+                        android:id="@+id/listImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/image_search_result_list_three"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <!-- 레시피 이름 -->
+                    <TextView
+                        android:id="@+id/recipeName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="시금치통닭"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toEndOf="@id/listImage"
+                        app:layout_constraintTop_toTopOf="@id/listImage" />
+
+                    <!-- 삭제 버튼 -->
+                    <ImageButton
+                        android:id="@+id/deleteBtn"
+                        android:background="@drawable/ic_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="15dp"
+                        android:text="작성일자 : "
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/listImage"
+                        app:layout_constraintTop_toBottomOf="@id/recipeName" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="0dp"
+                        android:text="2025-09-07"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/writeDateText"
+                        app:layout_constraintTop_toBottomOf="@id/recipeName" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 레시피 리스트2 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recipeListTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/recipeList"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <!-- 레시피 이름 -->
+                    <TextView
+                        android:id="@+id/recipeNameTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="간단 달걀말이"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- 삭제 버튼 -->
+                    <ImageButton
+                        android:id="@+id/deleteBtnTwo"
+                        android:background="@drawable/ic_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateTextTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="작성일자 : "
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/recipeNameTwo" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="0dp"
+                        android:text="2025-09-06"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/writeDateTextTwo"
+                        app:layout_constraintTop_toBottomOf="@id/recipeNameTwo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 레시피 리스트3 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recipeListThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/recipeListTwo"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <!-- 이미지 -->
+                    <ImageView
+                        android:id="@+id/listImageThree"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/img_recipe_cold_pasta"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <!-- 레시피 이름 -->
+                    <TextView
+                        android:id="@+id/recipeNameThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="콜드 파스타"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toEndOf="@id/listImageThree"
+                        app:layout_constraintTop_toTopOf="@id/listImageThree" />
+
+                    <!-- 삭제 버튼 -->
+                    <ImageButton
+                        android:id="@+id/deleteBtnThree"
+                        android:background="@drawable/ic_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateTextThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="15dp"
+                        android:text="작성일자 : "
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/listImageThree"
+                        app:layout_constraintTop_toBottomOf="@id/recipeNameThree" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="0dp"
+                        android:text="2025-09-05"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/writeDateTextThree"
+                        app:layout_constraintTop_toBottomOf="@id/recipeNameThree" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 레시피 리스트4 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recipeListFour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/recipeListThree"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <!-- 레시피 이름 -->
+                    <TextView
+                        android:id="@+id/recipeNameFour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="치킨 크랜베리 샌드위치"
+                        android:textColor="#2B2B2B"
+                        android:textSize="13sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- 삭제 버튼 -->
+                    <ImageButton
+                        android:id="@+id/deleteBtnFour"
+                        android:background="@drawable/ic_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateTextFour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="작성일자 : "
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/recipeNameFour" />
+
+                    <!-- 작성일자 -->
+                    <TextView
+                        android:id="@+id/writeDateFour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="0dp"
+                        android:text="2025-09-06"
+                        android:textColor="#8A8F9C"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/writeDateTextFour"
+                        app:layout_constraintTop_toBottomOf="@id/recipeNameFour" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 레시피 작성하러 가기 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/recipeWriteButton"
+                    android:layout_width="179dp"
+                    android:layout_height="40dp"
+                    android:text="레시피 작성하러 가기"
+                    android:textSize="13sp"
+                    android:textColor="#9B9B9B"
+                    android:layout_marginTop="57dp"
+                    android:background="@drawable/btn_recipe_add"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toBottomOf="@id/recipeListFour"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintTop_toBottomOf="@id/recipeWriteButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

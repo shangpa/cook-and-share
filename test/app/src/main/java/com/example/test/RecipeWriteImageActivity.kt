@@ -187,6 +187,11 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val koreanFood = findViewById<TextView>(R.id.koreanFood)
         val continueButton = findViewById<AppCompatButton>(R.id.continueButton)
         val beforeButton = findViewById<AppCompatButton>(R.id.beforeButton)
+        val temporaryStorageBtn = findViewById<AppCompatButton>(R.id.temporaryStorage)
+        val transientStorageLayout = findViewById<ConstraintLayout>(R.id.transientStorage)
+        val transientStorage = findViewById<ConstraintLayout>(R.id.transientStorage)
+        val btnCancel = findViewById<AppCompatButton>(R.id.cancelThree)
+        val btnStore = findViewById<AppCompatButton>(R.id.store)
 
         // 레시피 재료 선언
         val recipeWriteMaterialLayout =
@@ -615,6 +620,25 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             } else {
                 checkTabs()
             }
+        }
+
+        // 임시저장 버튼 클릭시 여부 나타남
+        temporaryStorageBtn.setOnClickListener {
+            transientStorageLayout.visibility = View.VISIBLE
+        }
+
+        // 임시저장 취소 클릭시 임시저장 여부 없어짐
+        btnCancel.setOnClickListener {
+            transientStorage.visibility = View.GONE
+        }
+
+        // 임시저장 저장 클릭시 홈으로 이동
+        btnStore.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            }
+            startActivity(intent)
+            finish()
         }
 
         // 레시피 탭바와 바 선언

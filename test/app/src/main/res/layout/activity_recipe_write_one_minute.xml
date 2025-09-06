@@ -58,6 +58,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
+                <!-- 임시저장 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/temporaryStorage"
+                    android:layout_width="69dp"
+                    android:layout_height="25dp"
+                    android:text="임시저장"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/btn_step_recipe_see_next"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toTopOf="@id/oneMinuteRecipeWrite"
+                    app:layout_constraintBottom_toBottomOf="@id/oneMinuteRecipeWrite"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- 레시피 작성 아래 구분바 -->
@@ -331,6 +347,79 @@
                     app:layout_constraintTop_toTopOf="@id/tapFixBar"
                     app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
                     app:layout_constraintEnd_toEndOf="@id/tapFixBar" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 임시저장 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/transientStorage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
+
+                <!-- 회색 배경 View -->
+                <View
+                    android:id="@+id/registerDimViewTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#80000000"/>
+
+                <!-- 임시저장 여부 상자 -->
+                <View
+                    android:id="@+id/recipeRegisterBoxTwo"
+                    android:layout_width="280dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/ic_activity_recipe_content_check_rect"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- 임시저장 여부 -->
+                <TextView
+                    android:id="@+id/questionTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:text="레시피를 임시저장 하시겠습니까?"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/recipeRegisterBoxTwo"/>
+
+                <!-- 취소 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancelThree"
+                    android:layout_width="115dp"
+                    android:layout_height="33dp"
+                    android:text="취소"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="11sp"
+                    android:textColor="#000000"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/ic_recipe_main_rect_no"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/recipeRegisterBoxTwo"
+                    app:layout_constraintStart_toStartOf="@id/recipeRegisterBoxTwo"/>
+
+                <!-- 저장 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/store"
+                    android:layout_width="115dp"
+                    android:layout_height="33dp"
+                    android:text="저장"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/ic_recipe_main_rect_yes"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/recipeRegisterBoxTwo"
+                    app:layout_constraintEnd_toEndOf="@id/recipeRegisterBoxTwo"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- 공개설정 -->
