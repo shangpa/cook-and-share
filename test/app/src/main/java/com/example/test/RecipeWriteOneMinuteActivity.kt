@@ -105,6 +105,11 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         val settleButton = findViewById<AppCompatButton>(R.id.settle)
         val cancelTwoButton = findViewById<AppCompatButton>(R.id.cancelTwo)
         val recipeRegister = findViewById<ConstraintLayout>(R.id.recipeRegister)
+        val temporaryStorageBtn = findViewById<AppCompatButton>(R.id.temporaryStorage)
+        val transientStorageLayout = findViewById<ConstraintLayout>(R.id.transientStorage)
+        val transientStorage = findViewById<ConstraintLayout>(R.id.transientStorage)
+        val btnCancel = findViewById<AppCompatButton>(R.id.cancelThree)
+        val btnStore = findViewById<AppCompatButton>(R.id.store)
 
         // 숏츠로 이동 (플로팅)
         findViewById<AppCompatButton>(R.id.register).setOnClickListener {
@@ -189,6 +194,25 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                         Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 실패: ${t.message}", Toast.LENGTH_SHORT).show()
                     }
                 })
+        }
+
+        // 임시저장 버튼 클릭시 여부 나타남
+        temporaryStorageBtn.setOnClickListener {
+            transientStorageLayout.visibility = View.VISIBLE
+        }
+
+        // 임시저장 취소 클릭시 임시저장 여부 없어짐
+        btnCancel.setOnClickListener {
+            transientStorage.visibility = View.GONE
+        }
+
+        // 임시저장 저장 클릭시 홈으로 이동
+        btnStore.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            }
+            startActivity(intent)
+            finish()
         }
 
         // 공개설정 클릭시 공개설정 박스 나타남

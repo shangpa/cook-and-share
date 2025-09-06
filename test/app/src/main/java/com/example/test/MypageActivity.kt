@@ -70,6 +70,13 @@ class MypageActivity : AppCompatActivity() {
             }
         }
 
+        // 찜한 레시피로 이동
+        val likeRecipeText: LinearLayout = findViewById(R.id.recipeLike)
+        likeRecipeText.setOnClickListener {
+            val intent = Intent(this, MypageLoveRecipeActivity::class.java)
+            startActivity(intent)
+        }
+
         // 작성한 레시피로 이동
         val writeRecipeText: LinearLayout = findViewById(R.id.recipeWrite)
         writeRecipeText.setOnClickListener {
@@ -77,17 +84,17 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 임시저장한 레시피로 이동
+        val transientStorageRecipe: LinearLayout = findViewById(R.id.transientStorageRecipe)
+        transientStorageRecipe.setOnClickListener {
+            val intent = Intent(this, MypageTransientStorageRecipeActivity::class.java)
+            startActivity(intent)
+        }
+
         // 레시피 리뷰 내역으로 이동
         val recipeReviewListText: LinearLayout = findViewById(R.id.recipeReview)
         recipeReviewListText.setOnClickListener {
             val intent = Intent(this, MypageRecipeReviewActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 찜한 레시피로 이동
-        val likeRecipeText: LinearLayout = findViewById(R.id.recipeLike)
-        likeRecipeText.setOnClickListener {
-            val intent = Intent(this, MypageLoveRecipeActivity::class.java)
             startActivity(intent)
         }
         // 사용자 이름 텍스트뷰

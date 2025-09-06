@@ -281,6 +281,35 @@
 
             </LinearLayout>
 
+        <!-- 임시저장한 레시피 -->
+        <LinearLayout
+            android:id="@+id/transientStorageRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+            <!-- 레시피 아이콘 -->
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/ic_mypage_recipe"
+                android:contentDescription="레시피 아이콘" />
+
+            <!-- 임시저장한 레시피 텍스트 -->
+            <TextView
+                android:id="@+id/transientStorageRecipeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="임시저장한 레시피"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
             <!-- 레시피 리뷰 내역 -->
             <LinearLayout
                 android:id="@+id/recipeReview"
