@@ -63,6 +63,38 @@ class VideoPlayerFragment : Fragment() {
 
         // 탭 → play/pause 토글
         binding.playerView.setOnClickListener { playerControl(!chkPlay, false) }
+
+        // 팔로우 버튼 토글
+        binding.btnFollow.setOnClickListener {
+            val btn = binding.btnFollow
+            if (btn.text == "팔로우") {
+                btn.text = "팔로잉"
+                btn.setBackgroundColor(resources.getColor(android.R.color.darker_gray, null))
+            } else {
+                btn.text = "팔로우"
+                btn.setBackgroundColor(resources.getColor(R.color.green_35A825, null))
+            }
+        }
+
+        // 좋아요 버튼 토글
+        binding.btnLike.setOnClickListener {
+            val btn = binding.btnLike
+            val tag = btn.tag as? Boolean ?: false
+            if (!tag) {
+                btn.setImageResource(R.drawable.ic_heart_fill)
+            } else {
+                btn.setImageResource(R.drawable.ic_heart)
+            }
+            btn.tag = !tag
+        }
+
+        binding.btnComment.setOnClickListener {
+            val intent = Intent(requireContext(), ShortsComment::class.java).apply {
+                putExtra("shortsId", shortObject.id)
+            }
+            startActivity(intent)
+        }
+
         return binding.root
     }
 
@@ -84,7 +116,6 @@ class VideoPlayerFragment : Fragment() {
 
     private fun setContents() {
         // DataBinding은 id를 camelCase로 매핑함 (tv_nickname → tvNickname)
-        binding.tvNickname.text = shortObject.userName
         binding.tvNicknameBottom.text = shortObject.userName
         binding.tvVideoTitle.text = shortObject.title
         //유저네임 클릭 시 프로필 화면으로 이동
@@ -96,7 +127,6 @@ class VideoPlayerFragment : Fragment() {
         }
 
         // ✅ 실제로 달아주기
-        binding.tvNickname.setOnClickListener(goProfile)
         binding.tvNicknameBottom.setOnClickListener(goProfile)
         binding.imgProfile.setOnClickListener(goProfile)
 

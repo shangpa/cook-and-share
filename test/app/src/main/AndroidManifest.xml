@@ -796,6 +796,17 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ShortsComment"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ShortsCommentAdapter"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            tools:ignore="Instantiatable" />
+
 
 
         <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
