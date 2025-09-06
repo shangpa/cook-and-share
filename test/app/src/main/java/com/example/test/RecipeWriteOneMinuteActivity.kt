@@ -1,5 +1,6 @@
 package com.example.test
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -23,11 +24,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.media3.common.util.UnstableApi
+import com.example.test.RecipeWriteImageActivity.Companion.EDIT_IMAGE_REQUEST_CODE
 import com.example.test.Utils.TabBarUtils
 import com.example.test.model.ShortsCreateRequest
 import com.example.test.network.RetrofitInstance
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
@@ -35,6 +38,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class RecipeWriteOneMinuteActivity : AppCompatActivity() {
     private var selectedVideoUri: Uri? = null
@@ -43,6 +48,11 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
     private var targetContainer: LinearLayout? = null  // 선택한 이미지가 추가될 컨테이너 저장
     private var isPublicFlag: Boolean = true
     private lateinit var videoCameraLauncher: ActivityResultLauncher<Intent>
+    private var isPickingRepresentImage = false
+    private lateinit var imageContainerTwo: LinearLayout
+    private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
+    private var selectedContainer: LinearLayout? = null
+    private val stepImages  =  mutableMapOf<Int, String>()
     private val videoTrimLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -64,6 +74,17 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         }
     }
 
+    private val pickImageLauncherForDetailSettle =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                val destinationUri = Uri.fromFile(File(cacheDir, "cropped_represent_${System.currentTimeMillis()}.jpg"))
+                val intent = Intent(this, PhotoEditorActivity::class.java).apply {
+                    putExtra("imageUri", it.toString())
+                }
+                startActivityForResult(intent, EDIT_IMAGE_REQUEST_CODE)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_one_minute)
@@ -72,7 +93,9 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
 
         val recipeTitleWrite = findViewById<EditText>(R.id.recipeTitleWrite)
         val camera = findViewById<ImageButton>(R.id.camera)
+        val cameraTwo = findViewById<ImageButton>(R.id.cameraTwo)
         val imageContainer = findViewById<LinearLayout>(R.id.imageContainer)
+        imageContainerTwo = findViewById(R.id.imageContainerTwo)
         val registerFixButton = findViewById<AppCompatButton>(R.id.registerFixButton)
         val shareFixButton = findViewById<AppCompatButton>(R.id.shareFixButton)
         val shareSettle = findViewById<ConstraintLayout>(R.id.shareSettle)
@@ -118,22 +141,21 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                 }.show()
         }
 
+        // 대표 사진 카메라 버튼 클릭 시 갤러리 열기
+        cameraTwo.setOnClickListener {
+            isPickingRepresentImage = true
+            pickImageLauncherForDetailSettle.launch("image/*")
+        }
+
         // 제목 입력되면 등록하기 색 바뀜
         recipeTitleWrite.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // 텍스트가 비어있지 않으면 색상 변경
-                if (!s.isNullOrBlank()) {
-                    registerFixButton.setBackgroundResource(R.drawable.btn_big_green)
-                } else {
-                    // 필요하다면 원래 색상으로 되돌리기
-                    registerFixButton.setBackgroundResource(R.drawable.btn_number_of_people)
-                }
+                updateRegisterButtonState()
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
+
         registerFixButton.setOnClickListener {
             if (isVideoUploading) {
                 Toast.makeText(this, "영상 업로드 중입니다.", Toast.LENGTH_SHORT).show()
@@ -154,6 +176,10 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<Long>, response: Response<Long>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 성공!", Toast.LENGTH_SHORT).show()
+
+                            val intent = Intent(this@RecipeWriteOneMinuteActivity, ShortsActivity::class.java).apply {
+                            }
+                            startActivity(intent)
                             finish()
                         } else {
                             Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 실패(${response.code()})", Toast.LENGTH_SHORT).show()
@@ -205,6 +231,29 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         }
         updateRegisterButtonState()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == EDIT_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            val editedUriStr = data?.getStringExtra("editedImageUri")
+            val editedUri = editedUriStr?.let { Uri.parse(it) }
+
+            editedUri?.let {
+                if (isPickingRepresentImage) {
+                    // imageContainerTwo는 이제 초기화되어 있음
+                    displaySelectedImage(it, imageContainerTwo)
+                    uploadImageToServer(it) { imageUrl ->
+                        if (imageUrl != null) {
+                            mainImageUrl = imageUrl
+                        }
+                    }
+                    isPickingRepresentImage = false
+                }
+            }
+        }
+    }
+
     private fun updateRegisterButtonState() {
         val btn = findViewById<AppCompatButton>(R.id.registerFixButton)
         val titleFilled = findViewById<EditText>(R.id.recipeTitleWrite).text.toString().isNotBlank()
@@ -337,6 +386,87 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             }
         }
         container.addView(videoView)
+    }
+
+    //이미지선택
+    private fun displaySelectedImage(uri: Uri, targetContainer: LinearLayout) {
+        val imageView = ImageView(this)
+        imageView.setImageURI(uri)
+        val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
+        imageView.layoutParams = layoutParams
+        targetContainer.addView(imageView) // 선택한 컨테이너에 이미지 추가
+        Log.d("RecipeWriteImageActivity", "이미지 추가 완료! 대상 컨테이너: ${targetContainer.id}")
+    }
+
+    //백엔드 서버에 이미지 업로드
+    fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
+        val file = uriToFile(this, uri) ?: return
+        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        val token = App.prefs.token ?: ""
+        if (token.isEmpty()) {
+            Log.e("Upload", "토큰이 없음!")
+            callback(null) // 실패 시 null 반환
+            return
+        }
+
+        Log.d("Upload", "이미지 업로드 시작 - 파일명: ${file.name}, 크기: ${file.length()} 바이트")
+
+        RetrofitInstance.apiService.uploadImage("Bearer $token", body)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        val imageUrl = response.body()?.string()
+                        Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
+                        callback(imageUrl) // ✅ 성공 시 URL 반환
+                    } else {
+                        Log.e("Upload", "이미지 업로드 실패: 응답 코드 ${response.code()}, 오류 메시지: ${response.errorBody()?.string()}")
+                        callback(null) // 실패 시 null 반환
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("Upload", "네트워크 요청 실패: ${t.message}")
+                    callback(null) // 실패 시 null 반환
+                }
+            })
+    }
+
+    fun uriToFile(context: Context, uri: Uri): File? {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        var fileName: String? = null
+
+        cursor?.use {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex != -1) {
+                it.moveToFirst()
+                fileName = it.getString(nameIndex)
+            }
+        }
+
+        // 파일명이 비어있으면 기본 파일명 설정
+        if (fileName.isNullOrEmpty()) {
+            fileName = "temp_image_${System.currentTimeMillis()}.jpg"
+        }
+
+        val file = File(context.cacheDir, fileName)
+
+        return try {
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun Int.dpToPx(): Int {
+        return (this * resources.displayMetrics.density).toInt()
     }
 
 
