@@ -26,15 +26,6 @@
             android:layout_marginBottom="100dp">
 
             <TextView
-                android:id="@+id/tv_nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="사용자 닉네임"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-
-            <TextView
                 android:id="@+id/tv_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
