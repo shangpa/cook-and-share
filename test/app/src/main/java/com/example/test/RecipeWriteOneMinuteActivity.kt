@@ -1,9 +1,14 @@
+@file:OptIn(androidx.media3.common.util.UnstableApi::class)
 package com.example.test
 
+import android.Manifest
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
@@ -32,7 +37,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,42 +46,70 @@ import java.io.FileOutputStream
 import java.io.InputStream
 
 class RecipeWriteOneMinuteActivity : AppCompatActivity() {
+
+    // ----------------------------------------------------
+    // 권한/카메라 흐름 제어용
+    // ----------------------------------------------------
+    private enum class NextAction { NONE, CAPTURE }
+    private var nextAction: NextAction = NextAction.NONE
+    private var autoThumbUploading = false
+
+    private val permsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { granted ->
+            val cam = granted[Manifest.permission.CAMERA] == true
+            val mic = granted[Manifest.permission.RECORD_AUDIO] == true
+            if (cam && mic) {
+                if (nextAction == NextAction.CAPTURE) launchVideoCamera()
+            } else {
+                Toast.makeText(this, "카메라/마이크 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
+            nextAction = NextAction.NONE
+        }
+
+    private lateinit var captureVideoLauncher: ActivityResultLauncher<Uri>
+    private var pendingVideoUri: Uri? = null
+
+    // ----------------------------------------------------
+    // 상태/뷰 참조
+    // ----------------------------------------------------
     private var selectedVideoUri: Uri? = null
-    private var isVideoUploading = false // 업로드 중 여부 체크
-    private var recipeVideoUrl: String? = null  // 서버에 업로드된 영상 URL 저장용
-    private var targetContainer: LinearLayout? = null  // 선택한 이미지가 추가될 컨테이너 저장
+    private var isVideoUploading = false
+    private var recipeVideoUrl: String? = null
+    private var targetContainer: LinearLayout? = null
     private var isPublicFlag: Boolean = true
-    private lateinit var videoCameraLauncher: ActivityResultLauncher<Intent>
     private var isPickingRepresentImage = false
     private lateinit var imageContainerTwo: LinearLayout
-    private var mainImageUrl: String = "" // 대표 이미지 저장용 변수
+    private var mainImageUrl: String = ""
     private var selectedContainer: LinearLayout? = null
-    private val stepImages  =  mutableMapOf<Int, String>()
-    private val videoTrimLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val trimmedUri = result.data?.getParcelableExtra<Uri>("trimmedUri")
-            trimmedUri?.let {
-                selectedVideoUri = it
-                showVideoInfo(it)
-                uploadVideoFileOnly(it)  // ✅ 변경: 파일만 업로드
+    private val stepImages = mutableMapOf<Int, String>()
+
+    // ----------------------------------------------------
+    // 결과 수신 런처들
+    // ----------------------------------------------------
+    private val videoTrimLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val trimmedUri = result.data?.getParcelableExtra<Uri>("trimmedUri")
+                trimmedUri?.let {
+                    selectedVideoUri = it
+                    showVideoInfo(it)
+                    uploadVideoFileOnly(it)
+                }
             }
         }
-    }
 
-    private val videoPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            val intent = Intent(this, ShortsTrimActivity::class.java)
-            intent.putExtra("videoUri", it)
-            videoTrimLauncher.launch(intent)
+    private val videoPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                val intent = Intent(this, ShortsTrimActivity::class.java)
+                intent.putExtra("videoUri", it)
+                videoTrimLauncher.launch(intent)
+            }
         }
-    }
 
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                val destinationUri = Uri.fromFile(File(cacheDir, "cropped_represent_${System.currentTimeMillis()}.jpg"))
                 val intent = Intent(this, PhotoEditorActivity::class.java).apply {
                     putExtra("imageUri", it.toString())
                 }
@@ -85,6 +117,9 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             }
         }
 
+    // ----------------------------------------------------
+    // 생명주기
+    // ----------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_one_minute)
@@ -111,48 +146,69 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         val btnCancel = findViewById<AppCompatButton>(R.id.cancelThree)
         val btnStore = findViewById<AppCompatButton>(R.id.store)
 
-        // 숏츠로 이동 (플로팅)
         findViewById<AppCompatButton>(R.id.register).setOnClickListener {
             startActivity(Intent(this, ShortsActivity::class.java))
         }
 
-        videoCameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val videoUri = result.data?.data
-                if (videoUri != null) {
-                    selectedVideoUri = videoUri
-                    showVideoInfo(videoUri)
-                    uploadVideoFileOnly(videoUri)  // ✅ 변경
-                }
-            }
-        }
-
-        // 카메라 클릭시
+        // 촬영/앨범 다이얼로그 (유지)
         camera.setOnClickListener {
             targetContainer = imageContainer
-            // AlertDialog로 두 가지 선택지 제공
             AlertDialog.Builder(this)
                 .setTitle("동영상 가져오기")
                 .setItems(arrayOf("카메라 촬영", "앨범에서 선택")) { _, which ->
                     when (which) {
-                        0 -> {
-                            launchVideoCamera() // 위에서 만든 함수 그대로 사용!
+                        0 -> { // 촬영
+                            val need = mutableListOf<String>()
+                            if (checkSelfPermission(Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED
+                            ) need += Manifest.permission.CAMERA
+                            if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                                != PackageManager.PERMISSION_GRANTED
+                            ) need += Manifest.permission.RECORD_AUDIO
+
+                            if (need.isNotEmpty()) {
+                                nextAction = NextAction.CAPTURE
+                                permsLauncher.launch(need.toTypedArray())
+                            } else {
+                                launchVideoCamera()
+                            }
                         }
-                        1 -> {
-                            // 🔵 갤러리에서 동영상 선택
+                        1 -> { // 앨범
                             videoPickerLauncher.launch("video/*")
                         }
                     }
-                }.show()
+                }
+                .show()
         }
 
-        // 대표 사진 카메라 버튼 클릭 시 갤러리 열기
+        // 촬영 콜백
+        captureVideoLauncher =
+            registerForActivityResult(ActivityResultContracts.CaptureVideo()) { success ->
+                val uri = pendingVideoUri
+                pendingVideoUri = null
+                if (success && uri != null) {
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        contentResolver.update(
+                            uri,
+                            ContentValues().apply { put(MediaStore.Video.Media.IS_PENDING, 0) },
+                            null,
+                            null
+                        )
+                    }
+                    selectedVideoUri = uri
+                    showVideoInfo(uri)
+                    uploadVideoFileOnly(uri)
+                } else {
+                    Toast.makeText(this, "촬영이 취소되었거나 실패했어요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        // 대표 이미지 선택
         cameraTwo.setOnClickListener {
             isPickingRepresentImage = true
             pickImageLauncherForDetailSettle.launch("image/*")
         }
 
-        // 제목 입력되면 등록하기 색 바뀜
         recipeTitleWrite.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -174,17 +230,19 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             }
 
             val token = App.prefs.token.orEmpty()
-            val body = ShortsCreateRequest(title, videoUrl, isPublicFlag)
+            val body = com.example.test.model.ShortsCreateRequest(
+                title = title,
+                videoUrl = videoUrl,
+                thumbnailUrl = mainImageUrl.ifBlank { null }, // ✅ 대표사진 포함
+                isPublic = isPublicFlag
+            )
 
             RetrofitInstance.apiService.registerShorts(body, "Bearer $token")
                 .enqueue(object : Callback<Long> {
                     override fun onResponse(call: Call<Long>, response: Response<Long>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 성공!", Toast.LENGTH_SHORT).show()
-
-                            val intent = Intent(this@RecipeWriteOneMinuteActivity, ShortsActivity::class.java).apply {
-                            }
-                            startActivity(intent)
+                            startActivity(Intent(this@RecipeWriteOneMinuteActivity, ShortsActivity::class.java))
                             finish()
                         } else {
                             Toast.makeText(this@RecipeWriteOneMinuteActivity, "등록 실패(${response.code()})", Toast.LENGTH_SHORT).show()
@@ -196,17 +254,13 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                 })
         }
 
-        // 임시저장 버튼 클릭시 여부 나타남
+        // 임시 저장 플로우
         temporaryStorageBtn.setOnClickListener {
             transientStorageLayout.visibility = View.VISIBLE
         }
-
-        // 임시저장 취소 클릭시 임시저장 여부 없어짐
         btnCancel.setOnClickListener {
             transientStorage.visibility = View.GONE
         }
-
-        // 임시저장 저장 클릭시 홈으로 이동
         btnStore.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -215,12 +269,8 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             finish()
         }
 
-        // 공개설정 클릭시 공개설정 박스 나타남
-        shareFixButton.setOnClickListener {
-            shareSettle.visibility = View.VISIBLE
-        }
-
-        // 공개설정에서 체크 클릭시
+        // 공개 설정 플로우
+        shareFixButton.setOnClickListener { shareSettle.visibility = View.VISIBLE }
         val checkButtons = listOf(uncheck, uncheckTwo)
         uncheck.setOnClickListener {
             checkButtons.forEach { it.setImageResource(R.drawable.ic_uncheck) }
@@ -232,45 +282,31 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             uncheckTwo.setImageResource(R.drawable.ic_check)
             isPublicFlag = false
         }
-
-        //공개설정에서 취소 클릭시 공개설정 박스 없어짐
-        cancelButton.setOnClickListener {
-            shareSettle.visibility = View.GONE
-        }
-
-        // 공개설정에서 설정 누르면 레시피 등록 여부 박스 나타남
+        cancelButton.setOnClickListener { shareSettle.visibility = View.GONE }
         settleButton.setOnClickListener {
             shareSettle.visibility = View.GONE
             recipeRegister.visibility = View.VISIBLE
         }
+        cancelTwoButton.setOnClickListener { recipeRegister.visibility = View.GONE }
 
-        // 레시피 등록 여부에서 취소 누르면 없어짐
-        cancelTwoButton.setOnClickListener {
-            recipeRegister.visibility = View.GONE
-        }
+        findViewById<ImageButton>(R.id.backArrow).setOnClickListener { finish() }
 
-
-        findViewById<ImageButton>(R.id.backArrow).setOnClickListener {
-            finish()
-        }
         updateRegisterButtonState()
     }
 
+    // ----------------------------------------------------
+    // Activity Result (PhotoEditor)
+    // ----------------------------------------------------
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == EDIT_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             val editedUriStr = data?.getStringExtra("editedImageUri")
             val editedUri = editedUriStr?.let { Uri.parse(it) }
-
             editedUri?.let {
                 if (isPickingRepresentImage) {
-                    // imageContainerTwo는 이제 초기화되어 있음
                     displaySelectedImage(it, imageContainerTwo)
                     uploadImageToServer(it) { imageUrl ->
-                        if (imageUrl != null) {
-                            mainImageUrl = imageUrl
-                        }
+                        if (imageUrl != null) mainImageUrl = imageUrl
                     }
                     isPickingRepresentImage = false
                 }
@@ -278,26 +314,58 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         }
     }
 
+    // ----------------------------------------------------
+    // UI 상태
+    // ----------------------------------------------------
     private fun updateRegisterButtonState() {
         val btn = findViewById<AppCompatButton>(R.id.registerFixButton)
         val titleFilled = findViewById<EditText>(R.id.recipeTitleWrite).text.toString().isNotBlank()
         val videoReady = !recipeVideoUrl.isNullOrBlank()
         val enabled = titleFilled && videoReady && !isVideoUploading
+        btn.setBackgroundResource(
+            if (enabled) R.drawable.btn_big_green else R.drawable.btn_number_of_people
+        )
+        btn.isEnabled = true // 클릭 유지 (기존 UX)
+    }
 
-        // 디자인만 바꾸고 클릭은 유지(지금 UX 유지)
-        if (enabled) {
-            btn.setBackgroundResource(R.drawable.btn_big_green)
-        } else {
-            btn.setBackgroundResource(R.drawable.btn_number_of_people)
+    // ----------------------------------------------------
+    // 촬영/파일 생성
+    // ----------------------------------------------------
+    private fun createVideoUriViaMediaStore(): Uri? {
+        val name = "VID_${System.currentTimeMillis()}.mp4"
+        val values = ContentValues().apply {
+            put(MediaStore.Video.Media.DISPLAY_NAME, name)
+            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+            if (Build.VERSION.SDK_INT >= 29) {
+                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/MyApp")
+                put(MediaStore.Video.Media.IS_PENDING, 1)
+            }
         }
-        btn.isEnabled = true
+        val collection = if (Build.VERSION.SDK_INT >= 29) {
+            MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        } else {
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        }
+        return contentResolver.insert(collection, values)
     }
 
     private fun launchVideoCamera() {
-        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        videoCameraLauncher.launch(intent)
+        val outputUri = createVideoUriViaMediaStore() ?: run {
+            Toast.makeText(this, "임시 파일 생성 실패", Toast.LENGTH_SHORT).show()
+            return
+        }
+        pendingVideoUri = outputUri
+        try {
+            captureVideoLauncher.launch(outputUri)
+        } catch (e: Exception) {
+            pendingVideoUri = null
+            Toast.makeText(this, "카메라를 열 수 없어요: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 
+    // ----------------------------------------------------
+    // 미리보기/업로드
+    // ----------------------------------------------------
     private fun showVideoInfo(uri: Uri) {
         val fileName = contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
@@ -307,7 +375,6 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
 
         val container = findViewById<LinearLayout>(R.id.imageContainer)
         container.removeAllViews()
-
         val textView = TextView(this).apply {
             text = "선택한 동영상: $fileName"
             textSize = 16f
@@ -326,11 +393,8 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             return
         }
 
-        // 캐시에 mp4 임시 파일 생성
-        val file = File(cacheDir, "upload_video.mp4")
-        file.outputStream().use { output ->
-            inputStream.copyTo(output)
-        }
+        val file = File(cacheDir, "upload_${System.currentTimeMillis()}.mp4")
+        file.outputStream().use { output -> inputStream.copyTo(output) }
 
         val requestFile = file.asRequestBody("video/*".toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("video", file.name, requestFile)
@@ -342,17 +406,16 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             return
         }
 
-        // ✅ RecipeWriteVideoActivity에서 쓰던 것처럼 동일 엔드포인트 사용
         RetrofitInstance.apiService.uploadVideo(body, "Bearer $token")
             .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     isVideoUploading = false
                     if (response.isSuccessful && response.body() != null) {
-                        val raw = response.body()!!.string().trim()  // 서버가 돌려준 URL(상대/절대 모두 가능)
-                        recipeVideoUrl = raw
+                        val raw = response.body()!!.string().trim()
+
+                        // 절대 URL로 정규화해서 보관
+                        val fullUrl = resolveFullUrl(raw)
+                        recipeVideoUrl = fullUrl
 
                         Toast.makeText(
                             this@RecipeWriteOneMinuteActivity,
@@ -360,8 +423,14 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        // ✅ 프리뷰는 절대 URL로 변환해서 보여주기
-                        showVideoPreview(resolveFullUrl(raw))
+                        // 미리보기 재생
+                        showVideoPreview(fullUrl)
+
+                        // 대표 이미지가 아직 없으면, 업로드된 영상의 1초 프레임을 임시 썸네일로 보여줌
+                        if (mainImageUrl.isBlank()) {
+                            showFallbackThumbnailFromVideo(fullUrl)
+                        }
+
                         updateRegisterButtonState()
                     } else {
                         Log.e(
@@ -387,20 +456,20 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                 }
             })
     }
-    // 서버가 '/uploads/..' 같은 상대경로를 주면 BASE_URL 붙여서 절대 URL로 변환
-    private fun resolveFullUrl(serverValue: String): String {
-        return if (serverValue.startsWith("http://") || serverValue.startsWith("https://")) {
+
+
+    private fun resolveFullUrl(serverValue: String): String =
+        if (serverValue.startsWith("http://") || serverValue.startsWith("https://")) {
             serverValue
         } else {
             "${RetrofitInstance.BASE_URL}$serverValue"
         }
-    }
+
     private fun showVideoPreview(videoUrl: String) {
         val container = findViewById<LinearLayout>(R.id.imageContainer)
         container.removeAllViews()
-
         val videoView = android.widget.VideoView(this).apply {
-            setVideoURI(Uri.parse(videoUrl)) // ← 그대로 사용 (BASE_URL 더하지 않음)
+            setVideoURI(Uri.parse(videoUrl))
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 600
             )
@@ -412,17 +481,64 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         container.addView(videoView)
     }
 
-    //이미지선택
+    private fun showFallbackThumbnailFromVideo(uriOrUrl: String) {
+        try {
+            val retriever = android.media.MediaMetadataRetriever()
+            if (uriOrUrl.startsWith("http", ignoreCase = true)) {
+                retriever.setDataSource(uriOrUrl, HashMap())
+            } else {
+                retriever.setDataSource(this, Uri.parse(uriOrUrl))
+            }
+            val bmp = retriever.getFrameAtTime(1_000_000) // 1초 프레임
+            retriever.release()
+
+            if (bmp != null) {
+                // 1) 화면에 1장만 보여주기
+                val container = findViewById<LinearLayout>(R.id.imageContainerTwo)
+                container.removeAllViews()
+                val iv = ImageView(this).apply {
+                    setImageBitmap(bmp)
+                    layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                }
+                container.addView(iv)
+
+                // 2) DB 저장 위해 서버에 업로드 (대표사진이 아직 없는 경우에만)
+                if (mainImageUrl.isBlank() && !autoThumbUploading) {
+                    autoThumbUploading = true
+                    val uri = bitmapToTempJpegUri(bmp)
+                    if (uri != null) {
+                        uploadImageToServer(uri) { imageUrl ->
+                            autoThumbUploading = false
+                            if (!imageUrl.isNullOrBlank() && mainImageUrl.isBlank()) {
+                                // 업로드 성공 시 대표사진 URL로 채워서, 등록 시 DB에 저장되게 한다
+                                mainImageUrl = imageUrl
+                            }
+                        }
+                    } else {
+                        autoThumbUploading = false
+                    }
+                }
+            }
+        } catch (_: Exception) { /* 무시 */ }
+    }
+
+    // ----------------------------------------------------
+    // 이미지 선택/업로드
+    // ----------------------------------------------------
     private fun displaySelectedImage(uri: Uri, targetContainer: LinearLayout) {
-        val imageView = ImageView(this)
-        imageView.setImageURI(uri)
-        val layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
-        imageView.layoutParams = layoutParams
-        targetContainer.addView(imageView) // 선택한 컨테이너에 이미지 추가
+        // ✅ 먼저 모두 지우고
+        targetContainer.removeAllViews()
+
+        val imageView = ImageView(this).apply {
+            setImageURI(uri)
+            layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
+            scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+        targetContainer.addView(imageView)
         Log.d("RecipeWriteImageActivity", "이미지 추가 완료! 대상 컨테이너: ${targetContainer.id}")
     }
 
-    //백엔드 서버에 이미지 업로드
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
         val file = uriToFile(this, uri) ?: return
         val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
@@ -431,7 +547,7 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         val token = App.prefs.token ?: ""
         if (token.isEmpty()) {
             Log.e("Upload", "토큰이 없음!")
-            callback(null) // 실패 시 null 반환
+            callback(null)
             return
         }
 
@@ -443,16 +559,16 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val imageUrl = response.body()?.string()
                         Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
-                        callback(imageUrl) // ✅ 성공 시 URL 반환
+                        callback(imageUrl)
                     } else {
-                        Log.e("Upload", "이미지 업로드 실패: 응답 코드 ${response.code()}, 오류 메시지: ${response.errorBody()?.string()}")
-                        callback(null) // 실패 시 null 반환
+                        Log.e("Upload", "이미지 업로드 실패: code ${response.code()}, msg ${response.errorBody()?.string()}")
+                        callback(null)
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("Upload", "네트워크 요청 실패: ${t.message}")
-                    callback(null) // 실패 시 null 반환
+                    callback(null)
                 }
             })
     }
@@ -460,7 +576,6 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
     fun uriToFile(context: Context, uri: Uri): File? {
         val cursor = context.contentResolver.query(uri, null, null, null, null)
         var fileName: String? = null
-
         cursor?.use {
             val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             if (nameIndex != -1) {
@@ -468,14 +583,11 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                 fileName = it.getString(nameIndex)
             }
         }
-
-        // 파일명이 비어있으면 기본 파일명 설정
         if (fileName.isNullOrEmpty()) {
             fileName = "temp_image_${System.currentTimeMillis()}.jpg"
         }
 
-        val file = File(context.cacheDir, fileName)
-
+        val file = File(context.cacheDir, fileName!!)
         return try {
             val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
             val outputStream = FileOutputStream(file)
@@ -489,9 +601,20 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         }
     }
 
-    private fun Int.dpToPx(): Int {
-        return (this * resources.displayMetrics.density).toInt()
+    private fun bitmapToTempJpegUri(bitmap: android.graphics.Bitmap): Uri? {
+        return try {
+            val file = File(cacheDir, "auto_thumb_${System.currentTimeMillis()}.jpg")
+            FileOutputStream(file).use { out ->
+                bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, out)
+            }
+            Uri.fromFile(file)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
 
+    private fun Int.dpToPx(): Int =
+        (this * resources.displayMetrics.density).toInt()
 }
