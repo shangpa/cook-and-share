@@ -5,20 +5,18 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.test.model.TradePost.TradePostRepository
-import com.example.test.model.TradePost.TradePostResponse
-import com.example.test.network.RetrofitInstance
-import java.text.SimpleDateFormat
-import android.util.Log
 import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.TradePostAdapter
+import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradeUserResponse
+import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,17 +28,21 @@ class MaterialActivity : AppCompatActivity() {
     private var isDistanceVisible = false
     private var isPlusMenuVisible = false
 
-    private lateinit var buttons: List<Button>
+    private lateinit var buttons: List<Button>                 // 거리 버튼들
+    private lateinit var materialButtons: List<Button>         // 카테고리 버튼들
+
     private lateinit var selectedFilterLayout: LinearLayout
     private lateinit var numberTextView: TextView
-    private lateinit var sortText: TextView
+    private lateinit var sortLabel: TextView
     private lateinit var sortArrow: ImageView
     private lateinit var materialFilter: LinearLayout
     private lateinit var materialText: TextView
 
     private var selectedDistance: Double? = null
     private val selectedCategories = mutableSetOf<String>()
-    private var isDistanceBasedData: Boolean = false
+
+    // 기본 정렬: UPDATED = 끌올 반영 최신순(노출순)
+    private var currentSort: String = "UPDATED"
 
     private var tradePosts: List<TradePostResponse> = listOf()
     private lateinit var tradePostAdapter: TradePostAdapter
@@ -49,6 +51,9 @@ class MaterialActivity : AppCompatActivity() {
     private var keepAtTop: Boolean = false
     private var rvState: Parcelable? = null
 
+    var userLatitude: Double? = null
+    var userLongitude: Double? = null
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,16 +61,16 @@ class MaterialActivity : AppCompatActivity() {
 
         TabBarUtils.setupTabBar(this)
 
+        // 기본 UI 바인딩
         selectedFilterLayout = findViewById(R.id.selectedFilterLayout)
         numberTextView = findViewById(R.id.number)
-        sortText = findViewById(R.id.materailMainFilterText)
+        sortLabel = findViewById(R.id.materailMainFilterText)
         sortArrow = findViewById(R.id.sortArrow)
-
-        recyclerView = findViewById(R.id.tradePostRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         materialFilter = findViewById(R.id.materialFilter)
         materialText = findViewById(R.id.materialText)
+
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         val materialIcon = findViewById<ImageView>(R.id.materialIcon)
         val materialLayout = findViewById<LinearLayout>(R.id.material)
@@ -73,9 +78,10 @@ class MaterialActivity : AppCompatActivity() {
         val distanceFilter = findViewById<LinearLayout>(R.id.distanceFilter)
         val distanceText = findViewById<TextView>(R.id.distanceText)
         val distanceIcon = findViewById<ImageView>(R.id.distanceIcon)
-        val distance = findViewById<LinearLayout>(R.id.distance)
+        val distanceLayout = findViewById<LinearLayout>(R.id.distance)
 
-        val materialButtons = listOf(
+        // 카테고리 버튼들
+        materialButtons = listOf(
             findViewById<Button>(R.id.all),
             findViewById(R.id.cookware),
             findViewById(R.id.fans_pots),
@@ -88,6 +94,7 @@ class MaterialActivity : AppCompatActivity() {
             findViewById(R.id.etc)
         )
 
+        // 거리 버튼들
         buttons = listOf(
             findViewById(R.id.alll),
             findViewById(R.id.threeHundred),
@@ -97,128 +104,48 @@ class MaterialActivity : AppCompatActivity() {
             findViewById(R.id.twoThousand)
         )
 
-        fetchUserLocationAndLoadPosts()
-
-        //내위치 이동
+        // 내 위치 관리
         val myLocationButton: LinearLayout = findViewById(R.id.myLocation)
-
         myLocationButton.setOnClickListener {
             val token = App.prefs.token.toString()
-
             if (token.isBlank() || token == "null") {
-                // 로그인 안 되어 있으면 LoginActivity로 이동
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, LoginActivity::class.java))
                 Toast.makeText(this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
             } else {
-                // 로그인 되어 있으면 MaterialMyLocationActivity로 이동
-                val intent = Intent(this, MaterialMyLocationActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, MaterialMyLocationActivity::class.java))
             }
         }
 
-        val token = App.prefs.token.toString()
-        RetrofitInstance.apiService.getNearbyTradePosts("Bearer $token", 1.0)
-            .enqueue(object : Callback<List<TradePostResponse>> {
-                override fun onResponse(
-                    call: Call<List<TradePostResponse>>,
-                    response: Response<List<TradePostResponse>>
-                ) {
-                    if (response.isSuccessful) {
-                        val nearbyPosts = response.body() ?: emptyList()
-                        setRecyclerViewAdapter(nearbyPosts)
-                        isDistanceBasedData = true
-                    }
-                }
+        // 상세에서 forceSort 전달되면 즉시 반영
+        applyForceSortFromIntent()
 
-                override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                    Log.e("거리 필터", "초기 로딩 실패", t)
-                }
-            })
+        // 초기 데이터 로드(기본 1km) — 사용자 위치 먼저 가져오고 호출
+        fetchUserLocationAndLoadPosts(defaultDistanceKm = 1.0)
 
-        // 정렬 기능
-        sortArrow.setOnClickListener {
-            val popupMenu = PopupMenu(this, sortArrow)
-            popupMenu.menu.add("최신순")
-            popupMenu.menu.add("거리순")
-            popupMenu.menu.add("가격순")
-            popupMenu.menu.add("구입 날짜순")
-
-            popupMenu.setOnMenuItemClickListener { item ->
-                sortText.text = item.title
-                findViewById<TextView>(R.id.materailMainFilterText).text = item.title
-
-                when (item.title) {
-                    "최신순" -> {
-                        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                        val sortedList = tradePosts.sortedByDescending {
-                            it.createdAt?.let { createdAt ->
-                                sdf.parse(createdAt)
-                            }
-                        }
-                        tradePosts = sortedList
-                        setRecyclerViewAdapter(sortedList)
-                    }
-
-                    "거리순" -> {
-                        if (!isDistanceBasedData) {
-                            Toast.makeText(this, "먼저 거리 필터를 선택해야 합니다", Toast.LENGTH_SHORT).show()
-                            return@setOnMenuItemClickListener true
-                        }
-
-                        if (tradePosts.any { it.distance != null }) {
-                            val sortedList = tradePosts.sortedBy { it.distance ?: Double.MAX_VALUE }
-                            tradePosts = sortedList
-                            setRecyclerViewAdapter(sortedList)
-                        } else {
-                            Toast.makeText(this, "거리 정보가 없습니다", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    "가격순" -> {
-                        val sortedList = tradePosts.sortedBy { it.price }
-                        tradePosts = sortedList
-                        setRecyclerViewAdapter(sortedList)
-                    }
-
-                    "구입 날짜순" -> {
-                        val sdf = SimpleDateFormat("yyyy-MM-dd")
-                        val sortedList = tradePosts.sortedByDescending { sdf.parse(it.purchaseDate) }
-                        tradePosts = sortedList
-                        setRecyclerViewAdapter(sortedList)
-                    }
-                }
-                true
-            }
-            popupMenu.show()
-        }
-
-        // 카테고리 버튼 클릭
+        // 카테고리 토글
         materialButtons.forEach { button ->
             button.setOnClickListener {
-                setSelectedMaterialButton(button, materialFilter, materialText)
-                showSelectedFilterBadge(button.text.toString(), materialFilter, materialText)
+                onCategoryButtonClicked(button)
                 materialLayout.visibility = View.GONE
                 isMaterialVisible = false
             }
         }
 
-        // 거리 필터 버튼 클릭
-        buttons.forEach {
-            it.setOnClickListener { button -> setSelectedDistanceButton(button as Button) }
+        // 거리 토글
+        buttons.forEach { btn ->
+            btn.setOnClickListener { setSelectedDistanceButton(btn as Button) }
         }
 
+        // 필터 드롭다운 토글
         materialFilter.setOnClickListener {
             isMaterialVisible = !isMaterialVisible
             materialLayout.visibility = if (isMaterialVisible) View.VISIBLE else View.GONE
             updateFilterStyle(materialFilter, materialText, materialIcon, isMaterialVisible)
         }
-
         distanceFilter.setOnClickListener {
             isDistanceVisible = !isDistanceVisible
-            /*updateFilterStyle(distanceFilter, distanceText, distanceIcon, isDistanceVisible)*/
+            distanceLayout.visibility = if (isDistanceVisible) View.VISIBLE else View.GONE
 
-            distance.visibility = if (isDistanceVisible) View.VISIBLE else View.GONE
             if (isDistanceVisible) {
                 distanceFilter.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
                 distanceText.setTextColor(Color.WHITE)
@@ -230,34 +157,58 @@ class MaterialActivity : AppCompatActivity() {
             }
         }
 
-        // 초기 전체 거래글 불러오기
-        /*        TradePostRepository.getAllTradePosts(null) { posts ->
-            posts?.let {
-                tradePosts = it
-                setRecyclerViewAdapter(tradePosts)
-            }
-        }*/
-
         // 하단바 이동
-        findViewById<ImageView>(R.id.searchIcon).setOnClickListener { startActivity(Intent(this, MaterialSearchActivity::class.java)) }
-        findViewById<ImageView>(R.id.profileIcon).setOnClickListener { startActivity(Intent(this, MaterialMyProfileActivity::class.java)) }
-        findViewById<ImageView>(R.id.aa).setOnClickListener { startActivity(Intent(this, MaterialWritingActivity::class.java)) }
-        findViewById<ImageView>(R.id.bb).setOnClickListener { startActivity(Intent(this, MaterialChatActivity::class.java)) }
+        findViewById<ImageView>(R.id.searchIcon).setOnClickListener {
+            startActivity(Intent(this, MaterialSearchActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.profileIcon).setOnClickListener {
+            startActivity(Intent(this, MaterialMyProfileActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.aa).setOnClickListener {
+            startActivity(Intent(this, MaterialWritingActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.bb).setOnClickListener {
+            startActivity(Intent(this, MaterialChatActivity::class.java))
+        }
         findViewById<ImageView>(R.id.plusIcon3).setOnClickListener {
             isPlusMenuVisible = !isPlusMenuVisible
             findViewById<ImageView>(R.id.aa).visibility = if (isPlusMenuVisible) View.VISIBLE else View.GONE
             findViewById<ImageView>(R.id.bb).visibility = if (isPlusMenuVisible) View.VISIBLE else View.GONE
         }
 
+        // 스크롤 상단 고정 상태 추적
         keepAtTop = getKeepTopSticky()
-
-        val lm = recyclerView.layoutManager as LinearLayoutManager
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 val first = (rv.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                keepAtTop = (first == 0) // 첫 아이템 완전 노출이면 Top 고정 유지
+                keepAtTop = (first == 0)
             }
         })
+
+        // ▼▼ 정렬 팝업: 전용 레이아웃 없이 PopupMenu만 사용 ▼▼
+        val showSortPopup: (View) -> Unit = { anchor ->
+            val popup = PopupMenu(this, anchor)
+            popup.menu.add("최신순")
+            popup.menu.add("거리순")
+            popup.menu.add("가격순")
+            popup.menu.add("구입 날짜순")
+
+            popup.setOnMenuItemClickListener { item ->
+                when (item.title) {
+                    "최신순" -> setSortAndReload("UPDATED")        // 끌올 반영(노출순)
+                    "거리순" -> setSortAndReload("DISTANCE")
+                    "가격순" -> setSortAndReload("PRICE")
+                    "구입 날짜순" -> setSortAndReload("PURCHASE_DATE")
+                }
+                true
+            }
+            popup.show() // sortLabel 바로 아래에 뜸
+        }
+        sortLabel.setOnClickListener { showSortPopup(sortLabel) }
+        sortArrow.setOnClickListener { showSortPopup(sortLabel) }
+        // ▲▲ 정렬 팝업 끝 ▲▲
+
+        updateSortLabel()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -265,16 +216,28 @@ class MaterialActivity : AppCompatActivity() {
         setIntent(intent)
         skipReloadOnce = intent?.getBooleanExtra("skipReloadOnce", false) == true
 
+        // 새 글 즉시 상단에 추가(선택)
         intent?.getStringExtra("newTradePost")?.let { json ->
             val newPost = Gson().fromJson(json, TradePostResponse::class.java)
-            addPostOnTop(newPost)
+            prependNewPost(newPost)
+        }
+
+        // forceSort 수용
+        val changed = applyForceSortFromIntent()
+        if (changed) {
+            loadNearbyPosts(
+                distanceKm = selectedDistance,
+                categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+                sort = currentSort
+            )
         }
     }
 
-    private fun addPostOnTop(post: TradePostResponse) {
+    private fun prependNewPost(post: TradePostResponse) {
         if (!::tradePostAdapter.isInitialized) return
-        // 어댑터에 헬퍼 메서드가 있다면:
-        tradePostAdapter.addPostOnTop(post)
+        val list = tradePosts.toMutableList()
+        list.add(0, post)
+        setRecyclerViewAdapter(list)
         recyclerView.scrollToPosition(0)
         setKeepTopSticky(true)
     }
@@ -289,64 +252,23 @@ class MaterialActivity : AppCompatActivity() {
         getSharedPreferences("material_prefs", MODE_PRIVATE)
             .getBoolean("keep_top_sticky", false)
 
-    private fun applyPinnedFirst(raw: List<TradePostResponse>): List<TradePostResponse> {
-        val pinnedIds = PinStore.getPinnedOrder(this)
-        if (pinnedIds.isEmpty()) return raw
+    /* -------------------------------- UI 헬퍼 -------------------------------- */
 
-        // pinned 순서대로 맨 위에 정렬, 나머지는 원래 순서 유지
-        val mapById = raw.associateBy { it.tradePostId }
-        val pinnedItems = pinnedIds.mapNotNull { mapById[it] }
-        val others = raw.filterNot { pinnedIds.contains(it.tradePostId) }
-        return pinnedItems + others
-    }
-
-    private fun setSelectedButton(selectedButton: Button) {
-        val distanceText = findViewById<TextView>(R.id.distanceText)
-        val distanceFilter = findViewById<LinearLayout>(R.id.distanceFilter)
-        val distanceLayout = findViewById<LinearLayout>(R.id.distance)
-
-        buttons.forEach { button ->
-            if (button == selectedButton) {
-                button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-                button.setTextColor(Color.WHITE)
-            } else {
-                button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                button.setTextColor(Color.parseColor("#8A8F9C"))
-            }
+    private fun updateFilterStyle(layout: LinearLayout, text: TextView, icon: ImageView, expanded: Boolean) {
+        if (expanded) {
+            layout.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+            text.setTextColor(Color.WHITE)
+            icon.setImageResource(R.drawable.ic_arrow_up)
+        } else {
+            layout.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            text.setTextColor(Color.parseColor("#8A8F9C"))
+            icon.setImageResource(R.drawable.ic_arrow_down)
         }
-
-        for (i in selectedFilterLayout.childCount - 1 downTo 0) {
-            val badge = selectedFilterLayout.getChildAt(i)
-            if (badge.tag == "distance") selectedFilterLayout.removeView(badge)
-        }
-
-        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
-        badge.tag = "distance"
-        badge.findViewById<TextView>(R.id.filterText).text = selectedButton.text.toString()
-        badge.findViewById<ImageView>(R.id.filterClose).setOnClickListener {
-            selectedFilterLayout.removeView(badge)
-            selectedDistance = null
-            buttons.forEach {
-                it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                it.setTextColor(Color.parseColor("#8A8F9C"))
-            }
-            distanceFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
-            distanceText.setTextColor(Color.parseColor("#8A8F9C"))
-        }
-
-        selectedFilterLayout.addView(badge)
-        distanceLayout.visibility = View.GONE
-        isDistanceVisible = false
-        distanceFilter.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-        distanceText.setTextColor(Color.WHITE)
     }
 
     private fun setRecyclerViewAdapter(list: List<TradePostResponse>) {
-        // 1) 핀 우선 정렬 적용
-        val display = applyPinnedFirst(list)
-        tradePosts = display
+        tradePosts = list
 
-        // 2) 공통 클릭 콜백
         val onItemClick: (TradePostResponse) -> Unit = { tradePost ->
             val token = App.prefs.token.toString()
             RetrofitInstance.apiService.increaseViewCount(
@@ -365,24 +287,16 @@ class MaterialActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 3) 어댑터 '한 번' 생성 (display로)
         tradePostAdapter = TradePostAdapter(
-            display.toMutableList(),
+            list.toMutableList(),
             onItemClick = onItemClick,
             userLat = userLatitude,
             userLng = userLongitude
         )
         recyclerView.adapter = tradePostAdapter
 
-        // 4) 결과 카운트
-        numberTextView.text = display.size.toString()
+        numberTextView.text = list.size.toString()
 
-        // 5) 거리 배지 없으면 거리기반 플래그 해제
-        if (selectedFilterLayout.children.none { it.tag == "distance" }) {
-            isDistanceBasedData = false
-        }
-
-        // 6) 스크롤 위치 복원/고정
         val lm = recyclerView.layoutManager as LinearLayoutManager
         recyclerView.post {
             if (keepAtTop || getKeepTopSticky()) {
@@ -393,81 +307,73 @@ class MaterialActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSelectedMaterialButton(button: Button, filterLayout: LinearLayout, textView: TextView) {
-        val category = button.text.toString()
-        listOf(
-            findViewById<Button>(R.id.all),
-            findViewById(R.id.cookware),
-            findViewById(R.id.fans_pots),
-            findViewById(R.id.containers),
-            findViewById(R.id.tableware),
-            findViewById(R.id.storageSupplies),
-            findViewById(R.id.sanitaryProducts),
-            findViewById(R.id.smallAppliances),
-            findViewById(R.id.disposableProducts),
-            findViewById(R.id.etc)
-        ).forEach {
-            it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-            it.setTextColor(Color.parseColor("#8A8F9C"))
+    /* ----------------------------- 카테고리 처리 ----------------------------- */
+
+    private fun onCategoryButtonClicked(button: Button) {
+        val label = button.text.toString()
+
+        if (button.id == R.id.all) {
+            selectedCategories.clear()
+            removeAllMaterialBadges()
+            updateMaterialButtonsUI()
+            materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            materialText.setTextColor(Color.parseColor("#8A8F9C"))
+
+            loadNearbyPosts(
+                distanceKm = selectedDistance,
+                categories = null,
+                sort = currentSort
+            )
+            return
         }
 
-        if (selectedCategories.contains(category)) {
-            selectedCategories.remove(category)
-            button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-            button.setTextColor(Color.parseColor("#8A8F9C"))
+        if (selectedCategories.contains(label)) {
+            selectedCategories.remove(label)
+            removeMaterialBadge(label)
         } else {
-            selectedCategories.add(category)
-            showSelectedFilterBadge(category, materialFilter, materialText)
-            button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-            button.setTextColor(Color.WHITE)
+            selectedCategories.add(label)
+            showSelectedMaterialBadge(label)
         }
+
+        updateMaterialButtonsUI()
 
         if (selectedCategories.isEmpty()) {
-            filterLayout.setBackgroundResource(R.drawable.rounded_rectangle_background)
-            textView.setTextColor(Color.parseColor("#8A8F9C"))
+            materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
+            materialText.setTextColor(Color.parseColor("#8A8F9C"))
         } else {
-            filterLayout.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-            textView.setTextColor(Color.WHITE)
+            materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
+            materialText.setTextColor(Color.WHITE)
         }
 
-        loadPostsByMultipleCategories()
+        loadNearbyPosts(
+            distanceKm = selectedDistance,
+            categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+            sort = currentSort
+        )
     }
 
-    private fun removeMaterialBadge(category: String) {
-        for (i in selectedFilterLayout.childCount - 1 downTo 0) {
-            val badge = selectedFilterLayout.getChildAt(i)
-            if (badge.tag == "material-$category") {
-                selectedFilterLayout.removeView(badge)
-            }
-        }
-    }
-
-    private fun loadPostsByMultipleCategories() {
-        val token = App.prefs.token.toString()
-        if (selectedDistance != null) {
-            loadNearbyPostsByMultipleCategories(selectedDistance!!, selectedCategories.toList())
-        } else {
-            TradePostRepository.getTradePostsByMultipleCategories(token, selectedCategories.toList()) { posts ->
-                posts?.let {
-                    tradePosts = it
-                    setRecyclerViewAdapter(tradePosts)
-                }
-            }
+    private fun updateMaterialButtonsUI() {
+        materialButtons.forEach { btn ->
+            val label = btn.text.toString()
+            val selected = selectedCategories.contains(label)
+            btn.setBackgroundResource(
+                if (selected) R.drawable.rounded_rectangle_background_selected
+                else R.drawable.rounded_rectangle_background
+            )
+            btn.setTextColor(if (selected) Color.WHITE else Color.parseColor("#8A8F9C"))
         }
     }
 
-    private fun showSelectedFilterBadge(text: String, materialFilter: LinearLayout, materialText: TextView) {
+    private fun showSelectedMaterialBadge(text: String) {
         selectedFilterLayout.visibility = View.VISIBLE
         if (selectedFilterLayout.children.any { it.tag == "material-$text" }) return
-        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
 
-        val layoutParams = LinearLayout.LayoutParams(
+        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
+        val lp = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            setMargins(0, 0, 15, 0) // 오른쪽 마진 5dp
-        }
-        badge.layoutParams = layoutParams
+        ).apply { setMargins(0, 0, 15, 0) }
+        badge.layoutParams = lp
 
         val badgeText = badge.findViewById<TextView>(R.id.filterText)
         val badgeClose = badge.findViewById<ImageView>(R.id.filterClose)
@@ -478,27 +384,50 @@ class MaterialActivity : AppCompatActivity() {
         badgeClose.setOnClickListener {
             selectedFilterLayout.removeView(badge)
             selectedCategories.remove(text)
+            updateMaterialButtonsUI()
 
-            if (selectedFilterLayout.children.none { it.tag.toString().startsWith("distance-") }) {
-                isDistanceBasedData = false
-            }
-
-            if (selectedFilterLayout.children.none { it.tag.toString().startsWith("material-") }) {
+            if (selectedCategories.isEmpty()) {
                 materialFilter.setBackgroundResource(R.drawable.rounded_rectangle_background)
                 materialText.setTextColor(Color.parseColor("#8A8F9C"))
-                TradePostRepository.getAllTradePosts(null) { posts ->
-                    posts?.let {
-                        tradePosts = it
-                        setRecyclerViewAdapter(tradePosts)
-                    }
-                }
             }
+
+            loadNearbyPosts(
+                distanceKm = selectedDistance,
+                categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+                sort = currentSort
+            )
         }
         selectedFilterLayout.addView(badge)
     }
 
-    private fun setSelectedDistanceButton(button: Button) {
+    private fun removeMaterialBadge(category: String) {
+        for (i in selectedFilterLayout.childCount - 1 downTo 0) {
+            val badge = selectedFilterLayout.getChildAt(i)
+            if (badge.tag == "material-$category") {
+                selectedFilterLayout.removeView(badge)
+            }
+        }
+        if (selectedCategories.isEmpty() &&
+            selectedFilterLayout.children.none { it.tag == "distance" }) {
+            selectedFilterLayout.visibility = View.GONE
+        }
+    }
 
+    private fun removeAllMaterialBadges() {
+        for (i in selectedFilterLayout.childCount - 1 downTo 0) {
+            val badge = selectedFilterLayout.getChildAt(i)
+            if (badge.tag.toString().startsWith("material-")) {
+                selectedFilterLayout.removeView(badge)
+            }
+        }
+        if (selectedFilterLayout.children.none { it.tag == "distance" }) {
+            selectedFilterLayout.visibility = View.GONE
+        }
+    }
+
+    /* ------------------------------- 거리 처리 ------------------------------- */
+
+    private fun setSelectedDistanceButton(button: Button) {
         buttons.forEach {
             it.setBackgroundResource(R.drawable.rounded_rectangle_background)
             it.setTextColor(Color.parseColor("#8A8F9C"))
@@ -506,191 +435,96 @@ class MaterialActivity : AppCompatActivity() {
         button.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
         button.setTextColor(Color.WHITE)
 
-        // 거리 값 추출
         val distanceKm = when (button.id) {
+            R.id.alll -> null
             R.id.threeHundred -> 0.3
             R.id.fiveHundred -> 0.5
             R.id.oneThousand -> 1.0
             R.id.onefiveThousand -> 1.5
             R.id.twoThousand -> 2.0
-            else -> 100.0
+            else -> null
         }
-
         selectedDistance = distanceKm
 
+        // 기존 distance 배지 제거
         for (i in selectedFilterLayout.childCount - 1 downTo 0) {
             val badge = selectedFilterLayout.getChildAt(i)
             if (badge.tag == "distance") selectedFilterLayout.removeView(badge)
         }
 
-        val badge = layoutInflater.inflate(R.layout.filter_badge, null)
-        badge.tag = "distance"
-        badge.findViewById<TextView>(R.id.filterText).text = button.text.toString()
-        badge.findViewById<ImageView>(R.id.filterClose).setOnClickListener {
-            selectedFilterLayout.removeView(badge)
-            selectedDistance = null
-            buttons.forEach {
-                it.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                it.setTextColor(Color.parseColor("#8A8F9C"))
+        // "전체"가 아니면 distance 배지 표시
+        if (distanceKm != null) {
+            val badge = layoutInflater.inflate(R.layout.filter_badge, null)
+            badge.tag = "distance"
+            badge.findViewById<TextView>(R.id.filterText).text = button.text.toString()
+            badge.findViewById<ImageView>(R.id.filterClose).setOnClickListener {
+                selectedFilterLayout.removeView(badge)
+                selectedDistance = null
+                buttons.forEach {
+                    it.setBackgroundResource(R.drawable.rounded_rectangle_background)
+                    it.setTextColor(Color.parseColor("#8A8F9C"))
+                }
+                loadNearbyPosts(
+                    distanceKm = null,
+                    categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+                    sort = currentSort
+                )
+            }
+            selectedFilterLayout.addView(badge)
+            selectedFilterLayout.visibility = View.VISIBLE
+        } else {
+            if (selectedFilterLayout.children.none { it.tag.toString().startsWith("material-") }) {
+                selectedFilterLayout.visibility = View.GONE
             }
         }
-        selectedFilterLayout.addView(badge)
-        selectedFilterLayout.visibility = View.VISIBLE
 
-        val distanceLayout = findViewById<LinearLayout>(R.id.distance)
-        distanceLayout.visibility = View.GONE
+        // 드롭다운 닫기
+        findViewById<LinearLayout>(R.id.distance).visibility = View.GONE
         isDistanceVisible = false
 
-        val token = App.prefs.token.toString()
+        loadNearbyPosts(
+            distanceKm = selectedDistance,
+            categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+            sort = currentSort
+        )
+    }
 
-        if (token != "null" && token.isNotBlank()) {
-            if (selectedCategories.isNotEmpty()) {
-                loadNearbyPostsByMultipleCategories(distanceKm, selectedCategories.toList())
-            } else {
-                // 거리 필터만 적용
-                RetrofitInstance.apiService.getNearbyTradePosts("Bearer $token", distanceKm)
-                    .enqueue(object : Callback<List<TradePostResponse>> {
-                        override fun onResponse(
-                            call: Call<List<TradePostResponse>>,
-                            response: Response<List<TradePostResponse>>
-                        ) {
-                            if (response.isSuccessful) {
-                                val result = response.body() ?: emptyList()
-                                setRecyclerViewAdapter(result)
-                            } else {
-                                Log.e("거리 필터", "응답 실패: ${response.code()}")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                            Log.e("거리 필터", "요청 실패", t)
-                        }
-                    })
-            }
+    private fun setSortAndReload(sort: String) {
+        if (currentSort != sort) {
+            currentSort = sort
+            updateSortLabel()
+            loadNearbyPosts(
+                distanceKm = selectedDistance,
+                categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+                sort = currentSort
+            )
         }
     }
 
-    private fun updateFilterStyle(layout: LinearLayout, text: TextView, icon: ImageView, expanded: Boolean) {
-        if (expanded) {
-            layout.setBackgroundResource(R.drawable.rounded_rectangle_background_selected)
-            text.setTextColor(Color.WHITE)
-            icon.setImageResource(R.drawable.ic_arrow_up)
-        } else {
-            layout.setBackgroundResource(R.drawable.rounded_rectangle_background)
-            text.setTextColor(Color.parseColor("#8A8F9C"))
-            icon.setImageResource(R.drawable.ic_arrow_down)
+    private fun applyForceSortFromIntent(): Boolean {
+        val forced = intent.getStringExtra("forceSort") ?: return false
+        intent.removeExtra("forceSort")
+        val changed = currentSort != forced
+        currentSort = forced
+        updateSortLabel()
+        return changed
+    }
+
+    private fun updateSortLabel() {
+        sortLabel.text = when (currentSort) {
+            "UPDATED" -> "최신순"        // 업 반영(노출순)
+            "DISTANCE" -> "거리순"
+            "PRICE" -> "가격순"
+            "PURCHASE_DATE" -> "구입 날짜순"
+            "LATEST" -> "등록순"
+            else -> "최신순"
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    /* ----------------------- 위치 가져오기 + 초기 로딩 ----------------------- */
 
-        if (skipReloadOnce) {        // 🔥 이번 1회는 새로고침 생략
-            skipReloadOnce = false
-            if (keepAtTop) recyclerView.scrollToPosition(0)
-            return
-        }
-
+    private fun fetchUserLocationAndLoadPosts(defaultDistanceKm: Double? = 1.0) {
         val token = App.prefs.token.toString()
-        RetrofitInstance.apiService.getNearbyTradePosts("Bearer $token", 1.0)
-            .enqueue(object : Callback<List<TradePostResponse>> {
-                override fun onResponse(
-                    call: Call<List<TradePostResponse>>,
-                    response: Response<List<TradePostResponse>>
-                ) {
-                    if (response.isSuccessful) {
-                        val nearbyPosts = response.body() ?: emptyList()
-                        setRecyclerViewAdapter(nearbyPosts)
-                        isDistanceBasedData = true
-                    } else {
-                        Log.e("거리필터", "응답 실패: ${response.code()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                    Log.e("거리필터", "요청 실패", t)
-                }
-            })
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (!keepAtTop) {
-            rvState = recyclerView.layoutManager?.onSaveInstanceState()
-        }
-    }
-
-    private val LOCATION_REQUEST_CODE = 1001
-
-    private fun openLocationSetting() {
-        val intent = Intent(this, MaterialMyLocationActivity::class.java)
-        startActivityForResult(intent, LOCATION_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
-            val locationSaved = data?.getBooleanExtra("locationSaved", false) ?: false
-            if (locationSaved) {
-                // 위치 저장됨 → 근처 거래글 다시 로드
-                loadNearbyTradePosts()
-            }
-        }
-    }
-
-    private fun loadNearbyTradePosts() {
-        val token = App.prefs.token.toString()
-        RetrofitInstance.apiService.getNearbyTradePosts("Bearer $token", 1.0)
-            .enqueue(object : Callback<List<TradePostResponse>> {
-                override fun onResponse(
-                    call: Call<List<TradePostResponse>>,
-                    response: Response<List<TradePostResponse>>
-                ) {
-                    if (response.isSuccessful) {
-                        val nearbyPosts = response.body() ?: emptyList()
-                        setRecyclerViewAdapter(nearbyPosts)
-                        isDistanceBasedData = true
-                    } else {
-                        Log.e("거리필터", "응답 실패: ${response.code()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                    Log.e("거리필터", "요청 실패", t)
-                }
-            })
-    }
-
-    private fun loadNearbyPostsByMultipleCategories(distanceKm: Double, categories: List<String>) {
-        val token = App.prefs.token.toString()
-        RetrofitInstance.apiService.getNearbyTradePostsByMultipleCategories("Bearer $token", distanceKm, categories)
-            .enqueue(object : Callback<List<TradePostResponse>> {
-                override fun onResponse(
-                    call: Call<List<TradePostResponse>>,
-                    response: Response<List<TradePostResponse>>
-                ) {
-                    if (response.isSuccessful) {
-                        val result = response.body() ?: emptyList()
-                        setRecyclerViewAdapter(result)
-                        isDistanceBasedData = true
-                    } else {
-                        Toast.makeText(this@MaterialActivity, "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                    Toast.makeText(this@MaterialActivity, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
-
-    var userLatitude: Double? = null
-    var userLongitude: Double? = null
-
-    private fun fetchUserLocationAndLoadPosts() {
-        val token = App.prefs.token.toString()
-
         RetrofitInstance.apiService.getUserLocation("Bearer $token")
             .enqueue(object : Callback<TradeUserResponse> {
                 override fun onResponse(
@@ -701,43 +535,75 @@ class MaterialActivity : AppCompatActivity() {
                         response.body()?.let {
                             userLatitude = it.latitude
                             userLongitude = it.longitude
-                            // 유저 위치 정보를 기반으로 거래글 불러오기
-                            loadNearbyTradePosts()
                         }
                     } else {
                         Log.e("UserLocation", "서버 응답 오류: ${response.code()}")
                     }
+                    selectedDistance = defaultDistanceKm
+                    loadNearbyPosts(distanceKm = defaultDistanceKm, categories = null, sort = currentSort)
                 }
 
                 override fun onFailure(call: Call<TradeUserResponse>, t: Throwable) {
                     Log.e("UserLocation", "위치 요청 실패", t)
+                    selectedDistance = defaultDistanceKm
+                    loadNearbyPosts(distanceKm = defaultDistanceKm, categories = null, sort = currentSort)
                 }
             })
     }
 
+    /* ----------------------------- 서버 호출 통합 ----------------------------- */
 
-    /*    private fun loadNearbyPostsByCategory(distanceKm: Double, category: String) {
-            val token = App.prefs.token.toString()
-            if (token != "null" && token.isNotBlank()) {
-                RetrofitInstance.apiService.getNearbyTradePostsByCategory("Bearer $token", distanceKm, category)
-                    .enqueue(object : Callback<List<TradePostResponse>> {
-                        override fun onResponse(
-                            call: Call<List<TradePostResponse>>,
-                            response: Response<List<TradePostResponse>>
-                        ) {
-                            if (response.isSuccessful) {
-                                val result = response.body() ?: emptyList()
-                                isDistanceBasedData = true
-                                setRecyclerViewAdapter(result)
-                            } else {
-                                Toast.makeText(this@MaterialActivity, "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+    private fun loadNearbyPosts(
+        distanceKm: Double? = null,
+        categories: List<String>? = null,
+        sort: String = "UPDATED"
+    ) {
+        val token = App.prefs.token.toString()
+        RetrofitInstance.apiService.getNearbyFlexible("Bearer $token", distanceKm, categories, sort)
+            .enqueue(object : Callback<List<TradePostResponse>> {
+                override fun onResponse(
+                    call: Call<List<TradePostResponse>>,
+                    response: Response<List<TradePostResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body().orEmpty()
+                        setRecyclerViewAdapter(result)
+                    } else {
+                        Log.e("nearby", "응답 실패: ${response.code()}")
+                        Toast.makeText(this@MaterialActivity, "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
-                        override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
-                            Toast.makeText(this@MaterialActivity, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-            }
-        }*/
+                override fun onFailure(call: Call<List<TradePostResponse>>, t: Throwable) {
+                    Log.e("nearby", "요청 실패", t)
+                    Toast.makeText(this@MaterialActivity, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    /* ----------------------------- 생명주기 보정 ----------------------------- */
+
+    override fun onResume() {
+        super.onResume()
+
+        if (skipReloadOnce) {
+            skipReloadOnce = false
+            if (keepAtTop) recyclerView.scrollToPosition(0)
+            return
+        }
+
+        // 현재 선택 상태로 재호출
+        loadNearbyPosts(
+            distanceKm = selectedDistance ?: 1.0,
+            categories = selectedCategories.takeIf { it.isNotEmpty() }?.toList(),
+            sort = currentSort
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!keepAtTop) {
+            rvState = recyclerView.layoutManager?.onSaveInstanceState()
+        }
+    }
 }
