@@ -329,12 +329,16 @@ class RecipeTapActivity : AppCompatActivity() {
         val card = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(containerId)
         val imageView = card.findViewById<android.widget.ImageView>(imageId)
         val titleView = card.findViewById<TextView>(titleId)
+        val thumbUrl = resolveFullUrl(item.thumbnailUrl)
 
         titleView.text = item.title
 
         try {
-            com.bumptech.glide.Glide.with(this)
-                .load(item.thumbnailUrl ?: R.drawable.image_one_minute)
+            com.bumptech.glide.Glide.with(imageView)
+                .load(thumbUrl)
+                .placeholder(R.drawable.image_one_minute)
+                .error(R.drawable.image_one_minute)
+                .centerCrop()
                 .into(imageView)
         } catch (_: Throwable) { }
 
@@ -342,9 +346,21 @@ class RecipeTapActivity : AppCompatActivity() {
             startActivity(
                 Intent(this, ShortsActivity::class.java).apply {
                     putExtra("mode", "random")
-                    putExtra("focusId", item.id.toInt())
+                    putExtra("focusId", item.id)
                 }
             )
+        }
+    }
+
+    private fun resolveFullUrl(serverValue: String?): String? {
+        if (serverValue.isNullOrBlank()) return null
+        return if (serverValue.startsWith("http://") || serverValue.startsWith("https://")) {
+            serverValue
+        } else {
+            // BASE_URL 끝 슬래시 / serverValue 시작 슬래시 중복 안 나게 조심
+            val base = RetrofitInstance.BASE_URL.trimEnd('/')
+            val path = serverValue.trimStart('/')
+            "$base/$path"
         }
     }
 

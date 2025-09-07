@@ -1,3 +1,6 @@
+@file:OptIn(androidx.media3.common.util.UnstableApi::class)
+
+
 package com.example.test
 
 import android.content.Intent
@@ -23,6 +26,7 @@ import java.io.File
 import androidx.media3.common.Effect
 import androidx.media3.effect.Crop
 import androidx.media3.transformer.ExportException
+
 @androidx.media3.common.util.UnstableApi
 class ShortsTrimActivity : AppCompatActivity() {
     private var sliderInitialized = false
@@ -148,6 +152,7 @@ class ShortsTrimActivity : AppCompatActivity() {
 
     // ⚠️ 16:9 비율 크롭 기능 추가
     @androidx.media3.common.util.UnstableApi
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     private fun startTrimAndCrop(startMs: Long, endMs: Long) {
         val outputFile = File(cacheDir, "shorts_output.mp4")
         showProgressBar()
