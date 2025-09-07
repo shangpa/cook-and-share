@@ -12,6 +12,7 @@ import com.example.test.model.Fridge.UsedIngredientRequest
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
 import com.example.test.model.TradePost.TradePostSimpleResponse
+import com.example.test.model.TradePost.TradePostUpResult
 import com.example.test.model.TradePost.TradeUserResponse
 import com.example.test.model.community.CommunityDetailResponse
 import com.example.test.model.profile.ProfileSummaryResponse
@@ -164,7 +165,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
     ): Call<ResponseBody>
-    
+
     //동영상 업로드
     @Multipart
     @POST("/api/upload-video")
@@ -172,7 +173,7 @@ interface ApiService {
         @Part video: MultipartBody.Part,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
-    
+
     // 냉장고 재료 추가
     @POST("api/fridges")
     suspend fun createFridge(
@@ -234,6 +235,13 @@ interface ApiService {
         @Body request: TradePostRequest
     ): Call<TradePostResponse>
 
+    //동네재료 끌어올리기
+    @POST("api/trade-posts/{id}/up")
+    fun upTradePost(
+        @Header("Authorization") token: String,
+        @Path("id") postId: Long
+    ): Call<TradePostUpResult>
+
     //동네재료 메인 거래글 조회
     @GET("/api/trade-posts")
     fun getAllTradePosts(@Header("Authorization") token: String? = null
@@ -244,18 +252,20 @@ interface ApiService {
     fun getUserLocation(
         @Header("Authorization") token: String
     ): Call<TradeUserResponse>
-    
+
     //동네재료 메인 카테고리 필터링
     @GET("/api/trade-posts/category")
     fun getTradePostsByCategory(
         @Query("category") category: String
     ): Call<List<TradePostResponse>>
 
-    //동네재료 사용자 위치 계산
+    // 동네재료 카테고리 필터링 통합: 거리/카테고리/정렬 모두 선택적
     @GET("/api/trade-posts/nearby")
-    fun getNearbyTradePosts(
+    fun getNearbyFlexible(
         @Header("Authorization") token: String,
-        @Query("distanceKm") distanceKm: Double = 1.0
+        @Query("distanceKm") distanceKm: Double? = null,          // null이면 거리 필터 미적용
+        @Query("categories") categories: List<String>? = null,    // null/빈리스트면 카테고리 미적용
+        @Query("sort") sort: String? = "LATEST"                   // LATEST | UPDATED | DISTANCE | PRICE | PURCHASE_DATE
     ): Call<List<TradePostResponse>>
 
     //동네재료 사용자 위치 저장
@@ -264,7 +274,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double
-
     ): Call<Void>
 
     //동네재료 카테고리 + 거리 다중 필터링
@@ -334,7 +343,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") tradePostId: Long
     ): Call<TradePostSimpleResponse>
-    
+
     //리뷰 작성
     @POST("/api/reviews")
     fun submitReview(
@@ -362,7 +371,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("recipeId") recipeId: Long
     ): Call<Boolean>
-    
+
     //추천 토글
     @POST("api/recipes/{recipeId}/recommend-toggle")
     fun toggleRecommend(
