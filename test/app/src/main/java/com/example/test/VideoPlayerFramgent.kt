@@ -27,6 +27,9 @@ import com.example.test.databinding.FragmentVideoPlayerBinding
 import com.example.test.model.ShortObject
 import com.example.test.network.RetrofitInstance
 import java.io.Serializable
+import android.util.Log
+import androidx.media3.common.PlaybackException
+import androidx.media3.datasource.HttpDataSource
 
 @UnstableApi
 class VideoPlayerFragment : Fragment() {
@@ -135,14 +138,17 @@ class VideoPlayerFragment : Fragment() {
     }
 
     private fun initializePlayer() {
+        val url = resolveFullUrl(shortObject.videoUrl)
+        if (url.isBlank()) {
+            Log.e("ShortsPlay", "❌ video url is blank (id=${shortObject.id})")
+            return
+        }
+        Log.d("ShortsPlay", "▶ will play: $url")
+        val mediaSource = buildMediaSource(Uri.parse(url))
+
         val loadControl = DefaultLoadControl.Builder()
             .setAllocator(DefaultAllocator(true, 16))
-            .setBufferDurationsMs(
-                /* minBufferMs = */ 2000,
-                /* maxBufferMs = */ 3000,
-                /* bufferForPlaybackMs = */ 1500,
-                /* bufferForPlaybackAfterRebufferMs = */ 2000
-            )
+            .setBufferDurationsMs(2000, 3000, 1500, 2000)
             .setTargetBufferBytes(-1)
             .setPrioritizeTimeOverSizeThresholds(true)
             .build()
@@ -153,38 +159,50 @@ class VideoPlayerFragment : Fragment() {
                 binding.playerView.player = exoPlayer
                 binding.playerView.useController = false
 
-
-                val base = RetrofitInstance.BASE_URL.trimEnd('/')
-                val fullUrl = if (shortObject.videoUrl.startsWith("http")) {
-                    shortObject.videoUrl
-                } else {
-                    base + shortObject.videoUrl
-                }
-                val mediaSource = buildMediaSource(Uri.parse(fullUrl))
-
-                exoPlayer.setMediaSource(mediaSource)
+                exoPlayer.setMediaSource(mediaSource)   // ✅ 여기서 한 번만
                 exoPlayer.prepare()
-                exoPlayer.playWhenReady = false // Activity에서 현재 페이지만 true로 바꿔줌
+                exoPlayer.playWhenReady = false
                 exoPlayer.repeatMode = ExoPlayer.REPEAT_MODE_ONE
                 exoPlayer.addListener(playerListener)
             }
     }
 
+
+    private fun resolveFullUrl(relativeOrAbsolute: String?): String {
+        if (relativeOrAbsolute.isNullOrBlank()) return ""
+        return if (relativeOrAbsolute.startsWith("http://") || relativeOrAbsolute.startsWith("https://")) {
+            relativeOrAbsolute
+        } else {
+            val base = RetrofitInstance.BASE_URL.trimEnd('/')
+            val path = relativeOrAbsolute.trimStart('/')
+            "$base/$path"
+        }
+    }
+
     private fun buildMediaSource(uri: Uri): MediaSource {
         val mediaItem = MediaItem.fromUri(uri)
-        val userAgent = Util.getUserAgent(requireContext(), getString(R.string.app_name))
-        val httpFactory = DefaultHttpDataSource.Factory().setUserAgent(userAgent)
-        val dataSourceFactory = DefaultDataSource.Factory(requireContext())
-        val path = uri.lastPathSegment ?: ""
+
+        // 모든 프로토콜에 같은 HTTP 팩토리 사용
+        val httpFactory = DefaultHttpDataSource.Factory()
+            .setUserAgent(Util.getUserAgent(requireContext(), getString(R.string.app_name)))
+            .setConnectTimeoutMs(15_000)
+            .setReadTimeoutMs(30_000)
+            .setAllowCrossProtocolRedirects(true)
+
+        val path = (uri.lastPathSegment ?: "").lowercase()
+
         return when {
-            path.contains("m3u8", ignoreCase = true) ->
+            path.endsWith(".m3u8") || uri.toString().contains("m3u8", true) ->
                 HlsMediaSource.Factory(httpFactory).createMediaSource(mediaItem)
-            path.contains("mpd", ignoreCase = true) ->
-                DashMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+
+            path.endsWith(".mpd") || uri.toString().contains("mpd", true) ->
+                DashMediaSource.Factory(httpFactory).createMediaSource(mediaItem)
+
             else ->
                 ProgressiveMediaSource.Factory(httpFactory).createMediaSource(mediaItem)
         }
     }
+
 
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
@@ -192,10 +210,19 @@ class VideoPlayerFragment : Fragment() {
         }
         override fun onPlaybackStateChanged(state: Int) {
             if (state == Player.STATE_ENDED) {
-                playerControl(play = true, reset = true) // LOOP 성격
+                playerControl(play = true, reset = true)
+            }
+        }
+        override fun onPlayerError(error: PlaybackException) {
+            Log.e("ShortsPlay", "⛔ player error: ${error.errorCodeName}", error)
+            val cause = error.cause
+            if (cause is HttpDataSource.InvalidResponseCodeException) {
+                Log.e("ShortsPlay", "HTTP ${cause.responseCode}, url=${cause.dataSpec?.uri}")
+                Log.e("ShortsPlay", "headers=${cause.headerFields}")   // ✅ 여기!
             }
         }
     }
+
 
     /** Activity가 직접 호출해서 현재 페이지만 재생/정지 */
     fun playerControl(play: Boolean, reset: Boolean) {

@@ -19,6 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.UUID
+import com.example.test.Utils.UrlUtils.resolveToBase
 
 class ShortsActivity : AppCompatActivity() {
 
@@ -217,18 +218,16 @@ class ShortsActivity : AppCompatActivity() {
                         or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
         }
     }
-    // ShortVideoDto -> ShortObject 변환
+
     private fun ShortVideoDto.toShortObject(): ShortObject {
         return ShortObject(
-            id        = this.id.toInt(),
+            id        = id.toInt(),
             userName  = "",
-            title  = this.title,
-            videoUrl  = this.videoUrl ?: "",
-            viewCount = this.viewCount,
-            likeCount = this.likeCount,
-            userId = this.userId.toInt()
+            title     = title,
+            videoUrl  = resolveToBase(videoUrl) ?: "",   // ★ 여기!
+            viewCount = viewCount,
+            likeCount = likeCount,
+            userId    = userId.toInt()
         )
     }
-
-
 }
