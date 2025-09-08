@@ -2,10 +2,17 @@ package com.example.test
 
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.test.model.shorts.CommentRequestDTO
+import com.example.test.model.shorts.ShortCommentResponse
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ShortsComment : AppCompatActivity() {
 
@@ -48,28 +55,91 @@ class ShortsComment : AppCompatActivity() {
 
         btnSend.setOnClickListener {
             val text = et.text?.toString()?.trim().orEmpty()
+            Log.d("ShortsComment", "▶ 버튼 클릭됨, 입력값: '$text'")   // 버튼 눌림 로그
+
             if (text.isEmpty()) {
                 Toast.makeText(this, "댓글을 입력하세요", Toast.LENGTH_SHORT).show()
+                Log.d("ShortsComment", "⚠ 입력값이 비어 있음")
                 return@setOnClickListener
             }
-            val now = System.currentTimeMillis()
-            val dateStr = DateFormat.format("yyyy.MM.dd HH:mm", now).toString()
 
-            val newItem = CommentUi(
-                profileUrl = null, // 서버에서 URL 내려주면 사용
-                nickname = "나",
-                content = text,
-                dateText = dateStr
-            )
-            items.add(newItem)
-            adapter.submitList(items.toList())
-            rv.scrollToPosition(items.lastIndex)
-            et.setText("")
-            updateCount()
+            val id = shortsId
+            Log.d("ShortsComment", "▶ shortsId: $id")   // ID 확인
 
-            // TODO: 서버 연동 시 여기서 POST 호출 후 성공 시 목록 갱신
+            if (id == null) {
+                Log.e("ShortsComment", "❌ shortsId가 null")
+                return@setOnClickListener
+            }
+
+            val token = App.prefs.token
+            Log.d("ShortsComment", "▶ token: $token")   // 토큰 확인
+
+            if (token == null) {
+                Log.e("ShortsComment", "❌ 토큰이 null")
+                return@setOnClickListener
+            }
+
+            val dto = CommentRequestDTO(text)
+            Log.d("ShortsComment", "▶ 서버 호출 준비: dto=$dto")
+
+            RetrofitInstance.apiService.addShortsComment(
+                id, dto, "Bearer $token"
+            ).enqueue(object : Callback<Void> {   // 👈 여기 Void로 수정
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Log.d("ShortsComment", "✅ 서버 응답: code=${response.code()}")
+                    if (response.isSuccessful) {
+                        et.setText("")
+                        loadComments() // 성공 시 댓글 목록 다시 불러오기
+                    } else {
+                        Toast.makeText(this@ShortsComment, "등록 실패 (${response.code()})", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.e("ShortsComment", "⛔ 서버 호출 실패: ${t.message}", t)
+                    Toast.makeText(this@ShortsComment, "에러: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
+        loadComments()
+    }
+    private fun loadComments() {
+        val id = shortsId ?: return
+        val token = App.prefs.token
+        Log.d("ShortsComment", "📥 댓글 목록 불러오기 요청 id=$id")
 
+        RetrofitInstance.apiService.getShortsComments(id, "Bearer $token")
+            .enqueue(object : Callback<List<ShortCommentResponse>> {
+                override fun onResponse(
+                    call: Call<List<ShortCommentResponse>>,
+                    response: Response<List<ShortCommentResponse>>
+                ) {
+                    Log.d("ShortsComment", "📥 댓글 목록 응답: code=${response.code()}, body=${response.body()}")
+
+                    if (response.isSuccessful) {
+                        val data = response.body().orEmpty()
+                        Log.d("ShortsComment", "📥 서버에서 받은 댓글 개수=${data.size}")
+
+                        items.clear()
+                        items.addAll(data.map {
+                            CommentUi(
+                                nickname = it.username, // 👈 바로 username 사용
+                                content = it.content,
+                                dateText = it.createdAt
+                            )
+                        })
+                        adapter.submitList(items.toList())
+                        updateCount()
+                    } else {
+                        Log.e("ShortsComment", "❌ 댓글 불러오기 실패: code=${response.code()}, errorBody=${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ShortCommentResponse>>, t: Throwable) {
+                    Log.e("ShortsComment", "⛔ 댓글 불러오기 네트워크 실패: ${t.message}", t)
+                    Toast.makeText(this@ShortsComment, "댓글 불러오기 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     private fun onReportClicked(position: Int) {
@@ -82,7 +152,6 @@ class ShortsComment : AppCompatActivity() {
 }
 
 data class CommentUi(
-    val profileUrl: String?,
     val nickname: String,
     val content: String,
     val dateText: String

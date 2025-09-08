@@ -91,12 +91,15 @@ class VideoPlayerFragment : Fragment() {
             btn.tag = !tag
         }
 
+        // VideoPlayerFragment
         binding.btnComment.setOnClickListener {
+            Log.d("VideoPlayerFragment", "💬 댓글 버튼 클릭: id=${shortObject.id}")
             val intent = Intent(requireContext(), ShortsComment::class.java).apply {
-                putExtra("shortsId", shortObject.id)
+                putExtra("shortsId", shortObject.id.toLong()) // 👈 Long으로 변환
             }
             startActivity(intent)
         }
+
 
         return binding.root
     }

@@ -24,6 +24,8 @@ import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.model.review.TpReviewResponseDTO
+import com.example.test.model.shorts.CommentRequestDTO
+import com.example.test.model.shorts.ShortCommentResponse
 import com.example.test.model.shorts.ShortVideoListResponse
 import com.example.test.model.shorts.ShortsCardDto
 import okhttp3.MultipartBody
@@ -539,5 +541,18 @@ interface ApiService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 30
     ): Call<ShortVideoListResponse>
+
+    @POST("api/shorts/{id}/comment")
+    fun addShortsComment(
+        @Path("id") shortsId: Long,
+        @Body dto: CommentRequestDTO,
+        @Header("Authorization") bearer: String
+    ): Call<Void>
+
+    @GET("api/shorts/{id}/comments")
+    fun getShortsComments(
+        @Path("id") id: Long,
+        @Header("Authorization") bearer: String
+    ): Call<List<ShortCommentResponse>>
 
 }

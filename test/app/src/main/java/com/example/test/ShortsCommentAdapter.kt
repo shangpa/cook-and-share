@@ -36,12 +36,6 @@ class ShortsCommentAdapter(
             tvContent.text = item.content
             tvDate.text = item.dateText
 
-            if (!item.profileUrl.isNullOrBlank()) {
-                Glide.with(itemView).load(item.profileUrl).circleCrop().into(imgProfile)
-            } else {
-                // 기본 아이콘 유지
-            }
-
             tvReport.setOnClickListener { onReportClick(bindingAdapterPosition) }
         }
     }
