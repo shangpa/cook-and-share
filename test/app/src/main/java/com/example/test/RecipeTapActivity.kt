@@ -15,7 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.test.Utils.TabBarUtils
+import com.example.test.Utils.UrlUtils
 import com.example.test.adapter.RecipeSearchAdapter
 import com.example.test.adapter.SuggestRecipeAdapter
 import com.example.test.model.Recipe
@@ -329,28 +331,28 @@ class RecipeTapActivity : AppCompatActivity() {
         val card = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(containerId)
         val imageView = card.findViewById<android.widget.ImageView>(imageId)
         val titleView = card.findViewById<TextView>(titleId)
-        val thumbUrl = resolveFullUrl(item.thumbnailUrl)
+        val thumbUrl = UrlUtils.resolveToBase(item.thumbnailUrl)
 
         titleView.text = item.title
 
-        try {
-            com.bumptech.glide.Glide.with(imageView)
-                .load(thumbUrl)
-                .placeholder(R.drawable.image_one_minute)
-                .error(R.drawable.image_one_minute)
-                .centerCrop()
-                .into(imageView)
-        } catch (_: Throwable) { }
+        Glide.with(imageView)
+            .load(thumbUrl)
+            .placeholder(R.drawable.image_one_minute)
+            .error(R.drawable.image_one_minute)
+            .centerCrop()
+            .into(imageView)
 
         card.setOnClickListener {
             startActivity(
                 Intent(this, ShortsActivity::class.java).apply {
                     putExtra("mode", "random")
-                    putExtra("focusId", item.id)
+                    // ✔ focusId 타입 맞추기 (아래 2번 참고)
+                    putExtra("focusId", item.id.toInt())
                 }
             )
         }
     }
+
 
     private fun resolveFullUrl(serverValue: String?): String? {
         if (serverValue.isNullOrBlank()) return null
