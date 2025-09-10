@@ -138,6 +138,14 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     private lateinit var underlineBar: View
     private val layoutHistory = Stack<ConstraintLayout>() // ← 이전 레이아웃 저장용
     private lateinit var currentLayout: ConstraintLayout
+    // 레시피 데이터 수집용 (BothActivity 클래스 맨 위쪽에)
+    private var filteredIngredients: List<Pair<String, String>> = emptyList()
+    private var replaceIngredients: List<String> = emptyList()
+    private var handlingMethods: List<String> = emptyList()
+    private var cookingSteps: MutableList<String> = mutableListOf()
+
+    // Step 관련 (타이머/이미지)
+    private var stepTimerMap: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
     //동영상
     private var selectedVideoUri: Uri? = null
     private var recipeVideoUrl: String? = null
@@ -687,13 +695,71 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 임시저장 저장 클릭시 홈으로 이동
         btnStore.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            }
-            startActivity(intent)
-            finish()
-        }
 
+            // ✅ recipe 객체 생성 or 기존 객체 갱신
+            if (recipe == null) {
+                val gson = Gson()
+                recipe = RecipeRequest(
+                    title = recipeTitleWrite.text.toString(),
+                    category = mapCategoryToEnum(koreanFood.text.toString()),
+                    ingredients = gson.toJson(filteredIngredients.map {
+                        Ingredient(it.first, it.second)
+                    }),
+                    alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
+                        .map {
+                            val parts = it.split(" → ")
+                            Ingredient(parts[0], parts[1])
+                        }),
+                    handlingMethods = gson.toJson(handlingMethods),
+                    cookingSteps = gson.toJson(cookingSteps.mapIndexed { index, stepText ->
+                        val step = index + 1
+                        val (hour, minute) = stepTimerMap[step] ?: (0 to 0)
+                        val totalSeconds = hour * 3600 + minute * 60
+                        val imageUrl = stepImages[step] ?: ""
+
+                        CookingStep(
+                            step = step,                // 순서
+                            description = stepText,     // 설명
+                            mediaUrl = imageUrl,        // 이미지 URL
+                            mediaType = "IMAGE",        // Both에서도 조리순서는 IMAGE 타입
+                            timeInSeconds = totalSeconds
+                        )
+                    }),
+                    mainImageUrl = mainImageUrl,
+                    difficulty = elementaryLevel.text.toString(),
+                    tags = detailSettleRecipeTitleWrite.text.toString(),
+                    cookingTime = (zero.text.toString().toIntOrNull() ?: 0) * 60 +
+                            (halfHour.text.toString().toIntOrNull() ?: 0),
+                    servings = 2,
+                    isPublic = false,         // 임시저장이므로 비공개
+                    videoUrl = recipeVideoUrl ?: "",
+                    isDraft = true,           // ✅ 임시저장
+                    recipeType = "BOTH"       // ✅ Both 타입
+                )
+            } else {
+                // 이미 있는 recipe면 copy해서 draft로 갱신
+                recipe = recipe!!.copy(
+                    isDraft = true,
+                    isPublic = false,
+                    recipeType = "BOTH"
+                )
+            }
+
+            val gson = Gson()
+            Log.d("RecipeRequest", "임시저장 전송 JSON = ${gson.toJson(recipe)}")
+
+            // 서버 전송
+            sendRecipeToServer(recipe!!, onSuccess = { recipeId ->
+                Toast.makeText(this, "임시저장 성공!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                }
+                startActivity(intent)
+                finish()
+            }, onFailure = {
+                Toast.makeText(this, "임시저장 실패", Toast.LENGTH_SHORT).show()
+            })
+        }
         // 레시피 탭바와 바 선언
         textViewList = listOf(one, two, three, four, five, six, seven)
         underlineBar = findViewById(R.id.divideRectangleBarTwentythree)
@@ -2271,7 +2337,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
     // 조리순서 step 추가 후 내용 추가하기
     val stepRecipeCountMap = mutableMapOf<Int, Int>()
-    val stepTimerMap = mutableMapOf<Int, Pair<Int, Int>>()
 
     private fun addNewStep(step: Int) {
         for (i in 0 until stepContainer.childCount) {

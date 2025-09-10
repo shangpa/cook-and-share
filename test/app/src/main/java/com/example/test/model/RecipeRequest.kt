@@ -13,5 +13,7 @@ data class RecipeRequest(
     val cookingTime: Int,
     val servings: Int,
     val isPublic: Boolean,
-    val videoUrl: String = ""
+    val videoUrl: String = "",
+    val isDraft: Boolean = false,   // 기본값 false, 임시 저장이면 true
+    val recipeType: String = "IMAGE" //Image, Video, Both 셋중하나
 )
