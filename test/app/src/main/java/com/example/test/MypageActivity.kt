@@ -21,6 +21,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.bumptech.glide.Glide
 import android.view.View
+import java.text.NumberFormat
+import java.util.Locale
 
 
 class MypageActivity : AppCompatActivity() {
@@ -144,7 +146,9 @@ class MypageActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<Int>, response: Response<Int>) {
                         if (response.isSuccessful) {
                             val point = response.body() ?: 0
-                            userPointText.text = "${point}P"
+                            // 숫자에 3자리 콤마 추가
+                            val formattedPoint = NumberFormat.getNumberInstance(Locale.KOREA).format(point)
+                            userPointText.text = "${formattedPoint} P"
                         } else {
                             userPointText.text = "?"
                         }

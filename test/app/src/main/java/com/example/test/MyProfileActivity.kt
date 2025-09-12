@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
@@ -28,6 +29,7 @@ class MyProfileActivity : AppCompatActivity() {
     private lateinit var tvFollowerCount: TextView
     private lateinit var tvRecipeCount: TextView
     private lateinit var tvVideoCount: TextView
+    private lateinit var ivProfile: ImageView
 
     private enum class Tab { RECIPE, VIDEO }
     private var currentTab = Tab.RECIPE
@@ -47,7 +49,7 @@ class MyProfileActivity : AppCompatActivity() {
         tvFollowerCount  = findViewById(R.id.follow)   // "팔로우 수" TextView
         tvRecipeCount    = findViewById(R.id.recipe)   // 레시피 수 숫자
         tvVideoCount     = findViewById(R.id.video)    // 동영상(쇼츠) 수 숫자
-
+        ivProfile = findViewById(R.id.profile)         // 프로필 이미지
 
         targetUserId = intent.getIntExtra("targetUserId", -1)
         if (targetUserId == -1) {
@@ -128,20 +130,27 @@ class MyProfileActivity : AppCompatActivity() {
                 }
             })
     }
+
+    /** 프로필 이미지 */
     private fun bindSummary(data: ProfileSummaryResponse) {
-        // 닉네임
-        tvNickname.text = data.nickname
-
-        // 팔로워 수 (UI에 "팔로우"라고 라벨이 있으니 숫자만 꽂음)
+        tvNickname.text      = data.nickname
         tvFollowerCount.text = data.followersCount.toString()
+        tvRecipeCount.text   = data.recipeCount.toString()
+        tvVideoCount.text    = data.shortsCount.toString()
 
-        // 레시피/동영상 수
-        tvRecipeCount.text = data.recipeCount.toString()
-        tvVideoCount.text  = data.shortsCount.toString()
-
-        // TODO: 타인 프로필이면 팔로우 버튼 추가 시 data.following / data.mine 으로 상태 제어
-        // if (!data.mine) { btnFollow.visibility = View.VISIBLE ... }
+        val url = data.profileImageUrl
+        if (!url.isNullOrBlank()) {
+            Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.ic_cicrle_profile)
+                .error(R.drawable.ic_cicrle_profile)
+                .circleCrop()
+                .into(ivProfile)
+        } else {
+            ivProfile.setImageResource(R.drawable.ic_cicrle_profile)
+        }
     }
+
 
     private fun switchTab(tab: Tab) {
         if (currentTab == tab) return

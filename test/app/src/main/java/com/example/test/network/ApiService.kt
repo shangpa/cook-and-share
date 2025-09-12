@@ -416,6 +416,14 @@ interface ApiService {
         @Body body: Map<String, String>
     ): Call<Boolean>
 
+    @Multipart
+    @POST("/api/user/profile-image")
+    fun uploadProfileImage(
+        @Header("Authorization") bearer: String,
+        @Part image: MultipartBody.Part
+    ): Call<ProfileImageResponse>
+
+
     //마이페이지 - 찜한 레시피
     @GET("api/recipes/likes")
     fun getLikedRecipes(

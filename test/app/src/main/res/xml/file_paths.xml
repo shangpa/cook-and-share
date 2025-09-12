@@ -3,4 +3,9 @@
     <cache-path
         name="ocr_cache"
         path="." />
+
+    <!-- 외부 캐시 (getExternalCacheDir()) -->
+    <external-cache-path
+        name="ext_cache"
+        path="." />
 </paths>
