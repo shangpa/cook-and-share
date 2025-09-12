@@ -3,6 +3,7 @@ package com.example.test
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,15 +13,29 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test.R
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.test.model.UserProfileResponse
 import com.example.test.model.LoginInfoResponse
 import com.example.test.model.UpdateUserRequest
 import com.example.test.network.RetrofitInstance
+import android.Manifest
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import com.example.test.model.ProfileImageResponse
+import androidx.activity.result.PickVisualMediaRequest
 
 class MypagePersonalInfoActivity : AppCompatActivity() {
     private lateinit var passwordInput: EditText
@@ -32,6 +47,10 @@ class MypagePersonalInfoActivity : AppCompatActivity() {
     private lateinit var passwordNowInput: EditText
     private lateinit var passwordNowUnderline: View
     private lateinit var passwordNowErrorText: TextView
+    private lateinit var imageProfile: ImageView
+    private lateinit var btnProfileCamera: ImageButton
+    private var cameraImageUri: Uri? = null
+    private var chosenImageUri: Uri? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,18 +111,29 @@ class MypagePersonalInfoActivity : AppCompatActivity() {
 
         RetrofitInstance.apiService.getUserInfo("Bearer ${App.prefs.token}")
             .enqueue(object : Callback<LoginInfoResponse> {
-                override fun onResponse(call: Call<LoginInfoResponse>, response: Response<LoginInfoResponse>) {
+                override fun onResponse(
+                    call: Call<LoginInfoResponse>,
+                    response: Response<LoginInfoResponse>
+                ) {
                     if (response.isSuccessful) {
                         val data = response.body()
                         findViewById<TextView>(R.id.personalInfoName).text = data?.name
-                        usernameEditText.setText(data?.userName)
+                        usernameEditText.setText(data?.username)
+
+                        val url = data?.profileImageUrl
+                        if (!url.isNullOrBlank()) {
+                            App.prefs.profileImageUrl = url
+                            Glide.with(this@MypagePersonalInfoActivity)
+                                .load(url)      // String 명확히 전달
+                                .circleCrop()
+                                .into(imageProfile)
+                        }
                     }
                 }
-
-                override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
-                    Log.e("개인정보 요청 실패", t.message ?: "알 수 없는 오류")
-                }
+                override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) { /* ... */ }
             })
+
+
 
         val btnInfoFix = findViewById<LinearLayout>(R.id.btnInfoFix)
 
@@ -129,7 +159,7 @@ class MypagePersonalInfoActivity : AppCompatActivity() {
                 .enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(this@MypagePersonalInfoActivity, "비밀번호 수정 완료! 다시 로그인해주세요", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MypagePersonalInfoActivity, "수정 완료! 다시 로그인해 주세요", Toast.LENGTH_SHORT).show()
 
                             // 토큰 제거 (로그아웃)
                             App.prefs.token = ""
@@ -157,6 +187,62 @@ class MypagePersonalInfoActivity : AppCompatActivity() {
             finish()
         }
 
+        imageProfile = findViewById(R.id.imageProfile)
+        btnProfileCamera = findViewById(R.id.btnProfileCamera)
+
+        val openChooser = { showImageSourceChooser() }
+        imageProfile.setOnClickListener { openChooser() }
+        btnProfileCamera.setOnClickListener { openChooser() }
+
+        loadExistingProfileImage()   // 앱 시작 시 저장된 프로필 로드
+
+    }
+
+
+    private val requestCameraPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
+            if (ok) openCamera() else Toast.makeText(this,"카메라 권한이 필요해요.",Toast.LENGTH_SHORT).show()
+        }
+
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) { chosenImageUri = cameraImageUri; showPreview(chosenImageUri); uploadProfileImage(chosenImageUri) }
+        }
+
+    private val pickMediaLauncher =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri!=null){ chosenImageUri = uri; showPreview(uri); uploadProfileImage(uri) }
+        }
+
+    private fun showImageSourceChooser() {
+        AlertDialog.Builder(this)
+            .setTitle("프로필 이미지")
+            .setItems(arrayOf("사진 촬영","앨범에서 선택")) { _, which ->
+                if (which==0) ensureCameraAndOpen() else openGalleryPicker()
+            }.show()
+    }
+
+    private fun ensureCameraAndOpen() {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+            requestCameraPermission.launch(Manifest.permission.CAMERA)
+        else openCamera()
+    }
+
+    private fun openCamera() {
+        val file = File.createTempFile("profile_${System.currentTimeMillis()}_", ".jpg", externalCacheDir)
+        cameraImageUri = FileProvider.getUriForFile(this,"${packageName}.fileprovider", file)
+        takePictureLauncher.launch(cameraImageUri)
+    }
+
+    private fun openGalleryPicker() {
+        pickMediaLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
+    private fun showPreview(uri: Uri?) {
+        if (uri==null) return
+        Glide.with(this).load(uri).circleCrop().into(imageProfile)
     }
 
     private fun checkCurrentPassword(input: String) {
@@ -193,5 +279,48 @@ class MypagePersonalInfoActivity : AppCompatActivity() {
         }
     }
 
+    private fun uploadProfileImage(uri: Uri?) {
+        if (uri == null) return
+        val token = App.prefs.token ?: return
+
+        val mime = contentResolver.getType(uri) ?: "image/jpeg"
+        val bytes = contentResolver.openInputStream(uri)?.readBytes() ?: return
+        val body = bytes.toRequestBody(mime.toMediaTypeOrNull())
+        val part = MultipartBody.Part.createFormData(
+            "image",
+            "profile_${System.currentTimeMillis()}.jpg",
+            body
+        )
+
+        RetrofitInstance.apiService.uploadProfileImage("Bearer $token", part)
+            .enqueue(object : Callback<ProfileImageResponse> {
+                override fun onResponse(
+                    call: Call<ProfileImageResponse>,
+                    response: Response<ProfileImageResponse>
+                ) {
+                    val url = response.body()?.profileImageUrl
+                    if (response.isSuccessful && !url.isNullOrBlank()) {
+                        // 성공: 로컬에만 저장, 토스트는 띄우지 않음
+                        App.prefs.profileImageUrl = url
+                    } else {
+                        Toast.makeText(this@MypagePersonalInfoActivity, "업로드 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ProfileImageResponse>, t: Throwable) {
+                    Toast.makeText(this@MypagePersonalInfoActivity, "업로드 실패", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+
+    private fun loadExistingProfileImage() {
+        val url: String? = App.prefs.profileImageUrl
+        if (!url.isNullOrBlank()) {
+            Glide.with(this).load(url).circleCrop().into(imageProfile)
+        } else {
+            imageProfile.setImageResource(R.drawable.ic_profile_placeholder)
+        }
+    }
 
 }

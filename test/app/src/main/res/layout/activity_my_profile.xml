@@ -42,6 +42,7 @@
             android:id="@+id/profile"
             android:layout_width="78dp"
             android:layout_height="78dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_cicrle_profile"
             android:contentDescription="프로필 사진" />
 

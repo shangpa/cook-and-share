@@ -8,5 +8,6 @@ data class ProfileSummaryResponse(
     val followersCount: Long,
     val followingCount: Long,
     val following: Boolean,
-    val mine: Boolean
+    val mine: Boolean,
+    val profileImageUrl: String?
 )
