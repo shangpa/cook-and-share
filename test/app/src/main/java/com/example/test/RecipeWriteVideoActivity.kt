@@ -104,6 +104,10 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
         }
     }
+
+    private var filteredIngredients: List<Pair<String, String>> = emptyList()
+    private var replaceIngredients: List<String> = emptyList()
+    private var handlingMethods: List<String> = emptyList()
     // 대표사진 이미지 업로드
     private val pickImageLauncherForDetailSettle =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -214,7 +218,6 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val beforeButton = findViewById<AppCompatButton>(R.id.beforeButton)
         val temporaryStorageBtn = findViewById<AppCompatButton>(R.id.temporaryStorage)
         val transientStorageLayout = findViewById<ConstraintLayout>(R.id.transientStorage)
-        val transientStorage = findViewById<ConstraintLayout>(R.id.transientStorage)
         val btnCancel = findViewById<AppCompatButton>(R.id.cancelThree)
         val btnStore = findViewById<AppCompatButton>(R.id.store)
 
@@ -679,18 +682,64 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // 임시저장 취소 클릭시 임시저장 여부 없어짐
         btnCancel.setOnClickListener {
-            transientStorage.visibility = View.GONE
+            transientStorageLayout.visibility = View.GONE
         }
 
         // 임시저장 저장 클릭시 홈으로 이동
         btnStore.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            if (isVideoUploading) {
+                Toast.makeText(this, "동영상 업로드가 끝날 때까지 기다려 주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-            startActivity(intent)
-            finish()
-        }
 
+            // ✅ recipe가 null이면 여기서 새로 만들어줌
+            if (recipe == null) {
+                val gson = Gson()
+                recipe = RecipeRequest(
+                    title = recipeTitleWrite.text.toString(),
+                    category = mapCategoryToEnum(koreanFood.text.toString()),
+                    ingredients = gson.toJson(filteredIngredients.map {
+                        Ingredient(it.first, it.second)
+                    }),
+                    alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
+                        .map {
+                            val parts = it.split(" → ")
+                            Ingredient(parts[0], parts[1])
+                        }),
+                    handlingMethods = gson.toJson(handlingMethods),
+                    cookingSteps = gson.toJson(emptyList<CookingStep>()), // 동영상만 보낼거라 조리순서 X
+                    mainImageUrl = mainImageUrl,
+                    difficulty = elementaryLevel.text.toString(),
+                    tags = detailSettleRecipeTitleWrite.text.toString(),
+                    cookingTime = (zero.text.toString().toIntOrNull() ?: 0) * 60 + (halfHour.text.toString().toIntOrNull() ?: 0),
+                    servings = 2,
+                    isPublic = false,
+                    videoUrl = recipeVideoUrl ?: "",
+                    isDraft = true,           // ✅ 임시저장
+                    recipeType = "VIDEO"      // ✅ 비디오 작성
+                )
+            } else {
+                // 이미 있는 recipe면 copy해서 draft로 바꿈
+                recipe = recipe!!.copy(
+                    isDraft = true,
+                    isPublic = false,
+                    recipeType = "VIDEO"
+                )
+            }
+            val gson = Gson()
+            Log.d("RecipeRequest", "임시저장 전송 JSON = ${gson.toJson(recipe)}")
+            sendRecipeToServer(recipe!!, onSuccess = { recipeId ->
+                Toast.makeText(this, "임시저장 성공!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                }
+                startActivity(intent)
+                finish()
+            }, onFailure = {
+                Toast.makeText(this, "임시저장 실패", Toast.LENGTH_SHORT).show()
+            })
+
+        }
         recipeTitleWrite.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
