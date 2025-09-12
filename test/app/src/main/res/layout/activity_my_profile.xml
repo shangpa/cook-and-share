@@ -55,84 +55,130 @@
                 android:id="@+id/profileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="홍길동"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginStart="4dp"
                 android:contentDescription="사용자 이름"/>
 
-            <!-- 팔로우 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="팔로우"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"/>
-
-                <TextView
-                    android:id="@+id/follow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1,890"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="팔로우 수"/>
-            </LinearLayout>
-
-            <!-- 레시피 | 동영상 개수 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <!-- 레시피 -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="레시피"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:textColor="#8A8A8A"/>
+                    android:orientation="vertical"
+                    android:layout_marginRight="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="레시피"
+                        android:textSize="14sp"
+                        android:layout_marginStart="4dp"
+                        android:textColor="#8A8A8A"
+                        android:layout_gravity="center"/>
 
-                <TextView
-                    android:id="@+id/recipe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="312"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="레시피 수"
-                    android:textColor="#8A8A8A"/>
+                    <TextView
+                        android:id="@+id/recipe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="312"
+                        android:textSize="15sp"
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="레시피 수"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <TextView
+                <!-- 동영상 -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" | "
-                    android:textSize="14sp"
-                    android:textColor="#8A8A8A"
-                    android:layout_marginStart="4dp"/>
+                    android:orientation="vertical"
+                    android:layout_marginRight="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="동영상"
+                        android:textSize="14sp"
+                        android:layout_marginStart="4dp"
+                        android:textColor="#8A8A8A"
+                        android:layout_gravity="center"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="동영상"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:textColor="#8A8A8A"/>
+                    <TextView
+                        android:id="@+id/video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="111"
+                        android:textSize="15sp"
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="동영상 수"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/video"
+                <!-- 팔로워 -->
+                <LinearLayout
+                    android:id="@+id/followers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="111"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="동영상 수"
-                    android:textColor="#8A8A8A"/>
+                    android:orientation="vertical"
+                    android:layout_marginRight="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="팔로워"
+                        android:textSize="14sp"
+                        android:layout_marginStart="4dp"
+                        android:textColor="#8A8A8A"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/follow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1,890"
+                        android:textSize="15sp"
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="팔로우 수"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <!-- 팔로잉 -->
+                <LinearLayout
+                    android:id="@+id/followings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="팔로잉"
+                        android:textSize="15sp"
+                        android:layout_marginStart="4dp"
+                        android:textColor="#8A8A8A"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/following"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1,890"
+                        android:textSize="14sp"
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="팔로우 수"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 

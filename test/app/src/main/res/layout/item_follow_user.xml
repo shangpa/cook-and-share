@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:gravity="center_vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@drawable/ic_cicrle_profile"
+        android:contentDescription="프로필"
+        android:layout_marginEnd="12dp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닉네임"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvHandle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@handle"
+            android:textSize="12sp"
+            android:textColor="#8A8A8A"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnFollow"
+        android:layout_width="72dp"
+        android:layout_height="36dp"
+        android:gravity="center"
+        android:text="팔로우"
+        android:textSize="14sp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/white" />
+</LinearLayout>

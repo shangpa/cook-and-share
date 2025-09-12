@@ -1,5 +1,6 @@
 package com.example.test.network
 
+import com.example.test.FollowUserResponse
 import com.example.test.model.*
 import com.example.test.model.Fridge.FridgeCreateRequest
 import com.example.test.model.Fridge.FridgeHistoryResponse
@@ -555,4 +556,17 @@ interface ApiService {
         @Header("Authorization") bearer: String
     ): Call<List<ShortCommentResponse>>
 
+    // 팔로워 목록(나를 팔로우하는 사람들)
+    @GET("api/profile/{userId}/followers")
+    fun getFollowers(
+        @Path("userId") userId: Int,
+        @Header("Authorization") token: String
+    ): Call<List<FollowUserResponse>>
+
+    // 팔로잉 목록(내가 팔로우하는 사람들)
+    @GET("api/profile/{userId}/followings")
+    fun getFollowings(
+        @Path("userId") userId: Int,
+        @Header("Authorization") token: String
+    ): Call<List<FollowUserResponse>>
 }

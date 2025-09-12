@@ -78,6 +78,21 @@ class MyProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 팔로워/팔로잉 클릭 리스너 추가
+        findViewById<LinearLayout>(R.id.followers).setOnClickListener {
+            val intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("targetUserId", targetUserId)
+            intent.putExtra("initialTab", "followers") // 기본: 팔로워 탭
+            startActivity(intent)
+        }
+
+        findViewById<LinearLayout>(R.id.followings).setOnClickListener {
+            val intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("targetUserId", targetUserId)
+            intent.putExtra("initialTab", "followings") // 기본: 팔로잉 탭
+            startActivity(intent)
+        }
+
         // ✅ 프로필 요약 로드
         loadProfileSummary()
     }

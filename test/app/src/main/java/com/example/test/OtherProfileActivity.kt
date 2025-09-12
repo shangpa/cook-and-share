@@ -1,5 +1,6 @@
 package com.example.test
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
@@ -58,8 +59,24 @@ class OtherProfileActivity : AppCompatActivity() {
         tabRecipe.setOnClickListener { switchTab(Tab.RECIPE) }
         tabVideo.setOnClickListener  { switchTab(Tab.VIDEO) }
 
+        // onCreate 마지막 부분쯤, initIndicatorWidthAndPosition() 아래나 근처에 붙여넣기
+        findViewById<LinearLayout>(R.id.followers).setOnClickListener {
+            val intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("targetUserId", userId.toInt())
+            intent.putExtra("initialTab", "followers") // 기본: 팔로워 탭
+            startActivity(intent)
+        }
+
+        findViewById<LinearLayout>(R.id.followings).setOnClickListener {
+            val intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("targetUserId", userId.toInt())
+            intent.putExtra("initialTab", "followings") // 기본: 팔로잉 탭
+            startActivity(intent)
+        }
+
         // 인디케이터 초기화
         initIndicatorWidthAndPosition()
+
     }
 
     private fun switchTab(tab: Tab) {
