@@ -27,6 +27,7 @@ class MyProfileActivity : AppCompatActivity() {
 
     private lateinit var tvNickname: TextView
     private lateinit var tvFollowerCount: TextView
+    private lateinit var tvFollowingCount: TextView
     private lateinit var tvRecipeCount: TextView
     private lateinit var tvVideoCount: TextView
     private lateinit var ivProfile: ImageView
@@ -34,7 +35,7 @@ class MyProfileActivity : AppCompatActivity() {
     private enum class Tab { RECIPE, VIDEO }
     private var currentTab = Tab.RECIPE
 
-    // ✅ 이 화면에서 볼 대상 유저 ID (내 프로필이면 로그인 유저 ID를 넣으세요)
+    // 화면에서 볼 대상 유저 ID
     private var targetUserId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +47,10 @@ class MyProfileActivity : AppCompatActivity() {
         indicator = findViewById(R.id.indicator)
 
         tvNickname       = findViewById(R.id.profileName)
+        tvFollowerCount  = findViewById(R.id.follow)
+        tvFollowingCount = findViewById(R.id.following)
+        tvRecipeCount    = findViewById(R.id.recipe)
+        tvVideoCount     = findViewById(R.id.video)
         tvFollowerCount  = findViewById(R.id.follow)   // "팔로우 수" TextView
         tvRecipeCount    = findViewById(R.id.recipe)   // 레시피 수 숫자
         tvVideoCount     = findViewById(R.id.video)    // 동영상(쇼츠) 수 숫자
@@ -80,26 +85,26 @@ class MyProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 팔로워/팔로잉 클릭 리스너 추가
+        // 팔로워/팔로잉 클릭 리스너
         findViewById<LinearLayout>(R.id.followers).setOnClickListener {
             val intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("targetUserId", targetUserId)
-            intent.putExtra("initialTab", "followers") // 기본: 팔로워 탭
+            intent.putExtra("initialTab", "followers")
             startActivity(intent)
         }
 
         findViewById<LinearLayout>(R.id.followings).setOnClickListener {
             val intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("targetUserId", targetUserId)
-            intent.putExtra("initialTab", "followings") // 기본: 팔로잉 탭
+            intent.putExtra("initialTab", "followings")
             startActivity(intent)
         }
 
-        // ✅ 프로필 요약 로드
+        // 프로필 요약 로드
         loadProfileSummary()
     }
 
-    // ----- 프로필 요약 불러오기 -----
+    // ----- 프로필 요약 불러오기
     private fun loadProfileSummary() {
         val token = App.prefs.token
         if (token.isNullOrBlank()) {
@@ -132,11 +137,22 @@ class MyProfileActivity : AppCompatActivity() {
     }
 
     /** 프로필 이미지 */
+
     private fun bindSummary(data: ProfileSummaryResponse) {
         tvNickname.text      = data.nickname
         tvFollowerCount.text = data.followersCount.toString()
         tvRecipeCount.text   = data.recipeCount.toString()
         tvVideoCount.text    = data.shortsCount.toString()
+        // 닉네임
+        tvNickname.text = data.nickname
+
+        // ✅ 팔로워/팔로잉 수 반영
+        tvFollowerCount.text  = data.followersCount.toString()
+        tvFollowingCount.text = data.followingCount.toString()
+
+        // 레시피/동영상 수
+        tvRecipeCount.text = data.recipeCount.toString()
+        tvVideoCount.text  = data.shortsCount.toString()
 
         val url = data.profileImageUrl
         if (!url.isNullOrBlank()) {

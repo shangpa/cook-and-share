@@ -1,5 +1,6 @@
 package com.example.test
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,8 +57,12 @@ class RecipeTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recycler = view.findViewById(R.id.writeRecipeRecyclerView)
         recycler.layoutManager = LinearLayoutManager(requireContext())
+
+        // ✅ 초기 어댑터: 클릭 시 상세 화면으로 이동
         adapter = MyWriteRecipeAdapter(recipeList) { item ->
-            Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), RecipeSeeMainActivity::class.java)
+            intent.putExtra("recipeId", item.id)   // ✅ 레시피 ID 전달
+            startActivity(intent)
         }
         recycler.adapter = adapter
 
@@ -125,6 +130,7 @@ class RecipeTabFragment : Fragment() {
             dateText.setTextColor(unselectedTextColor)
         }
     }
+
     private fun fetchRecipes(sort: String) {
         val rawToken = App.prefs.token
         if (rawToken.isNullOrBlank()) {
@@ -153,8 +159,12 @@ class RecipeTabFragment : Fragment() {
                 if (response.isSuccessful) {
                     val body = response.body() ?: return
                     recipeList = body.recipes
+
+                    // ✅ 어댑터 재생성: 클릭 시 상세 화면으로 이동
                     adapter = MyWriteRecipeAdapter(recipeList) { item ->
-                        Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), RecipeSeeMainActivity::class.java)
+                        intent.putExtra("recipeId", item.id)   // ✅ 레시피 ID 전달
+                        startActivity(intent)
                     }
                     recycler.adapter = adapter
                 } else {
@@ -168,7 +178,6 @@ class RecipeTabFragment : Fragment() {
             }
         })
     }
-
 
     private fun fetchMyRecipes(sort: String) {
         val token = App.prefs.token
@@ -187,8 +196,12 @@ class RecipeTabFragment : Fragment() {
                     if (response.isSuccessful) {
                         val body = response.body() ?: return
                         recipeList = body.recipes
+
+                        // ✅ 어댑터 재생성: 클릭 시 상세 화면으로 이동
                         adapter = MyWriteRecipeAdapter(recipeList) { item ->
-                            Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(requireContext(), RecipeSeeMainActivity::class.java)
+                            intent.putExtra("recipeId", item.id)   // ✅ 레시피 ID 전달
+                            startActivity(intent)
                         }
                         recycler.adapter = adapter
                     } else {
