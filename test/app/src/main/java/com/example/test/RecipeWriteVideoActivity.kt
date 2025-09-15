@@ -147,9 +147,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
     }
 
     private val tabCompleted = BooleanArray(6) { false }
+    private val committedCompleted = BooleanArray(6) { false }
     private lateinit var progressBars: List<View>
     private var selectedIndex = 0
     private lateinit var textViews: List<TextView>
+    private lateinit var indicatorBar: View
 
 
     @SuppressLint("MissingInflatedId")
@@ -204,12 +206,8 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // 카테고리 선언
         val recipeWriteCategory = findViewById<ConstraintLayout>(R.id.recipeWriteCategory)
         val recipeWrite = findViewById<ConstraintLayout>(R.id.recipeWrite)
-        val indicatorBar = findViewById<View>(R.id.divideRectangleBarThirtythree)
-        indicatorBar.post {
-            val textView = findViewById<TextView>(R.id.one)
-            val targetX = textView.x + (textView.width / 2) - (indicatorBar.width / 2)
-            indicatorBar.x = targetX
-        }
+        indicatorBar = findViewById(R.id.divideRectangleBarThirtythree)
+
         // 레시피 타이틀 선언
         val recipeWriteTitleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteTitleLayout)
         val recipeTitleWrite = findViewById<EditText>(R.id.recipeTitleWrite)
@@ -296,7 +294,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
 
         // 레시피 조리영상 선언
-        val root = findViewById<ConstraintLayout>(R.id.root)
+        root = findViewById(R.id.root)
         val recipeWriteCookVideoLayout = findViewById<ConstraintLayout>(R.id.recipeWriteCookVideoLayout)
         val imageContainer = findViewById<LinearLayout>(R.id.imageContainer)
         val cookVideoCamera = findViewById<ImageButton>(R.id.cookVideoCamera)
@@ -306,7 +304,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
 
         // 레시피 세부설정 선언
         val recipeWriteDetailSettleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
-        val requiredTimeAndTag = findViewById<ConstraintLayout>(R.id.requiredTimeAndTag)
+        requiredTimeAndTag = findViewById(R.id.requiredTimeAndTag)
         val detailSettleCamera = findViewById<ImageButton>(R.id.detailSettleCamera)
         val elementaryLevel = findViewById<TextView>(R.id.elementaryLevel)
         val detailSettleDownArrow = findViewById<ImageButton>(R.id.detailSettleDownArrow)
@@ -315,6 +313,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         val detailSettleRecipeTitleWrite = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)
         val detailSettleFoodName = findViewById<TextView>(R.id.detailSettleFoodName)
         val detailSettleKoreanFood = findViewById<TextView>(R.id.detailSettleKoreanFood)
+        levelChoice = findViewById(R.id.levelChoice)
 
 
         // 작성한 내용 확인 선언
@@ -368,20 +367,34 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // 카테고리 TextView 클릭 시 해당 화면으로 이동 & 바 위치 변경
         textViews.forEachIndexed { index, tv ->
             tv.setOnClickListener {
-                showOnlyLayout(layouts[index])
+                val leaving = currentIndex
+                checkTabs()
+                committedCompleted[leaving] = tabCompleted[leaving]
+                updateProgressBars()
 
                 // 인덱스 갱신
                 selectedIndex = index
-                currentIndex = index
+                currentIndex  = index
+                showOnlyLayout(layouts[index])
 
-                // 인디케이터 이동
-                val targetX = tv.x + (tv.width / 2f) - (indicatorBar.width / 2f)
-                indicatorBar.x = targetX
+                updateSelectedTab(tv)
 
-                // ✅ 색상은 항상 완료/선택 규칙으로만
-                updateSelectedTab(tv)      // 또는 checkTabs() 호출(내부에서 updateSelectedTab 호출됨)
+                indicatorBar.post {
+                    val x = tv.x + (tv.width / 2f) - (indicatorBar.width / 2f)
+                    indicatorBar.x = x
+                }
                 checkAndUpdateContinueButton()
             }
+        }
+
+        selectedIndex = 0
+        currentIndex  = 0
+        showOnlyLayout(layouts[selectedIndex])
+        updateSelectedTab(textViews[selectedIndex])
+
+        indicatorBar.post {
+            val tv = textViews[selectedIndex]
+            indicatorBar.x = tv.x + (tv.width / 2f) - (indicatorBar.width / 2f)
         }
 
         // 현재 활성화된 화면 인덱스 추적 변수
@@ -440,22 +453,33 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         // "계속하기" 버튼 클릭 시 화면 이동
         continueButton.setOnClickListener {
             if (currentIndex < layouts.size - 1 && currentIndex < textViews.size - 1) {
+                val leaving = currentIndex
+
+                // 계산 최신화 후, 떠나는 탭 커밋
+                checkTabs()
+                committedCompleted[leaving] = tabCompleted[leaving]
+                updateProgressBars()
+
+                // 전환
                 currentIndex++
-                showOnlyLayout(layouts[currentIndex])
+                selectedIndex = currentIndex
+                val nextLayout = layouts[selectedIndex]
+                val nextTab = textViews[selectedIndex]
+                showOnlyLayout(nextLayout)
 
-                // 해당 TextView 색상 변경
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                textViews[currentIndex].setTextColor(Color.parseColor("#2B2B2B"))
+                updateSelectedTab(nextTab)
 
-                // 바(View)의 위치 변경
-                val targetX =
-                    textViews[currentIndex].x + (textViews[currentIndex].width / 2) - (indicatorBar.width / 2)
-                indicatorBar.x = targetX
-
-                // 새로운 레이아웃으로 전환된 후 버튼 상태를 재확인
+                indicatorBar.post {
+                    val x = nextTab.x + (nextTab.width / 2f) - (indicatorBar.width / 2f)
+                    indicatorBar.x = x
+                }
                 checkAndUpdateContinueButton()
             } else {
                 // 마지막 화면이면 contentCheckLayout
+                val leaving = currentIndex
+                checkTabs()
+                committedCompleted[leaving] = tabCompleted[leaving]
+                updateProgressBars()
                 //대표이미지 가져오기
                 showOnlyLayout(findViewById(R.id.contentCheckLayout))
                 val representativeImage = findViewById<ImageView>(R.id.representativeImage)
@@ -614,36 +638,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             checkTabs()
             return@setOnClickListener
 
-            if (currentIndex in 0 until layouts.lastIndex) {
-                val nextIndex = currentIndex + 1
-                val nextLayout = layouts[nextIndex]
-                val nextTab = textViews[nextIndex]
-
-                // 히스토리 저장
-                layoutHistoryStack.push(layouts[currentIndex])
-
-                // 레이아웃 전환
-                showOnlyLayout(nextLayout)
-
-                // 탭 색상 업데이트
-                textViews.forEach { it.setTextColor(Color.parseColor("#A1A9AD")) }
-                nextTab.setTextColor(Color.parseColor("#2B2B2B"))
-
-                // 인디케이터 바 이동
-                val targetX = nextTab.x + (nextTab.width / 2f) - (indicatorBar.width / 2f)
-                indicatorBar.x = targetX
-
-                // ✅ 인덱스 갱신 + 바/색 즉시 반영
-                selectedIndex = nextIndex
-                checkTabs()
-
-                // 버튼 상태 갱신
-                checkAndUpdateContinueButton()
-            } else {
-                // 마지막 위치면 그래도 탭/바 즉시 재반영
-                selectedIndex = currentIndex
-                checkTabs()
-            }
+            checkAndUpdateContinueButton()
         }
 
         // "이전으로" 버튼 클릭 시 화면 이동
@@ -1119,6 +1114,9 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         //탭바로 이동해도 채워져있으면 계속하기 버튼 바껴져 있음
         checkAndUpdateContinueButton()
 
+        updateProgressBars()
+        updateSelectedTab(textViews[selectedIndex])
+
     }
 
     private fun checkTabs() {
@@ -1181,29 +1179,31 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             val hasTag = tagView.text.isNotBlank()
             tabCompleted[5] = hasLevel && hasTime && hasTag
         }
-
-        //바
-        progressBars.forEachIndexed { index, bar ->
-            if (index < tabCompleted.size) {
-                bar.visibility = if (tabCompleted[index]) View.VISIBLE else View.GONE
-            }
-        }
-
-        // ✅ 조건 만족 즉시 색상 반영
-        if (::textViews.isInitialized && selectedIndex in textViews.indices) {
-            updateSelectedTab(textViews[selectedIndex])
-        }
     }
 
     // 탭 색상 업데이트
     private fun updateSelectedTab(selected: TextView) {
         textViews.forEachIndexed { index, tab ->
             val color = when {
-                tabCompleted[index] -> "#2B2B2B" // 완료됨
-                tab == selected -> "#35A825" // 현재 선택
-                else -> "#A1A9AD" // 기본
+                tab == selected -> "#35A825"                       // 현재 탭
+                committedCompleted.getOrNull(index) == true -> "#2B2B2B" // 이동 시 커밋된 완료만 검정
+                else -> "#A1A9AD"
             }
             tab.setTextColor(Color.parseColor(color))
+        }
+    }
+
+    private fun updateProgressBars() {
+        if (progressBars.isEmpty() || committedCompleted.isEmpty()) return
+
+        val committedCount = committedCompleted.count { it }   // ✅ 커밋(true) 개수
+        val maxBars = minOf(progressBars.size, committedCompleted.size)
+
+        for (i in 0 until maxBars) {
+            val visible = i < committedCount
+            val bar = progressBars[i]
+            bar.visibility = if (visible) View.VISIBLE else View.GONE
+            if (visible) bar.setBackgroundResource(R.drawable.bar_recipe)
         }
     }
 
@@ -1262,7 +1262,7 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
             }
 
             R.id.recipeWriteCookVideoLayout -> {
-                val container = currentLayout.findViewById<LinearLayout?>(R.id.VideoContainer)
+                val container = currentLayout.findViewById<LinearLayout?>(R.id.imageContainer)
                 isValid = container?.childCount ?: 0 > 0
             }
 

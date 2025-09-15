@@ -187,11 +187,18 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     private val tabCompleted = BooleanArray(7) { false }
     private lateinit var progressBars: List<View>
     private var selectedIndex = 0
+    private lateinit var committedCompleted: BooleanArray
+    private var lastSelectedIndex = 0
+    private var isSwitching = false
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_both)
+
+        // 배열 초기화
+        committedCompleted = BooleanArray(tabCompleted.size) { false }
+        lastSelectedIndex = selectedIndex
 
         draftId = intent.getLongExtra("draftId", -1).takeIf { it > 0 }
         intent.getStringExtra("recipeType")?.let { recipeType = it } // IMAGE | VIDEO | BOTH
@@ -446,19 +453,11 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             // 일반적인 이전 이동 처리
             if (layoutHistory.isNotEmpty()) {
                 val previousLayout = layoutHistory.pop()
-                showOnlyLayout(previousLayout)
-
-                val index = layoutList.indexOf(previousLayout)
-                if (index != -1) {
-                    val correspondingTab = textViewList[index]
-                    updateSelectedTab(correspondingTab)
-                    moveUnderlineBar(correspondingTab)
-                }
-
-                // 💡 레이아웃이 완전히 바뀐 뒤 버튼 상태 갱신
-                beforeButton.post {
-                    checkAndUpdateContinueButton()
-                }
+                val prevIndex = layoutList.indexOf(previousLayout).coerceAtLeast(0)
+                switchTo(prevIndex, pushHistory = false)
+            } else {
+                val prev = (selectedIndex - 1).coerceAtLeast(0)
+                if (prev != selectedIndex) switchTo(prev, pushHistory = false)
             }
         }
 
@@ -501,6 +500,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 계속하기 버튼 클릭시 다음 화면으로 이동
         continueButton.setOnClickListener {
+            val next = (selectedIndex + 1).coerceAtMost(tabCompleted.lastIndex)
+            if (next != selectedIndex) switchTo(next, pushHistory = true)
             val currentIndex = layoutList.indexOf(currentLayout)
 
             // 마지막 화면이 detailSettle이면 contentCheck로 이동
@@ -667,24 +668,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 checkTabs()
                 return@setOnClickListener
             }
-
-
-            // 기본 흐름: 다음 인덱스가 존재할 때만
-            if (currentIndex in 0 until layoutList.size - 1) {
-                val nextIndex = currentIndex + 1
-                val nextLayout = layoutList[nextIndex]
-                val correspondingTab = textViewList[nextIndex]
-
-                layoutHistory.push(currentLayout)
-                changeLayout(nextLayout)
-                updateSelectedTab(correspondingTab)
-                moveUnderlineBar(correspondingTab)
-
-                selectedIndex = nextIndex   // ✅ 현재 인덱스 갱신
-                checkTabs()                 // ✅ 여기서 다음 바 나타남
-            } else {
-                checkTabs()
-            }
         }
 
         // 임시저장 버튼 클릭시 여부 나타남
@@ -745,11 +728,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         textViewList.forEachIndexed { i, tv ->
             tv.setOnClickListener {
                 if (selectedIndex == i) return@setOnClickListener
-                selectedIndex = i
-                updateSelectedTab(tv)
-                moveUnderlineBar(tv)
-                changeLayout(layoutList[i])
-                checkTabs()
+                onTabSwitched(i)
             }
         }
 
@@ -2177,30 +2156,94 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val hasTag = tagView.text.isNotBlank()
             tabCompleted[5] = hasLevel && hasTime && hasTag
         }
-
-        //바
-        progressBars.forEachIndexed { index, bar ->
-            if (index < tabCompleted.size) {
-                bar.visibility = if (tabCompleted[index]) View.VISIBLE else View.GONE
-            }
-        }
-
-        // ✅ 조건 만족 즉시 색상 반영
-        if (::textViewList.isInitialized && selectedIndex in textViewList.indices) {
-            updateSelectedTab(textViewList[selectedIndex])
-        }
     }
 
     // 탭 색상 업데이트
     private fun updateSelectedTab(selected: TextView) {
         textViewList.forEachIndexed { index, tab ->
             val color = when {
-                tabCompleted[index] -> "#2B2B2B" // 완료됨
-                tab == selected -> "#35A825" // 현재 선택
-                else -> "#A1A9AD" // 기본
+                tab == selected -> "#35A825" // 현재 선택은 무조건 초록색
+                tabCompleted[index] -> "#2B2B2B" // 완료된 탭 (검정)
+                else -> "#A1A9AD" // 기본 (회색)
             }
             tab.setTextColor(Color.parseColor(color))
         }
+    }
+
+    // 바
+    private fun updateProgressBars() {
+        if (progressBars.isEmpty() || committedCompleted.isEmpty()) return
+
+        val committedCount = committedCompleted.count { it }   // ✅ 커밋(true) 개수
+        val maxBars = minOf(progressBars.size, committedCompleted.size)
+
+        for (i in 0 until maxBars) {
+            val visible = i < committedCount
+            val bar = progressBars[i]
+            bar.visibility = if (visible) View.VISIBLE else View.GONE
+            if (visible) bar.setBackgroundResource(R.drawable.bar_recipe)
+        }
+    }
+
+    private fun onTabSwitched(newIndex: Int) {
+        if (isSwitching) return
+        isSwitching = true
+
+        // 1) 현재 입력으로 tabCompleted 최신화(계산만)
+        checkTabs()
+
+        // 2) 떠나는 탭 커밋 상태를 완료 여부에 맞춰 갱신 (증가/감소 모두 여기서)
+        val leaving = selectedIndex
+        if (leaving in tabCompleted.indices) {
+            committedCompleted[leaving] = tabCompleted[leaving]
+        }
+
+        // 3) 실제 전환
+        selectedIndex = newIndex.coerceIn(0, tabCompleted.lastIndex)
+        updateSelectedTab(textViewList[selectedIndex])
+        moveUnderlineBar(textViewList[selectedIndex])
+        changeLayout(layoutList[selectedIndex])
+
+        // 4) 바는 전환 시점에만 반영
+        updateProgressBars()
+
+        isSwitching = false
+    }
+
+    private fun switchTo(targetIndex: Int, pushHistory: Boolean) {
+        if (isSwitching) return
+        isSwitching = true
+
+        // 1) 현재 입력 기반으로 완료 여부 최신화(계산만)
+        checkTabs()
+
+        // 2) 떠나는 탭의 커밋 상태를 완료 여부대로 갱신 (증가/감소 전부 여기서)
+        val leaving = selectedIndex
+        if (leaving in tabCompleted.indices) {
+            committedCompleted[leaving] = tabCompleted[leaving]
+        }
+
+        // 3) 히스토리 푸시(앞으로 이동/탭 클릭 시에만)
+        if (pushHistory) {
+            layoutHistory.push(currentLayout) // changeLayout()에서 currentLayout 반드시 갱신되게 해두기
+        }
+
+        // 4) 실제 전환
+        selectedIndex = targetIndex.coerceIn(0, tabCompleted.lastIndex)
+        val nextLayout = layoutList[selectedIndex]
+        val nextTab = textViewList[selectedIndex]
+
+        updateSelectedTab(nextTab)
+        moveUnderlineBar(nextTab)
+        changeLayout(nextLayout)    // 내부에서 currentLayout = nextLayout 로 갱신되도록!
+
+        // 5) 바 갱신(전환 시에만)
+        updateProgressBars()
+
+        // (선택) 버튼 상태 갱신
+        checkAndUpdateContinueButton()
+
+        isSwitching = false
     }
 
     //계속하기 버튼 색 바뀜
