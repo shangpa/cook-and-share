@@ -2,16 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:padding="12dp">
+    android:padding="8dp">
 
     <!-- 대표 이미지 -->
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/recipeImage"
-        android:layout_height="100dp"
         android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_search_result_list_one" />
+        android:adjustViewBounds="true"
+        app:shapeAppearanceOverlay="@style/RecipeRoundedImage"
+        tools:src="@drawable/image_search_result_list_one"/>
 
     <!-- 텍스트 정보들 -->
     <LinearLayout

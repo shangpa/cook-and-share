@@ -329,7 +329,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/image_recipe_thumbnail_placeholder" />
+                    android:src="@drawable/image_search_result_list_two" />
 
                 <!-- 다른줄로 나누기 -->
                 <LinearLayout
@@ -765,7 +765,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/image_recipe_thumbnail_placeholder" />
+                    android:src="@drawable/image_search_result_list_two" />
 
                 <!-- 다른줄로 나누기 -->
                 <LinearLayout

@@ -1,4 +1,4 @@
-package com.example.test.model
+package com.example.test.model.recipeDetail
 
 data class RecipeSearchResponseDTO(
     val recipeId: Long,
