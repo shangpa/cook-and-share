@@ -1,6 +1,6 @@
 package com.example.test.network
 
-import com.example.test.FollowUserResponse
+import com.example.test.model.profile.FollowUserResponse
 import com.example.test.model.*
 import com.example.test.model.Fridge.FridgeCreateRequest
 import com.example.test.model.Fridge.FridgeHistoryResponse
@@ -23,14 +23,12 @@ import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
-import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.model.review.TpReviewResponseDTO
 import com.example.test.model.shorts.CommentRequestDTO
 import com.example.test.model.shorts.ShortCommentResponse
 import com.example.test.model.shorts.ShortVideoListResponse
 import com.example.test.model.shorts.ShortsCardDto
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response

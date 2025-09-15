@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.test.model.profile.FollowUserResponse
+import com.example.test.model.profile.FollowUserUi
 import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.network.RetrofitInstance
 import okhttp3.ResponseBody
@@ -142,8 +144,8 @@ class FollowActivity : AppCompatActivity() {
 
     private fun FollowUserResponse.toUi() = FollowUserUi(
         userId = userId,
-        nickname = nickname,
-        handle = handle,
+        name = (name ?: "").ifBlank { username ?: "" }, // name 비면 username로 대체
+        username = username ?: "",
         profileImageUrl = profileImageUrl,
         isFollowingByMe = followingByMe,
         isFollowingMe = followingMe
@@ -215,6 +217,7 @@ class FollowActivity : AppCompatActivity() {
     }
 
     /** 팔로우 토글 시 팔로잉 수 반영 */
+// 기존 onFollowToggle 전체를 아래로 교체
     private fun onFollowToggle(pos: Int, item: FollowUserUi) {
         val token = App.prefs.token ?: return
         RetrofitInstance.apiService.toggleFollow(item.userId, "Bearer $token")
@@ -224,8 +227,8 @@ class FollowActivity : AppCompatActivity() {
                         Toast.makeText(this@FollowActivity, "처리 실패", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    val msg = response.body()?.string().orEmpty()
-                    val nowFollowing = msg.contains("팔로우했습니다")
+                    // 서버 본문 없이 200 OK → 로컬 상태 반전
+                    val nowFollowing = !item.isFollowingByMe
 
                     val changed = item.copy(isFollowingByMe = nowFollowing)
                     adapter.updateItem(pos, changed)
@@ -255,7 +258,7 @@ class FollowActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    updateTabTitles() // ← 숫자 갱신
+                    updateTabTitles()
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

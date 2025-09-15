@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.test.model.profile.FollowUserUi
 
 class FollowUserAdapter(
     private val onFollowToggle: (pos: Int, item: FollowUserUi) -> Unit
@@ -61,12 +62,25 @@ class FollowUserAdapter(
         private val btn = itemView.findViewById<TextView>(R.id.btnFollow)
 
         fun bind(item: FollowUserUi) {
-            tvNick.text = item.nickname
-            tvHandle.text = "@${item.handle}"
+            tvNick.text = item.name
+            tvHandle.text = "@${item.username}"
             // 필요시: Glide.with(img).load(item.profileImageUrl).into(img)
 
             applyButtonStyle(item)
 
+            // ✅ 프로필 이미지/닉네임/핸들 클릭 시 OtherProfileActivity 이동
+            val profileClickListener = View.OnClickListener {
+                val context = itemView.context
+                val intent = android.content.Intent(context, OtherProfileActivity::class.java).apply {
+                    putExtra("targetUserId", item.userId) // userId 전달
+                }
+                context.startActivity(intent)
+            }
+            img.setOnClickListener(profileClickListener)
+            tvNick.setOnClickListener(profileClickListener)
+            tvHandle.setOnClickListener(profileClickListener)
+
+            // 팔로우 버튼 클릭
             btn.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -77,13 +91,11 @@ class FollowUserAdapter(
 
         private fun applyButtonStyle(item: FollowUserUi) {
             if (item.isFollowingByMe) {
-                // 취소(언팔)
                 btn.text = "취소"
                 btn.setTextColor(ContextCompat.getColor(itemView.context, R.color.green))
                 btn.background =
                     ContextCompat.getDrawable(itemView.context, R.drawable.button_border)
             } else {
-                // 팔로우
                 btn.text = "팔로우"
                 btn.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.white))
                 btn.background =
