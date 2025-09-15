@@ -26,6 +26,7 @@ import com.example.test.model.recipeDetail.RecipeDraftDto
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
+import com.example.test.model.recipeDetail.ShortsSearchItem
 import com.example.test.model.review.TpReviewResponseDTO
 import com.example.test.model.shorts.CommentRequestDTO
 import com.example.test.model.shorts.ShortCommentResponse
@@ -194,6 +195,11 @@ interface ApiService {
         @Query("sort") sort: String? = null
     ): Call<List<Recipe>>
 
+    @GET("api/shorts/search")
+    fun searchShorts(
+        @Query("keyword") keyword: String
+    ): Call<List<ShortsSearchItem>>
+
     // 제철 음식 추천
     @GET("/api/recipes/seasonal")
     fun getSeasonalRecipes(): Call<List<Recipe>>
@@ -203,7 +209,7 @@ interface ApiService {
     fun getPopularKeywords(): Call<List<String>>
 
     // 검색어 저장
-    @POST("/api/search/save")
+    @POST("api/search/save")
     fun saveSearchKeyword(@Query("keyword") keyword: String): Call<Void>
 
     // 이미지 업로드
