@@ -42,6 +42,7 @@ import java.util.Locale
 
 
 class RecipeSeeNoTimerActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_see_no_timer)
@@ -553,5 +554,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         }
 
     }
+
 
 }

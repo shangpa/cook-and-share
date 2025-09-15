@@ -223,6 +223,7 @@ class RecipeSeeMainActivity : AppCompatActivity() {
 
     }
 
+
     private fun showMaterialUseBox() {
         findViewById<View>(R.id.dimView).visibility = View.VISIBLE
         findViewById<View>(R.id.materialUseBox).visibility = View.VISIBLE

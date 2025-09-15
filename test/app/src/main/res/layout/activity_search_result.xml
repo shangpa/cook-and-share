@@ -800,7 +800,7 @@
                         android:id="@+id/totalRecipeImageTwo"
                         android:layout_height="100dp"
                         android:layout_width="100dp"
-                        android:src="@drawable/image_search_result_list_three"
+                        android:src="@drawable/image_recipe_thumbnail_placeholder"
                         android:layout_marginTop="0dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
@@ -1396,7 +1396,7 @@
                             android:id="@+id/recipeListImageTwo"
                             android:layout_height="100dp"
                             android:layout_width="100dp"
-                            android:src="@drawable/image_search_result_list_three"
+                            android:src="@drawable/image_recipe_thumbnail_placeholder"
                             android:layout_marginTop="0dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
