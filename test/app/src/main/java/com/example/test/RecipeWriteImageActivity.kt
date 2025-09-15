@@ -39,6 +39,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.media3.common.util.UnstableApi
 import com.bumptech.glide.Glide
 import com.example.test.Repository.RecipeRepository
 import com.example.test.Utils.TabBarUtils
@@ -89,6 +90,7 @@ private var currentSubStep = 1
 private var recipeStepCount = 1 // 조리 순서 번호 관리 (1-1, 1-2, ...)
 private var isPublic: Boolean = true
 private var recipe: RecipeRequest? = null  // 있으면 생략
+@OptIn(UnstableApi::class)
 class RecipeWriteImageActivity : AppCompatActivity() {
     //조리순서 이미지 선택된거
     private var selectedContainer: LinearLayout? = null

@@ -59,6 +59,7 @@ import java.io.InputStream
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.test.Utils.TabBarUtils
@@ -89,6 +90,7 @@ private var lastPushedLayout: ConstraintLayout? = null
 private var isNavigatingBack = false
 
 @androidx.media3.common.util.UnstableApi
+@OptIn(UnstableApi::class)
 class RecipeWriteVideoActivity : AppCompatActivity() {
     //메인 이미지
     private var mainImageUrl: String = "" // 대표 이미지 저장용 변수

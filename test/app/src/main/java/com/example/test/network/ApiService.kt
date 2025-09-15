@@ -19,7 +19,10 @@ import com.example.test.model.community.CommunityDetailResponse
 import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
+import com.example.test.model.recipeDetail.PublishRequest
+import com.example.test.model.recipeDetail.RecipeCreateResponse
 import com.example.test.model.recipeDetail.RecipeDetailResponse
+import com.example.test.model.recipeDetail.RecipeDraftDto
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
@@ -116,6 +119,50 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body recipeRequest: RecipeRequest
     ): Call<RecipeResponse>
+
+
+    // 임시저장 리스트
+    @GET("api/recipes/drafts")
+    fun getMyDrafts(
+        @Header("Authorization") token: String
+    ): Call<List<RecipeDraftDto>>
+
+    // 임시저장 단건 조회
+    @GET("api/recipes/drafts/{id}")
+    fun getMyDraftById(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long
+    ): Call<RecipeDraftDto>
+
+    // 임시저장 생성
+    @POST("api/recipes/drafts")
+    fun createDraft(
+        @Header("Authorization") token: String,
+        @Body dto: RecipeDraftDto
+    ): Call<RecipeCreateResponse>
+
+    // 임시저장 수정
+    @PUT("api/recipes/drafts/{id}")
+    fun updateDraft(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long,
+        @Body dto: RecipeDraftDto
+    ): Call<RecipeDraftDto>
+
+    // 임시저장 삭제
+    @DELETE("api/recipes/drafts/{id}")
+    fun deleteMyDraft(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long
+    ): Call<Void>
+
+    // 발행 전환
+    @POST("api/recipes/{id}/publish")
+    fun publishDraft(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long,
+        @Body body: PublishRequest
+    ): Call<RecipeDraftDto>
 
     // 레시피 조회
     @GET("api/recipes/{id}")

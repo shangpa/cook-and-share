@@ -233,7 +233,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text=""
+                    android:text="0"
                     android:textColor="#35A825"
                     android:textSize="13sp"
                     app:layout_constraintStart_toEndOf="@id/total"
@@ -251,259 +251,14 @@
                     app:layout_constraintStart_toEndOf="@id/number"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- 레시피 리스트1 -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/recipeList"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/draftRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/total"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <!-- 이미지 -->
-                    <ImageView
-                        android:id="@+id/listImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/image_search_result_list_three"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-
-                    <!-- 레시피 이름 -->
-                    <TextView
-                        android:id="@+id/recipeName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:text="시금치통닭"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp"
-                        app:layout_constraintStart_toEndOf="@id/listImage"
-                        app:layout_constraintTop_toTopOf="@id/listImage" />
-
-                    <!-- 삭제 버튼 -->
-                    <ImageButton
-                        android:id="@+id/deleteBtn"
-                        android:background="@drawable/ic_close"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginStart="15dp"
-                        android:text="작성일자 : "
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@id/listImage"
-                        app:layout_constraintTop_toBottomOf="@id/recipeName" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginStart="0dp"
-                        android:text="2025-09-07"
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@id/writeDateText"
-                        app:layout_constraintTop_toBottomOf="@id/recipeName" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- 레시피 리스트2 -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/recipeListTwo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/recipeList"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <!-- 레시피 이름 -->
-                    <TextView
-                        android:id="@+id/recipeNameTwo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="간단 달걀말이"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <!-- 삭제 버튼 -->
-                    <ImageButton
-                        android:id="@+id/deleteBtnTwo"
-                        android:background="@drawable/ic_close"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateTextTwo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:text="작성일자 : "
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/recipeNameTwo" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateTwo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginStart="0dp"
-                        android:text="2025-09-06"
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@id/writeDateTextTwo"
-                        app:layout_constraintTop_toBottomOf="@id/recipeNameTwo" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- 레시피 리스트3 -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/recipeListThree"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/recipeListTwo"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <!-- 이미지 -->
-                    <ImageView
-                        android:id="@+id/listImageThree"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/img_recipe_cold_pasta"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-
-                    <!-- 레시피 이름 -->
-                    <TextView
-                        android:id="@+id/recipeNameThree"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:text="콜드 파스타"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp"
-                        app:layout_constraintStart_toEndOf="@id/listImageThree"
-                        app:layout_constraintTop_toTopOf="@id/listImageThree" />
-
-                    <!-- 삭제 버튼 -->
-                    <ImageButton
-                        android:id="@+id/deleteBtnThree"
-                        android:background="@drawable/ic_close"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateTextThree"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginStart="15dp"
-                        android:text="작성일자 : "
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@id/listImageThree"
-                        app:layout_constraintTop_toBottomOf="@id/recipeNameThree" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateThree"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginStart="0dp"
-                        android:text="2025-09-05"
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@id/writeDateTextThree"
-                        app:layout_constraintTop_toBottomOf="@id/recipeNameThree" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- 레시피 리스트4 -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/recipeListFour"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/recipeListThree"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <!-- 레시피 이름 -->
-                    <TextView
-                        android:id="@+id/recipeNameFour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="치킨 크랜베리 샌드위치"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <!-- 삭제 버튼 -->
-                    <ImageButton
-                        android:id="@+id/deleteBtnFour"
-                        android:background="@drawable/ic_close"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateTextFour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:text="작성일자 : "
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/recipeNameFour" />
-
-                    <!-- 작성일자 -->
-                    <TextView
-                        android:id="@+id/writeDateFour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginStart="0dp"
-                        android:text="2025-09-06"
-                        android:textColor="#8A8F9C"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@id/writeDateTextFour"
-                        app:layout_constraintTop_toBottomOf="@id/recipeNameFour" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/searchResult"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingTop="8dp"
+                    android:clipToPadding="false"/>
 
                 <!-- 레시피 작성하러 가기 -->
                 <androidx.appcompat.widget.AppCompatButton
@@ -516,7 +271,7 @@
                     android:layout_marginTop="57dp"
                     android:background="@drawable/btn_recipe_add"
                     android:stateListAnimator="@null"
-                    app:layout_constraintTop_toBottomOf="@id/recipeListFour"
+                    app:layout_constraintTop_toBottomOf="@id/draftRecycler"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
