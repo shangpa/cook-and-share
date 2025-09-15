@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -31,12 +32,15 @@ class MyProfileActivity : AppCompatActivity() {
     private lateinit var tvRecipeCount: TextView
     private lateinit var tvVideoCount: TextView
     private lateinit var ivProfile: ImageView
-
+    private lateinit var followButton: Button
     private enum class Tab { RECIPE, VIDEO }
     private var currentTab = Tab.RECIPE
 
     // 화면에서 볼 대상 유저 ID
     private var targetUserId: Int = -1
+
+    private var isMine: Boolean = false          // 내 프로필 여부
+    private var isFollowing: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,7 @@ class MyProfileActivity : AppCompatActivity() {
         tabRecipe = findViewById(R.id.tabRecipe)
         tabVideo  = findViewById(R.id.tabVideo)
         indicator = findViewById(R.id.indicator)
+        followButton = findViewById(R.id.followButton)
 
         tvNickname       = findViewById(R.id.profileName)
         tvFollowerCount  = findViewById(R.id.follow)
@@ -102,6 +107,9 @@ class MyProfileActivity : AppCompatActivity() {
 
         // 프로필 요약 로드
         loadProfileSummary()
+        followButton.setOnClickListener {
+            toggleFollow()
+        }
     }
 
     // ----- 프로필 요약 불러오기
@@ -135,6 +143,31 @@ class MyProfileActivity : AppCompatActivity() {
                 }
             })
     }
+    private fun renderFollowButton() {
+        followButton.text = if (isFollowing) "팔로우중" else "팔로우"
+    }
+    private fun toggleFollow() {
+        val token = App.prefs.token ?: return
+        isFollowing = !isFollowing
+        renderFollowButton() // UI 즉시 반영
+
+        RetrofitInstance.apiService.toggleFollow(targetUserId,"Bearer $token")
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (!response.isSuccessful) {
+                        // 실패 시 다시 상태 되돌림
+                        isFollowing = !isFollowing
+                        renderFollowButton()
+                        Toast.makeText(this@MyProfileActivity, "팔로우 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    isFollowing = !isFollowing
+                    renderFollowButton()
+                    Toast.makeText(this@MyProfileActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 
     /** 프로필 이미지 */
 
@@ -165,6 +198,15 @@ class MyProfileActivity : AppCompatActivity() {
         } else {
             ivProfile.setImageResource(R.drawable.ic_cicrle_profile)
         }
+        val myId = App.prefs.userId.toInt()
+        if (targetUserId == myId) {
+            followButton.visibility = View.GONE   // 내 프로필이면 버튼 숨김
+        } else {
+            followButton.visibility = View.VISIBLE
+            isFollowing = data.following          // 서버 값 반영
+            renderFollowButton()                  // 버튼 텍스트 업데이트
+        }
+
     }
 
 

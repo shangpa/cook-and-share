@@ -30,6 +30,10 @@ import java.io.Serializable
 import android.util.Log
 import androidx.media3.common.PlaybackException
 import androidx.media3.datasource.HttpDataSource
+import com.example.test.model.profile.ProfileSummaryResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @UnstableApi
 class VideoPlayerFragment : Fragment() {
@@ -63,21 +67,42 @@ class VideoPlayerFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video_player, container, false)
         setContents()
         initializePlayer()
+        // 내 프로필이면 팔로우 버튼 숨기기
+        val myId = App.prefs.userId.toInt()
+        if (shortObject.userId == myId) {
+            binding.btnFollow.visibility = View.GONE
+        } else {
+            binding.btnFollow.visibility = View.VISIBLE
+            // 서버에서 팔로우 상태 불러오기
+            loadFollowState()
+        }
+        // ✅ 팔로우 버튼 클릭 리스너 추가
+        binding.btnFollow.setOnClickListener {
+            val token = App.prefs.token ?: return@setOnClickListener
+            val current = binding.btnFollow.tag as? Boolean ?: false
+            val newState = !current
 
+            // UI 즉시 변경
+            renderFollowButton(newState)
+
+            // 서버에 토글 요청
+            RetrofitInstance.apiService.toggleFollow(shortObject.userId, "Bearer $token")
+                .enqueue(object : retrofit2.Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (!response.isSuccessful) {
+                            // 실패 → 상태 되돌리기
+                            renderFollowButton(current)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        // 실패 → 상태 되돌리기
+                        renderFollowButton(current)
+                    }
+                })
+        }
         // 탭 → play/pause 토글
         binding.playerView.setOnClickListener { playerControl(!chkPlay, false) }
-
-        // 팔로우 버튼 토글
-        binding.btnFollow.setOnClickListener {
-            val btn = binding.btnFollow
-            if (btn.text == "팔로우") {
-                btn.text = "팔로잉"
-                btn.setBackgroundColor(resources.getColor(android.R.color.darker_gray, null))
-            } else {
-                btn.text = "팔로우"
-                btn.setBackgroundColor(resources.getColor(R.color.green_35A825, null))
-            }
-        }
 
         // 좋아요 버튼 토글
         binding.btnLike.setOnClickListener {
@@ -205,7 +230,36 @@ class VideoPlayerFragment : Fragment() {
                 ProgressiveMediaSource.Factory(httpFactory).createMediaSource(mediaItem)
         }
     }
+    private fun loadFollowState() {
+        val token = App.prefs.token ?: return
+        RetrofitInstance.apiService.getProfileSummary(shortObject.userId, "Bearer $token")
+            .enqueue(object : Callback<ProfileSummaryResponse> {
+                override fun onResponse(
+                    call: Call<ProfileSummaryResponse>,
+                    response: Response<ProfileSummaryResponse>
+                ) {
+                    val body = response.body() ?: return
+                    renderFollowButton(body.following)
+                }
 
+                override fun onFailure(call: Call<ProfileSummaryResponse>, t: Throwable) {}
+            })
+    }
+    /** 팔로우 버튼 UI 상태 적용 */
+    private fun renderFollowButton(isFollowing: Boolean) {
+        if (isFollowing) {
+            binding.btnFollow.text = "팔로잉"
+            binding.btnFollow.setBackgroundColor(
+                resources.getColor(android.R.color.darker_gray, null)
+            )
+        } else {
+            binding.btnFollow.text = "팔로우"
+            binding.btnFollow.setBackgroundColor(
+                resources.getColor(R.color.green_35A825, null)
+            )
+        }
+        binding.btnFollow.tag = isFollowing // 현재 상태 저장
+    }
 
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {

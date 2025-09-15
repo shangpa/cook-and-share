@@ -538,7 +538,7 @@ interface ApiService {
     fun toggleFollow(
         @Path("userId") userId: Int,
         @Header("Authorization") token: String
-    ): Call<ResponseBody>
+    ): Call<Void>
 
     @GET("api/shorts/{userId}")
     fun getUserShorts(

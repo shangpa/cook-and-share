@@ -66,12 +66,26 @@ class FollowUserAdapter(
             tvHandle.text = "@${item.username}"
             // 필요시: Glide.with(img).load(item.profileImageUrl).into(img)
 
-            applyButtonStyle(item)
+            // ✅ 내 프로필이면 버튼 숨기기
+            val myId = App.prefs.userId
+            if (myId != null && item.userId.toLong() == myId) {
+                btn.visibility = View.GONE
+            } else {
+                btn.visibility = View.VISIBLE
+                applyButtonStyle(item)
+                // 팔로우 버튼 클릭 리스너 등록
+                btn.setOnClickListener {
+                    val pos = bindingAdapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onFollowToggle(pos, item)
+                    }
+                }
+            }
 
             // ✅ 프로필 이미지/닉네임/핸들 클릭 시 OtherProfileActivity 이동
             val profileClickListener = View.OnClickListener {
                 val context = itemView.context
-                val intent = android.content.Intent(context, OtherProfileActivity::class.java).apply {
+                val intent = android.content.Intent(context, MyProfileActivity::class.java).apply {
                     putExtra("targetUserId", item.userId) // userId 전달
                 }
                 context.startActivity(intent)
@@ -79,16 +93,7 @@ class FollowUserAdapter(
             img.setOnClickListener(profileClickListener)
             tvNick.setOnClickListener(profileClickListener)
             tvHandle.setOnClickListener(profileClickListener)
-
-            // 팔로우 버튼 클릭
-            btn.setOnClickListener {
-                val pos = bindingAdapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    onFollowToggle(pos, item)
-                }
-            }
         }
-
         private fun applyButtonStyle(item: FollowUserUi) {
             if (item.isFollowingByMe) {
                 btn.text = "취소"

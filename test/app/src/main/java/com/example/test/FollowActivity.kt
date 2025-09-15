@@ -217,19 +217,18 @@ class FollowActivity : AppCompatActivity() {
     }
 
     /** 팔로우 토글 시 팔로잉 수 반영 */
-// 기존 onFollowToggle 전체를 아래로 교체
+    // 기존 onFollowToggle 전체를 아래로 교체
     private fun onFollowToggle(pos: Int, item: FollowUserUi) {
         val token = App.prefs.token ?: return
         RetrofitInstance.apiService.toggleFollow(item.userId, "Bearer $token")
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (!response.isSuccessful) {
                         Toast.makeText(this@FollowActivity, "처리 실패", Toast.LENGTH_SHORT).show()
                         return
                     }
                     // 서버 본문 없이 200 OK → 로컬 상태 반전
                     val nowFollowing = !item.isFollowingByMe
-
                     val changed = item.copy(isFollowingByMe = nowFollowing)
                     adapter.updateItem(pos, changed)
 
@@ -261,7 +260,7 @@ class FollowActivity : AppCompatActivity() {
                     updateTabTitles()
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
                     Toast.makeText(this@FollowActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
                 }
             })

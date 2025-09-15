@@ -182,7 +182,19 @@
 
         </LinearLayout>
     </LinearLayout>
-
+    <!-- 팔로우 버튼 -->
+    <Button
+        android:id="@+id/followButton"
+        android:layout_width="352dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:text="팔로우"
+        android:textSize="14sp"
+        android:background="@drawable/btn_follow"
+        android:textColor="@color/color_follow_text"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_marginTop="20dp"/>
     <!-- 탭 영역 -->
     <LinearLayout
         android:id="@+id/tabRow"
