@@ -34,6 +34,8 @@ import com.example.test.model.shorts.ShortVideoListResponse
 import com.example.test.model.shorts.ShortsCardDto
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import com.example.test.model.refrigerator.Refrigerator
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -628,4 +630,38 @@ interface ApiService {
         @Path("userId") userId: Int,
         @Header("Authorization") token: String
     ): Call<List<FollowUserResponse>>
+
+    // 내 냉장고 카드 리스트
+    @GET("api/refrigerators/my")
+    fun getMyRefrigerators(
+        @Header("Authorization") token: String
+    ): Call<List<Refrigerator>>
+
+    // 냉장고 생성
+    @Multipart
+    @POST("api/refrigerators")
+    fun createRefrigerator(
+        @Header("Authorization") token: String,
+        @Part("name") name: RequestBody,
+        @Part("memo") memo: RequestBody?,
+        @Part image: MultipartBody.Part? = null
+    ): Call<Refrigerator>
+
+    // 냉장고 수정
+    @Multipart
+    @PUT("api/refrigerators/{id}")
+    fun updateRefrigerator(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long,
+        @Part("name") name: RequestBody,
+        @Part("memo") memo: RequestBody?,
+        @Part image: MultipartBody.Part? = null
+    ): Call<Refrigerator>
+
+    // 냉장고 삭제
+    @DELETE("api/refrigerators/{id}")
+    fun deleteRefrigerator(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long
+    ): Call<Void>
 }
