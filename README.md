@@ -13,8 +13,8 @@
 
 🧑‍🤝‍🧑 Repository Member
 ---
-이름 | GitHub
--- | --
+이름 | GitHub | 담당
+-- | -- | --
 최연주 | duswnwnn | 프론트엔드, 백엔드
 김재민 | shangpa | 백엔드
 오지현 | JihyunArchive | 백엔드, 프론트엔드
