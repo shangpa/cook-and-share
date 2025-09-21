@@ -6,14 +6,16 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="15dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="15dp"
         android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/RecipeRoundedImage" 
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
+
 
     <!-- 하트 버튼 (이미지 위 오른쪽 아래) -->
     <ImageButton
