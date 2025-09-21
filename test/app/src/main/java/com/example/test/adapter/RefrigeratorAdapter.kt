@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test.R
 import com.example.test.model.refrigerator.Refrigerator
+import java.io.File
 
 class RefrigeratorAdapter(
     private val onEdit: (Refrigerator) -> Unit
@@ -41,15 +42,23 @@ class RefrigeratorAdapter(
         holder.name.text = item.name
         holder.memo.text = item.memo ?: ""
 
-        val url = item.imageUrl
-        if (url.isNullOrBlank()) {
+        val raw = item.imageUrl
+        if (raw.isNullOrBlank()) {
             holder.img.setImageResource(R.drawable.img_kitchen1)
         } else {
-            Glide.with(holder.img).load(url).placeholder(R.drawable.img_kitchen1).into(holder.img)
+            val model: Any = when {
+                raw.startsWith("http", true) || raw.startsWith("content://", true) || raw.startsWith("file://", true) -> raw
+                raw.startsWith("/") -> java.io.File(raw)
+                else -> raw
+            }
+            Glide.with(holder.img).load(model).placeholder(R.drawable.img_kitchen1).into(holder.img)
         }
+
+
 
         holder.btnEdit.setOnClickListener { onEdit(item) }
     }
+
 
     override fun getItemCount(): Int = items.size
 }

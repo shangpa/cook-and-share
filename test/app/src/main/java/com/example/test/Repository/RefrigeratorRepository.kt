@@ -1,9 +1,8 @@
 package com.example.test.repository
 
 import com.example.test.model.refrigerator.Refrigerator
-import com.example.test.network.ApiService
 import com.example.test.network.RetrofitInstance
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -13,33 +12,36 @@ import java.io.File
 
 object RefrigeratorRepository {
 
-    private val api: ApiService = RetrofitInstance.apiService
+    private val TEXT = "text/plain".toMediaType()
+    private val IMAGE = "image/*".toMediaType()
 
-    /** 리스트 불러오기 */
+    /** 목록 가져오기  */
     fun list(token: String): Call<List<Refrigerator>> =
-        api.getMyRefrigerators("Bearer $token")
+        RetrofitInstance.apiService.getMyRefrigerators(bearer(token))
 
-    /** 생성  */
+    /** 생성 */
     fun create(
         token: String,
         name: String,
         memo: String?,
         imageFile: File?
     ): Call<Refrigerator> {
-        val nameBody: RequestBody =
-            name.toRequestBody("text/plain".toMediaTypeOrNull())
-        val memoBody: RequestBody? =
-            memo?.toRequestBody("text/plain".toMediaTypeOrNull())
-
+        val nameBody: RequestBody = name.toRequestBody(TEXT)
+        val memoBody: RequestBody? = memo?.toRequestBody(TEXT)
         val imagePart: MultipartBody.Part? = imageFile?.let { file ->
-            val req = file.asRequestBody("image/*".toMediaTypeOrNull())
+            val req = file.asRequestBody(IMAGE)
             MultipartBody.Part.createFormData("image", file.name, req)
         }
 
-        return api.createRefrigerator("Bearer $token", nameBody, memoBody, imagePart)
+        return RetrofitInstance.apiService.createRefrigerator(
+            token = bearer(token),
+            name = nameBody,
+            memo = memoBody,
+            image = imagePart
+        )
     }
 
-    /** 수정  */
+    /** 수정 */
     fun update(
         token: String,
         id: Long,
@@ -47,17 +49,26 @@ object RefrigeratorRepository {
         memo: String?,
         imageFile: File?
     ): Call<Refrigerator> {
-        val nameBody = name.toRequestBody("text/plain".toMediaTypeOrNull())
-        val memoBody = memo?.toRequestBody("text/plain".toMediaTypeOrNull())
+        val nameBody: RequestBody = name.toRequestBody(TEXT)
+        val memoBody: RequestBody? = memo?.toRequestBody(TEXT)
         val imagePart: MultipartBody.Part? = imageFile?.let { file ->
-            val req = file.asRequestBody("image/*".toMediaTypeOrNull())
+            val req = file.asRequestBody(IMAGE)
             MultipartBody.Part.createFormData("image", file.name, req)
         }
 
-        return api.updateRefrigerator("Bearer $token", id, nameBody, memoBody, imagePart)
+        return RetrofitInstance.apiService.updateRefrigerator(
+            token = bearer(token),
+            id = id,
+            name = nameBody,
+            memo = memoBody,
+            image = imagePart
+        )
     }
 
-    /** 삭제  */
-    fun delete(token: String, id: Long): Call<Void> =
-        api.deleteRefrigerator("Bearer $token", id)
+    /** 삭제 */
+    fun delete(token: String, id: Long) =
+        RetrofitInstance.apiService.deleteRefrigerator(bearer(token), id)
+
+    private fun bearer(token: String) =
+        if (token.startsWith("Bearer ")) token else "Bearer $token"
 }
