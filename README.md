@@ -6,9 +6,8 @@
 ⚙️ 개발 환경
 ---
 - 앱 프론트엔드 : `Kotlin`
-- 앱 백엔드 : Spring + `Java`
 - 웹 프론트엔드 : REACT
-- 웹 백엔드 : Spring Boot
+- 백엔드 : Spring + `Java`
 
 <br/>
 
@@ -16,10 +15,10 @@
 ---
 이름 | GitHub
 -- | --
-최연주 | duswnwnn | 앱 프론트엔드, 웹 프론트엔드, 앱 백엔드
-김재민 | shangpa | 앱 백엔드, 웹 백엔드
-오지현 | JihyunArchive | 웹 프론트엔드, 앱 프론트엔드, 앱 백엔
-정여진 | yeojin565 | 앱 프론트엔드, 웹 프론트엔드
+최연주 | duswnwnn | 프론트엔드, 백엔드
+김재민 | shangpa | 백엔드
+오지현 | JihyunArchive | 백엔드, 프론트엔드
+정여진 | yeojin565 | 프론트엔드
 
 <br/>
 
@@ -29,5 +28,5 @@
 -- | -- | --
 최연주 | duswndi1106@gmail.com | 앱, 웹 프론트앤드, 앱 백엔드 개발 (Full-stack)
 김재민 | kjm9049123@gmail.com | 웹, 앱 백엔드 개발 (Back-End)
-오지현 | ojhyeon930@naver.com | 웹, 앱 프론트앤드, 앱 백엔드 개발 (Full-stack)
+오지현 | ojhyeon930@naver.com | 앱 백엔드 개발, 웹, 앱 프론트앤드 (Full-stack)
 정여진 | jyeojin565@gmail.com | 앱, 웹 프론트앤드 개발 (Front-End)
