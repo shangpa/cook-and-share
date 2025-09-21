@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
         // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
         val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
         tapFridgeIcon.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
+            val intent = Intent(this, MainRefrigeratorAdminActivity::class.java)
             startActivity(intent)
         }
 

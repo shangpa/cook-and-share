@@ -33,7 +33,7 @@
                     android:id="@+id/saveMainTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="저장한 동네주방 게시글"
+                    android:text="저장한 동네주방 거래글"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
             </LinearLayout>

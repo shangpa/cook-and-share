@@ -223,6 +223,39 @@
             </intent-filter>
         </activity>
 
+        <!-- RefrigeratorMaterialAddActivity -->
+        <activity
+            android:name=".RefrigeratorMaterialAddActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MainRefrigeratorAdminActivity -->
+        <activity
+            android:name=".MainRefrigeratorAdminActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- MaterialAddActivity -->
+        <activity
+            android:name=".MaterialAddActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- FridgeActivity -->
         <activity
             android:name=".FridgeActivity"

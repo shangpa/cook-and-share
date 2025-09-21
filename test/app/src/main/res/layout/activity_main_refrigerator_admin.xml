@@ -1,0 +1,2213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTmap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/refrigeratorTap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 뒤로가기 -->
+                <ImageButton
+                    android:id="@+id/backArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_lelft_arrow"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 냉장고 관리 -->
+                <TextView
+                    android:id="@+id/refrigeratorAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="냉장고 관리"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/backArrow"
+                    app:layout_constraintTop_toTopOf="@id/backArrow"
+                    app:layout_constraintBottom_toBottomOf="@id/backArrow"  />
+
+                <!-- 분석 버튼 -->
+                <ImageButton
+                    android:id="@+id/analysisIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_receipt_camera"
+                    app:layout_constraintBottom_toBottomOf="@id/backArrow"
+                    app:layout_constraintEnd_toStartOf="@id/plusIcon"
+                    app:layout_constraintTop_toTopOf="@id/backArrow" />
+
+                <!-- 더하기 버튼 -->
+                <ImageButton
+                    android:id="@+id/plusIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_plus"
+                    app:layout_constraintBottom_toBottomOf="@id/backArrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/backArrow" />
+
+                <!-- 냉장고 관리 아래 구분바 -->
+                <View
+                    android:id="@+id/divideRectangleBarOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bar_rectangle"
+                    app:layout_constraintTop_toBottomOf="@id/backArrow" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 메인 냉장고  -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/refrigeratoMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 메인 냉장고 -->
+                <TextView
+                    android:id="@+id/mainRefrigerator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="메인 냉장고"
+                    android:textColor="#2B2B2B"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 전체 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/total"
+                    android:layout_width="53dp"
+                    android:layout_height="27dp"
+                    android:text="전체"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:layout_marginTop="53dp"
+                    android:background="@drawable/btn_fridge_ct_ck"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toBottomOf="@id/mainRefrigerator"
+                    app:layout_constraintStart_toStartOf="@id/mainRefrigerator"/>
+
+                <!-- 냉장 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/refrigeration"
+                    android:layout_width="53dp"
+                    android:layout_height="27dp"
+                    android:text="냉장"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:textStyle="bold"
+                    android:layout_marginStart="7dp"
+                    android:background="@drawable/btn_fridge_ct"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toTopOf="@id/total"
+                    app:layout_constraintStart_toEndOf="@id/total"/>
+
+                <!-- 냉동 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/freeze"
+                    android:layout_width="53dp"
+                    android:layout_height="27dp"
+                    android:text="냉동"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:textStyle="bold"
+                    android:layout_marginStart="7dp"
+                    android:background="@drawable/btn_fridge_ct"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toTopOf="@id/total"
+                    app:layout_constraintStart_toEndOf="@id/refrigeration"/>
+
+                <!-- 실외 -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/outside"
+                    android:layout_width="53dp"
+                    android:layout_height="27dp"
+                    android:text="실외"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:textColor="#8A8F9C"
+                    android:textStyle="bold"
+                    android:layout_marginStart="7dp"
+                    android:background="@drawable/btn_fridge_ct"
+                    android:stateListAnimator="@null"
+                    app:layout_constraintTop_toTopOf="@id/total"
+                    app:layout_constraintStart_toEndOf="@id/freeze"/>
+
+                <!-- 전체 선택 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/totalChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/total" >
+
+                    <!-- 선택 버튼 -->
+                    <ImageButton
+                        android:id="@+id/check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_fridge_check"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 전체 선택 -->
+                    <TextView
+                        android:id="@+id/allCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="전체 선택"
+                        android:textColor="#454A52"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@id/check"
+                        app:layout_constraintTop_toTopOf="@id/check" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 수정 -->
+                <TextView
+                    android:id="@+id/modification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="9dp"
+                    android:text="수정"
+                    android:textColor="#454A52"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@id/divideRectangleBarTwo"
+                    app:layout_constraintTop_toTopOf="@id/totalChoice" />
+
+                <!-- 수정, 삭제 구분바 -->
+                <View
+                    android:id="@+id/divideRectangleBarTwo"
+                    android:layout_width="2dp"
+                    android:layout_height="13dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="9dp"
+                    android:background="@drawable/bar_rectangle"
+                    app:layout_constraintTop_toTopOf="@id/modification"
+                    app:layout_constraintEnd_toStartOf="@id/delete"/>
+
+                <!-- 삭제 -->
+                <TextView
+                    android:id="@+id/delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="삭제"
+                    android:textColor="#454A52"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/totalChoice" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 전체 리스트 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/totalList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="257dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="visible">
+
+            <!-- 첫번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/rectOne"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/materialImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_eggplant"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/rectOne"
+                    app:layout_constraintTop_toTopOf="@id/rectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/rectOne"/>
+
+                <TextView
+                    android:id="@+id/material"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="가지"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImage"
+                    app:layout_constraintTop_toTopOf="@id/rectOne" />
+
+                <TextView
+                    android:id="@+id/greengrocery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImage"
+                    app:layout_constraintTop_toBottomOf="@id/material" />
+
+                <TextView
+                    android:id="@+id/storagePlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/materialImage"
+                    app:layout_constraintTop_toBottomOf="@id/greengrocery" />
+
+                <TextView
+                    android:id="@+id/storageOutside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/storagePlace"
+                    app:layout_constraintTop_toTopOf="@id/storagePlace" />
+
+                <TextView
+                    android:id="@+id/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/unit"
+                    app:layout_constraintTop_toTopOf="@id/unit" />
+
+                <TextView
+                    android:id="@+id/unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/rectOne"
+                    app:layout_constraintTop_toTopOf="@id/rectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/rectOne" />
+
+                <ImageButton
+                    android:id="@+id/transferArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/rectOne" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 두번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/listOne"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/rectTwo"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/materialImageTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_photato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/rectTwo"
+                    app:layout_constraintTop_toTopOf="@id/rectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/rectTwo"/>
+
+                <TextView
+                    android:id="@+id/materialTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="감자"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImageTwo"
+                    app:layout_constraintTop_toTopOf="@id/rectTwo" />
+
+                <TextView
+                    android:id="@+id/greengroceryTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/materialTwo" />
+
+                <TextView
+                    android:id="@+id/storagePlaceTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/materialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/greengroceryTwo" />
+
+                <TextView
+                    android:id="@+id/storageOutsideTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/storagePlaceTwo"
+                    app:layout_constraintTop_toTopOf="@id/storagePlaceTwo" />
+
+                <TextView
+                    android:id="@+id/numberTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/unitTwo"
+                    app:layout_constraintTop_toTopOf="@id/unitTwo" />
+
+                <TextView
+                    android:id="@+id/unitTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/rectTwo"
+                    app:layout_constraintTop_toTopOf="@id/rectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/rectTwo" />
+
+                <ImageButton
+                    android:id="@+id/transferArrowTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/rectTwo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 세번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/listTwo"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/rectThree"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/materialImageThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_sweet_potato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/rectThree"
+                    app:layout_constraintTop_toTopOf="@id/rectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/rectThree"/>
+
+                <TextView
+                    android:id="@+id/materialThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="고구마"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImageThree"
+                    app:layout_constraintTop_toTopOf="@id/rectThree" />
+
+                <TextView
+                    android:id="@+id/greengroceryThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/materialThree" />
+
+                <TextView
+                    android:id="@+id/storagePlaceThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/materialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/greengroceryThree" />
+
+                <TextView
+                    android:id="@+id/storageOutsideThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/storagePlaceThree"
+                    app:layout_constraintTop_toTopOf="@id/storagePlaceThree" />
+
+                <TextView
+                    android:id="@+id/numberThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/unitThree"
+                    app:layout_constraintTop_toTopOf="@id/unitThree" />
+
+                <TextView
+                    android:id="@+id/unitThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/rectThree"
+                    app:layout_constraintTop_toTopOf="@id/rectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/rectThree" />
+
+                <ImageButton
+                    android:id="@+id/transferArrowThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/rectThree" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 네번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/listThree"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/rectFour"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/materialImageFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_tomato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/rectFour"
+                    app:layout_constraintTop_toTopOf="@id/rectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/rectFour"/>
+
+                <TextView
+                    android:id="@+id/materialFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="토마토"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImageFour"
+                    app:layout_constraintTop_toTopOf="@id/rectFour" />
+
+                <TextView
+                    android:id="@+id/greengroceryFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/materialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/materialFour" />
+
+                <TextView
+                    android:id="@+id/storagePlaceFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/materialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/greengroceryFour" />
+
+                <TextView
+                    android:id="@+id/storageOutsideFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/storagePlaceFour"
+                    app:layout_constraintTop_toTopOf="@id/storagePlaceFour" />
+
+                <TextView
+                    android:id="@+id/numberFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/unitFour"
+                    app:layout_constraintTop_toTopOf="@id/unitFour" />
+
+                <TextView
+                    android:id="@+id/unitFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/rectFour"
+                    app:layout_constraintTop_toTopOf="@id/rectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/rectFour" />
+
+                <ImageButton
+                    android:id="@+id/transferArrowFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/rectFour" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 냉장 리스트 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/coldStorageList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="257dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone">
+
+            <!-- 첫번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/coldStorageListOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/coldStorageRectOne"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/coldStorageMaterialImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_eggplant"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/coldStorageRectOne"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectOne"/>
+
+                <TextView
+                    android:id="@+id/coldStorageMaterial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="가지"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImage"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectOne" />
+
+                <TextView
+                    android:id="@+id/coldStorageGreengrocery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImage"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageMaterial" />
+
+                <TextView
+                    android:id="@+id/coldStorageStoragePlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImage"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageGreengrocery" />
+
+                <TextView
+                    android:id="@+id/coldStorageStorageOutside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageStoragePlace"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageStoragePlace" />
+
+                <TextView
+                    android:id="@+id/coldStorageNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="15"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/coldStorageUnit"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageUnit" />
+
+                <TextView
+                    android:id="@+id/coldStorageUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/coldStorageRectOne"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectOne" />
+
+                <ImageButton
+                    android:id="@+id/coldStorageTransferArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectOne" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 두번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/coldStorageListTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/coldStorageListOne"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/coldStorageRectTwo"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/coldStorageMaterialImageTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_photato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/coldStorageRectTwo"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectTwo"/>
+
+                <TextView
+                    android:id="@+id/coldStorageMaterialTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="감자"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageTwo"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectTwo" />
+
+                <TextView
+                    android:id="@+id/coldStorageGreengroceryTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageMaterialTwo" />
+
+                <TextView
+                    android:id="@+id/coldStorageStoragePlaceTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageGreengroceryTwo" />
+
+                <TextView
+                    android:id="@+id/coldStorageStorageOutsideTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageStoragePlaceTwo"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageStoragePlaceTwo" />
+
+                <TextView
+                    android:id="@+id/coldStorageNumberTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/coldStorageUnitTwo"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageUnitTwo" />
+
+                <TextView
+                    android:id="@+id/coldStorageUnitTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/coldStorageRectTwo"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectTwo" />
+
+                <ImageButton
+                    android:id="@+id/coldStorageTransferArrowTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectTwo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 세번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/coldStorageListThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/coldStorageListTwo"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/coldStorageRectThree"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/coldStorageMaterialImageThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_sweet_potato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/coldStorageRectThree"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectThree"/>
+
+                <TextView
+                    android:id="@+id/coldStorageMaterialThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="고구마"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageThree"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectThree" />
+
+                <TextView
+                    android:id="@+id/coldStorageGreengroceryThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageMaterialThree" />
+
+                <TextView
+                    android:id="@+id/coldStorageStoragePlaceThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageGreengroceryThree" />
+
+                <TextView
+                    android:id="@+id/coldStorageStorageOutsideThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageStoragePlaceThree"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageStoragePlaceThree" />
+
+                <TextView
+                    android:id="@+id/coldStorageNumberThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/coldStorageUnitThree"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageUnitThree" />
+
+                <TextView
+                    android:id="@+id/coldStorageUnitThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/coldStorageRectThree"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectThree" />
+
+                <ImageButton
+                    android:id="@+id/coldStorageTransferArrowThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectThree" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 네번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/coldStorageListFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/coldStorageListThree"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/coldStorageRectFour"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/coldStorageMaterialImageFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_tomato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/coldStorageRectFour"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectFour"/>
+
+                <TextView
+                    android:id="@+id/coldStorageMaterialFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="토마토"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageFour"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectFour" />
+
+                <TextView
+                    android:id="@+id/coldStorageGreengroceryFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageMaterialFour" />
+
+                <TextView
+                    android:id="@+id/coldStorageStoragePlaceFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageMaterialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/coldStorageGreengroceryFour" />
+
+                <TextView
+                    android:id="@+id/coldStorageStorageOutsideFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/coldStorageStoragePlaceFour"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageStoragePlaceFour" />
+
+                <TextView
+                    android:id="@+id/coldStorageNumberFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/coldStorageUnitFour"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageUnitFour" />
+
+                <TextView
+                    android:id="@+id/coldStorageUnitFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/coldStorageRectFour"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectFour" />
+
+                <ImageButton
+                    android:id="@+id/coldStorageTransferArrowFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/coldStorageRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/coldStorageRectFour" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 냉동 리스트 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/freezeList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="257dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone">
+
+            <!-- 첫번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/freezeListOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/freezeRectOne"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/freezeMaterialImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_eggplant"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/freezeRectOne"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectOne"/>
+
+                <TextView
+                    android:id="@+id/freezeMaterial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="가지"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImage"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectOne" />
+
+                <TextView
+                    android:id="@+id/freezeGreengrocery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImage"
+                    app:layout_constraintTop_toBottomOf="@id/freezeMaterial" />
+
+                <TextView
+                    android:id="@+id/freezeStoragePlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImage"
+                    app:layout_constraintTop_toBottomOf="@id/freezeGreengrocery" />
+
+                <TextView
+                    android:id="@+id/freezeStorageOutside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeStoragePlace"
+                    app:layout_constraintTop_toTopOf="@id/freezeStoragePlace" />
+
+                <TextView
+                    android:id="@+id/freezeNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="14"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/freezeUnit"
+                    app:layout_constraintTop_toTopOf="@id/freezeUnit" />
+
+                <TextView
+                    android:id="@+id/freezeUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/freezeRectOne"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectOne" />
+
+                <ImageButton
+                    android:id="@+id/freezeTransferArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectOne" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 두번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/freezeListTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/freezeListOne"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/freezeRectTwo"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/freezeMaterialImageTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_photato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/freezeRectTwo"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectTwo"/>
+
+                <TextView
+                    android:id="@+id/freezeMaterialTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="감자"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageTwo"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectTwo" />
+
+                <TextView
+                    android:id="@+id/freezeGreengroceryTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/freezeMaterialTwo" />
+
+                <TextView
+                    android:id="@+id/freezeStoragePlaceTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/freezeGreengroceryTwo" />
+
+                <TextView
+                    android:id="@+id/freezeStorageOutsideTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeStoragePlaceTwo"
+                    app:layout_constraintTop_toTopOf="@id/freezeStoragePlaceTwo" />
+
+                <TextView
+                    android:id="@+id/freezeNumberTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/freezeUnitTwo"
+                    app:layout_constraintTop_toTopOf="@id/freezeUnitTwo" />
+
+                <TextView
+                    android:id="@+id/freezeUnitTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/freezeRectTwo"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectTwo" />
+
+                <ImageButton
+                    android:id="@+id/freezeTransferArrowTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectTwo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 세번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/freezeListThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/freezeListTwo"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/freezeRectThree"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/freezeMaterialImageThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_sweet_potato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/freezeRectThree"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectThree"/>
+
+                <TextView
+                    android:id="@+id/freezeMaterialThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="고구마"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageThree"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectThree" />
+
+                <TextView
+                    android:id="@+id/freezeGreengroceryThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/freezeMaterialThree" />
+
+                <TextView
+                    android:id="@+id/freezeStoragePlaceThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/freezeGreengroceryThree" />
+
+                <TextView
+                    android:id="@+id/freezeStorageOutsideThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeStoragePlaceThree"
+                    app:layout_constraintTop_toTopOf="@id/freezeStoragePlaceThree" />
+
+                <TextView
+                    android:id="@+id/freezeNumberThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/freezeUnitThree"
+                    app:layout_constraintTop_toTopOf="@id/freezeUnitThree" />
+
+                <TextView
+                    android:id="@+id/freezeUnitThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/freezeRectThree"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectThree" />
+
+                <ImageButton
+                    android:id="@+id/freezeTransferArrowThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectThree" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 네번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/freezeListFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/freezeListThree"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/freezeRectFour"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/freezeMaterialImageFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_tomato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/freezeRectFour"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectFour"/>
+
+                <TextView
+                    android:id="@+id/freezeMaterialFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="토마토"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageFour"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectFour" />
+
+                <TextView
+                    android:id="@+id/freezeGreengroceryFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/freezeMaterialFour" />
+
+                <TextView
+                    android:id="@+id/freezeStoragePlaceFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeMaterialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/freezeGreengroceryFour" />
+
+                <TextView
+                    android:id="@+id/freezeStorageOutsideFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/freezeStoragePlaceFour"
+                    app:layout_constraintTop_toTopOf="@id/freezeStoragePlaceFour" />
+
+                <TextView
+                    android:id="@+id/freezeNumberFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/freezeUnitFour"
+                    app:layout_constraintTop_toTopOf="@id/freezeUnitFour" />
+
+                <TextView
+                    android:id="@+id/freezeUnitFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/freezeRectFour"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectFour" />
+
+                <ImageButton
+                    android:id="@+id/freezeTransferArrowFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/freezeRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/freezeRectFour" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 실외 리스트 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/outsideList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="257dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone">
+
+            <!-- 첫번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/outsideListOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/outsideRectOne"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/outsideMaterialImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_eggplant"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/outsideRectOne"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectOne"/>
+
+                <TextView
+                    android:id="@+id/outsideMaterial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="가지"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImage"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectOne" />
+
+                <TextView
+                    android:id="@+id/outsideGreengrocery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImage"
+                    app:layout_constraintTop_toBottomOf="@id/outsideMaterial" />
+
+                <TextView
+                    android:id="@+id/outsideStoragePlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImage"
+                    app:layout_constraintTop_toBottomOf="@id/outsideGreengrocery" />
+
+                <TextView
+                    android:id="@+id/outsideStorageOutside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideStoragePlace"
+                    app:layout_constraintTop_toTopOf="@id/outsideStoragePlace" />
+
+                <TextView
+                    android:id="@+id/outsideNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="13"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/outsideUnit"
+                    app:layout_constraintTop_toTopOf="@id/outsideUnit" />
+
+                <TextView
+                    android:id="@+id/outsideUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/outsideRectOne"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectOne" />
+
+                <ImageButton
+                    android:id="@+id/outsideTransferArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectOne"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectOne" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 두번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/outsideListTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/outsideListOne"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/outsideRectTwo"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/outsideMaterialImageTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_photato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/outsideRectTwo"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectTwo"/>
+
+                <TextView
+                    android:id="@+id/outsideMaterialTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="감자"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageTwo"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectTwo" />
+
+                <TextView
+                    android:id="@+id/outsideGreengroceryTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/outsideMaterialTwo" />
+
+                <TextView
+                    android:id="@+id/outsideStoragePlaceTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageTwo"
+                    app:layout_constraintTop_toBottomOf="@id/outsideGreengroceryTwo" />
+
+                <TextView
+                    android:id="@+id/outsideStorageOutsideTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideStoragePlaceTwo"
+                    app:layout_constraintTop_toTopOf="@id/outsideStoragePlaceTwo" />
+
+                <TextView
+                    android:id="@+id/outsideNumberTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/outsideUnitTwo"
+                    app:layout_constraintTop_toTopOf="@id/outsideUnitTwo" />
+
+                <TextView
+                    android:id="@+id/outsideUnitTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/outsideRectTwo"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectTwo" />
+
+                <ImageButton
+                    android:id="@+id/outsideTransferArrowTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectTwo"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectTwo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 세번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/outsideListThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/outsideListTwo"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/outsideRectThree"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/outsideMaterialImageThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_sweet_potato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/outsideRectThree"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectThree"/>
+
+                <TextView
+                    android:id="@+id/outsideMaterialThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="고구마"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageThree"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectThree" />
+
+                <TextView
+                    android:id="@+id/outsideGreengroceryThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/outsideMaterialThree" />
+
+                <TextView
+                    android:id="@+id/outsideStoragePlaceThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageThree"
+                    app:layout_constraintTop_toBottomOf="@id/outsideGreengroceryThree" />
+
+                <TextView
+                    android:id="@+id/outsideStorageOutsideThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideStoragePlaceThree"
+                    app:layout_constraintTop_toTopOf="@id/outsideStoragePlaceThree" />
+
+                <TextView
+                    android:id="@+id/outsideNumberThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/outsideUnitThree"
+                    app:layout_constraintTop_toTopOf="@id/outsideUnitThree" />
+
+                <TextView
+                    android:id="@+id/outsideUnitThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/outsideRectThree"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectThree" />
+
+                <ImageButton
+                    android:id="@+id/outsideTransferArrowThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectThree"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectThree" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 네번째 재료 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/outsideListFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/outsideListThree"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/outsideRectFour"
+                    android:layout_width="341dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/rounded_rectangle_fridge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/outsideMaterialImageFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_tomato"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="@id/outsideRectFour"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectFour"/>
+
+                <TextView
+                    android:id="@+id/outsideMaterialFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="20dp"
+                    android:text="토마토"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageFour"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectFour" />
+
+                <TextView
+                    android:id="@+id/outsideGreengroceryFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="채소류"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/outsideMaterialFour" />
+
+                <TextView
+                    android:id="@+id/outsideStoragePlaceFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="20dp"
+                    android:text="보관장소 : "
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideMaterialImageFour"
+                    app:layout_constraintTop_toBottomOf="@id/outsideGreengroceryFour" />
+
+                <TextView
+                    android:id="@+id/outsideStorageOutsideFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="실외"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/outsideStoragePlaceFour"
+                    app:layout_constraintTop_toTopOf="@id/outsideStoragePlaceFour" />
+
+                <TextView
+                    android:id="@+id/outsideNumberFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="16"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/outsideUnitFour"
+                    app:layout_constraintTop_toTopOf="@id/outsideUnitFour" />
+
+                <TextView
+                    android:id="@+id/outsideUnitFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="개"
+                    android:textColor="#35A825"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/outsideRectFour"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectFour" />
+
+                <ImageButton
+                    android:id="@+id/outsideTransferArrowFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_fridge_right_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/outsideRectFour"
+                    app:layout_constraintBottom_toBottomOf="@id/outsideRectFour" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+        <!-- 탭바 전체 배경 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- 탭바 배경 이미지 -->
+            <ImageView
+                android:id="@+id/mainTapBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bar_tap_bg"
+                android:scaleType="fitXY" />
+
+            <!-- 탭바 버튼 그룹 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="5">
+
+                <!-- 동네주방 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/tapVillageKitchenIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_village_kitchen" />
+
+                    <TextView
+                        android:id="@+id/tapVillageKitchenText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="동네주방"
+                        android:textColor="#B9BEC1"
+                        android:textSize="10sp"
+                        android:layout_marginBottom="4dp" />
+                </LinearLayout>
+
+                <!-- 레시피 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center|top">
+
+                    <ImageView
+                        android:id="@+id/tapRecipeIcon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_recipe"
+                        android:layout_marginTop="14dp"/>
+
+
+                    <TextView
+                        android:id="@+id/tapRecipeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="레시피"
+                        android:textColor="#B9BEC1"
+                        android:textSize="10sp"
+                        android:layout_marginTop="6dp"/>
+                </LinearLayout>
+
+                <!-- 홈 탭 -->
+                <LinearLayout
+                    android:id="@+id/tapHome"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/tapHomeIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_home"
+                        android:layout_marginBottom="15dp"/>
+                </LinearLayout>
+
+                <!-- 커뮤니티 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/tapCommunityIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_community" />
+
+                    <TextView
+                        android:id="@+id/tapCommunityText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="커뮤니티"
+                        android:textColor="#B9BEC1"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <!-- 냉장고 탭 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center|top">
+
+                    <ImageView
+                        android:id="@+id/tapFridgeIcon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_refrigerator"
+                        app:tint="#2B2B2B"
+                        android:layout_marginTop="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tapFridgeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="냉장고"
+                        android:textColor="#2B2B2B"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
