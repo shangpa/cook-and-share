@@ -23,39 +23,83 @@
     <LinearLayout
         android:id="@+id/editTools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="24dp">
+        android:background="@color/black">
 
-        <Button
+        <!-- 그리기 -->
+        <ImageView
             android:id="@+id/btnDraw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="그리기" />
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_draw"
+            android:layout_marginEnd="20dp"/>
 
-        <Button
+        <!-- 지우개 -->
+        <ImageView
             android:id="@+id/btnErase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="지우개" />
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_eraser"
+            android:layout_marginEnd="20dp"/>
 
-        <Button
+        <!-- 텍스트 -->
+        <ImageView
             android:id="@+id/btnText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="텍스트" />
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_text"
+            android:layout_marginEnd="20dp"/>
 
-
-        <Button
+        <!-- 자르기 -->
+        <ImageView
             android:id="@+id/btnCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="자르기" />
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_scissor"
+            android:layout_marginEnd="20dp"/>
+
+        <!-- 블러 -->
+        <ImageView
+            android:id="@+id/btnBlur"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_blur"
+            android:layout_marginEnd="20dp"/>
+
+        <!-- 사진추가 -->
+        <ImageView
+            android:id="@+id/btnLayer"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_layer"
+            android:layout_marginEnd="20dp"/>
+
+        <!-- 왼쪽 회전 -->
+        <ImageView
+            android:id="@+id/btnRotateLeft"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_rotate_left"
+            android:layout_marginEnd="20dp"/>
+
+        <!-- 오른쪽 회전 -->
+        <ImageView
+            android:id="@+id/btnRotateRight"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_rotate_right"
+            android:layout_marginEnd="20dp"/>
+
+        <!-- 초기화 -->
+        <ImageView
+            android:id="@+id/btnTrash"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_trash"
+            android:layout_marginEnd="20dp"/>
+
     </LinearLayout>
 </RelativeLayout>

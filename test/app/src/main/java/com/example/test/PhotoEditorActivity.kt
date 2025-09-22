@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
@@ -106,17 +107,17 @@ class PhotoEditorActivity : AppCompatActivity() {
         }
 
         // 그리기
-        findViewById<Button>(R.id.btnDraw).setOnClickListener {
+        findViewById<ImageView>(R.id.btnDraw).setOnClickListener {
             photoEditor.setBrushDrawingMode(true)
         }
 
         // 지우개
-        findViewById<Button>(R.id.btnErase).setOnClickListener {
+        findViewById<ImageView>(R.id.btnErase).setOnClickListener {
             photoEditor.brushEraser()
         }
 
         // 텍스트 추가
-        findViewById<Button>(R.id.btnText).setOnClickListener {
+        findViewById<ImageView>(R.id.btnText).setOnClickListener {
             val editText = EditText(this)
             editText.hint = "텍스트를 입력하세요"
 
@@ -136,7 +137,7 @@ class PhotoEditorActivity : AppCompatActivity() {
         }
 
         // 자르기
-        findViewById<Button>(R.id.btnCrop).setOnClickListener {
+        findViewById<ImageView>(R.id.btnCrop).setOnClickListener {
             val uri = currentImageUri ?: return@setOnClickListener
             val options = CropImageContractOptions(
                 uri,
