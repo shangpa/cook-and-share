@@ -10,7 +10,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.example.test.App
 import com.example.test.R
@@ -28,10 +27,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
-class RefrigeratorEditActivity : AppCompatActivity() {
+class PantryEditActivity : AppCompatActivity() {
 
     private lateinit var etName: EditText
     private lateinit var etMemo: EditText
@@ -214,14 +211,14 @@ class RefrigeratorEditActivity : AppCompatActivity() {
                             setResult(RESULT_OK, result)
                             finish()
                         } else {
-                            Toast.makeText(this@RefrigeratorEditActivity,
+                            Toast.makeText(this@PantryEditActivity,
                                 "생성 실패: ${response.code()}",
                                 Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<PantryResponse>, t: Throwable) {
-                        Toast.makeText(this@RefrigeratorEditActivity,
+                        Toast.makeText(this@PantryEditActivity,
                             "네트워크 오류: ${t.localizedMessage}",
                             Toast.LENGTH_SHORT).show()
                     }
@@ -252,14 +249,14 @@ class RefrigeratorEditActivity : AppCompatActivity() {
                             setResult(RESULT_OK, result)
                             finish()
                         } else {
-                            Toast.makeText(this@RefrigeratorEditActivity,
+                            Toast.makeText(this@PantryEditActivity,
                                 "수정 실패: ${response.code()}",
                                 Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<PantryResponse>, t: Throwable) {
-                        Toast.makeText(this@RefrigeratorEditActivity,
+                        Toast.makeText(this@PantryEditActivity,
                             "네트워크 오류: ${t.localizedMessage}",
                             Toast.LENGTH_SHORT).show()
                     }
@@ -293,7 +290,7 @@ class RefrigeratorEditActivity : AppCompatActivity() {
                                 finish()
                             } else {
                                 Toast.makeText(
-                                    this@RefrigeratorEditActivity,
+                                    this@PantryEditActivity,
                                     "삭제 실패: ${response.code()}",
                                     Toast.LENGTH_SHORT
                                 ).show()
@@ -302,7 +299,7 @@ class RefrigeratorEditActivity : AppCompatActivity() {
 
                         override fun onFailure(call: Call<Void>, t: Throwable) {
                             Toast.makeText(
-                                this@RefrigeratorEditActivity,
+                                this@PantryEditActivity,
                                 "네트워크 오류: ${t.localizedMessage}",
                                 Toast.LENGTH_SHORT
                             ).show()

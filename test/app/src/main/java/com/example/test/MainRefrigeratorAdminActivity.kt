@@ -1,36 +1,14 @@
 package com.example.test
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.Utils.TabBarUtils
-import com.example.test.model.community.CommunityPostRequest
-import com.example.test.model.community.CommunityPostResponse
-import com.example.test.network.RetrofitInstance
-import com.google.gson.Gson
-import com.yalantis.ucrop.UCrop
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
 
 class MainRefrigeratorAdminActivity : AppCompatActivity() {
 
@@ -53,7 +31,7 @@ class MainRefrigeratorAdminActivity : AppCompatActivity() {
         // 재료 추가로 이동
         val plusIcon: ImageButton = findViewById(R.id.plusIcon)
         plusIcon.setOnClickListener {
-            val intent = Intent(this, RefrigeratorMaterialAddActivity::class.java)
+            val intent = Intent(this, PantryMaterialAddActivity::class.java)
             startActivity(intent)
         }
 

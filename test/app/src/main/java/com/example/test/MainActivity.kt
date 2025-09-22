@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -30,23 +29,18 @@ import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.test.model.IngredientRecipeGroup
 import com.example.test.model.TradePost.TradePostSimpleResponse
-import java.text.DecimalFormat
 import android.Manifest
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.test.adapter.LikedRecipeAdapter
 import com.example.test.adapter.LikedVideoRecipeAdapter
-import com.example.test.adapter.TradePostAdapter
 import com.example.test.adapter.TradePostSimpleAdapter
 import com.example.test.model.LoginInfoResponse
-import com.example.test.model.TradePost.TradePostResponse
-import com.example.test.ui.fridge.RefrigeratorListActivity
+import com.example.test.ui.fridge.PantryListActivity
 
 lateinit var binding: ActivityMainBinding
 private var currentPage = 0
@@ -162,14 +156,14 @@ class MainActivity : AppCompatActivity() {
         // tapFridgeIcon 클릭했을 때 RefrigeratorListActivity 이동
         val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
         tapFridgeIcon.setOnClickListener {
-            val intent = Intent(this, RefrigeratorListActivity::class.java)
+            val intent = Intent(this, PantryListActivity::class.java)
             startActivity(intent)
         }
 
         // tapFridgeText 클릭했을 때 RefrigeratorListActivity 이동
         val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
         tapFridgeText.setOnClickListener {
-            val intent = Intent(this, RefrigeratorListActivity::class.java)
+            val intent = Intent(this, PantryListActivity::class.java)
             startActivity(intent)
         }
 

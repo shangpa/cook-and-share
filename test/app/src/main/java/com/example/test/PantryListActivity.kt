@@ -15,12 +15,11 @@ import com.example.test.App
 import com.example.test.R
 import com.example.test.adapter.RefrigeratorAdapter
 import com.example.test.model.pantry.PantryResponse
-import com.example.test.model.refrigerator.Refrigerator
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Response
 
-class RefrigeratorListActivity : AppCompatActivity() {
+class PantryListActivity : AppCompatActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var emptyState: LinearLayout
@@ -30,7 +29,7 @@ class RefrigeratorListActivity : AppCompatActivity() {
 
     private val adapter: RefrigeratorAdapter = RefrigeratorAdapter(
         onEdit = { fridge: PantryResponse ->
-            val intent = Intent(this, RefrigeratorEditActivity::class.java).apply {
+            val intent = Intent(this, PantryEditActivity::class.java).apply {
                 putExtra("mode", "edit")
                 putExtra("id", fridge.id)
                 putExtra("name", fridge.name)
@@ -88,12 +87,12 @@ class RefrigeratorListActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btnCreateFromEmpty).setOnClickListener {
             editLauncher.launch(
-                Intent(this, RefrigeratorEditActivity::class.java).putExtra("mode", "create")
+                Intent(this, PantryEditActivity::class.java).putExtra("mode", "create")
             )
         }
         btnAdd.setOnClickListener {
             editLauncher.launch(
-                Intent(this, RefrigeratorEditActivity::class.java).putExtra("mode", "create")
+                Intent(this, PantryEditActivity::class.java).putExtra("mode", "create")
             )
         }
 
@@ -121,7 +120,7 @@ class RefrigeratorListActivity : AppCompatActivity() {
                         adapter.submit(items.toList())
                         updateEmptyState()
                     } else {
-                        Toast.makeText(this@RefrigeratorListActivity,
+                        Toast.makeText(this@PantryListActivity,
                             "조회 실패: ${response.code()}",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -129,7 +128,7 @@ class RefrigeratorListActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<List<PantryResponse>>, t: Throwable) {
-                    Toast.makeText(this@RefrigeratorListActivity,
+                    Toast.makeText(this@PantryListActivity,
                         "네트워크 오류: ${t.localizedMessage}",
                         Toast.LENGTH_SHORT
                     ).show()

@@ -1,41 +1,20 @@
 package com.example.test
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.test.model.community.CommunityPostRequest
-import com.example.test.model.community.CommunityPostResponse
-import com.example.test.network.RetrofitInstance
-import com.google.gson.Gson
-import com.yalantis.ucrop.UCrop
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.example.test.Utils.TabBarUtils
 
-class RefrigeratorMaterialAddActivity : AppCompatActivity() {
+class PantryMaterialAddActivity : AppCompatActivity() {
 
     private lateinit var buttons: List<AppCompatButton>
     private lateinit var lists: List<View>
