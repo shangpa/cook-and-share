@@ -61,7 +61,7 @@ class RecipeTabFragment : Fragment() {
         // ✅ 초기 어댑터: 클릭 시 상세 화면으로 이동
         adapter = MyWriteRecipeAdapter(recipeList) { item ->
             val intent = Intent(requireContext(), RecipeSeeMainActivity::class.java)
-            intent.putExtra("recipeId", item.id)   // ✅ 레시피 ID 전달
+            intent.putExtra("recipeId", item.id.toLong())   // ✅ 레시피 ID 전달
             startActivity(intent)
         }
         recycler.adapter = adapter
