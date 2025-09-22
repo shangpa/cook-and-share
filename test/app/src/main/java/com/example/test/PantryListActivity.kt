@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.App
+import com.example.test.PantryDetailActivity
 import com.example.test.R
 import com.example.test.adapter.RefrigeratorAdapter
 import com.example.test.model.pantry.PantryResponse
@@ -39,12 +40,11 @@ class PantryListActivity : AppCompatActivity() {
             editLauncher.launch(intent)
         },
         onClick = { fridge: PantryResponse ->
-            /* todo 상세 화면으로 이동
 
-            val intent = Intent(this, RefrigeratorDetailActivity::class.java).apply {
+            val intent = Intent(this, PantryDetailActivity::class.java).apply {
                 putExtra("id", fridge.id)
             }
-            startActivity(intent)*/
+            startActivity(intent)
         }
     )
 
@@ -52,7 +52,7 @@ class PantryListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_refrigerator_list)
+        setContentView(R.layout.activity_pantry_list)
 
         recycler = findViewById(R.id.recycler)
         emptyState = findViewById(R.id.emptyState)

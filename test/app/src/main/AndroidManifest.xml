@@ -236,7 +236,7 @@
 
         <!-- MainRefrigeratorAdminActivity -->
         <activity
-            android:name=".MainRefrigeratorAdminActivity"
+            android:name=".PantryDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -247,7 +247,7 @@
 
         <!-- MaterialAddActivity -->
         <activity
-            android:name=".MaterialAddActivity"
+            android:name=".PantryMaterialAddDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
