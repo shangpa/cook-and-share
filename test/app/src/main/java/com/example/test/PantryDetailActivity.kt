@@ -35,6 +35,13 @@ class PantryDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 추천 레시피로 이동
+        val cookDongDong: ConstraintLayout = findViewById(R.id.cookDongDong)
+        cookDongDong.setOnClickListener {
+            val intent = Intent(this, FridgeRecipeActivity::class.java)
+            startActivity(intent)
+        }
+
         // 뒤로가기
         findViewById<ImageView>(R.id.backArrow).setOnClickListener {
             finish()
@@ -42,6 +49,7 @@ class PantryDetailActivity : AppCompatActivity() {
 
         val totalChoice = findViewById<ConstraintLayout>(R.id.totalChoice)
         val checkBtn = findViewById<ImageButton>(R.id.check)
+        val materialCook = findViewById<EditText>(R.id.materialCook)
         val listOne = findViewById<ConstraintLayout>(R.id.listOne)
         val listTwo = findViewById<ConstraintLayout>(R.id.listTwo)
         val listThree = findViewById<ConstraintLayout>(R.id.listThree)
