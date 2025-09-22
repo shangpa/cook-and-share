@@ -225,7 +225,7 @@
 
         <!-- RefrigeratorMaterialAddActivity -->
         <activity
-            android:name=".RefrigeratorMaterialAddActivity"
+            android:name=".PantryMaterialAddActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -854,10 +854,10 @@
         <activity android:name=".FollowActivity"
             android:exported="false"/>
 
-        <activity android:name=".ui.fridge.RefrigeratorEditActivity"
+        <activity android:name=".ui.fridge.PantryEditActivity"
             android:exported="false"/>
 
-        <activity android:name=".ui.fridge.RefrigeratorListActivity"
+        <activity android:name=".ui.fridge.PantryListActivity"
             android:exported="false"/>
 
 

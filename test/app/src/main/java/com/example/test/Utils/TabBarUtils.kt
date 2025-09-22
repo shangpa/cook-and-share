@@ -6,7 +6,7 @@ import android.content.Intent
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.test.*
-import com.example.test.ui.fridge.RefrigeratorListActivity
+import com.example.test.ui.fridge.PantryListActivity
 
 object TabBarUtils {
 
@@ -32,12 +32,12 @@ object TabBarUtils {
         }
 
         activity.findViewById<ImageView>(R.id.tapFridgeIcon)?.setOnClickListener {
-            activity.startActivity(Intent(activity, RefrigeratorListActivity::class.java))
+            activity.startActivity(Intent(activity, PantryListActivity::class.java))
             activity.finish()
         }
 
         activity.findViewById<TextView>(R.id.tapFridgeText)?.setOnClickListener {
-            activity.startActivity(Intent(activity, RefrigeratorListActivity::class.java))
+            activity.startActivity(Intent(activity, PantryListActivity::class.java))
             activity.finish()
         }
 
