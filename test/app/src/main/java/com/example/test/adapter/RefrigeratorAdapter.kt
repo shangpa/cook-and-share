@@ -9,16 +9,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test.R
-import com.example.test.model.refrigerator.Refrigerator
-import java.io.File
+import com.example.test.model.pantry.PantryResponse
 
 class RefrigeratorAdapter(
-    private val onEdit: (Refrigerator) -> Unit
+    private val onEdit: (PantryResponse) -> Unit,
+    private val onClick: (PantryResponse) -> Unit
 ) : RecyclerView.Adapter<RefrigeratorAdapter.VH>() {
 
-    private val items = mutableListOf<Refrigerator>()
+    private val items = mutableListOf<PantryResponse>()
 
-    fun submit(list: List<Refrigerator>) {
+    fun submit(list: List<PantryResponse>) {
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()
@@ -29,8 +29,14 @@ class RefrigeratorAdapter(
         val name: TextView = v.findViewById(R.id.tvName)
         val memo: TextView = v.findViewById(R.id.tvMemo)
         val btnEdit: ImageButton = v.findViewById(R.id.btnEdit)
-    }
 
+        init {
+            v.setOnClickListener {
+                val item = items[bindingAdapterPosition]
+                onClick(item) // 🔹 클릭 시 콜백 호출
+            }
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_refrigerator, parent, false)
@@ -40,25 +46,27 @@ class RefrigeratorAdapter(
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = items[position]
         holder.name.text = item.name
-        holder.memo.text = item.memo ?: ""
+        holder.memo.text = item.note ?: ""
 
         val raw = item.imageUrl
         if (raw.isNullOrBlank()) {
             holder.img.setImageResource(R.drawable.img_kitchen1)
         } else {
             val model: Any = when {
-                raw.startsWith("http", true) || raw.startsWith("content://", true) || raw.startsWith("file://", true) -> raw
+                raw.startsWith("http", true) ||
+                        raw.startsWith("content://", true) ||
+                        raw.startsWith("file://", true) -> raw
                 raw.startsWith("/") -> java.io.File(raw)
                 else -> raw
             }
-            Glide.with(holder.img).load(model).placeholder(R.drawable.img_kitchen1).into(holder.img)
+            Glide.with(holder.img)
+                .load(model)
+                .placeholder(R.drawable.img_kitchen1)
+                .into(holder.img)
         }
-
-
 
         holder.btnEdit.setOnClickListener { onEdit(item) }
     }
-
 
     override fun getItemCount(): Int = items.size
 }

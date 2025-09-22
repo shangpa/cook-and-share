@@ -11,9 +11,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.test.App
 import com.example.test.R
 import com.example.test.adapter.RefrigeratorAdapter
+import com.example.test.model.pantry.PantryResponse
 import com.example.test.model.refrigerator.Refrigerator
+import com.example.test.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Response
 
 class RefrigeratorListActivity : AppCompatActivity() {
 
@@ -21,18 +26,28 @@ class RefrigeratorListActivity : AppCompatActivity() {
     private lateinit var emptyState: LinearLayout
     private lateinit var btnAdd: ImageButton
 
-    private val items: MutableList<Refrigerator> = mutableListOf()
+    private val items: MutableList<PantryResponse> = mutableListOf()
 
-    private val adapter: RefrigeratorAdapter = RefrigeratorAdapter { fridge: Refrigerator ->
-        val intent = Intent(this, RefrigeratorEditActivity::class.java).apply {
-            putExtra("mode", "edit")
-            putExtra("id", fridge.id)
-            putExtra("name", fridge.name)
-            putExtra("memo", fridge.memo)
-            putExtra("imageUrl", fridge.imageUrl)
+    private val adapter: RefrigeratorAdapter = RefrigeratorAdapter(
+        onEdit = { fridge: PantryResponse ->
+            val intent = Intent(this, RefrigeratorEditActivity::class.java).apply {
+                putExtra("mode", "edit")
+                putExtra("id", fridge.id)
+                putExtra("name", fridge.name)
+                putExtra("memo", fridge.note)
+                putExtra("imageUrl", fridge.imageUrl)
+            }
+            editLauncher.launch(intent)
+        },
+        onClick = { fridge: PantryResponse ->
+            /* todo 상세 화면으로 이동
+
+            val intent = Intent(this, RefrigeratorDetailActivity::class.java).apply {
+                putExtra("id", fridge.id)
+            }
+            startActivity(intent)*/
         }
-        editLauncher.launch(intent)
-    }
+    )
 
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
 
@@ -54,54 +69,19 @@ class RefrigeratorListActivity : AppCompatActivity() {
 
             when (val mode: String? = data.getStringExtra("result_mode")) {
                 "create" -> {
-                    val newId: Long = data.getLongExtra("result_id", System.currentTimeMillis())
-                    val newName: String = data.getStringExtra("result_name") ?: ""
-                    val newMemo: String? = data.getStringExtra("result_memo")
-                    val newImageUrl: String? = data.getStringExtra("result_imageUrl")
-
-                    val newItem: Refrigerator = Refrigerator(
-                        id = newId,
-                        name = newName,
-                        memo = newMemo,
-                        imageUrl = newImageUrl
-                    )
-                    items.add(0, newItem)
-                    adapter.submit(items.toList())
-                    updateEmptyState()
                     Toast.makeText(this, "목록에 추가됨", Toast.LENGTH_SHORT).show()
+                    loadPantries() // 🔹 서버 다시 조회
                 }
 
                 "edit" -> {
-                    val editId: Long = data.getLongExtra("result_id", -1L)
-                    val idx: Int = items.indexOfFirst { it.id == editId }
-                    if (idx >= 0) {
-                        val old: Refrigerator = items[idx]
-
-                        val newName: String = data.getStringExtra("result_name") ?: old.name
-                        val newMemo: String? =
-                            if (data.hasExtra("result_memo")) data.getStringExtra("result_memo") else old.memo
-                        val newImageUrl: String? =
-                            if (data.hasExtra("result_imageUrl")) data.getStringExtra("result_imageUrl") else old.imageUrl
-
-                        val updated: Refrigerator = old.copy(
-                            name = newName,
-                            memo = newMemo,
-                            imageUrl = newImageUrl
-                        )
-                        items[idx] = updated
-                        adapter.submit(items.toList())
-                        Toast.makeText(this, "수정 반영됨", Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(this, "수정 반영됨", Toast.LENGTH_SHORT).show()
+                    //todo 수정해야함
+                    loadPantries() // 🔹 서버 다시 조회
                 }
 
                 "delete" -> {
-                    val delId: Long = data.getLongExtra("result_id", -1L)
-                    val removed: Boolean = items.removeAll { it.id == delId }
-                    if (removed) {
-                        adapter.submit(items.toList())
-                        updateEmptyState()
-                        Toast.makeText(this, "삭제 반영됨", Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(this, "삭제 반영됨", Toast.LENGTH_SHORT).show()
+                    loadPantries() // 🔹 서버 다시 조회
                 }
             }
         }
@@ -122,6 +102,39 @@ class RefrigeratorListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        loadPantries()
+    }
+
+    private fun loadPantries() {
+
+        val token = App.prefs.token.toString()
+        RetrofitInstance.pantryApi.listPantries("Bearer $token")
+            .enqueue(object : retrofit2.Callback<List<PantryResponse>> {
+                override fun onResponse(
+                    call: Call<List<PantryResponse>>,
+                    response: Response<List<PantryResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val list = response.body() ?: emptyList()
+                        items.clear()
+                        items.addAll(list)
+                        adapter.submit(items.toList())
+                        updateEmptyState()
+                    } else {
+                        Toast.makeText(this@RefrigeratorListActivity,
+                            "조회 실패: ${response.code()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<PantryResponse>>, t: Throwable) {
+                    Toast.makeText(this@RefrigeratorListActivity,
+                        "네트워크 오류: ${t.localizedMessage}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
     private fun updateEmptyState() {

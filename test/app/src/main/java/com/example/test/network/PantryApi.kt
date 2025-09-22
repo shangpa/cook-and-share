@@ -15,11 +15,20 @@ interface PantryApi {
     ): Call<PantryResponse>
 
     @GET("/api/pantries")
-    fun listPantries(): Call<List<PantryResponse>>
+    fun listPantries(
+        @Header("Authorization") token: String
+    ): Call<List<PantryResponse>>
 
     @PUT("/api/pantries/{id}")
     fun updatePantry(
+        @Header("Authorization") token: String,
         @Path("id") pantryId: Long,
         @Body body: PantryUpdateRequest
     ): Call<PantryResponse>
+
+    @DELETE("api/pantries/{id}")
+    fun deletePantry(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long
+    ): Call<Void>
 }

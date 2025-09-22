@@ -14,6 +14,9 @@ import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.example.test.App
 import com.example.test.R
+import com.example.test.model.pantry.PantryCreateRequest
+import com.example.test.model.pantry.PantryResponse
+import com.example.test.model.pantry.PantryUpdateRequest
 import com.example.test.network.RetrofitInstance
 import com.google.android.material.card.MaterialCardView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -184,58 +187,130 @@ class RefrigeratorEditActivity : AppCompatActivity() {
             return
         }
 
-        val token = App.prefs.token.toString()
-        // 서버에 보낼 body
-        val body = com.example.test.model.pantry.PantryCreateRequest(
-            name = name,
-            note = memo,
-            imageUrl = remoteImageUrl, // 🔹 여기서 서버에 업로드된 URL 전달
-            isDefault = false,
-            sortOrder = 0
-        )
+        val token = "Bearer " + (App.prefs.token ?: "")
 
-        RetrofitInstance.pantryApi.createPantry("Bearer $token", body)
+        if (mode == "create") {
+            val request = PantryCreateRequest(
+                name = name,
+                note = memo,
+                imageUrl = remoteImageUrl
+            )
 
-            .enqueue(object : retrofit2.Callback<com.example.test.model.pantry.PantryResponse> {
-                override fun onResponse(
-                    call: Call<com.example.test.model.pantry.PantryResponse>,
-                    response: Response<com.example.test.model.pantry.PantryResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val created = response.body()
-                        Toast.makeText(this@RefrigeratorEditActivity, "저장 완료", Toast.LENGTH_SHORT).show()
-
-                        val result = Intent().apply {
-                            putExtra("result_mode", mode)
-                            putExtra("created_id", created?.id ?: -1L)
-                            putExtra("created_name", created?.name ?: name)
-                            putExtra("created_memo", created?.note ?: memo)
-                            putExtra("created_imageUrl", created?.imageUrl ?: remoteImageUrl)
+            RetrofitInstance.pantryApi.createPantry(token, request)
+                .enqueue(object : retrofit2.Callback<PantryResponse> {
+                    override fun onResponse(
+                        call: Call<PantryResponse>,
+                        response: Response<PantryResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val created = response.body()
+                            val result = Intent().apply {
+                                putExtra("result_mode", "create")
+                                putExtra("result_id", created?.id ?: -1L)
+                                putExtra("result_name", created?.name)
+                                putExtra("result_memo", created?.note)
+                                putExtra("result_imageUrl", created?.imageUrl)
+                            }
+                            setResult(RESULT_OK, result)
+                            finish()
+                        } else {
+                            Toast.makeText(this@RefrigeratorEditActivity,
+                                "생성 실패: ${response.code()}",
+                                Toast.LENGTH_SHORT).show()
                         }
-                        setResult(RESULT_OK, result)
-                        finish()
-                    } else {
-                        val msg = response.errorBody()?.string() ?: "저장 실패(${response.code()})"
-                        Toast.makeText(this@RefrigeratorEditActivity, msg, Toast.LENGTH_LONG).show()
                     }
-                }
 
-                override fun onFailure(
-                    call: Call<com.example.test.model.pantry.PantryResponse>,
-                    t: Throwable
-                ) {
-                    Toast.makeText(this@RefrigeratorEditActivity, "네트워크 오류: ${t.localizedMessage}", Toast.LENGTH_LONG).show()
-                }
-            })
+                    override fun onFailure(call: Call<PantryResponse>, t: Throwable) {
+                        Toast.makeText(this@RefrigeratorEditActivity,
+                            "네트워크 오류: ${t.localizedMessage}",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                })
+
+        } else if (mode == "edit" && id != null) {
+            val request = PantryUpdateRequest(
+                name = name,
+                note = memo,
+                imageUrl = remoteImageUrl
+            )
+
+            RetrofitInstance.pantryApi.updatePantry(token, id!!, request)
+                .enqueue(object : retrofit2.Callback<PantryResponse> {
+                    override fun onResponse(
+                        call: Call<PantryResponse>,
+                        response: Response<PantryResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val updated = response.body()
+                            val result = Intent().apply {
+                                putExtra("result_mode", "edit")
+                                putExtra("result_id", updated?.id ?: id!!)
+                                putExtra("result_name", updated?.name)
+                                putExtra("result_memo", updated?.note)
+                                putExtra("result_imageUrl", updated?.imageUrl)
+                            }
+                            setResult(RESULT_OK, result)
+                            finish()
+                        } else {
+                            Toast.makeText(this@RefrigeratorEditActivity,
+                                "수정 실패: ${response.code()}",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<PantryResponse>, t: Throwable) {
+                        Toast.makeText(this@RefrigeratorEditActivity,
+                            "네트워크 오류: ${t.localizedMessage}",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
     }
 
     private fun onDelete() {
-        val result = Intent().apply {
-            putExtra("result_mode", "delete")
-            putExtra("result_id", id ?: -1L)
+        if (id == null) {
+            Toast.makeText(this, "삭제할 냉장고 ID가 없습니다.", Toast.LENGTH_SHORT).show()
+            return
         }
-        setResult(RESULT_OK, result)
-        finish()
+
+        AlertDialog.Builder(this)
+            .setTitle("삭제 확인")
+            .setMessage("정말 이 냉장고를 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { _, _ ->
+                val token = "Bearer " + (App.prefs.token ?: "")
+                RetrofitInstance.pantryApi.deletePantry(token, id!!)
+                    .enqueue(object : retrofit2.Callback<Void> {
+                        override fun onResponse(
+                            call: Call<Void>,
+                            response: Response<Void>
+                        ) {
+                            if (response.isSuccessful) {
+                                val result = Intent().apply {
+                                    putExtra("result_mode", "delete")
+                                    putExtra("result_id", id ?: -1L)
+                                }
+                                setResult(RESULT_OK, result)
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this@RefrigeratorEditActivity,
+                                    "삭제 실패: ${response.code()}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Toast.makeText(
+                                this@RefrigeratorEditActivity,
+                                "네트워크 오류: ${t.localizedMessage}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
+            }
+            .setNegativeButton("취소", null)
+            .show()
     }
 
 
