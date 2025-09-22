@@ -1,6 +1,7 @@
 package com.example.test.network
 
 import android.content.Context
+import com.example.test.network.api.PantryApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,6 +18,7 @@ object RetrofitInstance {
     lateinit var notificationApi: NotificationApi
     lateinit var chatApi: ChatApi
     lateinit var materialApi: MaterialApi
+    lateinit var pantryApi: PantryApi
     // 초기화 메서드에서 context 전달받아 처리
     fun init(context: Context) {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -41,5 +43,6 @@ object RetrofitInstance {
         notificationApi = retrofit.create(NotificationApi::class.java)
         chatApi= retrofit.create(ChatApi::class.java)
         materialApi= retrofit.create(MaterialApi::class.java)
+        pantryApi= retrofit.create(PantryApi::class.java)
     }
 }

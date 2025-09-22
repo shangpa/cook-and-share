@@ -636,32 +636,4 @@ interface ApiService {
     fun getMyRefrigerators(
         @Header("Authorization") token: String
     ): Call<List<Refrigerator>>
-
-    // 냉장고 생성
-    @Multipart
-    @POST("api/refrigerators")
-    fun createRefrigerator(
-        @Header("Authorization") token: String,
-        @Part("name") name: RequestBody,
-        @Part("memo") memo: RequestBody?,
-        @Part image: MultipartBody.Part? = null
-    ): Call<Refrigerator>
-
-    // 냉장고 수정
-    @Multipart
-    @PUT("api/refrigerators/{id}")
-    fun updateRefrigerator(
-        @Header("Authorization") token: String,
-        @Path("id") id: Long,
-        @Part("name") name: RequestBody,
-        @Part("memo") memo: RequestBody?,
-        @Part image: MultipartBody.Part? = null
-    ): Call<Refrigerator>
-
-    // 냉장고 삭제
-    @DELETE("api/refrigerators/{id}")
-    fun deleteRefrigerator(
-        @Header("Authorization") token: String,
-        @Path("id") id: Long
-    ): Call<Void>
 }
