@@ -46,6 +46,7 @@ import com.example.test.adapter.TradePostAdapter
 import com.example.test.adapter.TradePostSimpleAdapter
 import com.example.test.model.LoginInfoResponse
 import com.example.test.model.TradePost.TradePostResponse
+import com.example.test.ui.fridge.RefrigeratorListActivity
 
 lateinit var binding: ActivityMainBinding
 private var currentPage = 0
