@@ -158,17 +158,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // tapFridgeIcon 클릭했을 때 FridgeActivity 이동
+        // tapFridgeIcon 클릭했을 때 RefrigeratorListActivity 이동
         val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
         tapFridgeIcon.setOnClickListener {
-            val intent = Intent(this, MainRefrigeratorAdminActivity::class.java)
+            val intent = Intent(this, RefrigeratorListActivity::class.java)
             startActivity(intent)
         }
 
-        // tapFridgeText 클릭했을 때 FridgeActivity 이동
+        // tapFridgeText 클릭했을 때 RefrigeratorListActivity 이동
         val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
         tapFridgeText.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
+            val intent = Intent(this, RefrigeratorListActivity::class.java)
             startActivity(intent)
         }
 
