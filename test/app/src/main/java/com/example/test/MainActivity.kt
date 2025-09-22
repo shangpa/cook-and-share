@@ -36,6 +36,7 @@ import com.example.test.model.IngredientRecipeGroup
 import com.example.test.model.TradePost.TradePostSimpleResponse
 import android.Manifest
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.LikedRecipeAdapter
 import com.example.test.adapter.LikedVideoRecipeAdapter
 import com.example.test.adapter.TradePostSimpleAdapter
@@ -103,69 +104,8 @@ class MainActivity : AppCompatActivity() {
         setupBanner()
         setupArrowButtons()
         setupAutoSlide()
-
-        // tapVillageKitchenIcon 클릭했을 때 MaterialActivity 이동
-        val tapVillageKitchenIcon: ImageView = findViewById(R.id.tapVillageKitchenIcon)
-        tapVillageKitchenIcon.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapVillageKitchenText 클릭했을 때 MaterialActivity 이동
-        val tapVillageKitchenText: TextView = findViewById(R.id.tapVillageKitchenText)
-        tapVillageKitchenText.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapRecipeIcon 클릭했을 때 RecipeSeeMainActivity 이동
-        val tapRecipeIcon: ImageView = findViewById(R.id.tapRecipeIcon)
-        tapRecipeIcon.setOnClickListener {
-            val intent = Intent(this, RecipeTapActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapRecipeText 클릭했을 때 RecipeSeeMainActivity 이동
-        val tapRecipeText: TextView = findViewById(R.id.tapRecipeText)
-        tapRecipeText.setOnClickListener {
-            val intent = Intent(this, RecipeTapActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapHomeIcon 클릭했을 때 MainActivity 이동
-        val tapHomeIcon: ImageView = findViewById(R.id.tapHomeIcon)
-        tapHomeIcon.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapCommunityIcon 클릭했을 때 CommunityMainActivity 이동
-        val tapCommunityIcon: ImageView = findViewById(R.id.tapCommunityIcon)
-        tapCommunityIcon.setOnClickListener {
-            val intent = Intent(this, CommunityMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapCommunityText 클릭했을 때 CommunityMainActivity 이동
-        val tapCommunityText: TextView = findViewById(R.id.tapCommunityText)
-        tapCommunityText.setOnClickListener {
-            val intent = Intent(this, CommunityMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapFridgeIcon 클릭했을 때 RefrigeratorListActivity 이동
-        val tapFridgeIcon: ImageView = findViewById(R.id.tapFridgeIcon)
-        tapFridgeIcon.setOnClickListener {
-            val intent = Intent(this, PantryListActivity::class.java)
-            startActivity(intent)
-        }
-
-        // tapFridgeText 클릭했을 때 RefrigeratorListActivity 이동
-        val tapFridgeText: TextView = findViewById(R.id.tapFridgeText)
-        tapFridgeText.setOnClickListener {
-            val intent = Intent(this, PantryListActivity::class.java)
-            startActivity(intent)
-        }
+        
+        TabBarUtils.setupTabBar(this)
 
         // searchIcon 클릭했을 때 SearchMainActivity 이동
         val searchIcon: ImageView = findViewById(R.id.searchIcon)

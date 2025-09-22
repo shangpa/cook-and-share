@@ -49,7 +49,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
 
         val materialSearch = findViewById<EditText>(R.id.materialSearch)
         val addBtn = findViewById<ImageButton>(R.id.add)
-        val registerAdd = findViewById<ConstraintLayout>(R.id.registerAdd)
+        val registerAdd = findViewById<TextView>(R.id.register)
         val registerLayout = findViewById<ConstraintLayout>(R.id.registerLayout)
 
         // 카테고리
