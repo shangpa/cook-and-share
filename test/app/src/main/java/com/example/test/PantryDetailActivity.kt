@@ -10,14 +10,14 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.test.Utils.TabBarUtils
 
-class MainRefrigeratorAdminActivity : AppCompatActivity() {
+class PantryDetailActivity : AppCompatActivity() {
 
     private var selectedItem: ConstraintLayout? = null
     private val selectedLists = mutableListOf<View>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_refrigerator_admin)
+        setContentView(R.layout.activity_pantry_detail)
 
         TabBarUtils.setupTabBar(this)
 

@@ -97,7 +97,7 @@ class PantryEditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_refrigerator_edit)
+        setContentView(R.layout.activity_pantry_edit)
 
         etName = findViewById(R.id.etName)
         etMemo = findViewById(R.id.etMemo)

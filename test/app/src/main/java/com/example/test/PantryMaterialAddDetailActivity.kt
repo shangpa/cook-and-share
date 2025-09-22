@@ -2,26 +2,20 @@
 package com.example.test
 
 import androidx.appcompat.app.AppCompatActivity
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import android.view.View
 import com.example.test.Utils.TabBarUtils
 
-class MaterialAddActivity : AppCompatActivity() {
+class PantryMaterialAddDetailActivity : AppCompatActivity() {
 
     private lateinit var number: EditText
     private lateinit var dateEnter: EditText
@@ -33,7 +27,7 @@ class MaterialAddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_material_add)
+        setContentView(R.layout.activity_pantry_material_add_detail)
 
         TabBarUtils.setupTabBar(this)
 
@@ -52,7 +46,7 @@ class MaterialAddActivity : AppCompatActivity() {
 
         // 냉장고 관리로 이동
         register.setOnClickListener {
-            val intent = Intent(this, MainRefrigeratorAdminActivity::class.java)
+            val intent = Intent(this, PantryDetailActivity::class.java)
             startActivity(intent)
         }
 

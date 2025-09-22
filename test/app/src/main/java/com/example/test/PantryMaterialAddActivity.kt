@@ -38,7 +38,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_refrigerator_material_add)
+        setContentView(R.layout.activity_pantry_material_add)
 
         TabBarUtils.setupTabBar(this)
 
@@ -271,7 +271,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
         // 2) 공통 클릭 이벤트 적용
         itemLayouts.forEach { layout ->
             layout.setOnClickListener {
-                val intent = Intent(this, MaterialAddActivity::class.java)
+                val intent = Intent(this, PantryMaterialAddDetailActivity::class.java)
 
                 startActivity(intent)
             }
@@ -333,7 +333,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
     }
 
     private fun goToMaterialAdd(uri: Uri, source: String) {
-        val intent = Intent(this, MaterialAddActivity::class.java).apply {
+        val intent = Intent(this, PantryMaterialAddDetailActivity::class.java).apply {
             putExtra("imageUri", uri.toString()) // 안전하게 String으로 전달
             putExtra("source", source)           // "camera" 또는 "gallery"
         }
