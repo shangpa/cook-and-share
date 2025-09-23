@@ -84,7 +84,7 @@ class PantryEditActivity : AppCompatActivity() {
                 if (url != null) {
                     remoteImageUrl = url
                     Glide.with(this).load(url)
-                        .placeholder(R.drawable.img_kitchen1)
+                        .placeholder(R.drawable.image_pantry)
                         .into(img)
                     tvPick.text = ""
                 } else {
@@ -119,7 +119,7 @@ class PantryEditActivity : AppCompatActivity() {
                     raw.startsWith("/") -> java.io.File(raw) // 절대경로
                     else -> raw
                 }
-                Glide.with(this).load(model).placeholder(R.drawable.img_kitchen1).into(img)
+                Glide.with(this).load(model).placeholder(R.drawable.image_pantry).into(img)
                 tvPick.text = ""
             }
 

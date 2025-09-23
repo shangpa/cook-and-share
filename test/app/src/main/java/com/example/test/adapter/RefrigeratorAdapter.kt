@@ -50,13 +50,13 @@ class RefrigeratorAdapter(
 
         val raw = item.imageUrl
         if (raw.isNullOrBlank()) {
-            holder.img.setImageResource(R.drawable.img_kitchen1)
+            holder.img.setImageResource(R.drawable.image_pantry)
         } else {
             val displayUrl = com.example.test.network.RetrofitInstance.toAbsoluteUrl(raw)
 
             Glide.with(holder.img.context)
                 .load(displayUrl)
-                .placeholder(R.drawable.img_kitchen1)
+                .placeholder(R.drawable.image_pantry)
                 .into(holder.img)
         }
 
