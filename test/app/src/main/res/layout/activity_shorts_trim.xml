@@ -25,31 +25,74 @@
             android:clickable="false"
             android:focusable="false" />
     </FrameLayout>
-    <com.google.android.material.slider.Slider
-        android:id="@+id/cropOffsetSlider"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:valueFrom="0"
-        android:valueTo="100"
-        android:value="50"
-        app:labelBehavior="gone"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
 
-    <!-- 2) 줌 슬라이더 -->
-    <com.google.android.material.slider.Slider
-        android:id="@+id/cropZoomSlider"
+        <TextView
+            android:id="@+id/upDownLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상하"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/cropOffsetSlider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:valueFrom="0"
+            android:valueTo="100"
+            android:value="50"
+            app:labelBehavior="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:valueFrom="100"
-        android:valueTo="300"
-        android:value="100"
-        app:labelBehavior="gone"
-        android:layout_marginBottom="8dp" />
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/rangeSlider"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/ZoomLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확대"
+            android:layout_marginEnd="8dp"/>
+        <!-- 2) 줌 슬라이더 -->
+        <com.google.android.material.slider.Slider
+            android:id="@+id/cropZoomSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:valueFrom="100"
+            android:valueTo="300"
+            android:value="100"
+            app:labelBehavior="gone"
+            android:layout_marginBottom="8dp" />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/TimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간"
+            android:layout_marginEnd="8dp"/>
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/rangeSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnTrim"
