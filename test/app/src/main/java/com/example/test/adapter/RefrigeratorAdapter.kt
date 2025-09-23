@@ -50,7 +50,7 @@ class RefrigeratorAdapter(
 
         val raw = item.imageUrl
         if (raw.isNullOrBlank()) {
-            holder.img.setImageResource(R.drawable.img_kitchen1)
+            holder.img.setImageResource(R.drawable.image_pantry)
         } else {
             val model: Any = when {
                 raw.startsWith("http", true) ||
@@ -61,7 +61,7 @@ class RefrigeratorAdapter(
             }
             Glide.with(holder.img)
                 .load(model)
-                .placeholder(R.drawable.img_kitchen1)
+                .placeholder(R.drawable.image_pantry)
                 .into(holder.img)
         }
 
