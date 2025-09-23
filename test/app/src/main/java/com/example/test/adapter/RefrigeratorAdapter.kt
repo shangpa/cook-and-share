@@ -52,15 +52,10 @@ class RefrigeratorAdapter(
         if (raw.isNullOrBlank()) {
             holder.img.setImageResource(R.drawable.img_kitchen1)
         } else {
-            val model: Any = when {
-                raw.startsWith("http", true) ||
-                        raw.startsWith("content://", true) ||
-                        raw.startsWith("file://", true) -> raw
-                raw.startsWith("/") -> java.io.File(raw)
-                else -> raw
-            }
-            Glide.with(holder.img)
-                .load(model)
+            val displayUrl = com.example.test.network.RetrofitInstance.toAbsoluteUrl(raw)
+
+            Glide.with(holder.img.context)
+                .load(displayUrl)
                 .placeholder(R.drawable.img_kitchen1)
                 .into(holder.img)
         }

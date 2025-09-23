@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
-    const val BASE_URL = "http://192.168.219.108:8080"
+    const val BASE_URL = "http://172.16.98.165:8080"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
@@ -44,5 +44,11 @@ object RetrofitInstance {
         chatApi= retrofit.create(ChatApi::class.java)
         materialApi= retrofit.create(MaterialApi::class.java)
         pantryApi= retrofit.create(PantryApi::class.java)
+    }
+    fun toAbsoluteUrl(pathOrUrl: String?): String? {
+        if (pathOrUrl.isNullOrBlank()) return null
+        val s = pathOrUrl.trim()
+        if (s.startsWith("http://", true) || s.startsWith("https://", true)) return s
+        return BASE_URL.trimEnd('/') + "/" + s.trimStart('/')
     }
 }
