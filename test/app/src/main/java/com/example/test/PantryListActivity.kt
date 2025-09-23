@@ -40,9 +40,11 @@ class PantryListActivity : AppCompatActivity() {
             editLauncher.launch(intent)
         },
         onClick = { fridge: PantryResponse ->
-
+            // ✅ 클릭 시 디테일 화면으로 이동 + 이름/메모도 함께 전달
             val intent = Intent(this, PantryDetailActivity::class.java).apply {
                 putExtra("id", fridge.id)
+                putExtra("name", fridge.name)   // <- 여기서 넘겨야 함
+                putExtra("memo", fridge.note)   // (선택) 필요하면 같이
             }
             startActivity(intent)
         }

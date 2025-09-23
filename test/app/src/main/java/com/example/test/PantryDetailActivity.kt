@@ -50,6 +50,7 @@ class PantryDetailActivity : AppCompatActivity() {
         val totalChoice = findViewById<ConstraintLayout>(R.id.totalChoice)
         val checkBtn = findViewById<ImageButton>(R.id.check)
         val materialCook = findViewById<EditText>(R.id.materialCook)
+        val titleView = findViewById<TextView>(R.id.mainRefrigerator)
         val listOne = findViewById<ConstraintLayout>(R.id.listOne)
         val listTwo = findViewById<ConstraintLayout>(R.id.listTwo)
         val listThree = findViewById<ConstraintLayout>(R.id.listThree)
@@ -92,6 +93,21 @@ class PantryDetailActivity : AppCompatActivity() {
         val outsideList = findViewById<ConstraintLayout>(R.id.outsideList)
         val modification = findViewById<TextView>(R.id.modification)
         val deleteBtn = findViewById<TextView>(R.id.delete)
+
+        // 인텐트에서 이름을 먼저 받아와 즉시 표시
+        val incomingName = intent.getStringExtra("name")
+        if (!incomingName.isNullOrBlank()) {
+            titleView.text = formatFridgeTitle(incomingName)
+        }
+
+        // 이후 서버에서 상세 조회했다면 최신 값으로 다시 반영
+        loadPantryDetail(
+            id = intent.getLongExtra("id", -1L),
+            onLoaded = { detail ->
+                // detail.name 으로 최종 갱신
+                titleView.text = formatFridgeTitle(detail.name)
+            }
+        )
 
         // 탭바 리스트와 해당 리스트 묶음
         val tabs = listOf(
@@ -254,4 +270,15 @@ class PantryDetailActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun formatFridgeTitle(name: String): String {
+        return if (name.contains("냉장고")) name else "$name 냉장고"
+    }
+
+    // 예시: 상세 조회 함수 시그니처만 보여줌 (네트워크 로직은 기존 방식대로)
+    private fun loadPantryDetail(id: Long, onLoaded: (DetailDto) -> Unit) {
+        // Retrofit 호출 → 성공 시 onLoaded(detail)
+    }
+
+    data class DetailDto(val name: String /* ...다른 필드들 */)
 }
