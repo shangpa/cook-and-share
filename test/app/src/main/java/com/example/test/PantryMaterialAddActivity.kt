@@ -64,7 +64,9 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById(R.id.season),
             findViewById(R.id.processedFood),
             findViewById(R.id.noodle),
-            findViewById(R.id.etc)
+            findViewById(R.id.etc),
+            findViewById(R.id.kimchi),
+            findViewById(R.id.drink)
         )
 
         // 레이아웃
@@ -79,7 +81,9 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById(R.id.spiceryList),
             findViewById(R.id.processedFoodList),
             findViewById(R.id.noodlesList),
-            findViewById(R.id.etcList)
+            findViewById(R.id.etcList),
+            findViewById(R.id.kimchiList),
+            findViewById(R.id.drinkList)
         )
 
         // 버튼 클릭시 해당 레이아웃으로 이동
@@ -110,27 +114,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.daikonLayoutTwo),
             findViewById<ConstraintLayout>(R.id.napaCabbageLayoutTwo),
             findViewById<ConstraintLayout>(R.id.onionLayoutTwo),
-            findViewById<ConstraintLayout>(R.id.tomatoLayoutTwo),
-            findViewById<ConstraintLayout>(R.id.welshOnionLayoutTwo),
-            findViewById<ConstraintLayout>(R.id.gingerLayout),
-            findViewById<ConstraintLayout>(R.id.lettuceLayout),
-            findViewById<ConstraintLayout>(R.id.spinachLayout),
-            findViewById<ConstraintLayout>(R.id.perillaLeafLayout),
-            findViewById<ConstraintLayout>(R.id.pakChoiLayout),
-            findViewById<ConstraintLayout>(R.id.waterParsleyLayout),
-            findViewById<ConstraintLayout>(R.id.chivesLayout),
-            findViewById<ConstraintLayout>(R.id.bellPepperLayout),
-            findViewById<ConstraintLayout>(R.id.chiliLayout),
-            findViewById<ConstraintLayout>(R.id.cucumberLayout),
-            findViewById<ConstraintLayout>(R.id.pumpkinLayout),
-            findViewById<ConstraintLayout>(R.id.squashLayout),
-            findViewById<ConstraintLayout>(R.id.orientalMelonLayout),
-            findViewById<ConstraintLayout>(R.id.broccoliLayout),
-            findViewById<ConstraintLayout>(R.id.cabbageLayout),
-            findViewById<ConstraintLayout>(R.id.bigLettuceLayout),
-            findViewById<ConstraintLayout>(R.id.beanSproutsLayout),
-            findViewById<ConstraintLayout>(R.id.mungBeanSproutsLayout),
-            findViewById<ConstraintLayout>(R.id.jjokpaLayout),
 
             findViewById<ConstraintLayout>(R.id.beefLayout),
             findViewById<ConstraintLayout>(R.id.porkLayout),
@@ -145,19 +128,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.pollackLayout),
             findViewById<ConstraintLayout>(R.id.cutlassfishLayout),
             findViewById<ConstraintLayout>(R.id.shrimpLayout),
-            findViewById<ConstraintLayout>(R.id.blueCrabLayout),
-            findViewById<ConstraintLayout>(R.id.snowCrabLayout),
-            findViewById<ConstraintLayout>(R.id.crawfishLayout),
-            findViewById<ConstraintLayout>(R.id.musselLayout),
-            findViewById<ConstraintLayout>(R.id.clamLayout),
-            findViewById<ConstraintLayout>(R.id.scallopLayout),
-            findViewById<ConstraintLayout>(R.id.abaloneLayout),
-            findViewById<ConstraintLayout>(R.id.oysterLayout),
-            findViewById<ConstraintLayout>(R.id.seaUrchinLayout),
-            findViewById<ConstraintLayout>(R.id.seaCucumberLayout),
-            findViewById<ConstraintLayout>(R.id.smallOctopusLayout),
-            findViewById<ConstraintLayout>(R.id.octopusLayout),
-            findViewById<ConstraintLayout>(R.id.squidLayout),
 
             findViewById<ConstraintLayout>(R.id.riceLayout),
             findViewById<ConstraintLayout>(R.id.brownRiceLayout),
@@ -167,12 +137,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.kidneyBeanLayout),
             findViewById<ConstraintLayout>(R.id.blackBeanLayout),
             findViewById<ConstraintLayout>(R.id.peaLayout),
-            findViewById<ConstraintLayout>(R.id.chickpeaLayout),
-            findViewById<ConstraintLayout>(R.id.adzukiBeansLayout),
-            findViewById<ConstraintLayout>(R.id.flourLayout),
-            findViewById<ConstraintLayout>(R.id.starchLayout),
-            findViewById<ConstraintLayout>(R.id.oatmealLayout),
-            findViewById<ConstraintLayout>(R.id.cerealLayout),
 
             findViewById<ConstraintLayout>(R.id.bananaLayout),
             findViewById<ConstraintLayout>(R.id.mangoLayout),
@@ -182,11 +146,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.peachLayout),
             findViewById<ConstraintLayout>(R.id.plumLayout),
             findViewById<ConstraintLayout>(R.id.persimmonLayout),
-            findViewById<ConstraintLayout>(R.id.grapeLayout),
-            findViewById<ConstraintLayout>(R.id.mandarinLayout),
-            findViewById<ConstraintLayout>(R.id.hanrabongLayout),
-            findViewById<ConstraintLayout>(R.id.strawberryLayout),
-            findViewById<ConstraintLayout>(R.id.blueberryLayout),
 
             findViewById<ConstraintLayout>(R.id.milkLayout),
             findViewById<ConstraintLayout>(R.id.cheeseLayout),
@@ -203,18 +162,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.sesameOilLayout),
             findViewById<ConstraintLayout>(R.id.cookingOilLayout),
             findViewById<ConstraintLayout>(R.id.chiliPepperLayout),
-            findViewById<ConstraintLayout>(R.id.pepperLayout),
-            findViewById<ConstraintLayout>(R.id.curryPowderLayout),
-            findViewById<ConstraintLayout>(R.id.juiceLemonLayout),
-            findViewById<ConstraintLayout>(R.id.ketchupLayout),
-            findViewById<ConstraintLayout>(R.id.mayonnaiseLayout),
-            findViewById<ConstraintLayout>(R.id.mustardLayout),
-            findViewById<ConstraintLayout>(R.id.gochujangLayout),
-            findViewById<ConstraintLayout>(R.id.doenjangLayout),
-            findViewById<ConstraintLayout>(R.id.ssamjangLayout),
-            findViewById<ConstraintLayout>(R.id.porkCutletLayout),
-            findViewById<ConstraintLayout>(R.id.oysterSauceLayout),
-            findViewById<ConstraintLayout>(R.id.srirachaSauceLayout),
 
             findViewById<ConstraintLayout>(R.id.fishCakeLayout),
             findViewById<ConstraintLayout>(R.id.hamLayout),
@@ -249,8 +196,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.whiteKimchiLayout),
             findViewById<ConstraintLayout>(R.id.youngSummerRadishKimchiLayout),
             findViewById<ConstraintLayout>(R.id.dicedRadishKimchiLayout),
-            findViewById<ConstraintLayout>(R.id.radishWaterKimchiLayout),
-            findViewById<ConstraintLayout>(R.id.braisedPorkWithAgedKimchiLayout),
 
             findViewById<ConstraintLayout>(R.id.waterLayout),
             findViewById<ConstraintLayout>(R.id.colaLayout),
@@ -260,11 +205,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.fantaLayout),
             findViewById<ConstraintLayout>(R.id.zeroFantaLayout),
             findViewById<ConstraintLayout>(R.id.sportsDrinkLayout),
-            findViewById<ConstraintLayout>(R.id.juiceLayout),
-            findViewById<ConstraintLayout>(R.id.energyDrinkLayout),
-            findViewById<ConstraintLayout>(R.id.milkTeaLayout),
-            findViewById<ConstraintLayout>(R.id.blackTeaLayout),
-            findViewById<ConstraintLayout>(R.id.drinkMilkLayout),
 
         )
 
