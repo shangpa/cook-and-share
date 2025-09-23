@@ -60,9 +60,9 @@ class PantryEditActivity : AppCompatActivity() {
         uploadImageToServer(uri) { url ->
             if (url != null) {
                 remoteImageUrl = url
-                val displayUrl = RetrofitInstance.toAbsoluteUrl(url) // 👈 여기서 BASE_URL 자동으로 붙임
+                val displayUrl = RetrofitInstance.toAbsoluteUrl(url) 
                 Glide.with(this).load(displayUrl)
-                    .placeholder(R.drawable.img_kitchen1)
+                    .placeholder(R.drawable.image_pantry)
                     .into(img)
                 tvPick.text = ""
             } else {
@@ -83,7 +83,8 @@ class PantryEditActivity : AppCompatActivity() {
             uploadImageToServer(uri) { url ->
                 if (url != null) {
                     remoteImageUrl = url
-                    Glide.with(this).load(url)
+                    val displayUrl = RetrofitInstance.toAbsoluteUrl(url)
+                    Glide.with(this).load(displayUrl)
                         .placeholder(R.drawable.image_pantry)
                         .into(img)
                     tvPick.text = ""
