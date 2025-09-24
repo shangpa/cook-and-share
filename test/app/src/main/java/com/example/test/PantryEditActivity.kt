@@ -27,6 +27,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
+import androidx.lifecycle.lifecycleScope
+import com.example.test.PantryMaterialAddDetailActivity
+import com.example.test.model.pantry.PantryStockDto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PantryEditActivity : AppCompatActivity() {
 
@@ -179,13 +185,17 @@ class PantryEditActivity : AppCompatActivity() {
     private fun onSave() {
         val name = etName.text?.toString()?.trim().orEmpty()
         val memo = etMemo.text?.toString()?.trim().takeIf { !it.isNullOrBlank() }
-
         if (name.isBlank()) {
             Toast.makeText(this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val token = "Bearer " + (App.prefs.token ?: "")
+        val raw = App.prefs.token
+        val token = if (!raw.isNullOrBlank()) "Bearer $raw" else null
+        if (token == null) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         if (mode == "create") {
             val request = PantryCreateRequest(
@@ -194,36 +204,25 @@ class PantryEditActivity : AppCompatActivity() {
                 imageUrl = remoteImageUrl
             )
 
-            RetrofitInstance.pantryApi.createPantry(token, request)
-                .enqueue(object : retrofit2.Callback<PantryResponse> {
-                    override fun onResponse(
-                        call: Call<PantryResponse>,
-                        response: Response<PantryResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            val created = response.body()
-                            val result = Intent().apply {
-                                putExtra("result_mode", "create")
-                                putExtra("result_id", created?.id ?: -1L)
-                                putExtra("result_name", created?.name)
-                                putExtra("result_memo", created?.note)
-                                putExtra("result_imageUrl", created?.imageUrl)
-                            }
-                            setResult(RESULT_OK, result)
-                            finish()
-                        } else {
-                            Toast.makeText(this@PantryEditActivity,
-                                "생성 실패: ${response.code()}",
-                                Toast.LENGTH_SHORT).show()
-                        }
+            lifecycleScope.launch {
+                try {
+                    val created = withContext(Dispatchers.IO) {
+                        // suspend fun createPantry(...)
+                        RetrofitInstance.pantryApi.createPantry(token, request)
                     }
-
-                    override fun onFailure(call: Call<PantryResponse>, t: Throwable) {
-                        Toast.makeText(this@PantryEditActivity,
-                            "네트워크 오류: ${t.localizedMessage}",
-                            Toast.LENGTH_SHORT).show()
+                    val result = Intent().apply {
+                        putExtra("result_mode", "create")
+                        putExtra("result_id", created.id)
+                        putExtra("result_name", created.name)
+                        putExtra("result_memo", created.note)
+                        putExtra("result_imageUrl", created.imageUrl)
                     }
-                })
+                    setResult(RESULT_OK, result)
+                    finish()
+                } catch (e: Exception) {
+                    Toast.makeText(this@PantryEditActivity, "생성 실패: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
 
         } else if (mode == "edit" && id != null) {
             val request = PantryUpdateRequest(
@@ -232,38 +231,28 @@ class PantryEditActivity : AppCompatActivity() {
                 imageUrl = remoteImageUrl
             )
 
-            RetrofitInstance.pantryApi.updatePantry(token, id!!, request)
-                .enqueue(object : retrofit2.Callback<PantryResponse> {
-                    override fun onResponse(
-                        call: Call<PantryResponse>,
-                        response: Response<PantryResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            val updated = response.body()
-                            val result = Intent().apply {
-                                putExtra("result_mode", "edit")
-                                putExtra("result_id", updated?.id ?: id!!)
-                                putExtra("result_name", updated?.name)
-                                putExtra("result_memo", updated?.note)
-                                putExtra("result_imageUrl", updated?.imageUrl)
-                            }
-                            setResult(RESULT_OK, result)
-                            finish()
-                        } else {
-                            Toast.makeText(this@PantryEditActivity,
-                                "수정 실패: ${response.code()}",
-                                Toast.LENGTH_SHORT).show()
-                        }
+            lifecycleScope.launch {
+                try {
+                    val updated = withContext(Dispatchers.IO) {
+                        // suspend fun updatePantry(...)
+                        RetrofitInstance.pantryApi.updatePantry(token, id!!, request)
                     }
-
-                    override fun onFailure(call: Call<PantryResponse>, t: Throwable) {
-                        Toast.makeText(this@PantryEditActivity,
-                            "네트워크 오류: ${t.localizedMessage}",
-                            Toast.LENGTH_SHORT).show()
+                    val result = Intent().apply {
+                        putExtra("result_mode", "edit")
+                        putExtra("result_id", updated.id)
+                        putExtra("result_name", updated.name)
+                        putExtra("result_memo", updated.note)
+                        putExtra("result_imageUrl", updated.imageUrl)
                     }
-                })
+                    setResult(RESULT_OK, result)
+                    finish()
+                } catch (e: Exception) {
+                    Toast.makeText(this@PantryEditActivity, "수정 실패: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
 
     private fun onDelete() {
         if (id == null) {
@@ -275,42 +264,33 @@ class PantryEditActivity : AppCompatActivity() {
             .setTitle("삭제 확인")
             .setMessage("정말 이 냉장고를 삭제하시겠습니까?")
             .setPositiveButton("삭제") { _, _ ->
-                val token = "Bearer " + (App.prefs.token ?: "")
-                RetrofitInstance.pantryApi.deletePantry(token, id!!)
-                    .enqueue(object : retrofit2.Callback<Void> {
-                        override fun onResponse(
-                            call: Call<Void>,
-                            response: Response<Void>
-                        ) {
-                            if (response.isSuccessful) {
-                                val result = Intent().apply {
-                                    putExtra("result_mode", "delete")
-                                    putExtra("result_id", id ?: -1L)
-                                }
-                                setResult(RESULT_OK, result)
-                                finish()
-                            } else {
-                                Toast.makeText(
-                                    this@PantryEditActivity,
-                                    "삭제 실패: ${response.code()}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
+                val raw = App.prefs.token
+                val token = if (!raw.isNullOrBlank()) "Bearer $raw" else null
+                if (token == null) {
+                    Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
 
-                        override fun onFailure(call: Call<Void>, t: Throwable) {
-                            Toast.makeText(
-                                this@PantryEditActivity,
-                                "네트워크 오류: ${t.localizedMessage}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                lifecycleScope.launch {
+                    try {
+                        withContext(Dispatchers.IO) {
+                            // suspend fun deletePantry(...)
+                            RetrofitInstance.pantryApi.deletePantry(token, id!!)
                         }
-                    })
+                        val result = Intent().apply {
+                            putExtra("result_mode", "delete")
+                            putExtra("result_id", id ?: -1L)
+                        }
+                        setResult(RESULT_OK, result)
+                        finish()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@PantryEditActivity, "삭제 실패: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
             .setNegativeButton("취소", null)
             .show()
     }
-
 
     private fun createTempImageFile(): File {
         val dir = File(cacheDir, "images").apply { if (!exists()) mkdirs() }
@@ -339,8 +319,6 @@ class PantryEditActivity : AppCompatActivity() {
                 }
             })
     }
-
-
 
     private fun copyUriToCache(uri: Uri): File? {
         return try {

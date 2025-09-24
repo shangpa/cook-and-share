@@ -109,7 +109,7 @@
 
                     <!-- 가지 -->
                     <TextView
-                        android:id="@+id/material"
+                        android:id="@+id/tvIngredientName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="11dp"
@@ -123,7 +123,7 @@
 
                     <!-- 채소류 -->
                     <TextView
-                        android:id="@+id/greengrocery"
+                        android:id="@+id/materialStorage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -132,7 +132,7 @@
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="@id/materialAddRect"
                         app:layout_constraintEnd_toEndOf="@id/materialAddRect"
-                        app:layout_constraintTop_toBottomOf="@id/material"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvIngredientName"/>
 
                     <View
                         android:id="@+id/divideRectangleBarTwo"
@@ -143,7 +143,7 @@
                         android:layout_marginBottom="15dp"
                         app:layout_constraintStart_toStartOf="@id/materialAddRect"
                         app:layout_constraintEnd_toEndOf="@id/materialAddRect"
-                        app:layout_constraintTop_toBottomOf="@id/greengrocery" />
+                        app:layout_constraintTop_toBottomOf="@id/materialStorage" />
 
                     <!-- 보관장소 -->
                     <TextView
@@ -165,7 +165,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="41dp"
                         android:layout_marginStart="25dp"
-                        android:text="전체"
+                        android:text="냉장"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp"
                         app:layout_constraintStart_toEndOf="@id/storagePlace"
@@ -188,13 +188,13 @@
                         android:id="@+id/number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="갯수"
+                        android:inputType="numberDecimal"
+                        android:hint="수량"
                         android:textSize="13sp"
                         android:gravity="center"
                         android:layout_marginTop="45dp"
                         android:backgroundTint="#A1A9AD"
                         android:background="@null"
-                        android:inputType="text"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarThree"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThree"
                         app:layout_constraintTop_toBottomOf="@id/storagePlace"/>
@@ -209,15 +209,19 @@
                         app:layout_constraintStart_toStartOf="@id/storagePlace"
                         app:layout_constraintTop_toBottomOf="@id/number" />
 
-                    <!-- 개 -->
+                    <!-- 갯수 입력 옆의 단위 표시는 고정 TextView로 -->
                     <TextView
+                        android:id="@+id/tvUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="개"
-                        android:textColor="#2B2B2B"
+                        android:layout_marginStart="30dp"
+                        android:text="단위"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toStartOf="@id/total"
-                        app:layout_constraintTop_toTopOf="@id/number"/>
+                        android:textColor="#2B2B2B"
+                        app:layout_constraintStart_toEndOf="@id/number"
+                        app:layout_constraintTop_toTopOf="@id/number"
+                        app:layout_constraintBottom_toBottomOf="@id/number"/>
+
 
                     <!-- 구매일자 -->
                     <TextView
@@ -253,7 +257,7 @@
                         android:gravity="center"
                         android:backgroundTint="#A1A9AD"
                         android:background="@null"
-                        android:inputType="text"
+                        android:inputType="date"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarFour"
                         app:layout_constraintTop_toTopOf="@id/purchaseDate"/>
