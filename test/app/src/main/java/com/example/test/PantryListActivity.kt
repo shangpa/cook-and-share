@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.App
 import com.example.test.PantryDetailActivity
@@ -17,6 +18,9 @@ import com.example.test.R
 import com.example.test.adapter.RefrigeratorAdapter
 import com.example.test.model.pantry.PantryResponse
 import com.example.test.network.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Response
 
@@ -40,11 +44,9 @@ class PantryListActivity : AppCompatActivity() {
             editLauncher.launch(intent)
         },
         onClick = { fridge: PantryResponse ->
-            // ✅ 클릭 시 디테일 화면으로 이동 + 이름/메모도 함께 전달
             val intent = Intent(this, PantryDetailActivity::class.java).apply {
-                putExtra("id", fridge.id)
-                putExtra("name", fridge.name)   // <- 여기서 넘겨야 함
-                putExtra("memo", fridge.note)   // (선택) 필요하면 같이
+                putExtra("pantryId", fridge.id)
+                putExtra("name", fridge.name)
             }
             startActivity(intent)
         }
@@ -107,35 +109,32 @@ class PantryListActivity : AppCompatActivity() {
     }
 
     private fun loadPantries() {
+        val raw = App.prefs.token
+        val token = if (!raw.isNullOrBlank()) "Bearer $raw" else null
+        if (token == null) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        val token = App.prefs.token.toString()
-        RetrofitInstance.pantryApi.listPantries("Bearer $token")
-            .enqueue(object : retrofit2.Callback<List<PantryResponse>> {
-                override fun onResponse(
-                    call: Call<List<PantryResponse>>,
-                    response: Response<List<PantryResponse>>
-                ) {
-                    if (response.isSuccessful) {
-                        val list = response.body() ?: emptyList()
-                        items.clear()
-                        items.addAll(list)
-                        adapter.submit(items.toList())
-                        updateEmptyState()
-                    } else {
-                        Toast.makeText(this@PantryListActivity,
-                            "조회 실패: ${response.code()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        lifecycleScope.launch {
+            try {
+                // 네트워크는 IO에서
+                val list = withContext(Dispatchers.IO) {
+                    RetrofitInstance.pantryApi.listPantries(token)
                 }
-
-                override fun onFailure(call: Call<List<PantryResponse>>, t: Throwable) {
-                    Toast.makeText(this@PantryListActivity,
-                        "네트워크 오류: ${t.localizedMessage}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+                // UI 업데이트는 메인에서
+                items.clear()
+                items.addAll(list)
+                adapter.submit(items.toList())
+                updateEmptyState()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@PantryListActivity,
+                    "조회 실패: ${e.localizedMessage ?: "알 수 없는 오류"}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun updateEmptyState() {

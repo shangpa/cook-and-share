@@ -1,0 +1,118 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingEnd="12dp">
+
+    <!-- 카드 내부 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/transferArrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <!-- 이미지 -->
+            <ImageView
+                android:id="@+id/materialImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/image_eggplant"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- 이름 -->
+            <TextView
+                android:id="@+id/material"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가지"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/materialImage"
+                app:layout_constraintTop_toTopOf="@id/materialImage"
+                android:layout_marginStart="12dp"/>
+
+            <!-- 카테고리 -->
+            <TextView
+                android:id="@+id/greengrocery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="채소류"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@id/material"
+                app:layout_constraintTop_toBottomOf="@id/material" />
+
+            <!-- 보관장소 -->
+            <TextView
+                android:id="@+id/storagePlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="보관장소 : "
+                android:textColor="#000000"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@id/greengrocery"
+                app:layout_constraintTop_toBottomOf="@id/greengrocery" />
+
+            <TextView
+                android:id="@+id/storageOutside"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="실외"
+                android:textColor="#000000"
+                android:textSize="11sp"
+                app:layout_constraintStart_toEndOf="@id/storagePlace"
+                app:layout_constraintTop_toTopOf="@id/storagePlace" />
+
+            <!-- 수량 -->
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16"
+                android:textColor="#35A825"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/unit"
+                app:layout_constraintBaseline_toBaselineOf="@id/unit" />
+
+            <!-- 단위 -->
+            <TextView
+                android:id="@+id/unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textColor="#35A825"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 화살표 (카드 밖) -->
+    <ImageButton
+        android:id="@+id/transferArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_fridge_right_arrow"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toEndOf="@id/card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/card"
+        app:layout_constraintBottom_toBottomOf="@id/card"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
