@@ -71,7 +71,6 @@ private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
 private lateinit var handlingMethodContainer: LinearLayout
 private lateinit var cookOrderRecipeContainer: LinearLayout
-private lateinit var addFixButton: AppCompatButton
 private lateinit var replaceMaterialAddFixButton: AppCompatButton
 private lateinit var handlingMethodAddFixButton: AppCompatButton
 private lateinit var hourEditText: EditText
@@ -153,6 +152,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private lateinit var committedCompleted: BooleanArray
     private var lastSelectedIndex = 0
     private var isSwitching = false
+    private val rectToRow = mutableMapOf<View, View>()
+    private val selectedRects = mutableSetOf<View>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,14 +169,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 재료
         materialContainer = findViewById(R.id.materialContainer)
-        addFixButton = findViewById(R.id.addFixButton)
-
-        addFixButton.setOnClickListener {
-            if (itemCount < maxItems) {
-                addNewItem()
-                moveButtonDown() // 버튼 아래로 이동
-            }
-        }
 
         // 대체 재료
         replaceMaterialContainer = findViewById(R.id.replaceMaterialContainer)
@@ -223,39 +216,9 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout)
         val material = findViewById<EditText>(R.id.material)
         val measuring = findViewById<EditText>(R.id.measuring)
-        val materialTwo = findViewById<EditText>(R.id.materialTwo)
-        val measuringTwo = findViewById<EditText>(R.id.measuringTwo)
-        val materialThree = findViewById<EditText>(R.id.materialThree)
-        val measuringThree = findViewById<EditText>(R.id.measuringThree)
-        val materialFour = findViewById<EditText>(R.id.materialFour)
-        val measuringFour = findViewById<EditText>(R.id.measuringFour)
-        val materialFive = findViewById<EditText>(R.id.materialFive)
-        val measuringFive = findViewById<EditText>(R.id.measuringFive)
-        val materialSix = findViewById<EditText>(R.id.materialSix)
-        val measuringSix = findViewById<EditText>(R.id.measuringSix)
+        val materialCook = findViewById<EditText>(R.id.materialCook)
         val delete = findViewById<ImageButton>(R.id.delete)
-        val deleteTwo = findViewById<ImageButton>(R.id.deleteTwo)
-        val deleteThree = findViewById<ImageButton>(R.id.deleteThree)
-        val deleteFour = findViewById<ImageButton>(R.id.deleteFour)
-        val deleteFive = findViewById<ImageButton>(R.id.deleteFive)
-        val deleteSix = findViewById<ImageButton>(R.id.deleteSix)
         val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
-        val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
-        val divideRectangleBarSeven = findViewById<View>(R.id.divideRectangleBarSeven)
-        val divideRectangleBarEight = findViewById<View>(R.id.divideRectangleBarEight)
-        val divideRectangleBarNine = findViewById<View>(R.id.divideRectangleBarNine)
-        val divideRectangleBarTen = findViewById<View>(R.id.divideRectangleBarTen)
-        val unit = findViewById<TextView>(R.id.unit)
-        val unitTwo = findViewById<TextView>(R.id.unitTwo)
-        val unitThree = findViewById<TextView>(R.id.unitThree)
-        val unitFour = findViewById<TextView>(R.id.unitFour)
-        val unitFive = findViewById<TextView>(R.id.unitFive)
-        val unitSix = findViewById<TextView>(R.id.unitSix)
-        val dropDownTwo = findViewById<ImageButton>(R.id.dropDownTwo)
-        val dropDownThree = findViewById<ImageButton>(R.id.dropDownThree)
-        val dropDownFour = findViewById<ImageButton>(R.id.dropDownFour)
-        val dropDownFive = findViewById<ImageButton>(R.id.dropDownFive)
-        val dropDownSix = findViewById<ImageButton>(R.id.dropDownSix)
         val foodName = findViewById<TextView>(R.id.foodName)
         val materialKoreanFood = findViewById<TextView>(R.id.materialKoreanFood)
 
@@ -493,32 +456,20 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
                 // 재료 수집 (정적 + 동적)
                 val ingredients = mutableListOf<Pair<String, String>>()
-                fun addStatic(nameEt: EditText, qtyEt: EditText, unitTv: TextView) {
+                fun addStatic(nameEt: EditText, qtyEt: EditText, ) {
                     val name = nameEt.text.toString().trim()
                     val qty  = qtyEt.text.toString().trim()
-                    val unit = unitTv.text.toString().trim()
-                    if (name.isNotEmpty() && qty.isNotEmpty() && unit.isNotEmpty() && unit != "단위") {
-                        ingredients += name to "$qty $unit"
+                    if (name.isNotEmpty() && qty.isNotEmpty()) {
                     }
                 }
-                addStatic(material,      measuring,      unit)
-                addStatic(materialTwo,   measuringTwo,   unitTwo)
-                addStatic(materialThree, measuringThree, unitThree)
-                addStatic(materialFour,  measuringFour,  unitFour)
-                addStatic(materialFive,  measuringFive,  unitFive)
-                addStatic(materialSix,   measuringSix,   unitSix)
+                addStatic(material, measuring)
 
                 for (i in 0 until materialContainer.childCount) {
                     val row = materialContainer.getChildAt(i) as? ViewGroup ?: continue
                     val nameEt = row.getChildAt(0) as? EditText
                     val qtyEt  = row.getChildAt(1) as? EditText
-                    val unitTv = row.getChildAt(2) as? TextView
                     val name = nameEt?.text?.toString()?.trim().orEmpty()
                     val qty  = qtyEt?.text?.toString()?.trim().orEmpty()
-                    val unitStr = unitTv?.text?.toString()?.trim().orEmpty()
-                    if (name.isNotEmpty() && qty.isNotEmpty() && unitStr.isNotEmpty() && unitStr != "단위") {
-                        ingredients += name to "$qty $unitStr"
-                    }
                 }
 
                 val filteredIngredients = ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
@@ -754,43 +705,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             popup.show()
         }
 
-        /// 드롭다운 항목
-        val unitOptions = listOf("개", "컵", "큰솔", "작은솔", "티스푼", "리터", "g", "kg", "덩어리", "묶음", "주머니", "봉지", "통", "팩", "한 줌", "한 술")
-
-        // 버튼 ID → 텍스트뷰 ID 맵핑
-        val buttonToUnitMap = mapOf(
-            R.id.dropDown to R.id.unit,
-            R.id.dropDownTwo to R.id.unitTwo,
-            R.id.dropDownThree to R.id.unitThree,
-            R.id.dropDownFour to R.id.unitFour,
-            R.id.dropDownFive to R.id.unitFive,
-            R.id.dropDownSix to R.id.unitSix
-        )
-
-        // 각 버튼에 대해 PopupMenu 설정
-        buttonToUnitMap.forEach { (buttonId, unitId) ->
-            val button = findViewById<ImageButton>(buttonId)
-            val unit = findViewById<TextView>(unitId)
-
-            button.setOnClickListener {
-                val popup = PopupMenu(this@RecipeWriteImageActivity, button)
-
-                unitOptions.forEach { option ->
-                    popup.menu.add(option)
-                }
-
-                popup.setOnMenuItemClickListener { menuItem ->
-                    unit.text = menuItem.title
-                    unit.setTextColor(Color.parseColor("#2B2B2B"))
-                    checkTabs()
-                    checkAndUpdateContinueButton() // ✅ 선택 후 버튼 상태 갱신
-                    true
-                }
-
-                popup.show()
-            }
-        }
-
         // 한식 바뀜
         fun updateKoreanFoodTextViews(text: String) {
             materialKoreanFood.text = text
@@ -823,8 +737,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
-        unit.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> checkAndUpdateContinueButton() }
 
         //대체재료 채워지면 계속하기 바뀜
         replaceMaterialName.addTextChangedListener(object : TextWatcher {
@@ -900,54 +812,43 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             checkAndUpdateContinueButton()
         }
 
-        // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
-        deleteTwo.setOnClickListener {
-            materialTwo.visibility = View.GONE
-            measuringTwo.visibility = View.GONE
-            deleteTwo.visibility = ImageButton.GONE
-            divideRectangleBarSix.visibility = View.GONE
-            unitTwo.visibility = View.GONE
-            dropDownTwo.visibility = ImageButton.GONE
+        // 재료 리스트 선택시 테두리 색 바뀌고 재료 글 추가
+        val pairs = listOf(
+            R.id.eggplantLayout to R.id.rect,
+            R.id.potatoLayout to R.id.rectTwo,
+            R.id.sweetPotatoLayout to R.id.rectThree,
+            R.id.carrotLayout to R.id.rectFour,
+            R.id.tomatoLayout to R.id.rectFive
+        )
+
+        fun toggle(rect: View) {
+            val wasSelected = selectedRects.contains(rect)
+
+            if (wasSelected) {
+                // 해제
+                rect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                selectedRects.remove(rect)
+
+                rectToRow[rect]?.let { row ->
+                    materialContainer.removeView(row)
+                    rectToRow.remove(rect)
+                }
+            } else {
+                // 선택
+                rect.setBackgroundResource(R.drawable.rounded_fridge_green)
+                selectedRects.add(rect)
+
+                if (selectedRects.size >= 2) {
+                    val row = addNewItem(rect)  // ✅ rect 전달
+                    rectToRow[rect] = row
+                }
+            }
         }
 
-        // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
-        deleteThree.setOnClickListener {
-            materialThree.visibility = View.GONE
-            measuringThree.visibility = View.GONE
-            deleteThree.visibility = ImageButton.GONE
-            divideRectangleBarSeven.visibility = View.GONE
-            unitThree.visibility = View.GONE
-            dropDownThree.visibility = ImageButton.GONE
-        }
-
-        // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
-        deleteFour.setOnClickListener {
-            materialFour.visibility = View.GONE
-            measuringFour.visibility = View.GONE
-            deleteFour.visibility = ImageButton.GONE
-            divideRectangleBarEight.visibility = View.GONE
-            unitFour.visibility = View.GONE
-            dropDownFour.visibility = ImageButton.GONE
-        }
-
-        // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
-        deleteFive.setOnClickListener {
-            materialFive.visibility = View.GONE
-            measuringFive.visibility = View.GONE
-            deleteFive.visibility = ImageButton.GONE
-            divideRectangleBarNine.visibility = View.GONE
-            unitFive.visibility = View.GONE
-            dropDownFive.visibility = ImageButton.GONE
-        }
-
-        // 레시피 재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
-        deleteSix.setOnClickListener {
-            materialSix.visibility = View.GONE
-            measuringSix.visibility = View.GONE
-            deleteSix.visibility = ImageButton.GONE
-            divideRectangleBarTen.visibility = View.GONE
-            unitSix.visibility = View.GONE
-            dropDownSix.visibility = ImageButton.GONE
+        pairs.forEach { (layoutId, rectId) ->
+            val layout = findViewById<View>(layoutId)
+            val rect = findViewById<View>(rectId)
+            layout.setOnClickListener { toggle(rect) }
         }
 
         // 레시피 대체재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
@@ -1341,20 +1242,14 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val allIngredients = mutableListOf<Pair<String, String>>()
 
         // 정적 6칸
-        fun addStaticMaterial(nameId: Int, qtyId: Int, unitId: Int) {
+        fun addStaticMaterial(nameId: Int, qtyId: Int) {
             val name = findViewById<EditText>(nameId)?.text?.toString()?.trim().orEmpty()
             val qty  = findViewById<EditText>(qtyId)?.text?.toString()?.trim().orEmpty()
-            val unit = findViewById<TextView>(unitId)?.text?.toString()?.trim().orEmpty()
-            if (name.isNotEmpty() && qty.isNotEmpty() && unit.isNotEmpty() && unit != "단위") {
-                allIngredients += name to "$qty $unit"
+            if (name.isNotEmpty() && qty.isNotEmpty()) {
+                allIngredients += name to "$qty"
             }
         }
-        addStaticMaterial(R.id.material, R.id.measuring, R.id.unit)
-        addStaticMaterial(R.id.materialTwo, R.id.measuringTwo, R.id.unitTwo)
-        addStaticMaterial(R.id.materialThree, R.id.measuringThree, R.id.unitThree)
-        addStaticMaterial(R.id.materialFour, R.id.measuringFour, R.id.unitFour)
-        addStaticMaterial(R.id.materialFive, R.id.measuringFive, R.id.unitFive)
-        addStaticMaterial(R.id.materialSix, R.id.measuringSix, R.id.unitSix)
+        addStaticMaterial(R.id.material, R.id.measuring)
 
         // 동적 (materialContainer 안의 ConstraintLayout들을 순회)
         for (i in 0 until materialContainer.childCount) {
@@ -1362,9 +1257,8 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             // addNewItem()에서의 child 순서: 0:materialSix(EditText), 1:measuringSix(EditText), 2:unitSix(TextView) …
             val name = (row.getChildAt(0) as? EditText)?.text?.toString()?.trim().orEmpty()
             val qty  = (row.getChildAt(1) as? EditText)?.text?.toString()?.trim().orEmpty()
-            val unit = (row.getChildAt(2) as? TextView)?.text?.toString()?.trim().orEmpty()
-            if (name.isNotEmpty() && qty.isNotEmpty() && unit.isNotEmpty() && unit != "단위") {
-                allIngredients += name to "$qty $unit"
+            if (name.isNotEmpty() && qty.isNotEmpty() ) {
+                allIngredients += name to "$qty"
             }
         }
 
@@ -1506,13 +1400,11 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         // ===== 2번 탭: 재료 =====
         val materialView = findViewById<EditText?>(R.id.material)
         val measuringView = findViewById<EditText?>(R.id.measuring)
-        val unitView = findViewById<TextView?>(R.id.unit)
 
-        if (materialView != null && measuringView != null && unitView != null) {
+        if (materialView != null && measuringView != null ) {
             val hasMaterial = materialView.text.isNotBlank()
             val hasMeasuring = measuringView.text.isNotBlank()
-            val hasUnit = unitView.text.isNotBlank() && unitView.text != "단위"
-            tabCompleted[1] = hasMaterial && hasMeasuring && hasUnit
+            tabCompleted[1] = hasMaterial && hasMeasuring
         }
 
         // ===== 3번 탭: 대체재료 =====
@@ -1972,17 +1864,20 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     }
 
     // 레시피 재료 내용 추가하기 클릭시 내용 추가
-    private fun addNewItem() {
+    private fun addNewItem(): View = addNewItem(null)
+
+    private fun addNewItem(sourceRect: View?): View {
         // 새로운 ConstraintLayout 생성
         val newItemLayout = ConstraintLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+            this.tag = sourceRect
         }
 
         // 재료명 EditText 생성
-        val materialSix = EditText(this).apply {
+        val material = EditText(this).apply {
             id = View.generateViewId()  // ID 생성하여 ConstraintLayout에서 사용할 수 있도록 함
             layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -1996,16 +1891,16 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
 
         // 계량 EditText 생성
-        val measuringSix = EditText(this).apply {
+        val measuring = EditText(this).apply {
             id = View.generateViewId()  // ID 생성
             layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,  // 계량 EditText는 내용 크기만큼 표시
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             ).apply {
 
-                startToStart = materialSix.id  // 재료명 EditText 왼쪽 끝에 맞추기
+                startToStart = material.id  // 재료명 EditText 왼쪽 끝에 맞추기
                 endToEnd = ConstraintLayout.LayoutParams.PARENT_ID  // 오른쪽 끝에 맞추기
-                topToTop = materialSix.id  // 재료명 EditText 위쪽 끝에 맞추기
+                topToTop = material.id  // 재료명 EditText 위쪽 끝에 맞추기
 
                 setMargins(dpToPx(204), dpToPx(1), 0, 0) // 적절한 여백 설정
             }
@@ -2014,35 +1909,16 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             setBackgroundResource(android.R.color.transparent)  // 배경을 투명으로 설정
         }
 
-        // 단위 TextView 생성
-        val unitSix = TextView(this).apply {
-            id = View.generateViewId()  // ID 생성
-            layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,  // 계량 EditText는 내용 크기만큼 표시
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-
-                startToStart = measuringSix.id  // 재료명 EditText 왼쪽 끝에 맞추기
-                endToEnd = ConstraintLayout.LayoutParams.PARENT_ID  // 오른쪽 끝에 맞추기
-                topToTop = measuringSix.id  // 재료명 EditText 위쪽 끝에 맞추기
-
-                setMargins(dpToPx(236), dpToPx(12), 0, 0) // 적절한 여백 설정
-            }
-            hint = "단위"
-            textSize = 12f
-            setBackgroundResource(android.R.color.transparent)  // 배경을 투명으로 설정
-        }
-
         // 삭제 버튼 생성
-        val deleteSix = ImageButton(this).apply {
+        val delete = ImageButton(this).apply {
             id = View.generateViewId()  // ID 생성
             layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             ).apply {
                 // 오른쪽 끝에 위치하도록 설정
-                endToEnd = materialSix.id  // materialEditText의 오른쪽 끝에 맞추기
-                topToTop = materialSix.id  // materialEditText의 위쪽 끝에 맞추기
+                endToEnd = material.id  // materialEditText의 오른쪽 끝에 맞추기
+                topToTop = material.id  // materialEditText의 위쪽 끝에 맞추기
 
                 // 오른쪽 마진을 5dp로 설정하여 왼쪽으로 이동
                 setMargins(0, 0, dpToPx(14), 0) // dpToPx를 사용하여 픽셀로 변환한 후 오른쪽 마진 설정
@@ -2051,47 +1927,24 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             setBackgroundResource(android.R.color.transparent) // 배경 투명
         }
 
-        // 드롭다운 버튼 생성
-        val dropDownSix = ImageButton(this).apply {
-            id = View.generateViewId()  // ID 생성
-            layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                // 오른쪽 끝에 위치하도록 설정
-                endToEnd = deleteSix.id  // materialEditText의 오른쪽 끝에 맞추기
-                topToTop = deleteSix.id  // materialEditText의 위쪽 끝에 맞추기
-
-                // 오른쪽 마진을 5dp로 설정하여 왼쪽으로 이동
-                setMargins(0, 0, dpToPx(80), 0) // dpToPx를 사용하여 픽셀로 변환한 후 오른쪽 마진 설정
-            }
-            setImageResource(R.drawable.ic_drop_down) // 삭제 아이콘 설정
-            setBackgroundResource(android.R.color.transparent) // 배경 투명
-        }
-
-        dropDownSix.setOnClickListener {
-            val popup = PopupMenu(this@RecipeWriteImageActivity, dropDownSix)
-            val unitOptions = listOf("개","컵","큰솔","작은솔","티스푼","리터","g","kg","덩어리","묶음","주머니","봉지","통","팩","한 줌","한 술")
-            unitOptions.forEach { popup.menu.add(it) }
-            popup.setOnMenuItemClickListener { item ->
-                unitSix.text = item.title
-                unitSix.setTextColor(Color.parseColor("#2B2B2B"))
-                checkTabs()
-                checkAndUpdateContinueButton()
-                true
-            }
-            popup.show()
-        }
-
         // 삭제 버튼 클릭 시 해당 레이아웃 삭제 & 버튼 위치 조정
-        deleteSix.setOnClickListener {
+        delete.setOnClickListener {
             materialContainer.removeView(newItemLayout)
-            itemCount--  // 아이템 수 감소
-            moveButtonUp() // 아이템 삭제 시 버튼을 위로 이동
+            itemCount--
+
+            // ✅ sourceRect가 null이어도 tag에서 복구
+            val rectToClear = (sourceRect ?: newItemLayout.tag) as? View
+
+            rectToClear?.let { rect ->
+                rectToRow.remove(rect)
+                if (selectedRects.remove(rect)) {
+                    rect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                }
+            }
         }
 
         // 새로운 바 생성
-        val divideRectangleBarEight = View(this).apply {
+        val divideRectangleBarFive = View(this).apply {
             id = View.generateViewId()  // ID 생성
 
             // LayoutParams 설정
@@ -2100,7 +1953,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 dpToPx(1)  // 2dp 높이를 px로 변환하여 설정
             ).apply {
                 // 바를 materialEditText 아래로 배치
-                topToBottom = materialSix.id  // materialEditText 아래에 위치
+                topToBottom = material.id  // materialEditText 아래에 위치
                 startToStart = ConstraintLayout.LayoutParams.PARENT_ID  // 왼쪽 끝에 붙임
                 endToEnd = ConstraintLayout.LayoutParams.PARENT_ID  // 오른쪽 끝에 붙임
 
@@ -2114,17 +1967,16 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // LinearLayout에 요소 추가
         newItemLayout.apply {
-            addView(materialSix)
-            addView(measuringSix)
-            addView(unitSix)
-            addView(deleteSix)
-            addView(dropDownSix)
-            addView(divideRectangleBarEight)
+            addView(material)
+            addView(measuring)
+            addView(delete)
+            addView(divideRectangleBarFive)
         }
 
         // 부모 레이아웃에 추가
         materialContainer.addView(newItemLayout)
         itemCount++
+        return newItemLayout
     }
 
     // ================== DRAFT BINDING ==================
@@ -2279,40 +2131,30 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private fun restoreIngredientsFromMaps(items: List<Map<String,String>>) {
         materialContainer.removeAllViews()
 
-        val nameIds = listOf(R.id.material, R.id.materialTwo, R.id.materialThree, R.id.materialFour, R.id.materialFive, R.id.materialSix)
-        val qtyIds  = listOf(R.id.measuring, R.id.measuringTwo, R.id.measuringThree, R.id.measuringFour, R.id.measuringFive, R.id.measuringSix)
-        val unitIds = listOf(R.id.unit, R.id.unitTwo, R.id.unitThree, R.id.unitFour, R.id.unitFive, R.id.unitSix)
+        val nameIds = listOf(R.id.material)
+        val qtyIds  = listOf(R.id.measuring)
 
         val first = items.take(6)
         val rest  = items.drop(6)
 
         first.forEachIndexed { i, m ->
             val name = extractName(m)
-            val (qty, unit) = splitQtyUnit(extractAmountWithUnit(m))
+            val (qty) = splitQtyUnit(extractAmountWithUnit(m))
             findViewById<EditText>(nameIds[i]).setText(name)
             findViewById<EditText>(qtyIds[i]).setText(qty)
-            findViewById<TextView>(unitIds[i]).apply {
-                if (unit.isNotBlank()) {
-                    text = unit
-                    setTextColor(Color.parseColor("#2B2B2B"))
-                }
-            }
         }
 
         rest.forEach { m ->
             val name = extractName(m)
-            val (qty, unit) = splitQtyUnit(extractAmountWithUnit(m))
+            val (qty) = splitQtyUnit(extractAmountWithUnit(m))
 
-            addNewItem() // 동적 한 줄 생성
-            val row = materialContainer.getChildAt(materialContainer.childCount - 1) as ViewGroup
-            val nameEt = row.getChildAt(0) as EditText
+            val row: View = addNewItem()
+            val nameEt = (row as ViewGroup).getChildAt(0) as EditText
             val qtyEt  = row.getChildAt(1) as EditText
-            val unitTv = row.getChildAt(2) as TextView
+
 
             nameEt.setText(name)
             qtyEt.setText(qty)
-            unitTv.text = unit
-            if (unit.isNotBlank()) unitTv.setTextColor(Color.parseColor("#2B2B2B"))
         }
     }
 
@@ -2490,23 +2332,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val cut = desc.substringAfter(": ", desc)
         val list = cut.split("→").map { it.trim() }.filter { it.isNotBlank() }
         return if (list.size <= 1) emptyList() else list.drop(1)
-    }
-
-
-    // 레시피 재료 내용 추가 버튼 클릭시 버튼 아래로 이동
-    private fun moveButtonDown() {
-        val params = addFixButton.layoutParams as ConstraintLayout.LayoutParams
-        params.topMargin += buttonMarginIncrease // 버튼을 130px 아래로 이동
-        addFixButton.layoutParams = params
-    }
-
-    // 레시피 재료 내용 추가 버튼 위로 이동
-    private fun moveButtonUp() {
-        val params = addFixButton.layoutParams as ConstraintLayout.LayoutParams
-        if (params.topMargin > 0) {
-            params.topMargin -= buttonMarginIncrease // 버튼을 130px 위로 이동
-            addFixButton.layoutParams = params
-        }
     }
 
     // 레시피 대체재료 내용 추가하기 클릭시 내용 추가
