@@ -387,7 +387,7 @@
 
         <!-- MypageFridgeMaterialListActivity -->
         <activity
-            android:name=".MypageFridgeMaterialListActivity"
+            android:name=".MypageIngredientListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

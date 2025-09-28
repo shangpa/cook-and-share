@@ -258,7 +258,6 @@ class PantryMaterialAddDetailActivity : AppCompatActivity() {
                 }
             }.onSuccess {
                 if (it.isSuccessful) {
-                    toast("수정 완료")
                     finish() // 목록으로 복귀
                 } else {
                     toast("수정 실패(${it.code()})")

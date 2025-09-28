@@ -316,7 +316,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:listitem="@layout/item_stock"/>
+                tools:listitem="@layout/item_ingredient_list"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 냉장 리스트 -->
@@ -342,7 +342,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:listitem="@layout/item_stock"/>
+                tools:listitem="@layout/item_ingredient_list"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 냉동 리스트 -->
@@ -368,7 +368,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:listitem="@layout/item_stock"/>
+                tools:listitem="@layout/item_ingredient_list"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 실외 리스트 -->
@@ -394,7 +394,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:listitem="@layout/item_stock"/>
+                tools:listitem="@layout/item_ingredient_list"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 요리 둥둥 -->

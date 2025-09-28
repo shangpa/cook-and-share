@@ -12,17 +12,17 @@ import com.example.test.R
 import com.example.test.PantryStockUi
 import com.google.android.material.card.MaterialCardView
 
-class StockAdapter(
+class IngredientAdapter(
     private val onClick: (PantryStockUi) -> Unit,
     private val onLongClick: (PantryStockUi) -> Unit,
     private val onTransferArrow: (PantryStockUi) -> Unit,
-) : RecyclerView.Adapter<StockAdapter.VH>() {
+) : RecyclerView.Adapter<IngredientAdapter.VH>() {
 
     private val items = mutableListOf<PantryStockUi>()
     private val selectedIds = linkedSetOf<Long>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_stock, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_ingredient_list, parent, false)
         return VH(v)
     }
 
@@ -41,7 +41,8 @@ class StockAdapter(
 
     fun toggle(id: Long) {
         if (selectedIds.contains(id)) selectedIds.remove(id) else selectedIds.add(id)
-        notifyItemChanged(items.indexOfFirst { it.id == id })
+        val idx = items.indexOfFirst { it.id == id }
+        if (idx >= 0) notifyItemChanged(idx)
     }
 
     fun toggleSelectAll(all: Boolean) {
@@ -84,13 +85,13 @@ class StockAdapter(
             qty.text = item.quantity
             unit.text = item.unit
 
-            // 선택 시 초록색 테두리
-            card.strokeWidth = 5
-            card.strokeColor = if (selected) 0xFF35A825.toInt() else 0x00000000
+            // 선택
+            card.isSelected = selected
 
             // 클릭/롱클릭
-            itemView.setOnClickListener { onClick(item) }
-            itemView.setOnLongClickListener { onLongClick(item); true }
+            card.setOnClickListener { onClick(item) }
+            card.setOnLongClickListener { onLongClick(item); true }
+            arrow.setOnClickListener { onTransferArrow(item) }
 
             // 화살표
             arrow.setOnClickListener { onTransferArrow(item) }

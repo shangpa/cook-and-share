@@ -207,7 +207,7 @@
             android:id="@+id/fridgeHistoryRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_fridge_history" />
+            tools:listitem="@layout/item_ingredient_history" />
 
     </LinearLayout>
 

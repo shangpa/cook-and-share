@@ -23,7 +23,13 @@ import com.bumptech.glide.Glide
 import android.view.View
 import java.text.NumberFormat
 import java.util.Locale
-
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.example.test.network.api.PantryApi
+import com.example.test.model.pantry.PantryResponse
 
 class MypageActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -181,11 +187,38 @@ class MypageActivity : AppCompatActivity() {
         }
 
 
-        // fridgeMaterialListText 클릭했을 때 MypageFridgeMaterialListActivity 이동
-        val fridgeMaterialListText: TextView = findViewById(R.id.fridgeMaterialListText)
-        fridgeMaterialListText.setOnClickListener {
-            val intent = Intent(this, MypageFridgeMaterialListActivity::class.java)
-            startActivity(intent)
+        // MypageIngredientListActivity 클릭했을 때 MypageFridgeMaterialListActivity 이동
+        val IngredientListText: TextView = findViewById(R.id.IngredientListText)
+        IngredientListText.setOnClickListener {
+            val authToken = App.prefs.token ?: ""
+            if (authToken.isBlank()) {
+                Toast.makeText(this, "로그인 필요합니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                try {
+                    // 냉장고 목록 불러오기
+                    val pantries = withContext(Dispatchers.IO) {
+                        RetrofitInstance.pantryApi.listPantries("Bearer $authToken")
+                    }
+
+                    if (pantries.isNullOrEmpty()) {
+                        Toast.makeText(this@MypageActivity, "등록한 냉장고가 없어요", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+
+                    // 기본 냉장고 우선, 없으면 첫 번째
+                    val target: PantryResponse = pantries.firstOrNull { it.isDefault } ?: pantries.first()
+
+                    val intent = Intent(this@MypageActivity, MypageIngredientListActivity::class.java)
+                    intent.putExtra(MypageIngredientListActivity.EXTRA_PANTRY_ID, target.id)
+                    startActivity(intent)
+
+                } catch (e: Exception) {
+                    Toast.makeText(this@MypageActivity, "냉장고 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         // MaterialListText 클릭했을 때 MaterialMyProfileActivity 이동
