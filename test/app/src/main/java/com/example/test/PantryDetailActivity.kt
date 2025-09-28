@@ -1,6 +1,5 @@
 package com.example.test
 
-import com.example.test.App
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -13,16 +12,14 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.test.Utils.TabBarUtils
-import com.example.test.adapter.StockAdapter
+import com.example.test.adapter.IngredientAdapter
 import com.example.test.model.pantry.PantryResponse
 import com.example.test.model.pantry.PantryStockDto
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.app.AlertDialog
 
 class PantryDetailActivity : AppCompatActivity() {
@@ -58,10 +55,10 @@ class PantryDetailActivity : AppCompatActivity() {
     private lateinit var rvOutside: RecyclerView
 
     // 어댑터
-    private lateinit var totalAdapter: StockAdapter
-    private lateinit var fridgeAdapter: StockAdapter
-    private lateinit var freezeAdapter: StockAdapter
-    private lateinit var outsideAdapter: StockAdapter
+    private lateinit var totalAdapter: IngredientAdapter
+    private lateinit var fridgeAdapter: IngredientAdapter
+    private lateinit var freezeAdapter: IngredientAdapter
+    private lateinit var outsideAdapter: IngredientAdapter
 
     // 원본 데이터
     private var allStocks: List<PantryStockUi> = emptyList()
@@ -372,7 +369,7 @@ class PantryDetailActivity : AppCompatActivity() {
         updateSelectBarText()
     }
 
-    private fun currentAdapter(): StockAdapter = when (currentTab) {
+    private fun currentAdapter(): IngredientAdapter = when (currentTab) {
         "FRIDGE" -> fridgeAdapter
         "FREEZER" -> freezeAdapter
         "PANTRY" -> outsideAdapter
@@ -386,7 +383,7 @@ class PantryDetailActivity : AppCompatActivity() {
 
     // ---------------------- Adapter 팩토리 ----------------------
 
-    private fun makeAdapter(): StockAdapter = StockAdapter(
+    private fun makeAdapter(): IngredientAdapter = IngredientAdapter(
         onClick = { item ->
             // 단일 클릭: 선택 토글
             currentAdapter().toggle(item.id)
@@ -400,11 +397,11 @@ class PantryDetailActivity : AppCompatActivity() {
             updateSelectBarText()
         },
         onTransferArrow = { item ->
-            // 화살표: 마이페이지 상세 리스트로 이동
-            startActivity(Intent(this, MypageFridgeMaterialListActivity::class.java).apply {
+            startActivity(Intent(this, MypageIngredientListActivity::class.java).apply {
                 putExtra("pantryId", pantryId)
                 putExtra("ingredientName", item.name)
                 putExtra("storage", item.storageEnum)
+                putExtra("hideSearch", true)   // ⬅⬅ 추가: 검색 숨김 플래그
             })
         }
     )

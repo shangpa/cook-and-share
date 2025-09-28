@@ -8,4 +8,6 @@
     <color name="green_35A825">#35A825</color>
     <color name="green_35A825_20">#3335A825</color>
     <color name="gray_D9D9D9">#D9D9D9</color>
+    <color name="pantryHistoryBlue">#409CFF</color>
+    <color name="pantryHistoryRed">#FF6961</color>
 </resources>

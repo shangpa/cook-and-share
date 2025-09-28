@@ -11,9 +11,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardCornerRadius="16dp"
-        app:strokeWidth="2dp"
-        app:strokeColor="@android:color/transparent"
+        app:cardCornerRadius="20dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/ingredient_card_stroke_selected"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/transferArrow"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,6 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:padding="20dp">
 
             <!-- 이미지 -->
@@ -85,6 +86,7 @@
                 android:text="16"
                 android:textColor="#35A825"
                 android:textSize="14sp"
+                android:layout_marginEnd="2dp"
                 app:layout_constraintEnd_toStartOf="@id/unit"
                 app:layout_constraintBaseline_toBaselineOf="@id/unit" />
 

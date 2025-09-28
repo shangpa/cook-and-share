@@ -1,5 +1,6 @@
 package com.example.test.network.api
 
+import com.example.test.model.pantry.IngredientHistoryResponse
 import com.example.test.model.pantry.IngredientMasterResponse
 import com.example.test.model.pantry.PantryCreateRequest
 import com.example.test.model.pantry.PantryResponse
@@ -10,7 +11,6 @@ import com.example.test.model.pantry.PantryStockResponse
 import com.example.test.model.pantry.PantryStockUpdateRequest
 import com.example.test.model.pantry.PantryUpdateRequest
 import com.example.test.model.pantry.UnitResponse
-import retrofit2.Call
 import retrofit2.http.*
 
 interface PantryApi {
@@ -104,5 +104,13 @@ interface PantryApi {
     suspend fun getUnits(
         @Header("Authorization") token: String
     ): List<UnitResponse>
+
+    // 사용,추가내역
+    @GET("/api/pantries/{pantryId}/history")
+    suspend fun listPantryHistory(
+        @Header("Authorization") token: String,
+        @Path("pantryId") pantryId: Long,
+        @Query("ingredientName") ingredientName: String? = null
+    ): List<IngredientHistoryResponse>
 
 }
