@@ -6,3 +6,8 @@ data class Ingredient(
     @SerializedName("name") val name: String,
     @SerializedName("amount") val amount: String
 )
+data class MasterIngredient(
+    @SerializedName("id") val id: Long?,
+    @SerializedName("name") val name: String,
+    @SerializedName("amount") val amount: String
+)

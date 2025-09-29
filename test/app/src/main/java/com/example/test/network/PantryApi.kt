@@ -1,5 +1,6 @@
 package com.example.test.network.api
 
+import com.example.test.model.ingredients.IngredientResponse
 import com.example.test.model.pantry.IngredientHistoryResponse
 import com.example.test.model.pantry.IngredientMasterResponse
 import com.example.test.model.pantry.PantryCreateRequest
@@ -11,6 +12,7 @@ import com.example.test.model.pantry.PantryStockResponse
 import com.example.test.model.pantry.PantryStockUpdateRequest
 import com.example.test.model.pantry.PantryUpdateRequest
 import com.example.test.model.pantry.UnitResponse
+import retrofit2.Call
 import retrofit2.http.*
 
 interface PantryApi {
@@ -112,5 +114,19 @@ interface PantryApi {
         @Path("pantryId") pantryId: Long,
         @Query("ingredientName") ingredientName: String? = null
     ): List<IngredientHistoryResponse>
+
+    //재료 가져오기
+    @GET("/api/ingredients")
+    fun listIngredients(
+        @Header("Authorization") token: String,
+        @Query("category") category: String,
+        @Query("keyword") keyword: String? = null,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 50
+    ): Call<List<IngredientResponse>>
+
+    //모든 재료 가져오기
+    @GET("/api/ingredients/all")
+    fun listAll(@Header("Authorization") token: String,): Call<List<IngredientResponse>>
 
 }

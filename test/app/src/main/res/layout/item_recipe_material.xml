@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- 재료명 -->
+    <TextView
+        android:id="@+id/tvMaterialName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="재료명"
+        android:textSize="13sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- 계량 -->
+    <EditText
+        android:id="@+id/etMeasuring"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="계량"
+        android:textSize="13sp"
+        android:background="@null"
+        android:inputType="numberDecimal"
+
+        app:layout_constraintTop_toTopOf="@id/tvMaterialName"
+        app:layout_constraintEnd_toStartOf="@id/btnDelete"/>
+
+    <!-- 삭제 버튼 -->
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvMaterialName"/>
+
+    <!-- 아래 바 -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bar_recipe_see_material"
+        app:layout_constraintTop_toBottomOf="@id/tvMaterialName"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

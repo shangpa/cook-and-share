@@ -3,7 +3,7 @@ package com.example.test.model
 data class RecipeRequest(
     val title: String,
     val category: String,
-    val ingredients: String,  // JSON 형식의 재료
+    val ingredients: List<MasterIngredient>,
     val alternativeIngredients: String, // JSON 형식의 대체 재료
     val handlingMethods: String, //JSON 형식의 처리 방법
     val cookingSteps: String, // JSON 형식의 조리 순서

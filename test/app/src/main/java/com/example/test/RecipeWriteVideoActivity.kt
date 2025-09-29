@@ -63,6 +63,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.test.Utils.TabBarUtils
+import com.example.test.model.MasterIngredient
 import com.example.test.model.recipeDetail.PublishRequest
 import com.example.test.model.recipeDetail.RecipeCreateResponse
 import com.example.test.model.recipeDetail.RecipeDraftDto
@@ -582,12 +583,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
                 recipe = RecipeRequest(
                     title = recipeTitle,
                     category = categoryEnum,
-                    ingredients = gson.toJson(filteredIngredients.map {
-                        Ingredient(
-                            it.first,
-                            it.second
-                        )
-                    }),
+                    ingredients = listOf(   // 더미 MasterIngredient 리스트
+                        //todo 당연히 수정해야함
+                        MasterIngredient(1, "감자", "200g"),
+                        MasterIngredient(2, "당근", "1개")
+                    ),
                     alternativeIngredients = gson.toJson(replaceIngredients.filter { it.contains(" → ") }
                         .map {
                             val parts = it.split(" → ")
@@ -1653,7 +1653,11 @@ class RecipeWriteVideoActivity : AppCompatActivity() {
         return RecipeRequest(
             title = title,
             category = categoryEnum,
-            ingredients = ingredientsJson,
+            ingredients = listOf(   // 더미 MasterIngredient 리스트
+                //todo 당연히 수정해야함
+                MasterIngredient(1, "감자", "200g"),
+                MasterIngredient(2, "당근", "1개")
+            ),
             alternativeIngredients = alternativesJson,
             handlingMethods = handlingJson,
             cookingSteps = "[]",

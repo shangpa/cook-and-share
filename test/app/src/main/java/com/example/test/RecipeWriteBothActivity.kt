@@ -68,6 +68,8 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.example.test.model.MasterIngredient
+import com.example.test.model.ingredients.IngredientResponse
 import com.example.test.model.recipeDetail.PublishRequest
 import com.example.test.model.recipeDetail.RecipeCreateResponse
 import com.example.test.model.recipeDetail.RecipeDraftDto
@@ -105,7 +107,8 @@ private var exoPlayer: ExoPlayer? = null
 @androidx.media3.common.util.UnstableApi
 @OptIn(UnstableApi::class)
 class RecipeWriteBothActivity : AppCompatActivity() {
-
+    private val allIngredients = mutableListOf<IngredientResponse>()   // 전체 목록
+    private val selectedIngredients = mutableSetOf<Long>() // 선택된 재료 ID
     //조리순서 이미지 선택된거
     private var selectedContainer: LinearLayout? = null
     //메인 이미지
@@ -513,7 +516,18 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
                 // 빈 값 제거
                 val filteredIngredients = ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+                val ingredientsForRequest = ingredients.map { (name, qty) ->
+                    // 이름으로 전체 재료 목록(allIngredients)에서 원본 데이터(id 포함) 찾기
+                    val originalIngredient = allIngredients.find { it.nameKo == name }
+                    val ingredientId = originalIngredient?.id
 
+                    // 서버가 요구하는 MasterIngredient 모델로 변환
+                    MasterIngredient(
+                        id = ingredientId,
+                        name = name,
+                        amount = qty
+                    )
+                }
                 // 미리보기 UI 업데이트
                 updateMaterialList(materialContainer, filteredIngredients)
 
@@ -575,7 +589,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 recipe = RecipeRequest(
                     title = recipeTitle,
                     category = categoryEnum,
-                    ingredients = gson.toJson(filteredIngredients.map { Ingredient(it.first, it.second) }),
+                    //재료 수정중
+                    ingredients = ingredientsForRequest,
                     alternativeIngredients = gson.toJson(
                         replacePairs.map { (orig, repl) -> Ingredient(orig, repl) }
                     ),
