@@ -4,7 +4,7 @@ data class RecipeDetailResponse(
     val recipeId: Long,
     val title: String,
     val category: String,
-    val ingredients: String,
+    val ingredients: List<RecipeIngredientResponse>,
     val alternativeIngredients: String,
     val handlingMethods: String,
     val cookingSteps: String?,
@@ -18,4 +18,9 @@ data class RecipeDetailResponse(
     val writer: String,
     val videoUrl: String?,
     val viewCount: Int?
+)
+data class RecipeIngredientResponse(
+    val id: Long,
+    val name: String,
+    val amount: Double // 수량
 )

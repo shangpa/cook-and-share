@@ -4,7 +4,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.example.test.App
 import com.example.test.R
-import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
 import okhttp3.ResponseBody
 import retrofit2.Call

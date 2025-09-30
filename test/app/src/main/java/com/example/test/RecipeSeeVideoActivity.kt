@@ -314,9 +314,7 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                         }
                         ingredientContainer.addView(thickDivider)
 
-                        val ingredients = gson.fromJson<List<Ingredient>>(
-                            recipe.ingredients, object : TypeToken<List<Ingredient>>() {}.type
-                        )
+                        val ingredients = recipe.ingredients
 
                         ingredients.forEach { ingredient ->
                             val itemLayout = LinearLayout(this@RecipeSeeVideoActivity).apply {
@@ -337,7 +335,7 @@ class RecipeSeeVideoActivity : AppCompatActivity() {
                             }
 
                             val amountText = TextView(this@RecipeSeeVideoActivity).apply {
-                                text = ingredient.amount
+                                text = ingredient.amount.toString()
                                 textSize = 13f
                                 setTextColor(Color.parseColor("#2B2B2B"))
                                 gravity = Gravity.END

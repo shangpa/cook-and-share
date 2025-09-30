@@ -270,10 +270,9 @@ class MypageLoveRecipeActivity : AppCompatActivity() {
                 true
             } else {
                 selectedMaterials.any { mt ->
-                    recipe.ingredients.contains(mt)
+                    recipe.ingredients.any { ing -> ing.name == mt }
                 }
             }
-
             matchCategory && matchMaterial
         }
 
