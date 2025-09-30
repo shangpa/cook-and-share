@@ -16,12 +16,13 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="@id/rect"
+        app:layout_constraintBottom_toTopOf="@id/name"
         app:layout_constraintStart_toStartOf="@id/rect"
-        app:layout_constraintEnd_toEndOf="@id/rect"
-        app:layout_constraintTop_toTopOf="@id/rect"/>
+        app:layout_constraintEnd_toEndOf="@id/rect" />
 
     <TextView
         android:id="@+id/name"
