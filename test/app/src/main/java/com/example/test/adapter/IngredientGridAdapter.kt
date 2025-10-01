@@ -47,11 +47,11 @@ class IngredientGridAdapter(
         holder.name.text = item.nameKo
 
         // 아이콘 URL → 절대 경로 변환 후 Glide로 로드
-        val raw = item.iconUrl
-        val displayUrl = RetrofitInstance.toAbsoluteUrl(raw)
+        val displayUrl = RetrofitInstance.toIconUrl(item.iconUrl)
         Glide.with(holder.icon.context)
             .load(displayUrl)
-            .placeholder(R.drawable.image_tomato) // 기본 이미지
+            .placeholder(R.drawable.image_tomato)
+            .error(R.drawable.image_tomato)
             .into(holder.icon)
 
         // 접근성 (contentDescription)

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test.R
 import com.example.test.PantryStockUi
+import com.example.test.network.RetrofitInstance
 import com.google.android.material.card.MaterialCardView
 
 class IngredientAdapter(
@@ -72,7 +73,8 @@ class IngredientAdapter(
 
         fun bind(item: PantryStockUi, selected: Boolean) {
             // 이미지
-            Glide.with(img).load(item.iconUrl)
+            Glide.with(img)
+                .load(RetrofitInstance.toIconUrl(item.iconUrl))
                 .placeholder(R.drawable.image_tomato)
                 .error(R.drawable.image_tomato)
                 .into(img)

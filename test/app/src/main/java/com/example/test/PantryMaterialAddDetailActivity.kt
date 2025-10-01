@@ -91,7 +91,7 @@ class PantryMaterialAddDetailActivity : AppCompatActivity() {
 
         // 아이콘 로드(절대경로 보정)
         Glide.with(this)
-            .load(buildIconUrl(rawIcon))
+            .load(RetrofitInstance.toIconUrl(rawIcon))
             .placeholder(R.drawable.image_tomato)
             .error(R.drawable.image_tomato)
             .into(materialImage)
@@ -291,10 +291,17 @@ class PantryMaterialAddDetailActivity : AppCompatActivity() {
     /** 아이콘 절대경로 보정 */
     private fun buildIconUrl(icon: String?): String? {
         if (icon.isNullOrBlank()) return null
-        if (icon.startsWith("http://", true) || icon.startsWith("https://", true)) return icon
-        if (icon.startsWith("/uploads/", true)) return RetrofitInstance.toAbsoluteUrl(icon)
-        val fileName = if (icon.contains('.')) icon else "$icon.png"
-        return RetrofitInstance.toAbsoluteUrl("/uploads/icons/$fileName")
+        val s = icon.trim()
+
+        // 이미 절대 URL이면 그대로
+        if (s.startsWith("http://", true) || s.startsWith("https://", true)) return s
+
+        // 슬래시로 시작하면 BASE_URL만 붙이면 됨 ( /icons/... 또는 /uploads/... 모두 커버 )
+        if (s.startsWith("/")) return RetrofitInstance.toAbsoluteUrl(s)
+
+        // 파일명만 온 경우(확장자 없으면 .png) → 우리 기준 경로는 /icons/
+        val fileName = if (s.contains('.')) s else "$s.png"
+        return RetrofitInstance.toAbsoluteUrl("/icons/$fileName")
     }
 
     /** 서버 enum → 한글 라벨 */

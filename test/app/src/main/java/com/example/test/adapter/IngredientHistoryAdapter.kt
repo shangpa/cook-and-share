@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.test.R
 import com.example.test.model.pantry.IngredientHistoryUi
 import com.example.test.model.pantry.toDot
+import com.example.test.network.RetrofitInstance
 import java.time.format.DateTimeFormatter
 
 class IngredientHistoryAdapter :
@@ -81,10 +82,12 @@ class IngredientHistoryAdapter :
         }
 
         // 6. 아이콘
+        val displayUrl = RetrofitInstance.toIconUrl(item.iconUrl)
         Glide.with(h.itemView)
-            .load(item.iconUrl)
+            .load(displayUrl)
             .placeholder(R.drawable.image_tomato)
             .error(R.drawable.image_tomato)
             .into(h.materialImage)
+
     }
 }

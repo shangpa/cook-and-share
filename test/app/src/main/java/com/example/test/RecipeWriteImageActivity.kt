@@ -2997,12 +2997,12 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             // 데이터 바인딩
             name.text = item.nameKo
 
-            val fullImageUrl = RetrofitInstance.toAbsoluteUrl(item.iconUrl)
+            val fullImageUrl = RetrofitInstance.toIconUrl(item.iconUrl)
 
-            Glide.with(img.context) // 뷰의 context를 사용
-                .load(fullImageUrl) // 불러올 이미지의 전체 URL
-                .error(R.drawable.image_juice_lemon) // URL이 잘못되거나 로딩 실패 시 보여줄 이미지
-                .into(img) // 이미지를 표시할 대상 ImageView
+            Glide.with(img.context)
+                .load(fullImageUrl)
+                .error(R.drawable.image_juice_lemon)
+                .into(img)
 
             // 선택/해제 토글
             view.setOnClickListener {
