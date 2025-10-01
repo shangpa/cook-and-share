@@ -178,16 +178,22 @@ interface ApiService {
     //레시피 - 예상 사용 재료
     @GET("api/recipes/{id}/expected-ingredients")
     fun getExpectedIngredients(
-        @Path("id") recipeId: Long,
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Path("id") recipeId: Long
     ): Call<List<ExpectedIngredient>>
-
+    
+    //레시피 - 예상 사용 재료 차감 저장
+    @POST("/api/pantries/use")
+    fun useIngredientsInDefaultPantry(
+        @Header("Authorization") token: String,
+        @Body items: List<com.example.test.model.recipeDetail.UsedIngredient>
+    ): retrofit2.Call<Void>
+    
     @POST("api/fridges/use-ingredients")
     fun useIngredients(
         @Header("Authorization") token: String,
         @Body ingredients: List<UsedIngredientRequest>
     ): Call<Void>
-
 
     // 레시피 검색
     @GET("api/recipes/search")
