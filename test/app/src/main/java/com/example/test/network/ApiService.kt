@@ -8,7 +8,6 @@ import com.example.test.model.Fridge.FridgeRecommendRequest
 import com.example.test.model.Fridge.FridgeRecommendResponse
 import com.example.test.model.Fridge.FridgeRequest
 import com.example.test.model.Fridge.FridgeResponse
-import com.example.test.model.Fridge.FridgeStatsResponse
 import com.example.test.model.Fridge.UsedIngredientRequest
 import com.example.test.model.TradePost.TradePostRequest
 import com.example.test.model.TradePost.TradePostResponse
@@ -16,6 +15,7 @@ import com.example.test.model.TradePost.TradePostSimpleResponse
 import com.example.test.model.TradePost.TradePostUpResult
 import com.example.test.model.TradePost.TradeUserResponse
 import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.pantry.PantryStatsResponse
 import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.MyWriteRecipeResponse
@@ -282,7 +282,7 @@ interface ApiService {
     @GET("/api/fridges/stats/my")
     suspend fun getFridgeStats(
         @Header("Authorization") token: String
-    ): Response<FridgeStatsResponse>
+    ): Response<PantryStatsResponse>
 
     @POST("/api/fridges/ocr/batch")
     fun createFridgesByOCRBatch(

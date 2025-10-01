@@ -304,9 +304,9 @@
             </intent-filter>
         </activity>
 
-        <!-- FridgeStatsActivity -->
+        <!-- PantryStatsActivity -->
         <activity
-            android:name=".FridgeStatsActivity"
+            android:name=".PantryStatsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

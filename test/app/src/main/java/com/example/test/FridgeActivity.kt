@@ -90,7 +90,7 @@ class FridgeActivity : AppCompatActivity() {
         val fridgeStatsLayout = findViewById<LinearLayout>(R.id.fridgeStats)
 
         fridgeStatsLayout.setOnClickListener {
-            val intent = Intent(this, FridgeStatsActivity::class.java)
+            val intent = Intent(this, PantryStatsActivity::class.java)
             startActivity(intent)
         }
 

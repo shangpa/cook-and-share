@@ -89,7 +89,7 @@ class PantryDetailActivity : AppCompatActivity() {
 
         // 분석 아이콘
         findViewById<ImageButton>(R.id.analysisIcon).setOnClickListener {
-            startActivity(Intent(this, FridgeStatsActivity::class.java))
+            startActivity(Intent(this, PantryStatsActivity::class.java))
         }
 
         // + 버튼

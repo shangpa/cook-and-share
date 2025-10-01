@@ -151,36 +151,37 @@
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <ImageView
-                            android:id="@+id/nowMaterialIc"
+                            android:id="@+id/topConsumedIc"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:src="@drawable/ic_now_material"
-                            android:contentDescription="지금 냉장고에 보관된 재료 수 아이콘"
+                            android:contentDescription="이번 달 가장 많이 먹은 재료 아이콘"
                             tools:ignore="MissingConstraints" />
 
                         <TextView
-                            android:id="@+id/nowMaterialLabel"
+                            android:id="@+id/topConsumedTitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="지금 냉장고에 보관된 재료"
+                            android:text="이번 달 가장 많이 먹은 재료"
                             android:textSize="14sp"
                             android:layout_marginStart="20dp"
-                            app:layout_constraintStart_toEndOf="@id/nowMaterialIc"
-                            app:layout_constraintEnd_toStartOf="@id/nowMaterialValue"
+                            app:layout_constraintStart_toEndOf="@id/topConsumedIc"
+                            app:layout_constraintEnd_toStartOf="@id/topConsumedValue"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
-                            android:id="@+id/nowMaterialValue"
+                            android:id="@+id/topConsumedValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="감자"
                             android:textStyle="bold"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textColor="#30C763"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- 행 2 -->
@@ -220,7 +221,7 @@
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:textStyle="bold"
-                            android:textSize="18sp"
+                            android:textSize="17sp"
                             android:textColor="#30C763"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -264,7 +265,7 @@
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:textStyle="bold"
-                            android:textSize="18sp"
+                            android:textSize="17sp"
                             android:textColor="#30C763"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
