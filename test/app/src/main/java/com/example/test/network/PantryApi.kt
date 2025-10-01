@@ -12,6 +12,7 @@ import com.example.test.model.pantry.PantryStockResponse
 import com.example.test.model.pantry.PantryStockUpdateRequest
 import com.example.test.model.pantry.PantryUpdateRequest
 import com.example.test.model.pantry.UnitResponse
+import com.example.test.model.pantry.PantryStatsResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -129,4 +130,11 @@ interface PantryApi {
     @GET("/api/ingredients/all")
     fun listAll(@Header("Authorization") token: String,): Call<List<IngredientResponse>>
 
+    //냉장고 통계
+    @GET("/api/pantry/stats/overview")
+    suspend fun getPantryOverview(
+        @Header("Authorization") token: String,
+        @Query("from") from: String? = null,
+        @Query("to")   to: String? = null
+    ): PantryStatsResponse
 }
