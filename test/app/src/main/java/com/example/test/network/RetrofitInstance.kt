@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
-    const val BASE_URL = "http://172.16.98.165:8080"
+    const val BASE_URL = "http://172.30.1.72:8080/"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
@@ -19,6 +19,7 @@ object RetrofitInstance {
     lateinit var chatApi: ChatApi
     lateinit var materialApi: MaterialApi
     lateinit var pantryApi: PantryApi
+
     // 초기화 메서드에서 context 전달받아 처리
     fun init(context: Context) {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -50,5 +51,21 @@ object RetrofitInstance {
         val s = pathOrUrl.trim()
         if (s.startsWith("http://", true) || s.startsWith("https://", true)) return s
         return BASE_URL.trimEnd('/') + "/" + s.trimStart('/')
+    }
+
+    /** 아이콘 키/경로를 절대 URL로 변환 */
+    fun toIconUrl(iconKeyOrPath: String?): String? {
+        if (iconKeyOrPath.isNullOrBlank()) return null
+        val s = iconKeyOrPath.trim()
+
+        // 이미 URL/절대경로면 그대로 절대경로화
+        if (s.startsWith("http://", true) || s.startsWith("https://", true) || s.startsWith("/")) {
+            return toAbsoluteUrl(s)
+        }
+
+        // 키 또는 파일명만 온 경우
+        val base = if (s.startsWith("ic_")) "image_" + s.removePrefix("ic_") else s
+        val file = if (base.contains('.')) base else "$base.png"
+        return toAbsoluteUrl("/icons/$file")
     }
 }

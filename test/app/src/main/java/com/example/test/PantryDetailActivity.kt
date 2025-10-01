@@ -424,7 +424,7 @@ class PantryDetailActivity : AppCompatActivity() {
             quantity = displayQty,
             quantityRaw = quantity,
             unit = unitName,
-            iconUrl = buildIconUrl(iconUrl),
+            iconUrl = RetrofitInstance.toIconUrl(iconUrl),
             purchasedAt = purchasedAt,
             expiresAt = expiresAt
         )
@@ -446,7 +446,7 @@ class PantryDetailActivity : AppCompatActivity() {
     private fun mapStorageKo(s: String) = when (s) {
         "FRIDGE" -> "냉장"
         "FREEZER" -> "냉동"
-        "PANTRY" -> "실외"
+        "PANTRY" -> "실온"
         else -> s
     }
 
@@ -455,7 +455,7 @@ class PantryDetailActivity : AppCompatActivity() {
         if (icon.startsWith("http://", true) || icon.startsWith("https://", true)) return icon
         if (icon.startsWith("/uploads/", true)) return RetrofitInstance.toAbsoluteUrl(icon)
         val file = if (icon.contains('.')) icon else "$icon.png"
-        return RetrofitInstance.toAbsoluteUrl("/uploads/icons/$file")
+        return RetrofitInstance.toAbsoluteUrl("/icons/$file")
     }
 
     private fun getBearer(): String? {
