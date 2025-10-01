@@ -29,17 +29,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.Utils.TabBarUtils
-import com.example.test.adapter.ExpectedIngredientAdapter
+import com.example.test.adapter.ExpectedRecipeIngredientsAdapter
 import com.example.test.model.recipeDetail.ExpectedIngredient
 import com.example.test.model.recipeDetail.RecipeDetailResponse
 import com.example.test.network.RetrofitInstance
+import com.example.test.ui.fridge.PantryListActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RecipeSeeMainActivity : AppCompatActivity() {
 
-    var adapter: ExpectedIngredientAdapter? = null
+    var adapter: ExpectedRecipeIngredientsAdapter? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,29 +99,27 @@ class RecipeSeeMainActivity : AppCompatActivity() {
         val no = findViewById<Button>(R.id.no)
 
         yes.setOnClickListener {
-            adapter?.let { ingredientAdapter ->
-                val usedList = ingredientAdapter.getUsedIngredients()
-                val token = App.prefs.token.toString()
-
-                RetrofitInstance.apiService.useIngredients("Bearer $token", usedList)
-                    .enqueue(object : Callback<Void> {
-                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                            if (response.isSuccessful) {
-                                Log.d("RecipeSeeMain", "재료 차감 성공")
+            val token = App.prefs.token.toString()
+            adapter?.let { ingAdapter ->
+                val usedList = ingAdapter.getUsedIngredients()
+                RetrofitInstance.apiService
+                    .useIngredientsInDefaultPantry("Bearer $token", usedList)
+                    .enqueue(object : retrofit2.Callback<Void> {
+                        override fun onResponse(call: Call<Void>, res: Response<Void>) {
+                            if (res.isSuccessful) {
+                                Toast.makeText(this@RecipeSeeMainActivity, "재료가 차감되었어요", Toast.LENGTH_SHORT).show()
                                 hideMaterialUseBox()
                                 nextActivityIntent?.let { startActivity(it) }
                             } else {
-                                Log.e("RecipeSeeMain", "재료 차감 실패: ${response.code()}")
-                                Toast.makeText(this@RecipeSeeMainActivity, "재료 차감 실패", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@RecipeSeeMainActivity, "재료가 차감되지 않았어요 (${res.code()})", Toast.LENGTH_SHORT).show()
+                                Log.e("UseIngr", "errorBody=${res.errorBody()?.string()}")
                             }
                         }
-
                         override fun onFailure(call: Call<Void>, t: Throwable) {
-                            Log.e("RecipeSeeMain", "차감 API 호출 실패: ${t.message}")
-                            Toast.makeText(this@RecipeSeeMainActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@RecipeSeeMainActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
                         }
                     })
-            }
+            } ?: Toast.makeText(this, "예상 재료 없음", Toast.LENGTH_SHORT).show()
         }
 
         no.setOnClickListener {
@@ -141,10 +140,8 @@ class RecipeSeeMainActivity : AppCompatActivity() {
 
         // 냉장고 재료 관리하러 가기 버튼
         manageButton.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, PantryListActivity::class.java))
         }
-
 
         val token = App.prefs.token.toString()
 
@@ -186,14 +183,14 @@ class RecipeSeeMainActivity : AppCompatActivity() {
         expectedRecyclerView.layoutManager = LinearLayoutManager(this)
 
         // 예상 재료 불러오기
-        RetrofitInstance.apiService.getExpectedIngredients(recipeId, "Bearer $token")
+        RetrofitInstance.apiService.getExpectedIngredients("Bearer $token", recipeId)
             .enqueue(object : Callback<List<ExpectedIngredient>> {
                 override fun onResponse(
                     call: Call<List<ExpectedIngredient>>,
                     response: Response<List<ExpectedIngredient>>
                 ) {
                     if (response.isSuccessful && response.body() != null) {
-                        adapter = ExpectedIngredientAdapter(response.body()!!)
+                        adapter = ExpectedRecipeIngredientsAdapter(response.body()!!)
                         expectedRecyclerView.adapter = adapter
 
                         rigthArrowFour.setOnClickListener {
