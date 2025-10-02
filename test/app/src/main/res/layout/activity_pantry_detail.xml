@@ -203,12 +203,12 @@
                     app:layout_constraintTop_toTopOf="@id/total"
                     app:layout_constraintStart_toEndOf="@id/refrigeration" />
 
-                <!-- 탭: 실외 -->
+                <!-- 탭: 실온 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/outside"
                     android:layout_width="53dp"
                     android:layout_height="27dp"
-                    android:text="실외"
+                    android:text="실온"
                     android:textSize="12sp"
                     android:textColor="#8A8F9C"
                     android:textStyle="bold"
