@@ -1,3 +1,4 @@
 <resources>
     <item name="check_state_tag" type="id" />
+    <item name="tag_is_liked" type="id"/>
 </resources>

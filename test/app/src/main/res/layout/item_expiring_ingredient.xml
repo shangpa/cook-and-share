@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="15dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="false"
+    android:focusable="false"
+    android:elevation="4dp"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <!-- 배경/썸네일 (필수는 아니지만 어댑터가 findViewById 하므로 id만 맞추면 됨) -->
+        <ImageView
+            android:id="@+id/ivBg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentStart="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_recently_stored_materials_food" />
+
+        <!-- 재료명 -->
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_toEndOf="@id/ivBg"
+            android:layout_marginStart="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="재료명"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#2B2B2B" />
+
+        <!-- 수량 숫자 -->
+        <TextView
+            android:id="@+id/tvQty"
+            android:layout_below="@id/tvName"
+            android:layout_toEndOf="@id/ivBg"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500"
+            android:textSize="14sp"
+            android:textColor="#666" />
+
+        <!-- 단위 -->
+        <TextView
+            android:id="@+id/tvUnit"
+            android:layout_toEndOf="@id/tvQty"
+            android:layout_alignBottom="@id/tvQty"
+            android:layout_marginStart="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="g"
+            android:textSize="14sp"
+            android:textColor="#666" />
+
+        <!-- 유통기한 텍스트 -->
+        <TextView
+            android:id="@+id/tvExpText"
+            android:layout_below="@id/tvQty"
+            android:layout_toEndOf="@id/ivBg"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025-01-01"
+            android:textSize="12sp"
+            android:textColor="#9B9B9B" />
+
+        <!-- 가로 레시피 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvExpText"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:overScrollMode="never" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

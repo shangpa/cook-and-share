@@ -41,7 +41,15 @@ import com.example.test.adapter.LikedRecipeAdapter
 import com.example.test.adapter.LikedVideoRecipeAdapter
 import com.example.test.adapter.TradePostSimpleAdapter
 import com.example.test.model.LoginInfoResponse
-import com.example.test.ui.fridge.PantryListActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.test.adapter.ExpiringIngredientAdapter
+import com.example.test.ui.toExpiringUi
+import com.example.test.ui.ExpiringItemUi
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import com.example.test.model.pantry.PantryStockDto
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 lateinit var binding: ActivityMainBinding
 private var currentPage = 0
@@ -50,6 +58,7 @@ private lateinit var sliderRunnable: Runnable
 private lateinit var bannerPagerAdapter: BannerPagerAdapter
 private lateinit var hotTradeRecyclerView: RecyclerView
 private lateinit var hotTradeAdapter: TradePostSimpleAdapter
+private lateinit var expiringAdapter: ExpiringIngredientAdapter
 
 data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
 data class RecipeCardViewIds(
@@ -59,6 +68,7 @@ data class RecipeCardViewIds(
     val timeId: Int,
     val playBtnId: Int
 )
+
 fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val name = "기본 알림 채널"
@@ -72,13 +82,15 @@ fun createNotificationChannel(context: Context) {
         notificationManager.createNotificationChannel(channel)
     }
 }
+
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 알림 권한 설정
+        // 알림 권한
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED
@@ -91,100 +103,59 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //알림용
+        // 알림 채널
         createNotificationChannel(this)
 
         // 배너
-        val adapter = BannerViewPagerAdapter(this)
-        binding.homeBannerVp.adapter = adapter
         binding.homeBannerVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         bannerPagerAdapter = BannerPagerAdapter(this)
-
         setupBanner()
         setupArrowButtons()
         setupAutoSlide()
-        
+
         TabBarUtils.setupTabBar(this)
 
-        // searchIcon 클릭했을 때 SearchMainActivity 이동
-        val searchIcon: ImageView = findViewById(R.id.searchIcon)
-        searchIcon.setOnClickListener {
-            val intent = Intent(this, SearchMainActivity::class.java)
-            startActivity(intent)
+        // 상단 아이콘 이동
+        findViewById<ImageView>(R.id.searchIcon).setOnClickListener {
+            startActivity(Intent(this, SearchMainActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.bellIcon).setOnClickListener {
+            startActivity(Intent(this, NoticeActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.mypageIcon).setOnClickListener {
+            startActivity(Intent(this, MypageActivity::class.java))
         }
 
-        // bellIcon 클릭했을 때 NoticeActivity 이동
-        val bellIcon: ImageView = findViewById(R.id.bellIcon)
-        bellIcon.setOnClickListener {
-            val intent = Intent(this, NoticeActivity::class.java)
-            startActivity(intent)
+        // 카테고리 3박스
+        findViewById<LinearLayout>(R.id.materialExchange).setOnClickListener {
+            startActivity(Intent(this, FridgeIngredientActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.recipeWrite).setOnClickListener {
+            startActivity(Intent(this, RecipeWriteMain::class.java))
+        }
+        findViewById<LinearLayout>(R.id.villageKitchenChat).setOnClickListener {
+            startActivity(Intent(this, MaterialChatActivity::class.java))
         }
 
-        // mypageIcon 클릭했을 때 MypageActivity 이동
-        val mypageIcon: ImageView = findViewById(R.id.mypageIcon)
-        mypageIcon.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            startActivity(intent)
+        // 섹션 이동
+        findViewById<TextView>(R.id.seeMoreTwo).setOnClickListener {
+            startActivity(Intent(this, MaterialActivity::class.java))
+        }
+        findViewById<TextView>(R.id.seeMore).setOnClickListener {
+            startActivity(Intent(this, FridgeActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.moreSeeRecipe).setOnClickListener {
+            startActivity(Intent(this, RecipeTapActivity::class.java))
+        }
+        findViewById<TextView>(R.id.themeRecipe).setOnClickListener {
+            startActivity(Intent(this, RecipeTapActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.logoButton).setOnClickListener {
+            startActivity(Intent(this, ShortsActivity::class.java))
         }
 
-        // materialExchange 클릭했을 때 FridgeIngredientActivity 이동
-        val materialExchange: LinearLayout = findViewById(R.id.materialExchange)
-        materialExchange.setOnClickListener {
-            val intent = Intent(this, FridgeIngredientActivity::class.java)
-            startActivity(intent)
-        }
-
-        // recipeWrite 클릭했을 때 RecipeWriteMain 이동
-        val recipeWrite: LinearLayout = findViewById(R.id.recipeWrite)
-        recipeWrite.setOnClickListener {
-            val intent = Intent(this, RecipeWriteMain::class.java)
-            startActivity(intent)
-        }
-
-        // villageKitchenChat 클릭했을 때 MaterialChatActivity 이동
-        val villageKitchenChat: LinearLayout = findViewById(R.id.villageKitchenChat)
-        villageKitchenChat.setOnClickListener {
-            val intent = Intent(this, MaterialChatActivity::class.java)
-            startActivity(intent)
-        }
-
-        // seeMoreTwo 클릭했을 때 MaterialActivity 이동
-        val seeMoreTwo: TextView = findViewById(R.id.seeMoreTwo)
-        seeMoreTwo.setOnClickListener {
-            val intent = Intent(this, MaterialActivity::class.java)
-            startActivity(intent)
-        }
-
-        //seeMore 클릭했을 때 FridgeActivity 이동
-        val seeMore: TextView = findViewById(R.id.seeMore)
-        seeMore.setOnClickListener {
-            val intent = Intent(this, FridgeActivity::class.java)
-            startActivity(intent)
-        }
-
-        // moreSeeRecipe 클릭했을 때 RecipeActivity 이동
-        val moreSeeRecipe: LinearLayout = findViewById(R.id.moreSeeRecipe)
-        moreSeeRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeTapActivity::class.java)
-            startActivity(intent)
-        }
-
-        // themeRecipe 클릭했을 때 RecipeActivity 이동
-        val themeRecipe: TextView = findViewById(R.id.themeRecipe)
-        themeRecipe.setOnClickListener {
-            val intent = Intent(this, RecipeTapActivity::class.java)
-            startActivity(intent)
-        }
-
-        // logoButton 클릭했을 때 ShortsActivity 이동
-        val logoButton: ImageView = findViewById(R.id.logoButton)
-        logoButton.setOnClickListener {
-            val intent = Intent(this, ShortsActivity::class.java)
-            startActivity(intent)
-        }
-
-        //테마별 레시피
+        // 테마별 레시피 탭 이동
         val categoryMap = mapOf(
             R.id.total to null,
             R.id.koreanFood to "koreaFood",
@@ -196,255 +167,56 @@ class MainActivity : AppCompatActivity() {
             R.id.relish to "alcoholSnack",
             R.id.sideDish to "sideDish"
         )
-
         categoryMap.forEach { (viewId, categoryValue) ->
             findViewById<LinearLayout>(viewId).setOnClickListener {
-                val intent = Intent(this, RecipeTapActivity::class.java)
-                intent.putExtra("selectedCategory", categoryValue)
-                startActivity(intent)
+                startActivity(Intent(this, RecipeTapActivity::class.java).apply {
+                    putExtra("selectedCategory", categoryValue)
+                })
             }
         }
 
-        //좋아요 버튼(안채워진거)
-        setupHeartToggle(
-            listOf(
-                findViewById(R.id.fridgeHeart),
-                findViewById(R.id.fridgeHeartTwo),
-                findViewById(R.id.fridgeHeartThree),
-                findViewById(R.id.fridgeHeartFour)
-            ),
-            initiallyLiked = false
-        )
-
         val token = App.prefs.token.toString()
-        val call = RetrofitInstance.apiService.getMainMessage("Bearer $token")
 
-        //동네주방
+        // 동네주방 HOT
         hotTradeRecyclerView = findViewById(R.id.hotTradeRecyclerView)
         hotTradeAdapter = TradePostSimpleAdapter(mutableListOf()) { post ->
-            val intent = Intent(this, MaterialDetailActivity::class.java)
-            intent.putExtra("postId", post.tradePostId)  // 이 필드명 주의
-            startActivity(intent)
+            startActivity(Intent(this, MaterialDetailActivity::class.java).apply {
+                putExtra("postId", post.tradePostId)
+            })
         }
         hotTradeRecyclerView.adapter = hotTradeAdapter
         loadHotTradePosts()
 
-        //냉장고 재료
-        call.enqueue(object : Callback<Map<String, String>> {
-            override fun onResponse(
-                call: Call<Map<String, String>>,
-                response: Response<Map<String, String>>
-            ) {
-                if (response.isSuccessful) {
-                    val message = response.body()?.get("fridgeMainText") ?: ""
-                    findViewById<TextView>(R.id.fridgeMainText).text = message
-                } else {
-                    findViewById<TextView>(R.id.fridgeMainText).text =
-                        "로그인 후 유통기한이 임박한 냉장고 재료를 확인해보세요!"
-                }
+        // 임박 재료 리사이클러
+        findViewById<RecyclerView>(R.id.recyclerExpiring).apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            expiringAdapter = ExpiringIngredientAdapter(emptyList()) { recipeId ->
+                startActivity(Intent(this@MainActivity, RecipeSeeMainActivity::class.java).apply {
+                    putExtra("recipeId", recipeId)
+                })
             }
-
-            override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
-                Log.e("MainAPI", "연결 실패", t) // 로그 찍기
-                findViewById<TextView>(R.id.fridgeMainText).text = "서버 연결 실패"
-            }
-        })
-
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitInstance.apiService.getMyFridges("Bearer $token")
-
-                if (response.isSuccessful) {
-                    val today = LocalDate.now()
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-                    val fridgeList = response.body() ?: emptyList()
-
-                    val filteredList = fridgeList.filter {
-                        it.dateOption == "유통기한" &&
-                                it.fridgeDate != null &&
-                                try {
-                                    ChronoUnit.DAYS.between(today, LocalDate.parse(it.fridgeDate, formatter)) in 0..14
-                                } catch (e: Exception) {
-                                    false
-                                }
-                    }
-
-                    val fallbackList = fridgeList.filter { it.dateOption == "유통기한" }
-
-                    val targetList = if (filteredList.isNotEmpty()) {
-                        filteredList.shuffled().take(2)
-                    } else {
-                        fallbackList.shuffled().take(2)
-                    }
-
-                    val boxIds = listOf(
-                        Triple(R.id.fridgeMaterialName1, R.id.fridgeMaterialCount1, R.id.fridgeMaterialUnit1) to
-                                Pair(R.id.fridgeIngredientDateLabel1, R.id.fridgeIngredientDateText1),
-                        Triple(R.id.fridgeMaterialName2, R.id.fridgeMaterialCount2, R.id.fridgeMaterialUnit2) to
-                                Pair(R.id.fridgeIngredientDateLabel2, R.id.fridgeIngredientDateText2)
-                    )
-
-                    targetList.forEachIndexed { index, item ->
-                        val (nameId, countId, unitId) = boxIds[index].first
-                        val (labelId, dateId) = boxIds[index].second
-
-                        val quantityStr = if (item.quantity % 1.0 == 0.0)
-                            item.quantity.toInt().toString()
-                        else
-                            item.quantity.toString()
-
-                        findViewById<TextView>(nameId).text = item.ingredientName
-                        findViewById<TextView>(countId).text = quantityStr
-                        findViewById<TextView>(unitId).text = item.unitDetail
-                        findViewById<TextView>(labelId).text = "유통기한 : "
-                        findViewById<TextView>(dateId).text = item.fridgeDate
-                    }
-
-                    val selectedIngredients = targetList.map { it.ingredientName }
-
-                    RetrofitInstance.apiService.recommendGrouped(selectedIngredients, "Bearer $token")
-                        .enqueue(object : Callback<List<IngredientRecipeGroup>> {
-                            override fun onResponse(
-                                call: Call<List<IngredientRecipeGroup>>,
-                                response: Response<List<IngredientRecipeGroup>>
-                            ) {
-                                if (response.isSuccessful) {
-                                    val groups = response.body() ?: return
-
-                                    val uiMapping = listOf(
-                                        Quadruple(
-                                            R.id.fridgeMainRecipeImage1,
-                                            R.id.fridgeMainRecipeName1,
-                                            R.id.fridgeMainRecipeDifficulty1,
-                                            R.id.fridgeMainPlayBtn1
-                                        ) to R.id.fridgeMainRecipeTime1,
-                                        Quadruple(
-                                            R.id.fridgeMainRecipeImage2,
-                                            R.id.fridgeMainRecipeName2,
-                                            R.id.fridgeMainRecipeDifficulty2,
-                                            R.id.fridgeMainPlayBtn2
-                                        ) to R.id.fridgeMainRecipeTime2,
-                                        Quadruple(
-                                            R.id.fridgeMainRecipeImage3,
-                                            R.id.fridgeMainRecipeName3,
-                                            R.id.fridgeMainRecipeDifficulty3,
-                                            R.id.fridgeMainPlayBtn3
-                                        ) to R.id.fridgeMainRecipeTime3,
-                                        Quadruple(
-                                            R.id.fridgeMainRecipeImage4,
-                                            R.id.fridgeMainRecipeName4,
-                                            R.id.fridgeMainRecipeDifficulty4,
-                                            R.id.fridgeMainPlayBtn4
-                                        ) to R.id.fridgeMainRecipeTime4
-                                    )
-
-                                    var uiIndex = 0
-
-                                    groups.take(2).forEachIndexed { groupIndex, group ->
-                                        group.recipes.take(2)
-                                            .forEachIndexed { recipeIndex, recipe ->
-                                                val uiIndex =
-                                                    groupIndex * 2 + recipeIndex  // ← 핵심
-                                                if (uiIndex >= uiMapping.size) return@forEachIndexed
-
-                                                val (imageId, nameId, difficultyId, playBtnId) = uiMapping[uiIndex].first
-                                                val timeId = uiMapping[uiIndex].second
-
-                                                val imageView =
-                                                    findViewById<ImageView>(imageId)
-                                                val nameView =
-                                                    findViewById<TextView>(nameId)
-                                                val difficultyView =
-                                                    findViewById<TextView>(difficultyId)
-                                                val timeView =
-                                                    findViewById<TextView>(timeId)
-                                                val playBtn =
-                                                    findViewById<ImageView>(playBtnId)
-
-                                                val baseUrl = RetrofitInstance.BASE_URL
-
-                                                val imageUrl = if (recipe.mainImageUrl?.startsWith("http") == true) {
-                                                    recipe.mainImageUrl
-                                                } else {
-                                                    baseUrl + recipe.mainImageUrl
-                                                }
-
-                                                Glide.with(this@MainActivity)
-                                                    .load(imageUrl)
-                                                    .placeholder(R.drawable.image_recently_stored_materials_food)
-                                                    .error(R.drawable.image_recently_stored_materials_food)
-                                                    .into(imageView)
-
-                                                nameView.text = recipe.title
-                                                difficultyView.text = recipe.difficulty
-                                                timeView.text = "${recipe.cookingTime}분"
-                                                playBtn.visibility =
-                                                    if (recipe.videoUrl.isNullOrBlank()) View.GONE else View.VISIBLE
-                                            }
-                                    }
-
-                                } else {
-                                    Log.e("추천 레시피", "서버 응답 오류: ${response.code()}")
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<List<IngredientRecipeGroup>>,
-                                t: Throwable
-                            ) {
-                                Log.e("추천 레시피", "네트워크 오류", t)
-                            }
-                        })
-                } else {
-                    Log.e("FridgeMain", "getMyFridges 실패: ${response.code()}")
-                }
-
-            } catch (e: Exception) {
-                Log.e("FridgeMain", "재료 불러오기 실패", e)
-            }
+            adapter = expiringAdapter
         }
+        loadPantryExpiringSection() // ← 신규 섹션 로드
 
-        lifecycleScope.launch {
-            try {
-                val token = App.prefs.token.toString()
-                val response = RetrofitInstance.apiService.getMyFridges("Bearer $token")
+        // (OLD) getMyFridges로 고정 UI에 텍스트 박아넣던 블록은 전부 삭제했습니다. (컴파일 오류 원인)
 
-                if (response.isSuccessful) {
-                    val fridgeList = response.body() ?: emptyList()
-
-                    // 재료 이름만 추출
-                    val ingredientNames = fridgeList.map { it.ingredientName }
-
-                } else {
-                    Log.e("Fridge API", "재료 조회 실패: ${response.code()}")
-                }
-            } catch (e: Exception) {
-                Log.e("Fridge API", "오류 발생", e)
-            }
-        }
-
+        // “선호하는 레시피” 제목
         val likedRecipeUserNameTextView: TextView = findViewById(R.id.likedRecipeUserName)
-
-        if (token.isNullOrBlank()) {
-            // 로그인하지 않은 경우
+        if (token.isBlank()) {
             likedRecipeUserNameTextView.text = "쿡앤쉐어 유저들이 선호하는 레시피"
         } else {
-            // 로그인한 경우 → 사용자 정보 가져오기
             RetrofitInstance.apiService.getUserInfo("Bearer $token")
                 .enqueue(object : Callback<LoginInfoResponse> {
                     override fun onResponse(
-                        call: Call<LoginInfoResponse>,
-                        response: Response<LoginInfoResponse>
+                        call: Call<LoginInfoResponse>, response: Response<LoginInfoResponse>
                     ) {
                         if (response.isSuccessful && response.body() != null) {
-                            val name = response.body()!!.name
-                            likedRecipeUserNameTextView.text = "${name}님이 선호하는 레시피"
+                            likedRecipeUserNameTextView.text = "${response.body()!!.name}님이 선호하는 레시피"
                         } else {
                             likedRecipeUserNameTextView.text = "쿡앤쉐어 유저들이 선호하는 레시피"
                         }
                     }
-
                     override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
                         likedRecipeUserNameTextView.text = "쿡앤쉐어 유저들이 선호하는 레시피"
                     }
@@ -453,6 +225,126 @@ class MainActivity : AppCompatActivity() {
 
         loadPreferredRecipes()
         loadLikedVideoRecipes()
+    }
+
+    private fun parseLocalDateFlexible(s: String?): LocalDate? {
+        if (s.isNullOrBlank()) return null
+        val txt = s.trim()
+        val candidates = listOf("yyyy-MM-dd", "yyyy.MM.dd", "yyyy/MM/dd")
+        for (p in candidates) {
+            try { return LocalDate.parse(txt, java.time.format.DateTimeFormatter.ofPattern(p)) } catch (_: Exception) {}
+        }
+        // ISO 형식 등 기본 파서도 시도
+        return runCatching { LocalDate.parse(txt) }.getOrNull()
+    }
+
+    /** 팬트리 랜덤 1개 → 7일 임박 재고 랜덤 2개 → 각 재료별 추천 레시피 2개 */
+    private fun loadPantryExpiringSection() {
+        val token = App.prefs.token ?: return
+        val bearer = "Bearer $token"
+        val today = LocalDate.now()
+        val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        lifecycleScope.launch {
+            try {
+                // 1) 팬트리 목록 → 랜덤 1개
+                val pantries = RetrofitInstance.pantryApi.listPantries(bearer)
+                if (pantries.isEmpty()) return@launch
+                val chosen = pantries.shuffled().first()
+                val pantryId = chosen.id
+                val pantryName = chosen.name
+
+                // 2) 재고
+                val stocks: List<PantryStockDto> =
+                    RetrofitInstance.pantryApi.listPantryStocks(bearer, pantryId)
+
+                // 3) 14일 이내 임박
+                val soon: List<PantryStockDto> = stocks.filter { s ->
+                    val d = parseLocalDateFlexible(s.expiresAt)
+                    if (d == null) false
+                    else {
+                        val diff = ChronoUnit.DAYS.between(today, d)
+                        diff in 0..14          // 오늘~14일 이내만
+                    }
+                }
+
+                // 4) 후보 확정 + 뽑기
+                val base: List<PantryStockDto> =
+                    if (soon.isNotEmpty()) soon
+                    else stocks.filter { s ->
+                        parseLocalDateFlexible(s.expiresAt)?.let { it >= today } == true
+                    }
+                val picked: List<PantryStockDto> = base.shuffled().take(2)
+                if (picked.isEmpty()) return@launch
+
+                // 5) 재료명 리스트 — 제네릭으로 타입을 못박아주기
+                val ingredientNames: List<String> =
+                    picked.map<PantryStockDto, String> { dto -> dto.ingredientName }
+
+                // 5-1) 재료명으로 그룹 추천 호출해서 groups 만들어두기 (중요!)
+                val groups: List<IngredientRecipeGroup> =
+                    suspendCancellableCoroutine { cont ->
+                        RetrofitInstance.apiService
+                            .recommendGrouped(ingredientNames, bearer)
+                            .enqueue(object : Callback<List<IngredientRecipeGroup>> {
+                                override fun onResponse(
+                                    call: Call<List<IngredientRecipeGroup>>,
+                                    response: Response<List<IngredientRecipeGroup>>
+                                ) {
+                                    cont.resume(response.body() ?: emptyList())
+                                }
+
+                                override fun onFailure(
+                                    call: Call<List<IngredientRecipeGroup>>,
+                                    t: Throwable
+                                ) {
+                                    cont.resume(emptyList())
+                                }
+                            })
+                    }
+
+                // 6) 그룹 추천 받은 뒤 매핑 — 이제 groups 타입이 있으니 추론 OK
+                val recipeMap: Map<String, List<RecipeMainSearchResponseDTO>> =
+                    groups.associate { g ->
+                        g.ingredient to g.recipes.map { rs ->
+                            RecipeMainSearchResponseDTO(
+                                recipeId    = rs.recipeId,
+                                title       = rs.title,
+                                mainImageUrl= rs.mainImageUrl,         // String? 로 받으니 그대로
+                                difficulty  = rs.difficulty,           // 그대로
+                                cookingTime = rs.cookingTime,          // 그대로
+                                liked       = false,                   // ← DTO에 없으니 기본값
+                                videoUrl    = rs.videoUrl,             // 그대로(Nullable)
+                                viewCount   = rs.viewCount,            // 그대로
+                                likes       = rs.likes,                // 그대로
+                                averageRating = 0.0,                   // ← DTO에 없으니 기본값
+                                reviewCount   = 0,                     // ← DTO에 없으니 기본값
+                                user        = rs.user,                 // 그대로
+                                category    = rs.category,             // 그대로
+                                createdAt   = rs.createdAt             // 그대로
+                            )
+                        }.shuffled().take(2)
+                    }
+
+                // 7) UI 모델
+                val uiList: List<com.example.test.ui.ExpiringItemUi> =
+                    picked.map<PantryStockDto, com.example.test.ui.ExpiringItemUi> { stock ->
+                        val recipes = recipeMap[stock.ingredientName] ?: emptyList()
+                        stock.toExpiringUi(
+                            pantryName = pantryName,
+                            pantryId = pantryId,
+                            recipes = recipes
+                        )
+                    }
+
+                expiringAdapter.submit(uiList)
+                findViewById<TextView>(R.id.fridgeMainText)?.text =
+                    "유통기한이 임박한 냉장고 재료를 알려드려요!"
+
+            } catch (e: Exception) {
+                Log.e("MainActivity", "loadPantryExpiringSection failed", e)
+            }
+        }
     }
 
     // 2. 배너 세팅
@@ -464,21 +356,16 @@ class MainActivity : AppCompatActivity() {
             AllBannerFragment4(),
             AllBannerFragment5()
         )
-
         bannerPagerAdapter.submitList(fragmentList)
         binding.homeBannerVp.adapter = bannerPagerAdapter
     }
-
 
     // 3. 화살표 버튼 세팅
     private fun setupArrowButtons() {
         binding.leftArrow.setOnClickListener {
             val currentItem = binding.homeBannerVp.currentItem
-            if (currentItem > 0) {
-                binding.homeBannerVp.currentItem = currentItem - 1
-            }
+            if (currentItem > 0) binding.homeBannerVp.currentItem = currentItem - 1
         }
-
         binding.rightArrow.setOnClickListener {
             val currentItem = binding.homeBannerVp.currentItem
             if (currentItem < (binding.homeBannerVp.adapter?.itemCount ?: 0) - 1) {
@@ -489,23 +376,18 @@ class MainActivity : AppCompatActivity() {
 
     // 4. 자동 슬라이드 세팅
     private fun setupAutoSlide() {
-        val sliderHandler = Handler(Looper.getMainLooper())
+        sliderHandler = Handler(Looper.getMainLooper())
 
         sliderRunnable = object : Runnable {
             override fun run() {
                 val itemCount = binding.homeBannerVp.adapter?.itemCount ?: 0
                 if (itemCount == 0) return
-
-                if (currentPage == itemCount) {
-                    currentPage = 0
-                }
-
+                if (currentPage == itemCount) currentPage = 0
                 binding.homeBannerVp.currentItem = currentPage++
                 sliderHandler.postDelayed(this, 3000)
             }
         }
 
-        // 양 옆 배너 간격 추가 (10dp)
         val space = (5 * resources.displayMetrics.density).toInt()
         binding.homeBannerVp.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -523,57 +405,44 @@ class MainActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentPage = position + 1
-
                 val itemCount = binding.homeBannerVp.adapter?.itemCount ?: 0
-                if (itemCount > 0) {
-                    binding.pageIndicator.text = "${position + 1} / $itemCount"
-                }
-
+                if (itemCount > 0) binding.pageIndicator.text = "${position + 1} / $itemCount"
                 binding.topTextView.text = "Top ${position + 1}"
             }
         })
 
         binding.homeBannerVp.apply {
             adapter = bannerPagerAdapter
-            offscreenPageLimit = 3 // 주변 배너 미리 로딩
-
+            offscreenPageLimit = 3
             setPageTransformer { page, position ->
-                val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
-                page.scaleY = scale // 가운데 배너 약간 크게
+                val scale = 0.85f + (1 - kotlin.math.abs(position)) * 0.15f
+                page.scaleY = scale
             }
         }
-
         sliderHandler.postDelayed(sliderRunnable, 3000)
     }
 
-    //좋아요 버튼
+    // (남겨도 무해) 좋아요 버튼 토글 유틸 — 현재는 사용 안 함
     private fun setupHeartToggle(buttons: List<ImageView>, initiallyLiked: Boolean) {
-        val TAG_IS_LIKED = R.id.fridgeHeart
-
+        val TAG_IS_LIKED = R.id.tag_is_liked  // ✅ 우리가 만든 태그 id
         buttons.forEach { button ->
             button.setTag(TAG_IS_LIKED, initiallyLiked)
-
             button.setOnClickListener {
                 val isLiked = it.getTag(TAG_IS_LIKED) as Boolean
                 val newLiked = !isLiked
-
                 if (newLiked) {
                     button.setImageResource(R.drawable.ic_heart_fill)
                     Toast.makeText(this, "관심 레시피로 저장하였습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     button.setImageResource(R.drawable.ic_heart_list)
                 }
-
                 it.setTag(TAG_IS_LIKED, newLiked)
             }
         }
     }
 
-    //동네주방
+    // 동네주방
     private fun loadHotTradePosts() {
-        val apiService = RetrofitInstance.apiService
-
-        val token = App.prefs.token.toString()
         RetrofitInstance.apiService.getPopularTradePosts("Bearer ${App.prefs.token}")
             .enqueue(object : Callback<List<TradePostSimpleResponse>> {
                 override fun onResponse(
@@ -581,13 +450,11 @@ class MainActivity : AppCompatActivity() {
                     response: Response<List<TradePostSimpleResponse>>
                 ) {
                     if (response.isSuccessful) {
-                        val hotPosts = response.body() ?: emptyList()
-                        hotTradeAdapter.updateData(hotPosts.toMutableList())
+                        hotTradeAdapter.updateData(response.body()?.toMutableList() ?: mutableListOf())
                     } else {
                         Log.e("HOT_TRADE", "서버 응답 실패: ${response.code()}")
                     }
                 }
-
                 override fun onFailure(call: Call<List<TradePostSimpleResponse>>, t: Throwable) {
                     Log.e("HOT_TRADE", "네트워크 오류: ${t.message}")
                 }
@@ -599,7 +466,6 @@ class MainActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val postDate = LocalDate.parse(dateStr, formatter)
             val daysAgo = ChronoUnit.DAYS.between(postDate, LocalDate.now())
-
             when (daysAgo) {
                 0L -> "오늘"
                 1L -> "어제"
@@ -629,15 +495,14 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val recipes = response.body()?.take(6) ?: return
                     recyclerView.adapter = LikedRecipeAdapter(recipes) { selectedRecipe ->
-                        val intent = Intent(this@MainActivity, RecipeSeeMainActivity::class.java)
-                        intent.putExtra("recipeId", selectedRecipe.recipeId)
-                        startActivity(intent)
+                        startActivity(Intent(this@MainActivity, RecipeSeeMainActivity::class.java).apply {
+                            putExtra("recipeId", selectedRecipe.recipeId)
+                        })
                     }
                 } else {
                     Log.e("MainActivity", "레시피 응답 실패: ${response.code()}")
                 }
             }
-
             override fun onFailure(call: Call<List<RecipeMainSearchResponseDTO>>, t: Throwable) {
                 Log.e("MainActivity", "레시피 불러오기 실패", t)
             }
@@ -658,20 +523,17 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val recipes = response.body()?.filter { !it.videoUrl.isNullOrBlank() } ?: return
                         recyclerView.adapter = LikedVideoRecipeAdapter(recipes) { selectedRecipe ->
-                            // ✅ 여기서 RecipeSeeMainActivity로 이동
-                            val intent = Intent(this@MainActivity, RecipeSeeMainActivity::class.java)
-                            intent.putExtra("recipeId", selectedRecipe.recipeId)
-                            startActivity(intent)
+                            startActivity(Intent(this@MainActivity, RecipeSeeMainActivity::class.java).apply {
+                                putExtra("recipeId", selectedRecipe.recipeId)
+                            })
                         }
                     } else {
                         Log.e("MainActivity", "관심 동영상 응답 실패: ${response.code()}")
                     }
                 }
-
                 override fun onFailure(call: Call<List<RecipeMainSearchResponseDTO>>, t: Throwable) {
                     Log.e("MainActivity", "관심 동영상 레시피 불러오기 실패", t)
                 }
             })
     }
-
 }

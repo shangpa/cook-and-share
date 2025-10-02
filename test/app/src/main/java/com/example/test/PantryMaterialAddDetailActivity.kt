@@ -112,14 +112,14 @@ class PantryMaterialAddDetailActivity : AppCompatActivity() {
         // 저장소 드롭다운
         val openStorageMenu: (View) -> Unit = { anchor ->
             val popup = PopupMenu(this, anchor)
-            listOf("냉장", "냉동", "실외").forEach { popup.menu.add(it) }
+            listOf("냉장", "냉동", "실온").forEach { popup.menu.add(it) }
             popup.setOnMenuItemClickListener { mi ->
                 total.text = mi.title
                 total.setTextColor(Color.parseColor("#2B2B2B"))
                 selectedStorage = when (mi.title) {
                     "냉장" -> "FRIDGE"
                     "냉동" -> "FREEZER"
-                    "실외" -> "PANTRY"
+                    "실온" -> "PANTRY"
                     else -> "FRIDGE"
                 }
                 updateButtonState()
@@ -202,7 +202,7 @@ class PantryMaterialAddDetailActivity : AppCompatActivity() {
                 total.text = when (res.storage) {
                     "FRIDGE" -> "냉장"
                     "FREEZER" -> "냉동"
-                    "PANTRY" -> "실외"
+                    "PANTRY" -> "실온"
                     else -> "냉장"
                 }
                 selectedStorage = res.storage
