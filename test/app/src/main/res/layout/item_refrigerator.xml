@@ -71,51 +71,61 @@
                 android:background="@drawable/bar_rectangle"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rowExpire1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/total"
+                    android:id="@+id/total1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="전체 재료"
+                    android:text="우유"
                     android:textSize="13sp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageButton
-                    android:id="@+id/totalDropBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_fridge_dropbox"
-                    app:layout_constraintStart_toEndOf="@id/total"
-                    app:layout_constraintTop_toTopOf="@id/total"
-                    app:layout_constraintBottom_toBottomOf="@id/total"/>
-
                 <TextView
-                    android:id="@+id/unit"
+                    android:id="@+id/pantryMainExpirationDate1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="개"
+                    android:text="2025-10-01 까지"
                     android:textSize="13sp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rowExpire2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <TextView
-                    android:id="@+id/count"
+                    android:id="@+id/total2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="우유"
                     android:textSize="13sp"
-                    android:layout_marginEnd="2dp"
-                    app:layout_constraintEnd_toStartOf="@id/unit"
-                    app:layout_constraintBaseline_toBaselineOf="@id/unit"/>
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/pantryMainExpirationDate2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2025-10-01 까지"
+                    android:textSize="13sp"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
