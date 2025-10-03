@@ -6,7 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
     <!-- 본문 컨테이너: 상단~탭바 위까지 -->
     <androidx.constraintlayout.widget.ConstraintLayout

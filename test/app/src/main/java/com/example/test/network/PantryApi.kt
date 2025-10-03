@@ -13,8 +13,10 @@ import com.example.test.model.pantry.PantryStockUpdateRequest
 import com.example.test.model.pantry.PantryUpdateRequest
 import com.example.test.model.pantry.UnitResponse
 import com.example.test.model.pantry.PantryStatsResponse
+import com.example.test.model.recipt.ReceiptOcrConfirmRequest
 import retrofit2.Call
 import retrofit2.http.*
+import com.example.test.model.recipt.OcrConfirmResult
 
 interface PantryApi {
 
@@ -137,4 +139,11 @@ interface PantryApi {
         @Query("from") from: String? = null,
         @Query("to")   to: String? = null
     ): PantryStatsResponse
+
+    @POST("/api/pantries/{pantryId}/ocr/confirm")
+    fun confirmReceiptOcr(
+        @Header("Authorization") bearer: String,
+        @Path("pantryId") pantryId: Long,
+        @Body body: ReceiptOcrConfirmRequest
+    ): Call<List<OcrConfirmResult>>
 }

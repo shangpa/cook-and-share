@@ -153,4 +153,10 @@ dependencies {
     //카드뷰
     implementation ("androidx.cardview:cardview:1.0.0")
 
+    // ML Kit v2: 한글 인식기
+    implementation ("com.google.mlkit:text-recognition-korean:16.0.0")
+    implementation ("com.google.mlkit:text-recognition:16.0.0")
+
+    // 코루틴 & 라이프사이클
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }

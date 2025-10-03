@@ -1,7 +1,6 @@
 package com.example.test
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,9 +8,9 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,17 +18,12 @@ import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.IngredientGridAdapter
 import com.example.test.model.pantry.IngredientMasterResponse
 import com.example.test.network.RetrofitInstance
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.File
 
 class PantryMaterialAddActivity : AppCompatActivity() {
 
     private lateinit var buttons: List<AppCompatButton>
-    private lateinit var cameraPhotoUri: Uri
 
     private lateinit var rv: androidx.recyclerview.widget.RecyclerView
     private lateinit var adapter: IngredientGridAdapter
@@ -40,15 +34,25 @@ class PantryMaterialAddActivity : AppCompatActivity() {
     private var currentCategory: String = "Vegetables"
     private var keyword: String? = null
 
-    // 갤러리
-    private val galleryLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? -> uri?.let { goToMaterialAdd(it, "gallery") } }
+    // 촬영 결과 저장 URI
+    private var cameraUri: Uri? = null
 
-    // 카메라
-    private val takePictureLauncher = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { success -> if (success) goToMaterialAdd(cameraPhotoUri, "camera") }
+    /** 카메라 촬영 (지정 URI에 저장) */
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { ok ->
+            if (ok && cameraUri != null) {
+                goReceiptReview(cameraUri!!)
+            } else {
+                Toast.makeText(this, "촬영이 취소되었어요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    /** 앨범에서 선택 (시스템 포토피커/갤러리) */
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) goReceiptReview(uri)
+            else Toast.makeText(this, "선택이 취소되었어요.", Toast.LENGTH_SHORT).show()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +75,10 @@ class PantryMaterialAddActivity : AppCompatActivity() {
         adapter = IngredientGridAdapter { m -> onIngredientClick(m) }
         rv.adapter = adapter
 
+        // 상단 등록 버튼 → 1차 메뉴
+        addBtn.setOnClickListener { showRegisterMenu(it) }
+        registerText.setOnClickListener { showRegisterMenu(addBtn) }
+
         // 카테고리 버튼들
         buttons = listOf(
             findViewById(R.id.total),
@@ -85,7 +93,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
             findViewById(R.id.noodle),
             findViewById(R.id.etc)
         )
-
         buttons.forEachIndexed { idx, btn ->
             btn.setOnClickListener {
                 applyCategoryUi(idx)
@@ -93,7 +100,8 @@ class PantryMaterialAddActivity : AppCompatActivity() {
                 loadIngredients()
             }
         }
-        // 초기: "전체" 선택 UI만 주고 실제 쿼리는 채소로 시작
+
+        // 초기 상태
         applyCategoryUi(0)
         currentCategory = "Vegetables"
         loadIngredients()
@@ -110,29 +118,74 @@ class PantryMaterialAddActivity : AppCompatActivity() {
                 true
             } else false
         }
+    }
 
-        // 영수증/사진 등록 (TODO)
-        val showRegisterMenu: (View) -> Unit = { anchor ->
-            val popup = PopupMenu(this, anchor)
-            listOf("영수증으로 등록", "사진으로 등록").forEach { popup.menu.add(it) }
-            popup.setOnMenuItemClickListener { item ->
-                when (item.title) {
-                    "영수증으로 등록" -> {
-                        val photoFile = File.createTempFile("receipt_", ".jpg", cacheDir)
-                        cameraPhotoUri = FileProvider.getUriForFile(
-                            this, "${packageName}.provider", photoFile
-                        )
-                        takePictureLauncher.launch(cameraPhotoUri)
-                        true
-                    }
-                    "사진으로 등록" -> { galleryLauncher.launch("image/*"); true }
-                    else -> false
-                }
+    /** 1차 메뉴: 영수증/사진 */
+    private fun showRegisterMenu(anchor: View) {
+        val popup = PopupMenu(this, anchor)
+        popup.menu.add("영수증으로 등록")
+        popup.menu.add("사진으로 등록")
+        popup.setOnMenuItemClickListener {
+            when (it.title) {
+                "영수증으로 등록" -> { showReceiptSourceChooser(); true }   // 2차 메뉴로
+                "사진으로 등록"   -> { openGallery(); true }               // 곧바로 앨범
+                else -> false
             }
-            popup.show()
         }
-        addBtn.setOnClickListener(showRegisterMenu)
-        registerText.setOnClickListener { showRegisterMenu(findViewById(R.id.add)) }
+        popup.show()
+    }
+
+    /** 2차 메뉴: 카메라/앨범 */
+    private fun showReceiptSourceChooser() {
+        val items = arrayOf("카메라 촬영", "앨범에서 선택")
+        AlertDialog.Builder(this)
+            .setTitle("영수증으로 등록")
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> {                      // 카메라
+                        cameraUri = createTempImageUri()
+                        if (cameraUri == null) {
+                            Toast.makeText(this, "이미지 저장 Uri 생성 실패", Toast.LENGTH_SHORT).show()
+                        } else {
+                            takePictureLauncher.launch(cameraUri)
+                        }
+                    }
+                    1 -> openGallery()          // 앨범
+                }
+            }.show()
+    }
+
+
+    /** 카메라 열기: 임시파일 URI 만들고 촬영 */
+    private fun openCamera() {
+        cameraUri = createTempImageUri() ?: run {
+            Toast.makeText(this, "이미지 저장 Uri 생성 실패", Toast.LENGTH_SHORT).show()
+            return
+        }
+        takePictureLauncher.launch(cameraUri)
+    }
+
+    /** 앨범 열기 */
+    private fun openGallery() {
+        pickImageLauncher.launch("image/*")
+    }
+
+    /** 촬영/선택 결과 → OCR 리뷰 화면으로 */
+    private fun goReceiptReview(uri: Uri) {
+        startActivity(Intent(this, ReceiptReviewActivity::class.java).apply {
+            putExtra("imageUri", uri.toString())
+            putExtra("pantryId", pantryId)
+        })
+    }
+
+    /** FileProvider용 임시 이미지 URI 생성 (file_paths.xml: cache/external-cache 기준) */
+    private fun createTempImageUri(): Uri? {
+        val file = File.createTempFile("receipt_", ".jpg", cacheDir)
+        return FileProvider.getUriForFile(
+            this,
+            "${packageName}.provider",   // <-- Manifest랑 동일하게 .provider 로!
+            file
+        )
     }
 
     private fun onIngredientClick(m: IngredientMasterResponse) {
@@ -149,14 +202,13 @@ class PantryMaterialAddActivity : AppCompatActivity() {
     }
 
     private var loadJob: Job? = null
-
     private fun loadIngredients() {
         val token = getBearerToken() ?: run {
             Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        loadJob?.cancel() // 이전 요청 취소(의도적으로)
+        loadJob?.cancel()
         loadJob = lifecycleScope.launch {
             try {
                 val list = withContext(Dispatchers.IO) {
@@ -170,7 +222,6 @@ class PantryMaterialAddActivity : AppCompatActivity() {
                 }
                 adapter.submit(list)
             } catch (_: CancellationException) {
-                // 사용자가 탭 전환/뒤로가기/다른 카테고리 선택 등으로 취소된 정상 케이스
             } catch (e: Exception) {
                 Log.e("Fridge API", "재료 불러오기 실패", e)
                 Toast.makeText(this@PantryMaterialAddActivity, "재료 불러오기 실패", Toast.LENGTH_SHORT).show()
@@ -182,10 +233,10 @@ class PantryMaterialAddActivity : AppCompatActivity() {
         buttons.forEachIndexed { i, button ->
             if (i == selectedIndex) {
                 button.setBackgroundResource(R.drawable.btn_fridge_ct_ck)
-                button.setTextColor(Color.parseColor("#FFFFFF"))
+                button.setTextColor(android.graphics.Color.WHITE)
             } else {
                 button.setBackgroundResource(R.drawable.btn_recipe_add)
-                button.setTextColor(Color.parseColor("#8A8F9C"))
+                button.setTextColor(android.graphics.Color.parseColor("#8A8F9C"))
             }
         }
     }
@@ -207,15 +258,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
         else -> "Vegetables"
     }
 
-    private fun goToMaterialAdd(uri: Uri, source: String) {
-        startActivity(Intent(this, PantryMaterialAddDetailActivity::class.java).apply {
-            putExtra("imageUri", uri.toString())
-            putExtra("source", source)
-            putExtra("pantryId", pantryId)
-        })
-    }
-
-    /** 프로젝트에 맞게 토큰을 꺼내와서 "Bearer xxx" 형태로 반환 */
+    /** 프로젝트 토큰 → "Bearer xxx" */
     private fun getBearerToken(): String? {
         val raw = App.prefs.token
         return if (!raw.isNullOrBlank()) "Bearer $raw" else null
