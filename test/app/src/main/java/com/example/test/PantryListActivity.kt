@@ -17,12 +17,21 @@ import com.example.test.PantryDetailActivity
 import com.example.test.R
 import com.example.test.adapter.RefrigeratorAdapter
 import com.example.test.model.pantry.PantryResponse
+import com.example.test.model.pantry.PantryStockDto
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Response
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.concurrent.Semaphore
+import kotlinx.coroutines.awaitAll
+
+private val ISO_DATE: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+private fun String.toLocalDateOrNull() =
+    runCatching { LocalDate.parse(this, ISO_DATE) }.getOrNull()
 
 class PantryListActivity : AppCompatActivity() {
 
@@ -31,6 +40,8 @@ class PantryListActivity : AppCompatActivity() {
     private lateinit var btnAdd: ImageButton
 
     private val items: MutableList<PantryResponse> = mutableListOf()
+
+    private lateinit var editLauncher: ActivityResultLauncher<Intent>
 
     private val adapter: RefrigeratorAdapter = RefrigeratorAdapter(
         onEdit = { fridge: PantryResponse ->
@@ -52,8 +63,6 @@ class PantryListActivity : AppCompatActivity() {
         }
     )
 
-    private lateinit var editLauncher: ActivityResultLauncher<Intent>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantry_list)
@@ -63,41 +72,23 @@ class PantryListActivity : AppCompatActivity() {
         btnAdd = findViewById(R.id.btnAdd)
         recycler.adapter = adapter
 
-        // ActivityResultLauncher 초기화
         editLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
-            val data: Intent = result.data ?: return@registerForActivityResult
-
-            when (val mode: String? = data.getStringExtra("result_mode")) {
-                "create" -> {
-                    Toast.makeText(this, "목록에 추가됨", Toast.LENGTH_SHORT).show()
-                    loadPantries() // 🔹 서버 다시 조회
-                }
-
-                "edit" -> {
-                    Toast.makeText(this, "수정 반영됨", Toast.LENGTH_SHORT).show()
-                    //todo 수정해야함
-                    loadPantries() // 🔹 서버 다시 조회
-                }
-
-                "delete" -> {
-                    Toast.makeText(this, "삭제 반영됨", Toast.LENGTH_SHORT).show()
-                    loadPantries() // 🔹 서버 다시 조회
+            when (result.data?.getStringExtra("result_mode")) {
+                "create", "edit", "delete" -> {
+                    Toast.makeText(this, "목록 갱신", Toast.LENGTH_SHORT).show()
+                    loadPantries()
                 }
             }
         }
 
         findViewById<View>(R.id.btnCreateFromEmpty).setOnClickListener {
-            editLauncher.launch(
-                Intent(this, PantryEditActivity::class.java).putExtra("mode", "create")
-            )
+            editLauncher.launch(Intent(this, PantryEditActivity::class.java).putExtra("mode", "create"))
         }
         btnAdd.setOnClickListener {
-            editLauncher.launch(
-                Intent(this, PantryEditActivity::class.java).putExtra("mode", "create")
-            )
+            editLauncher.launch(Intent(this, PantryEditActivity::class.java).putExtra("mode", "create"))
         }
 
         updateEmptyState()
@@ -118,21 +109,23 @@ class PantryListActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // 네트워크는 IO에서
+                // 1) 팬트리 목록
                 val list = withContext(Dispatchers.IO) {
                     RetrofitInstance.pantryApi.listPantries(token)
                 }
-                // UI 업데이트는 메인에서
                 items.clear()
                 items.addAll(list)
                 adapter.submit(items.toList())
                 updateEmptyState()
+
+                // 2) 각 팬트리 재고 조회 → 14일 이내만 필터 → 맵 구성 → 어댑터에 반영
+                val expiringMap = withContext(Dispatchers.IO) {
+                    buildExpiringMapByStocks(token, list)
+                }
+                adapter.updateExpiringMap(expiringMap)
+
             } catch (e: Exception) {
-                Toast.makeText(
-                    this@PantryListActivity,
-                    "조회 실패: ${e.localizedMessage ?: "알 수 없는 오류"}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@PantryListActivity, "조회 실패: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -145,5 +138,37 @@ class PantryListActivity : AppCompatActivity() {
             emptyState.visibility = View.GONE
             recycler.visibility = View.VISIBLE
         }
+    }
+
+    // 14일 이내 필터
+    private fun List<PantryStockDto>.filterExpiringWithin14Days(): List<PantryStockDto> {
+        val today = LocalDate.now()
+        val limit = today.plusDays(14)
+        return this.filter { s ->
+            val d = s.expiresAt?.toLocalDateOrNull() ?: return@filter false
+            !d.isBefore(today) && !d.isAfter(limit)
+        }
+    }
+
+    // 팬트리별 재고 리스트를 가져와 14일 이내만 남긴 맵 구성
+    private suspend fun buildExpiringMapByStocks(
+        token: String,
+        pantries: List<PantryResponse>
+    ): Map<Long, List<PantryStockDto>> = coroutineScope {
+        val semaphore = Semaphore(4) // 동시 요청 4개로 제한(원하면 숫자 조절)
+        val jobs = pantries.map { p ->
+            async(Dispatchers.IO) {
+                runCatching {
+                    semaphore.acquire()
+                    val stocks = RetrofitInstance.pantryApi.listPantryStocks(token, p.id)
+                    p.id to stocks.filterExpiringWithin14Days()
+                }.getOrElse {
+                    p.id to emptyList()
+                }.also {
+                    semaphore.release()
+                }
+            }
+        }
+        jobs.awaitAll().toMap()
     }
 }
