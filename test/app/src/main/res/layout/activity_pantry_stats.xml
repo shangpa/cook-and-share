@@ -88,7 +88,7 @@
                 android:id="@+id/sectionMainFridge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="메인 냉장고"
+                android:text="나의 냉장고 분석을 확인해보세요!"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginStart="30dp"

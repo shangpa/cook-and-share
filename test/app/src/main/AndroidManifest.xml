@@ -223,9 +223,31 @@
             </intent-filter>
         </activity>
 
-        <!-- RefrigeratorMaterialAddActivity -->
+        <!-- PantryMaterialAddActivity -->
         <activity
             android:name=".PantryMaterialAddActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- ReceiptReviewActivity -->
+        <activity
+            android:name=".ReceiptReviewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- ReceiptScheduleActivity -->
+        <activity
+            android:name=".ReceiptScheduleActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

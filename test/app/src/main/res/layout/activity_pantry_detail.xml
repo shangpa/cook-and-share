@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PantryDetailActivity">
+    tools:context=".PantryDetailActivity"
+    android:background="@color/white">
 
     <!-- 상단 전체 영역 -->
     <androidx.constraintlayout.widget.ConstraintLayout
