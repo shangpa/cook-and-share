@@ -15,6 +15,7 @@ import com.example.test.model.TradePost.TradePostSimpleResponse
 import com.example.test.model.TradePost.TradePostUpResult
 import com.example.test.model.TradePost.TradeUserResponse
 import com.example.test.model.community.CommunityDetailResponse
+import com.example.test.model.ingredients.IngredientDetectResponse
 import com.example.test.model.pantry.PantryStatsResponse
 import com.example.test.model.profile.ProfileSummaryResponse
 import com.example.test.model.recipeDetail.ExpectedIngredient
@@ -558,7 +559,7 @@ interface ApiService {
     fun detectAndSaveIngredients(
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
-    ): Call<List<String>>
+    ): Call<List<IngredientDetectResponse>>
 
     @POST("/api/auth/google-login")
     fun googleLogin(@Body request: GoogleLoginRequest): Call<LoginResponse>

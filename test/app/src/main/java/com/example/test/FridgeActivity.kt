@@ -73,13 +73,19 @@ class FridgeActivity : AppCompatActivity() {
         TabBarUtils.setupTabBar(this)
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 1001)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.CAMERA),
+                1001
+            )
         }
 
         apiService = RetrofitInstance.apiService
 
-        findViewById<TextView>(R.id.dayInput).text = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
+        findViewById<TextView>(R.id.dayInput).text =
+            SimpleDateFormat("yyyy.MM.dd", Locale.getDefault()).format(Date())
 
         val categoryAll = findViewById<LinearLayout>(R.id.categoryAll)
         val categoryFridge = findViewById<LinearLayout>(R.id.categoryFridge)
@@ -104,42 +110,48 @@ class FridgeActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.fridgeCamera).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("사진 가져오기")
-                .setItems(arrayOf("카메라 촬영", "앨범에서 선택","장본 사진으로 자동 등록")) { _, which ->
+                .setItems(arrayOf("카메라 촬영", "앨범에서 선택", "장본 사진으로 자동 등록")) { _, which ->
                     when (which) {
                         0 -> {
                             val photoFile = File.createTempFile("ocr_", ".jpg", cacheDir)
-                            imageUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
+                            imageUri =
+                                FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
                             takePictureLauncher.launch(imageUri)
                         }
+
                         1 -> {
                             galleryLauncher.launch("image/*")
                         }
+
                         2 -> {
                             // 장본 사진 분석 (Vision API)
                             val photoFile = File.createTempFile("grocery_", ".jpg", cacheDir)
-                            imageUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
-                            groceryCameraLauncher.launch(imageUri)
+                            imageUri =
+                                FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
+                            // groceryCameraLauncher.launch(imageUri)
                         }
                     }
                 }.show()
         }
 
-        findViewById<RecyclerView>(R.id.fridgeRecyclerView).layoutManager = LinearLayoutManager(this)
+        findViewById<RecyclerView>(R.id.fridgeRecyclerView).layoutManager =
+            LinearLayoutManager(this)
 
         findViewById<LinearLayout>(R.id.fridgeAddBtn).setOnClickListener {
             startActivity(Intent(this, FridgeIngredientActivity::class.java))
         }
 
         findViewById<LinearLayout>(R.id.recipeRecommendBtn).setOnClickListener {
-            val selectedIngredients = allFridgeList.filter { selectedFridgeIds.contains(it.id) }.map {
-                SelectedIngredient(
-                    name = it.ingredientName,
-                    quantity = it.quantity,
-                    unit = it.unitDetail,
-                    dateLabel = it.dateOption ?: "유통기한",
-                    dateText = it.fridgeDate
-                )
-            }
+            val selectedIngredients =
+                allFridgeList.filter { selectedFridgeIds.contains(it.id) }.map {
+                    SelectedIngredient(
+                        name = it.ingredientName,
+                        quantity = it.quantity,
+                        unit = it.unitDetail,
+                        dateLabel = it.dateOption ?: "유통기한",
+                        dateText = it.fridgeDate
+                    )
+                }
 
             if (selectedIngredients.isEmpty()) {
                 Toast.makeText(this, "추천할 재료를 선택해주세요!", Toast.LENGTH_SHORT).show()
@@ -179,15 +191,27 @@ class FridgeActivity : AppCompatActivity() {
                     .enqueue(object : Callback<Void> {
                         override fun onResponse(call: Call<Void>, response: Response<Void>) {
                             if (response.isSuccessful) {
-                                Toast.makeText(this@FridgeActivity, "'$ingredientName' 삭제 완료!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@FridgeActivity,
+                                    "'$ingredientName' 삭제 완료!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 fetchFridgeData()
                             } else {
-                                Toast.makeText(this@FridgeActivity, "'$ingredientName' 삭제 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@FridgeActivity,
+                                    "'$ingredientName' 삭제 실패: ${response.code()}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
 
                         override fun onFailure(call: Call<Void>, t: Throwable) {
-                            Toast.makeText(this@FridgeActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@FridgeActivity,
+                                "네트워크 오류: ${t.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     })
             }
@@ -220,6 +244,7 @@ class FridgeActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 filterAndDisplayFridgeItems(currentCategory, s.toString())
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -254,10 +279,12 @@ class FridgeActivity : AppCompatActivity() {
                 val response = apiService.getMyFridges(token)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        allFridgeList = response.body()?.sortedByDescending { it.updatedAt } ?: listOf()
+                        allFridgeList =
+                            response.body()?.sortedByDescending { it.updatedAt } ?: listOf()
                         filterAndDisplayFridgeItems(currentCategory)
                     } else {
-                        Toast.makeText(this@FridgeActivity, "데이터 불러오기 실패", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@FridgeActivity, "데이터 불러오기 실패", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             } catch (e: Exception) {
@@ -330,29 +357,31 @@ class FridgeActivity : AppCompatActivity() {
         }
     }
 
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            val image = InputImage.fromFilePath(this, imageUri)
-            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-            recognizer.process(image)
-                .addOnSuccessListener { visionText ->
-                    val text = visionText.text
-                    val cleanedText = text.replace(" ", "").replace("\n", "")
-                    if (!cleanedText.contains(Regex("[가-힣]"))) {
-                        Log.d("OCR_RESULT", "한글 없음, Vision API 시도")
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                val image = InputImage.fromFilePath(this, imageUri)
+                val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                recognizer.process(image)
+                    .addOnSuccessListener { visionText ->
+                        val text = visionText.text
+                        val cleanedText = text.replace(" ", "").replace("\n", "")
+                        if (!cleanedText.contains(Regex("[가-힣]"))) {
+                            Log.d("OCR_RESULT", "한글 없음, Vision API 시도")
+                            val bitmap =
+                                MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                            callGoogleVisionAPI(bitmap)
+                            return@addOnSuccessListener
+                        }
+                        handleMatchedText(cleanedText)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("OCR_MLKIT", "ML Kit 인식 실패: ${e.message}, Vision API 시도")
                         val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
                         callGoogleVisionAPI(bitmap)
-                        return@addOnSuccessListener
                     }
-                    handleMatchedText(cleanedText)
-                }
-                .addOnFailureListener { e ->
-                    Log.w("OCR_MLKIT", "ML Kit 인식 실패: ${e.message}, Vision API 시도")
-                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                    callGoogleVisionAPI(bitmap)
-                }
+            }
         }
-    }
 
     private fun handleMatchedText(text: String) {
         val knownIngredients = listOf("감자", "깻잎", "햇감자", "당근", "양파", "계란", "오이", "상추", "시금치")
@@ -367,19 +396,21 @@ class FridgeActivity : AppCompatActivity() {
         }
     }
 
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
-            callGoogleVisionAPI(bitmap)
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                callGoogleVisionAPI(bitmap)
+            }
         }
-    }
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-            callGoogleVisionAPI(bitmap)
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                callGoogleVisionAPI(bitmap)
+            }
         }
-    }
 
     private fun bitmapToBase64(bitmap: Bitmap): String {
         val stream = java.io.ByteArrayOutputStream()
@@ -486,6 +517,7 @@ class FridgeActivity : AppCompatActivity() {
         }
         saveItemsToServerSequentially(items)
     }
+
     private fun saveItemsToServerSequentially(items: List<FridgeCreateRequest>, index: Int = 0) {
         if (index >= items.size) {
             Log.d("OCR_SAVE_DEBUG", "모든 아이템 저장 완료")
@@ -508,11 +540,13 @@ class FridgeActivity : AppCompatActivity() {
                     Log.e("OCR_SAVE_DEBUG", "아이템 ${index} 저장 실패 코드: ${response.code()}")
                 }
             }
+
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 val message = t.message ?: "알 수 없는 네트워크 오류"
                 Log.e("OCR_SAVE_DEBUG", "아이템 $index 저장 실패 에러: $message", t)
                 runOnUiThread {
-                    Toast.makeText(this@FridgeActivity, "네트워크 오류: $message", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@FridgeActivity, "네트워크 오류: $message", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -550,6 +584,13 @@ class FridgeActivity : AppCompatActivity() {
             resources.displayMetrics
         ).toInt()
     }
+
+    private fun getTodayDate(): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    }
+}
+
+/*
     private val groceryCameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             val token = App.prefs.token ?: ""
@@ -590,8 +631,4 @@ class FridgeActivity : AppCompatActivity() {
                 }
             }
         }
-
-    private fun getTodayDate(): String {
-        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-    }
-}
+*/

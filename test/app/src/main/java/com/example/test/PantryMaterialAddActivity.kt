@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.IngredientGridAdapter
+import com.example.test.model.ingredients.IngredientDetectResponse
 import com.example.test.model.pantry.IngredientMasterResponse
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.*
@@ -68,24 +69,29 @@ class PantryMaterialAddActivity : AppCompatActivity() {
 
                 multipart?.let {
                     RetrofitInstance.apiService.detectAndSaveIngredients("Bearer $token", it)
-                        .enqueue(object : Callback<List<String>> {
+                        .enqueue(object : Callback<List<IngredientDetectResponse>> {
                             override fun onResponse(
-                                call: Call<List<String>>,
-                                response: Response<List<String>>
+                                call: Call<List<IngredientDetectResponse>>,
+                                response: Response<List<IngredientDetectResponse>>
                             ) {
                                 if (response.isSuccessful) {
                                     val items = response.body() ?: emptyList()
                                     if (items.isNotEmpty()) {
-                                        // ✅ 일단 리스트만 받고, 다음 단계 이동은 생략
-                                        val joined = items.joinToString(", ")
-                                        Toast.makeText(
-                                            this@PantryMaterialAddActivity,
-                                            "인식된 재료: $joined",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-
-                                        // 로그 확인용
                                         Log.d("PantryOCR", "인식된 재료 목록: $items")
+
+                                        // ✅ 재료 id + 이름을 함께 다음 화면으로 전달
+                                        val intent = Intent(
+                                            this@PantryMaterialAddActivity,
+                                            ReceiptScheduleActivity::class.java
+                                        ).apply {
+                                            putExtra("pantryId", pantryId)
+                                            putParcelableArrayListExtra(
+                                                "recognizedItems",
+                                                ArrayList(items)
+                                            )
+                                        }
+                                        startActivity(intent)
+
                                     } else {
                                         Toast.makeText(
                                             this@PantryMaterialAddActivity,
@@ -99,11 +105,17 @@ class PantryMaterialAddActivity : AppCompatActivity() {
                                         "서버 응답 실패 (${response.code()})",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    Log.e("PantryOCR", "Response Error: ${response.errorBody()?.string()}")
+                                    Log.e(
+                                        "PantryOCR",
+                                        "Response Error: ${response.errorBody()?.string()}"
+                                    )
                                 }
                             }
 
-                            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                            override fun onFailure(
+                                call: Call<List<IngredientDetectResponse>>,
+                                t: Throwable
+                            ) {
                                 Toast.makeText(
                                     this@PantryMaterialAddActivity,
                                     "오류 발생: ${t.message}",
@@ -189,7 +201,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
     private fun showRegisterMenu(anchor: View) {
         val popup = PopupMenu(this, anchor)
         popup.menu.add("영수증으로 등록")
-        popup.menu.add("사진으로 등록")
+        popup.menu.add("장본 사진으로 등록")
         popup.setOnMenuItemClickListener {
             when (it.title) {
                 "영수증으로 등록" -> { showReceiptSourceChooser(); true }   // 2차 메뉴로

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.test.model.ingredients.IngredientDetectResponse
 import com.example.test.model.recipt.ReceiptOcrConfirmRequest
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +52,8 @@ class ReceiptScheduleActivity : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
         btnSave = findViewById(R.id.btnSave)
+        
+        val recognizedItems = intent.getParcelableArrayListExtra<IngredientDetectResponse>("recognizedItems")
 
         // req -> UI 모델로 변환
         uiItems.clear()
@@ -83,6 +86,20 @@ class ReceiptScheduleActivity : AppCompatActivity() {
         rv.adapter = adapter
 
         btnSave.setOnClickListener { save() }
+
+        if (!recognizedItems.isNullOrEmpty()) {
+            uiItems.clear()
+            recognizedItems.forEach { item ->
+                uiItems += ItemScheduleUi(
+                    nameRaw = item.nameKo,
+                    ingredientId = item.ingredientId,
+                    unitId = null, // 필요 시 기본 단위 설정
+                    quantity = "1"
+                )
+            }
+            adapter.notifyDataSetChanged()
+        }
+
     }
 
     /** 행별: 보관 장소 선택 팝업 */
