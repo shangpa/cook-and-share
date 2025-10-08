@@ -19,6 +19,12 @@ import com.example.test.adapter.IngredientGridAdapter
 import com.example.test.model.pantry.IngredientMasterResponse
 import com.example.test.network.RetrofitInstance
 import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class PantryMaterialAddActivity : AppCompatActivity() {
@@ -46,13 +52,72 @@ class PantryMaterialAddActivity : AppCompatActivity() {
                 Toast.makeText(this, "촬영이 취소되었어요.", Toast.LENGTH_SHORT).show()
             }
         }
+    // ✅ 사진 촬영 후 서버 업로드 및 재료 인식
+    private var imageUri: Uri? = null
 
-    /** 앨범에서 선택 (시스템 포토피커/갤러리) */
-    private val pickImageLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) goReceiptReview(uri)
-            else Toast.makeText(this, "선택이 취소되었어요.", Toast.LENGTH_SHORT).show()
+    private val groceryCameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            val token = App.prefs.token ?: ""
+            if (success && imageUri != null) {
+                val inputStream = contentResolver.openInputStream(imageUri!!)
+                val requestBody = inputStream?.readBytes()
+                    ?.toRequestBody("image/*".toMediaTypeOrNull())
+                val multipart = requestBody?.let {
+                    MultipartBody.Part.createFormData("image", "grocery.jpg", it)
+                }
+
+                multipart?.let {
+                    RetrofitInstance.apiService.detectAndSaveIngredients("Bearer $token", it)
+                        .enqueue(object : Callback<List<String>> {
+                            override fun onResponse(
+                                call: Call<List<String>>,
+                                response: Response<List<String>>
+                            ) {
+                                if (response.isSuccessful) {
+                                    val items = response.body() ?: emptyList()
+                                    if (items.isNotEmpty()) {
+                                        // ✅ 일단 리스트만 받고, 다음 단계 이동은 생략
+                                        val joined = items.joinToString(", ")
+                                        Toast.makeText(
+                                            this@PantryMaterialAddActivity,
+                                            "인식된 재료: $joined",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+
+                                        // 로그 확인용
+                                        Log.d("PantryOCR", "인식된 재료 목록: $items")
+                                    } else {
+                                        Toast.makeText(
+                                            this@PantryMaterialAddActivity,
+                                            "인식된 재료가 없습니다.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                } else {
+                                    Toast.makeText(
+                                        this@PantryMaterialAddActivity,
+                                        "서버 응답 실패 (${response.code()})",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.e("PantryOCR", "Response Error: ${response.errorBody()?.string()}")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                                Toast.makeText(
+                                    this@PantryMaterialAddActivity,
+                                    "오류 발생: ${t.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e("PantryOCR", "Network Error", t)
+                            }
+                        })
+                }
+            } else {
+                Toast.makeText(this, "촬영이 취소되었어요.", Toast.LENGTH_SHORT).show()
+            }
         }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,7 +193,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener {
             when (it.title) {
                 "영수증으로 등록" -> { showReceiptSourceChooser(); true }   // 2차 메뉴로
-                "사진으로 등록"   -> { openGallery(); true }               // 곧바로 앨범
+                "장본 사진으로 등록"   -> { openCameraAndUpload(); true }
                 else -> false
             }
         }
@@ -164,10 +229,24 @@ class PantryMaterialAddActivity : AppCompatActivity() {
         }
         takePictureLauncher.launch(cameraUri)
     }
-
     /** 앨범 열기 */
     private fun openGallery() {
         pickImageLauncher.launch("image/*")
+    }
+    /** 앨범에서 선택 (시스템 포토피커/갤러리) */
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) goReceiptReview(uri)
+            else Toast.makeText(this, "선택이 취소되었어요.", Toast.LENGTH_SHORT).show()
+        }
+    /** 사진 촬영 후 서버 업로드용 */
+    private fun openCameraAndUpload() {
+        imageUri = createTempImageUri()
+        if (imageUri == null) {
+            Toast.makeText(this, "이미지 저장 Uri 생성 실패", Toast.LENGTH_SHORT).show()
+            return
+        }
+        groceryCameraLauncher.launch(imageUri)
     }
 
     /** 촬영/선택 결과 → OCR 리뷰 화면으로 */
