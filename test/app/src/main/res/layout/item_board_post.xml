@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingVertical="16dp">
+    android:paddingVertical="16dp"
+    android:background="@color/white">
 
     <!-- 아이디, 시간, 저장 버튼 한 줄 -->
     <LinearLayout

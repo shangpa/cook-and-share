@@ -4,6 +4,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:gravity="center_horizontal">
 
     <!-- 최근 저장한 재료를 위한 GridLayout -->

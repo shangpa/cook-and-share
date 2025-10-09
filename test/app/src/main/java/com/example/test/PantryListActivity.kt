@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test.App
 import com.example.test.PantryDetailActivity
 import com.example.test.R
+import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.RefrigeratorAdapter
 import com.example.test.model.pantry.PantryResponse
 import com.example.test.model.pantry.PantryStockDto
@@ -66,6 +67,8 @@ class PantryListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantry_list)
+
+        TabBarUtils.setupTabBar(this)
 
         recycler = findViewById(R.id.recycler)
         emptyState = findViewById(R.id.emptyState)

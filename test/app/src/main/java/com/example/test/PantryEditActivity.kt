@@ -29,6 +29,7 @@ import java.io.File
 import java.io.FileOutputStream
 import androidx.lifecycle.lifecycleScope
 import com.example.test.PantryMaterialAddDetailActivity
+import com.example.test.Utils.TabBarUtils
 import com.example.test.model.pantry.PantryStockDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -105,6 +106,8 @@ class PantryEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantry_edit)
+
+        TabBarUtils.setupTabBar(this)
 
         etName = findViewById(R.id.etName)
         etMemo = findViewById(R.id.etMemo)

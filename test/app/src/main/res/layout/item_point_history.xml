@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
+    android:background="@color/white"
     android:layout_marginHorizontal="20dp">
 
     <!-- 구분선 -->

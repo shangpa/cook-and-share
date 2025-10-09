@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@color/white">
 
     <!-- 카테고리 리스트를 위한 GridLayout -->
     <GridLayout
