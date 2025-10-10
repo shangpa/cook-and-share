@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -290,6 +291,7 @@ class PantryDetailActivity : AppCompatActivity() {
                 }
             }
         }
+        setupCookButton()
     }
 
     private var allSelected = false
@@ -465,6 +467,30 @@ class PantryDetailActivity : AppCompatActivity() {
 
     private fun formatFridgeTitle(name: String) =
         if (name.contains("냉장고")) name else "$name 냉장고"
+
+    private fun setupCookButton() {
+        val btnCook = findViewById<ConstraintLayout>(R.id.cookDongDong)
+        btnCook.setOnClickListener {
+            val selectedItems = currentAdapter().getSelected()
+            if (selectedItems.isEmpty()) {
+                Toast.makeText(this, "요리에 사용할 재료를 선택하세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // ingredientId 추출
+            val selectedIds = selectedItems.mapNotNull { it.ingredientId }
+
+            Log.d("PantryDetail", "선택된 재료 수: ${selectedIds.size}")
+            selectedItems.forEachIndexed { index, item ->
+                Log.d("PantryDetail", "[$index] ingredientId=${item.ingredientId}, name=${item.name}")
+            }
+
+            // Intent로 넘기기
+            val intent = Intent(this, FridgeRecipeActivity::class.java)
+            intent.putExtra("selectedIngredientIds", selectedIds.toLongArray()) // ✅ LongArray로 전달
+            startActivity(intent)
+        }
+    }
 }
 
 // 화면 바인딩용 모델 (수정 모드 전달 필드 포함)

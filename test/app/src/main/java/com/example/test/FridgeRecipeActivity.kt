@@ -59,23 +59,27 @@ class FridgeRecipeActivity : AppCompatActivity() {
 
         TabBarUtils.setupTabBar(this)
 
-        //재료 가져오기
-        val selectedIngredients = intent.getParcelableArrayListExtra<SelectedIngredient>("selectedIngredients") ?: arrayListOf()
-        val allIngredients = intent.getParcelableArrayListExtra<SelectedIngredient>("allIngredients") ?: arrayListOf()
+        // 전달된 ingredientId 목록 받기
+        val selectedIngredientIds = intent.getLongArrayExtra("selectedIngredientIds")?.toList() ?: emptyList()
 
-        val selectedNames = selectedIngredients.map { it.name }
+        //선택된 재료가 있다면 바로 추천 호출
+        if (selectedIngredientIds.isNotEmpty()) {
+            recommendRecipesByIds(selectedIngredientIds)
+        }
+        Log.d("FridgeRecipe", "넘어온 재료 ID 개수: ${selectedIngredientIds.size}")
+        selectedIngredientIds.forEachIndexed { index, id ->
+            Log.d("FridgeRecipe", "[$index] ingredientId=$id")
+        }
 
-        // --- 개별 아이템 및 전체 선택 처리 ---
+        //재료 목록 뷰에 표시 — UI 구성용
         val fridgeAllCheckIcon: ImageView = findViewById(R.id.fridgeAllCheckIcon)
         val fridgeRecipeItem: LinearLayout = findViewById(R.id.fridgeRecipeItem)
 
+        val allIngredients = intent.getParcelableArrayListExtra<SelectedIngredient>("allIngredients") ?: arrayListOf()
         allIngredients.forEach { ingredient ->
-            val isSelected = selectedNames.contains(ingredient.name)
-            val itemView = addFridgeIngredientView(ingredient, isSelected)
+            val itemView = addFridgeIngredientView(ingredient, false)
             fridgeRecipeItem.addView(itemView)
         }
-        // 3. 서버에 추천 요청 보내기
-        recommendRecipes(selectedIngredients.map { it.name })
 
         // --- 카테고리 버튼 처리 ---
         val fridgeCategoryAllBtn: LinearLayout = findViewById(R.id.fridgeCategoryAllBtn)
@@ -142,11 +146,9 @@ class FridgeRecipeActivity : AppCompatActivity() {
                     child.tag = false
                 }
             }
-            if (isAllChecked) {
-                fridgeAllCheckIcon.setImageResource(R.drawable.ic_fridge_checked)
-            } else {
-                fridgeAllCheckIcon.setImageResource(R.drawable.ic_fridge_check)
-            }
+            fridgeAllCheckIcon.setImageResource(
+                if (isAllChecked) R.drawable.ic_fridge_checked else R.drawable.ic_fridge_check
+            )
         }
 
         // --- 드롭다운 버튼 및 기타 메뉴 처리 ---
@@ -333,19 +335,25 @@ class FridgeRecipeActivity : AppCompatActivity() {
     }
 
     //추천레시피 받아오기
-    private fun recommendRecipes(selectedIngredients: List<String>) {
+    // FridgeRecipeActivity.kt
+    private fun recommendRecipesByIds(selectedIngredientIds: List<Long>) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val token = App.prefs.token.toString()
-                val request = FridgeRecommendRequest(selectedIngredients)
+                val token = App.prefs.token ?: return@launch
+                val request = FridgeRecommendRequest(selectedIngredientIds)
                 val response = RetrofitInstance.apiService.recommendRecipes("Bearer $token", request)
 
                 if (response.isSuccessful) {
                     recommendList = response.body() ?: emptyList()
+                    updateRecipeList(recommendList)
+                    findViewById<TextView>(R.id.recipeSearchResultNum).text = recommendList.size.toString()
 
+                    val body = response.body()
+                    Log.d("FridgeRecipe", "서버 응답 데이터: $body")
+                    recommendList = body ?: emptyList()
+                    Log.d("FridgeRecipe", "추천 레시피 개수: ${recommendList.size}")
                     updateRecipeList(recommendList)
 
-                    findViewById<TextView>(R.id.recipeSearchResultNum).text = recommendList.size.toString()
                 } else {
                     Log.e("FridgeRecipe", "추천 실패: ${response.code()}")
                 }
@@ -354,6 +362,7 @@ class FridgeRecipeActivity : AppCompatActivity() {
             }
         }
     }
+
     //레시피 리스트에 추가
     private fun addRecipeView(recipe: FridgeRecommendResponse) {
         val inflater = LayoutInflater.from(this)
