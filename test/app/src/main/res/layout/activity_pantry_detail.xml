@@ -66,11 +66,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="15dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_receipt_camera"
                     app:layout_constraintBottom_toBottomOf="@id/backArrow"
                     app:layout_constraintEnd_toStartOf="@id/plusIcon"
                     app:layout_constraintTop_toTopOf="@id/backArrow" />
+
+                <!-- 분석 -->
+                <TextView
+                    android:id="@+id/analysisText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분석"
+                    android:textColor="#2B2B2B"
+                    android:textSize="11sp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginStart="2dp"
+                    app:layout_constraintStart_toStartOf="@id/analysisIcon"
+                    app:layout_constraintTop_toBottomOf="@id/analysisIcon" />
 
                 <!-- 더하기 버튼 -->
                 <ImageButton
@@ -78,11 +92,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="15dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_plus"
                     app:layout_constraintBottom_toBottomOf="@id/backArrow"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/backArrow" />
+
+                <!-- 추가 -->
+                <TextView
+                    android:id="@+id/plusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="추가"
+                    android:textColor="#2B2B2B"
+                    android:textSize="11sp"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toStartOf="@id/plusIcon"
+                    app:layout_constraintTop_toBottomOf="@id/plusIcon" />
 
                 <!-- 구분 바 -->
                 <View
