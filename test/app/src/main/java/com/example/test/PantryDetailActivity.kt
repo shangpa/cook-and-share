@@ -92,9 +92,25 @@ class PantryDetailActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.analysisIcon).setOnClickListener {
             startActivity(Intent(this, PantryStatsActivity::class.java))
         }
+        
+        // 분석 텍스트
+        findViewById<TextView>(R.id.analysisText).setOnClickListener {
+            startActivity(Intent(this, PantryStatsActivity::class.java))
+        }
 
         // + 버튼
         findViewById<ImageButton>(R.id.plusIcon).setOnClickListener {
+            if (pantryId <= 0) {
+                Toast.makeText(this, "냉장고 정보를 찾을 수 없어요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            startActivity(Intent(this, PantryMaterialAddActivity::class.java).apply {
+                putExtra("pantryId", pantryId)   // 이 한 줄이면 끝!
+            })
+        }
+
+        // + 텍스트
+        findViewById<TextView>(R.id.plusText).setOnClickListener {
             if (pantryId <= 0) {
                 Toast.makeText(this, "냉장고 정보를 찾을 수 없어요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
