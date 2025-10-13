@@ -134,6 +134,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantry_material_add)
+        window.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         TabBarUtils.setupTabBar(this)
         pantryId = intent.getLongExtra("pantryId", -1L)

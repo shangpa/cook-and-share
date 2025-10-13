@@ -13,9 +13,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
@@ -876,12 +873,13 @@
         <activity android:name=".FollowActivity"
             android:exported="false"/>
 
-        <activity android:name=".ui.fridge.PantryEditActivity"
-            android:exported="false"/>
-
         <activity android:name=".ui.fridge.PantryListActivity"
             android:exported="false"/>
 
+        <activity
+            android:name=".ui.fridge.PantryEditActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            tools:ignore="DuplicateActivity" />
 
 
         <!--        &lt;!&ndash; DrawEditorActivity &ndash;&gt;-->
