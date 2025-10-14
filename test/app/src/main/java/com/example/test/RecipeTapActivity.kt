@@ -26,6 +26,8 @@ import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 
 class RecipeTapActivity : AppCompatActivity() {
 
@@ -335,11 +337,12 @@ class RecipeTapActivity : AppCompatActivity() {
 
         titleView.text = item.title
 
+        val radius = dpToPx(12f).toInt()   // 원하는 라운드 값(dp)
         Glide.with(imageView)
             .load(thumbUrl)
             .placeholder(R.drawable.image_one_minute)
             .error(R.drawable.image_one_minute)
-            .centerCrop()
+            .transform(CenterCrop(), RoundedCorners(radius))   // ← 둥근 모서리 적용
             .into(imageView)
 
         card.setOnClickListener {
