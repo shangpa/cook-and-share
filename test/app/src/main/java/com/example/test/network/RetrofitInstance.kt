@@ -7,10 +7,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import android.net.Uri
 
 object RetrofitInstance {
 
-    const val BASE_URL = "http://172.30.1.72:8080/"
+    const val BASE_URL = "http://172.30.1.78:8080/"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
@@ -67,5 +68,21 @@ object RetrofitInstance {
         val base = if (s.startsWith("ic_")) "image_" + s.removePrefix("ic_") else s
         val file = if (base.contains('.')) base else "$base.png"
         return toAbsoluteUrl("/icons/$file")
+    }
+
+    /** 동영상 파일명/경로 → 절대 URL (`/uploads/videos/{file}` 규칙) */
+    fun toVideoUrl(fileNameOrPath: String?): String? {
+        if (fileNameOrPath.isNullOrBlank()) return null
+        val s = fileNameOrPath.trim()
+
+        // 이미 절대 URL이면 그대로
+        if (s.startsWith("http://", true) || s.startsWith("https://", true)) return s
+
+        // 이미 서버 공개 경로로 시작하면 그대로 절대화
+        if (s.startsWith("/uploads/")) return toAbsoluteUrl(s)
+
+        // 순수 파일명인 경우 → /uploads/videos/{파일명} 로 조립 (공백/한글 대비 인코딩)
+        val encoded = Uri.encode(s)
+        return toAbsoluteUrl("/uploads/videos/$encoded")
     }
 }

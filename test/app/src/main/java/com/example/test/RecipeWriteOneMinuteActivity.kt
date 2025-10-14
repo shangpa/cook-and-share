@@ -44,6 +44,10 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeWriteOneMinuteActivity : AppCompatActivity() {
 
@@ -414,7 +418,7 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                         val raw = response.body()!!.string().trim()
 
                         // 절대 URL로 정규화해서 보관
-                        val fullUrl = resolveFullUrl(raw)
+                        val fullUrl = RetrofitInstance.toVideoUrl(raw) ?: raw
                         recipeVideoUrl = fullUrl
 
                         Toast.makeText(
@@ -457,13 +461,8 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
             })
     }
 
-
     private fun resolveFullUrl(serverValue: String): String =
-        if (serverValue.startsWith("http://") || serverValue.startsWith("https://")) {
-            serverValue
-        } else {
-            "${RetrofitInstance.BASE_URL}$serverValue"
-        }
+        RetrofitInstance.toVideoUrl(serverValue) ?: serverValue
 
     private fun showVideoPreview(videoUrl: String) {
         val container = findViewById<LinearLayout>(R.id.imageContainer)
@@ -481,29 +480,35 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
         container.addView(videoView)
     }
 
+    // REPLACE ENTIRE METHOD
     private fun showFallbackThumbnailFromVideo(uriOrUrl: String) {
-        try {
-            val retriever = android.media.MediaMetadataRetriever()
-            if (uriOrUrl.startsWith("http", ignoreCase = true)) {
-                retriever.setDataSource(uriOrUrl, HashMap())
-            } else {
-                retriever.setDataSource(this, Uri.parse(uriOrUrl))
+        lifecycleScope.launch {
+            val bmp = withContext(Dispatchers.IO) {
+                try {
+                    val retriever = android.media.MediaMetadataRetriever()
+                    if (uriOrUrl.startsWith("http", ignoreCase = true)) {
+                        retriever.setDataSource(uriOrUrl, HashMap())
+                    } else {
+                        retriever.setDataSource(this@RecipeWriteOneMinuteActivity, Uri.parse(uriOrUrl))
+                    }
+                    val frame = retriever.getFrameAtTime(1_000_000) // 1초 프레임
+                    retriever.release()
+                    frame
+                } catch (_: Exception) { null }
             }
-            val bmp = retriever.getFrameAtTime(1_000_000) // 1초 프레임
-            retriever.release()
 
             if (bmp != null) {
                 // 1) 화면에 1장만 보여주기
                 val container = findViewById<LinearLayout>(R.id.imageContainerTwo)
                 container.removeAllViews()
-                val iv = ImageView(this).apply {
+                val iv = ImageView(this@RecipeWriteOneMinuteActivity).apply {
                     setImageBitmap(bmp)
                     layoutParams = LinearLayout.LayoutParams(336.dpToPx(), 261.dpToPx())
                     scaleType = ImageView.ScaleType.CENTER_CROP
                 }
                 container.addView(iv)
 
-                // 2) DB 저장 위해 서버에 업로드 (대표사진이 아직 없는 경우에만)
+                // 2) 대표사진 자동 업로드(한 번만)
                 if (mainImageUrl.isBlank() && !autoThumbUploading) {
                     autoThumbUploading = true
                     val uri = bitmapToTempJpegUri(bmp)
@@ -511,7 +516,6 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                         uploadImageToServer(uri) { imageUrl ->
                             autoThumbUploading = false
                             if (!imageUrl.isNullOrBlank() && mainImageUrl.isBlank()) {
-                                // 업로드 성공 시 대표사진 URL로 채워서, 등록 시 DB에 저장되게 한다
                                 mainImageUrl = imageUrl
                             }
                         }
@@ -520,7 +524,7 @@ class RecipeWriteOneMinuteActivity : AppCompatActivity() {
                     }
                 }
             }
-        } catch (_: Exception) { /* 무시 */ }
+        }
     }
 
     // ----------------------------------------------------
