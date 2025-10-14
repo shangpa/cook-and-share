@@ -54,7 +54,7 @@ class PantryMaterialAddDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantry_material_add_detail)
-
+        window.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         TabBarUtils.setupTabBar(this)
         findViewById<ImageView>(R.id.backArrow).setOnClickListener { finish() }
 
