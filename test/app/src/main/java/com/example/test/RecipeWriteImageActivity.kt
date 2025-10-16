@@ -1286,7 +1286,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             recipeId = draftId,
             title = title,
             category = categoryEnum,
-            ingredients = gson.toJson(collectedIngredients),
+            ingredients = collectedIngredients,
             alternativeIngredients = gson.toJson(altPairs.map { Ingredient(it.first, it.second) }),
             handlingMethods = gson.toJson(
                 handlingPairs.map { (name, method) -> "$name : $method" }
@@ -1889,7 +1889,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
 
         // 3) 재료
-        val ingMaps = safeParseMapList(gson, dto.ingredients)
+        val ingMaps = safeParseMapList(gson, dto.ingredients.toString())
         restoreIngredientsFromMaps(ingMaps)
 
         // 4) 대체재료

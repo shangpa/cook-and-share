@@ -464,6 +464,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 materialContainer.addView(itemLayout)
             }
         }
+        materialCook.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterIngredients(s.toString())
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        loadIngredients()
 
         // 계속하기 버튼 클릭시 다음 화면으로 이동
         continueButton.setOnClickListener {
@@ -494,40 +503,33 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 val categoryText = koreanFood.text.toString()
                 val recipeTitle = recipeTitleWrite.text.toString()
 
-                // 재료(고정 + 동적)
-                val ingredients = mutableListOf<Pair<String, String>>().apply {
-                    add(material.text.toString()      to "${measuring.text}")
-                }
-
-                // 동적 재료 수집
+                val ingredientsForRequest = mutableListOf<MasterIngredient>()
+                val ingredientsForPreview = mutableListOf<Pair<String, String>>() // 미리보기용
                 for (i in 0 until materialContainer.childCount) {
-                    val itemLayout = materialContainer.getChildAt(i) as? ConstraintLayout ?: continue
-                    val materialEditText  = itemLayout.getChildAt(0) as? EditText
-                    val measuringEditText = itemLayout.getChildAt(1) as? EditText
+                    val rowView = materialContainer.getChildAt(i)
 
-                    if (materialEditText != null && measuringEditText != null ) {
-                        val materialName   = materialEditText.text.toString()
-                        val amountWithUnit = "${measuringEditText.text} "
-                        if (materialName.isNotBlank() && amountWithUnit.isNotBlank()) {
-                            ingredients.add(materialName to amountWithUnit)
-                        }
+                    // 동적으로 추가된 UI에서 이름, 양, ID를 가져옵니다.
+                    val nameTv = rowView.findViewById<TextView>(R.id.tvMaterialName)
+                    val qtyEt = rowView.findViewById<EditText>(R.id.etMeasuring)
+                    val ingredientId = rowView.tag as? Long
+
+                    val name = nameTv?.text?.toString()?.trim()
+                    val amount = qtyEt?.text?.toString()?.trim()
+
+                    if (!name.isNullOrEmpty() && !amount.isNullOrEmpty()) {
+                        // 1. 서버 전송용 데이터
+                        ingredientsForRequest.add(
+                            MasterIngredient(
+                                id = ingredientId,
+                                name = name,
+                                amount = amount
+                            )
+                        )
+                        // 2. 내용 확인 화면 미리보기용 데이터
+                        ingredientsForPreview.add(name to amount)
                     }
                 }
-
-                // 빈 값 제거
-                val filteredIngredients = ingredients.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-                val ingredientsForRequest = ingredients.map { (name, qty) ->
-                    // 이름으로 전체 재료 목록(allIngredients)에서 원본 데이터(id 포함) 찾기
-                    val originalIngredient = allIngredients.find { it.nameKo == name }
-                    val ingredientId = originalIngredient?.id
-
-                    // 서버가 요구하는 MasterIngredient 모델로 변환
-                    MasterIngredient(
-                        id = ingredientId,
-                        name = name,
-                        amount = qty
-                    )
-                }
+                val filteredIngredients = ingredientsForPreview // 미리보기용 변수 이름 통일
                 // 미리보기 UI 업데이트
                 updateMaterialList(materialContainer, filteredIngredients)
 
@@ -852,44 +854,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             checkAndUpdateContinueButton()
         }
 
-        // 재료 리스트 선택시 테두리 색 바뀌고 재료 글 추가
-        val pairs = listOf(
-            R.id.eggplantLayout to R.id.rect,
-            R.id.potatoLayout to R.id.rectTwo,
-            R.id.sweetPotatoLayout to R.id.rectThree,
-            R.id.carrotLayout to R.id.rectFour,
-            R.id.tomatoLayout to R.id.rectFive
-        )
-
-        fun toggle(rect: View) {
-            val wasSelected = selectedRects.contains(rect)
-
-            if (wasSelected) {
-                // 해제
-                rect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
-                selectedRects.remove(rect)
-
-                rectToRow[rect]?.let { row ->
-                    materialContainer.removeView(row)
-                    rectToRow.remove(rect)
-                }
-            } else {
-                // 선택
-                rect.setBackgroundResource(R.drawable.rounded_fridge_green)
-                selectedRects.add(rect)
-
-                if (selectedRects.size >= 2) {
-                    val row = addNewItem(rect)  // ✅ rect 전달
-                    rectToRow[rect] = row
-                }
-            }
-        }
-
-        pairs.forEach { (layoutId, rectId) ->
-            val layout = findViewById<View>(layoutId)
-            val rect = findViewById<View>(rectId)
-            layout.setOnClickListener { toggle(rect) }
-        }
 
         // 레시피 대체재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
         replaceMaterialDeleteTwo.setOnClickListener {
@@ -1207,6 +1171,100 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         draftId?.let { loadDraftAndBind(it) }
     }
+    private fun loadIngredients() {
+        val token = "Bearer ${App.prefs.token}"
+        RetrofitInstance.pantryApi.listAll(token).enqueue(object : Callback<List<IngredientResponse>> {
+            override fun onResponse(
+
+                call: Call<List<IngredientResponse>>,
+                response: Response<List<IngredientResponse>>
+            ) {
+                Log.d("왜안돼","나도몰라")
+                if (response.isSuccessful) {
+                    val list = response.body().orEmpty()
+                    Log.d("RecipeWriteImageActivity", "재료 리스트 수: ${list.size}")
+                    list.forEach { ing ->
+                        Log.d("RecipeWriteImageActivity", "재료: id=${ing.id}, name=${ing.nameKo}, icon=${ing.iconUrl}")
+                    }
+                    allIngredients.clear()
+                    allIngredients.addAll(list)
+                    renderIngredientButtons(allIngredients) // 처음엔 전체 출력
+                } else {
+                    Toast.makeText(this@RecipeWriteBothActivity, "조회 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<IngredientResponse>>, t: Throwable) {
+                Toast.makeText(this@RecipeWriteBothActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    private fun filterIngredients(keyword: String) {
+        val filteredList = if (keyword.isBlank()) {
+            allIngredients
+        } else {
+            allIngredients.filter { it.nameKo.contains(keyword, ignoreCase = true) }
+        }
+        renderIngredientButtons(filteredList)
+    }
+    private fun renderIngredientButtons(list: List<IngredientResponse>) {
+        val container = findViewById<LinearLayout>(R.id.categoryButtonContainer)
+        container.removeAllViews()
+
+        list.forEach { ingredient ->
+            val view = layoutInflater.inflate(R.layout.item_ingredient_button, container, false)
+
+            val rect = view.findViewById<View>(R.id.rect)
+            val img = view.findViewById<ImageView>(R.id.image)
+            val name = view.findViewById<TextView>(R.id.name)
+
+            name.text = ingredient.nameKo
+            Glide.with(this)
+                .load(RetrofitInstance.toIconUrl(ingredient.iconUrl))
+                .error(R.drawable.image_juice_lemon)
+                .into(img)
+
+            // 선택/해제 토글 로직
+            view.setOnClickListener {
+                if (selectedIngredients.contains(ingredient.id)) {
+                    // 선택 해제
+                    rect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+                    selectedIngredients.remove(ingredient.id)
+                    rectToRow[rect]?.let { row ->
+                        materialContainer.removeView(row)
+                        rectToRow.remove(rect)
+                    }
+                } else {
+                    // 새로 선택
+                    rect.setBackgroundResource(R.drawable.rounded_fridge_green)
+                    selectedIngredients.add(ingredient.id)
+                    val newRow = addNewItem(ingredient, rect) // addNewItem으로 변경
+                    rectToRow[rect] = newRow
+                }
+            }
+            container.addView(view)
+        }
+    }
+    private fun addNewItem(ingredient: IngredientResponse, sourceRect: View): View {
+        val rowView = layoutInflater.inflate(R.layout.item_recipe_material, materialContainer, false)
+
+        val tvName = rowView.findViewById<TextView>(R.id.tvMaterialName)
+        val etMeasuring = rowView.findViewById<EditText>(R.id.etMeasuring)
+        val btnDelete = rowView.findViewById<ImageButton>(R.id.btnDelete)
+
+        tvName.text = ingredient.nameKo
+        rowView.tag = ingredient.id // View 태그에 재료 ID 저장
+
+        btnDelete.setOnClickListener {
+            materialContainer.removeView(rowView)
+            selectedIngredients.remove(ingredient.id)
+            rectToRow.remove(sourceRect)
+            sourceRect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
+        }
+
+        materialContainer.addView(rowView)
+        return rowView
+    }
 
     private fun loadDraftAndBind(id: Long) {
         showLoading(true)
@@ -1264,18 +1322,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         recipeType = dto?.recipeType ?: "BOTH"
     }
 
-    // 3-2) 저장/발행 시 수집할 미디어 데이터
-    private fun collectMediaFields(): RecipeDraftDto {
-        return RecipeDraftDto(
-            recipeId = draftId,
-            mainImageUrl = mainImageUrl.ifBlank { null },
-            videoUrl = recipeVideoUrl?.ifBlank { null },
-            recipeType = "BOTH", // 이 화면은 둘다
-            isDraft = true
-            // 나머지는 null (공통에서 채움)
-        )
-    }
-
     private fun onClickSaveDraft() {
         val token = "Bearer ${App.prefs.token}"
         val dto = collectAllFields(isDraft = true)
@@ -1321,7 +1367,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     private fun collectAllFields(isDraft: Boolean): RecipeDraftDto {
         val gson = Gson()
 
-        val ingredientsJson = collectIngredientsList()?.let { gson.toJson(it) } ?: "[]"
+        val ingredientsList = collectIngredientsList()
         val altJson         = collectAlternativeOrNull()?.let { gson.toJson(it) } ?: "[]"
         val handlingJson    = collectHandlingOrNull()?.let { gson.toJson(it) } ?: "[]"
         val stepsJson       = collectCookingStepsJson() ?: "[]"
@@ -1340,7 +1386,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             recipeId = draftId,
             title = titleTxt,                          // "" 가능
             category = categoryTxt,                    // "" 안 됨 → 최소 "etc"
-            ingredients = ingredientsJson,             // "[]"
+            ingredients = ingredientsList,
             alternativeIngredients = altJson,          // "[]"
             handlingMethods = handlingJson,            // "[]"
             cookingSteps = stepsJson,                  // "[]"
@@ -1370,31 +1416,21 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     private fun collectIngredientsList(): List<Ingredient>? {
         val result = mutableListOf<Ingredient>()
 
-        // 고정 슬롯들
-        val fixed = listOf(
-            Pair(R.id.material, R.id.measuring)
-        )
+        for (i in 0 until materialContainer.childCount) {
+            val row = materialContainer.getChildAt(i)
+            val nameTv = row.findViewById<TextView>(R.id.tvMaterialName)
+            val qtyEt  = row.findViewById<EditText>(R.id.etMeasuring)
 
-        fixed.forEach { (n, q) ->
-            val name = getEt(n)
-            val amount = getEt(q)   // 단위 제거 → 계량값만 사용
+            val name = nameTv?.text?.toString()?.trim().orEmpty()
+            val amount = qtyEt?.text?.toString()?.trim().orEmpty()
+
             if (name.isNotEmpty() || amount.isNotEmpty()) {
-                result += Ingredient(name, amount)
-            }
-        }
-
-        // 동적 영역
-        val container = findViewById<android.widget.LinearLayout?>(R.id.materialContainer)
-        if (container != null) {
-            for (i in 0 until container.childCount) {
-                val row = container.getChildAt(i)
-                extractDynamicIngredientRow(row)?.let { result += it }
+                result.add(Ingredient(name, amount))
             }
         }
 
         return result.takeIf { it.isNotEmpty() }
     }
-
     // === 4) 대체 재료 수집 (고정 + 동적 replaceMaterialContainer) ===
     private fun collectAlternativeOrNull(): List<Ingredient>? {
         val result = mutableListOf<Ingredient>()
@@ -1454,34 +1490,26 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         return if (out.isEmpty()) null else out
     }
 
-    private fun bindIngredients(json: String?) {
-        if (json.isNullOrBlank()) return
-        val listType = object : com.google.gson.reflect.TypeToken<List<Ingredient>>() {}.type
-        val items: List<Ingredient> = Gson().fromJson(json, listType)
-        if (items.isEmpty()) return
+    private fun bindIngredients(items: List<Ingredient>?) {
+        if (items.isNullOrEmpty()) return
 
-        fun setFixed(idx: Int, nameId: Int, qtyId: Int) {
-            if (idx >= items.size) return
-            val item = items[idx]
-            val (qty) = splitAmount(item.amount)
-            findViewById<EditText>(nameId).setText(item.name)
-            findViewById<EditText>(qtyId).setText(qty)
-        }
+        materialContainer.removeAllViews() // 기존 뷰 모두 제거
 
-        setFixed(0, R.id.material,      R.id.measuring)
+        items.forEach { ingredientData ->
+            val originalIngredient = allIngredients.find { it.nameKo == ingredientData.name }
 
-        for (i in 1 until items.size) {
-            val item = items[i]
-            addNewItem()
-            val row = materialContainer.getChildAt(materialContainer.childCount - 1) as ConstraintLayout
-            val nameEt = row.getChildAt(0) as EditText
-            val qtyEt  = row.getChildAt(1) as EditText
-            val (qty) = splitAmount(item.amount)
-            nameEt.setText(item.name)
-            qtyEt.setText(qty)
+            if (originalIngredient != null) {
+                val fakeRect = View(this)
+                val newRow = addNewItem(originalIngredient, fakeRect)
+
+                val qtyEt = newRow.findViewById<EditText>(R.id.etMeasuring)
+                qtyEt.setText(ingredientData.amount)
+
+                selectedIngredients.add(originalIngredient.id)
+                rectToRow[fakeRect] = newRow
+            }
         }
     }
-
     private fun mapCategoryToEnum(category: String): String = when (category) {
         "한식" -> "koreaFood"
         "양식" -> "westernFood"
@@ -1508,35 +1536,29 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.zero).setText((totalMin / 60).toString())      // 시
         findViewById<EditText>(R.id.halfHour).setText((totalMin % 60).toString())  // 분
 
-        // ── 재료(고정 6칸 + 동적) ──
-        val ingList: List<Ingredient> = parseIngredients(dto.ingredients)
-        fun setEt(id: Int, v: String?) = findViewById<EditText>(id).setText(v ?: "")
-
-        val fixedSlots = listOf(
-            Pair(R.id.material,     R.id.measuring)
-        )
-
-        // 고정칸 초기화
-        fixedSlots.forEach { (n, q) ->
-            setEt(n, "")
-            setEt(q, "")
-        }
-
-        ingList.take(1).forEachIndexed { i, ing ->
-            val (nameId, qtyId) = fixedSlots[i]
-            setEt(nameId, ing.name)
-            val (qty, unit) = splitAmount(ing.amount)
-            setEt(qtyId, qty)
-        }
+        val ingList: List<Ingredient> = dto.ingredients ?: emptyList()
 
         materialContainer.removeAllViews()
-        ingList.drop(1).forEach { ing ->
-            addNewItem()
-            val row = materialContainer.getChildAt(materialContainer.childCount - 1) as? ConstraintLayout ?: return@forEach
-            (row.getChildAt(0) as? EditText)?.setText(ing.name)
-            val (qty, unit) = splitAmount(ing.amount)
-            (row.getChildAt(1) as? EditText)?.setText(qty)
-            (row.getChildAt(2) as? TextView)?.text = if (unit.isNotEmpty()) unit else "단위"
+
+        ingList.forEach { savedIngredient ->
+            // 서버에서 받은 전체 재료 목록(allIngredients)에서 이름이 같은 원본 데이터를 찾습니다.
+            val originalIngredient = allIngredients.find { it.nameKo == savedIngredient.name }
+
+            if (originalIngredient != null) {
+                // 1. UI에 행(Row)을 추가합니다.
+                //    - 임시저장에서 불러오는 것이므로, 클릭된 버튼(sourceRect)이 없습니다.
+                //    - 따라서 임시로 빈 View 객체(fakeRect)를 만들어 전달합니다.
+                val fakeRect = View(this)
+                val newRow = addNewItem(originalIngredient, fakeRect)
+
+                // 2. 저장된 '양(amount)'을 EditText에 설정합니다.
+                val qtyEt = newRow.findViewById<EditText>(R.id.etMeasuring)
+                qtyEt.setText(savedIngredient.amount)
+
+                // 3. 현재 선택된 상태임을 기록하여 관리에 포함시킵니다.
+                selectedIngredients.add(originalIngredient.id)
+                rectToRow[fakeRect] = newRow
+            }
         }
 
         // ── 대체 재료 ──
@@ -1645,7 +1667,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         }
     }
 
-    data class Ingredient(val name: String, val amount: String)
 
     data class CookingStep(
         val step: Int,
@@ -2547,121 +2568,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         return (dp * resources.displayMetrics.density).toInt()
     }
 
-    // 레시피 재료 내용 추가하기 클릭시 내용 추가
-    private fun addNewItem(): View = addNewItem(null)
-
-    private fun addNewItem(sourceRect: View?): View {
-        // 새로운 ConstraintLayout 생성
-        val newItemLayout = ConstraintLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            this.tag = sourceRect
-        }
-
-        // 재료명 EditText 생성
-        val material = EditText(this).apply {
-            id = View.generateViewId()  // ID 생성하여 ConstraintLayout에서 사용할 수 있도록 함
-            layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(dpToPx(18), dpToPx(5), 0, 0) // 위쪽 여백 설정
-            }
-            hint = "재료명"
-            textSize = 13f
-            setBackgroundResource(android.R.color.transparent)  // 배경을 투명으로 설정
-        }
-
-        // 계량 EditText 생성
-        val measuring = EditText(this).apply {
-            id = View.generateViewId()  // ID 생성
-            layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,  // 계량 EditText는 내용 크기만큼 표시
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-
-                startToStart = material.id  // 재료명 EditText 왼쪽 끝에 맞추기
-                endToEnd = ConstraintLayout.LayoutParams.PARENT_ID  // 오른쪽 끝에 맞추기
-                topToTop = material.id  // 재료명 EditText 위쪽 끝에 맞추기
-
-                setMargins(dpToPx(204), dpToPx(1), 0, 0) // 적절한 여백 설정
-            }
-            hint = "계량"
-            textSize = 13f
-            setBackgroundResource(android.R.color.transparent)  // 배경을 투명으로 설정
-        }
-
-        // 삭제 버튼 생성
-        val delete = ImageButton(this).apply {
-            id = View.generateViewId()  // ID 생성
-            layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                // 오른쪽 끝에 위치하도록 설정
-                endToEnd = material.id  // materialEditText의 오른쪽 끝에 맞추기
-                topToTop = material.id  // materialEditText의 위쪽 끝에 맞추기
-
-                // 오른쪽 마진을 5dp로 설정하여 왼쪽으로 이동
-                setMargins(0, 0, dpToPx(14), 0) // dpToPx를 사용하여 픽셀로 변환한 후 오른쪽 마진 설정
-            }
-            setImageResource(R.drawable.ic_delete) // 삭제 아이콘 설정
-            setBackgroundResource(android.R.color.transparent) // 배경 투명
-        }
-
-        // 삭제 버튼 클릭 시 해당 레이아웃 삭제 & 버튼 위치 조정
-        delete.setOnClickListener {
-            materialContainer.removeView(newItemLayout)
-            itemCount--
-
-            // ✅ sourceRect가 null이어도 tag에서 복구
-            val rectToClear = (sourceRect ?: newItemLayout.tag) as? View
-
-            rectToClear?.let { rect ->
-                rectToRow.remove(rect)
-                if (selectedRects.remove(rect)) {
-                    rect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
-                }
-            }
-        }
-
-        // 새로운 바 생성
-        val divideRectangleBarFive = View(this).apply {
-            id = View.generateViewId()  // ID 생성
-
-            // LayoutParams 설정
-            val layoutParams = ConstraintLayout.LayoutParams(
-                0,  // width를 0으로 설정하여 부모의 width를 채우도록 함
-                dpToPx(1)  // 2dp 높이를 px로 변환하여 설정
-            ).apply {
-                // 바를 materialEditText 아래로 배치
-                topToBottom = material.id  // materialEditText 아래에 위치
-                startToStart = ConstraintLayout.LayoutParams.PARENT_ID  // 왼쪽 끝에 붙임
-                endToEnd = ConstraintLayout.LayoutParams.PARENT_ID  // 오른쪽 끝에 붙임
-
-                // 좌우 마진 5dp 설정
-                setMargins(dpToPx(3), dpToPx(0), dpToPx(1), 0)
-            }
-
-            this.layoutParams = layoutParams
-            setBackgroundResource(R.drawable.bar_recipe_see_material)  // 배경 설정
-        }
-
-        // LinearLayout에 요소 추가
-        newItemLayout.apply {
-            addView(material)
-            addView(measuring)
-            addView(delete)
-            addView(divideRectangleBarFive)
-        }
-
-        // 부모 레이아웃에 추가
-        materialContainer.addView(newItemLayout)
-        itemCount++
-        return newItemLayout
-    }
 
     // 레시피 대체재료 내용 추가하기 클릭시 내용 추가
     private fun replaceMaterialAddNewItem() {

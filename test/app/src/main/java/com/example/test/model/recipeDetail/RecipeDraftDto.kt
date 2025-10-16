@@ -1,10 +1,12 @@
 package com.example.test.model.recipeDetail
 
+import com.example.test.model.Ingredient
+
 data class RecipeDraftDto(
     val recipeId: Long? = null,
     val title: String? = null,
     val category: String? = null,               // "koreaFood" 등
-    val ingredients: String? = null,            // JSON string
+    val ingredients: List<Ingredient>?,         // JSON string
     val alternativeIngredients: String? = null, // JSON string
     val handlingMethods: String? = null,        // JSON string
     val cookingSteps: String? = null,           // JSON string
