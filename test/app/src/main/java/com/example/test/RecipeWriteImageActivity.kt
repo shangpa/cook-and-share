@@ -52,6 +52,7 @@ import com.example.test.model.ingredients.IngredientResponse
 import com.example.test.model.recipeDetail.PublishRequest
 import com.example.test.model.recipeDetail.RecipeCreateResponse
 import com.example.test.model.recipeDetail.RecipeDraftDto
+import com.example.test.model.recipeDetail.RecipeIngredientReq
 import com.example.test.model.recipeDetail.ThumbnailResponse
 import com.example.test.network.RetrofitInstance
 import com.google.gson.Gson
@@ -69,6 +70,12 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.Stack
+import com.example.test.model.recipeDetail.RecipeIngredientRes
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 private lateinit var materialContainer: LinearLayout
 private lateinit var replaceMaterialContainer: LinearLayout
@@ -157,6 +164,26 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     private var isSwitching = false
     private val rectToRow = mutableMapOf<View, View>()
     private val selectedRects = mutableSetOf<View>()
+
+    // Gson: null도 키 유지
+    private val gson by lazy {
+        GsonBuilder()
+            .disableHtmlEscaping()
+            .serializeNulls()     // ⭐ null이어도 키가 사라지지 않음
+            .create()
+    }
+
+    // 업로드 진행 카운터(임시저장 전에 대기)
+    private var uploadsInFlight = 0
+
+    // 임시저장에 쓸 스텝 DTO (널 금지 + 기본값)
+    data class CookingStepReq(
+        val step: Int,
+        val description: String,
+        val mediaType: String = "NONE",   // "IMAGE"|"VIDEO"|"NONE"
+        val mediaUrl: String = "",
+        val timeInSeconds: Int = 0
+    )
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -468,24 +495,20 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 val categoryText = koreanFood.text.toString()
                 val recipeTitle  = recipeTitleWrite.text.toString()
 
-                // 재료 수집 (정적 + 동적)
                 val ingredients = mutableListOf<Pair<String, String>>()
-
-                // materialContainer에 동적으로 추가된 모든 재료 행을 순회합니다.
                 for (i in 0 until materialContainer.childCount) {
-                    val row = materialContainer.getChildAt(i) // 각 재료 행(View)을 가져옵니다.
-
-                    // row 안에서 ID를 이용해 이름(TextView)과 계량(EditText)을 찾습니다.
+                    val row = materialContainer.getChildAt(i)
                     val nameTv = row.findViewById<TextView>(R.id.tvMaterialName)
                     val qtyEt  = row.findViewById<EditText>(R.id.etMeasuring)
 
                     val name = nameTv?.text?.toString()?.trim().orEmpty()
                     val qty  = qtyEt?.text?.toString()?.trim().orEmpty()
 
-                    if (name.isNotEmpty() && qty.isNotEmpty()) {
-                        ingredients.add(name to qty)
+                    if (name.isNotBlank() && qty.isNotBlank()) {
+                        ingredients += name to qty
                     }
                 }
+
                 val ingredientsForRequest = ingredients.map { (name, qty) ->
                     // 이름으로 전체 재료 목록(allIngredients)에서 원본 데이터(id 포함) 찾기
                     val originalIngredient = allIngredients.find { it.nameKo == name }
@@ -604,80 +627,95 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
         // 임시저장 저장 클릭시 홈으로 이동
         btnStore.setOnClickListener {
-            val token = App.prefs.token ?: ""
-            if (token.isBlank()) {
-                Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if (isSavingDraft) return@setOnClickListener    // ✅ 중복 저장 방지
-            isSavingDraft = true
-            val dto = buildDraftDto()
+            lifecycleScope.launch {
+                val token = App.prefs.token ?: ""
+                if (token.isBlank()) {
+                    Toast.makeText(this@RecipeWriteImageActivity, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                if (isSavingDraft) return@launch
+                isSavingDraft = true
 
-            if (draftId == null) {
-                // 최초 임시저장 - 생성
-                RetrofitInstance.apiService.createDraft("Bearer $token", dto)
-                    .enqueue(object : retrofit2.Callback<RecipeCreateResponse> {
-                        override fun onResponse(
-                            call: retrofit2.Call<RecipeCreateResponse>,
-                            response: retrofit2.Response<RecipeCreateResponse>
-                        ) {
-                            isSavingDraft = false
-                            if (response.isSuccessful) {
-                                val body = response.body()
-                                draftId = body?.recipeId
-                                Toast.makeText(this@RecipeWriteImageActivity, "임시저장 완료", Toast.LENGTH_SHORT).show()
+                // ⭐ 이미지 업로드 대기 (진행 중이면 토스트 + 대기)
+                if (uploadsInFlight > 0) {
+                    Toast.makeText(this@RecipeWriteImageActivity, "이미지 업로드 중… 잠시만요", Toast.LENGTH_SHORT).show()
+                    awaitUploadsIfAny()   // <- 클래스 내부에 suspend fun 으로 이미 추가했다고 가정
+                }
 
-                                // ✅ 오버레이 닫기
-                                transientStorageLayout.visibility = View.GONE
+                val dto = buildDraftDto()  // ⭐ 이제 cookingSteps는 객체 배열 JSON으로 들어가야 함(앞서 수정한대로)
 
-                                // ✅ 이전 화면에 결과 전달(선택 사항) + 뒤로
-                                setResult(RESULT_OK, Intent().apply {
-                                    putExtra("draftId", draftId)
-                                    putExtra("justSaved", true)
-                                })
-                                finish()
-                            } else {
-                                Toast.makeText(this@RecipeWriteImageActivity, "임시저장 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                if (draftId == null) {
+                    // 최초 임시저장 - 생성
+                    RetrofitInstance.apiService.createDraft("Bearer $token", dto)
+                        .enqueue(object : retrofit2.Callback<RecipeCreateResponse> {
+                            override fun onResponse(
+                                call: retrofit2.Call<RecipeCreateResponse>,
+                                response: retrofit2.Response<RecipeCreateResponse>
+                            ) {
+                                isSavingDraft = false
+                                if (response.isSuccessful) {
+                                    val body = response.body()
+                                    draftId = body?.recipeId
+                                    Toast.makeText(this@RecipeWriteImageActivity, "임시저장 완료", Toast.LENGTH_SHORT).show()
+
+                                    // ✅ 오버레이 닫기
+                                    findViewById<ConstraintLayout>(R.id.transientStorage)?.visibility = View.GONE
+                                    findViewById<ConstraintLayout>(R.id.transientStorage)?.visibility = View.GONE
+                                    // 위 두 줄 중 하나만 쓰는 프로젝트도 있음. 기존 변수명이 있다면 그걸로 대체해도 OK:
+                                    // transientStorageLayout.visibility = View.GONE
+
+                                    // ✅ 이전 화면에 결과 전달(선택 사항) + 뒤로
+                                    setResult(RESULT_OK, Intent().apply {
+                                        putExtra("draftId", draftId)
+                                        putExtra("justSaved", true)
+                                    })
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@RecipeWriteImageActivity, "임시저장 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                        }
-                        override fun onFailure(call: retrofit2.Call<RecipeCreateResponse>, t: Throwable) {
-                            isSavingDraft = false
-                            Toast.makeText(this@RecipeWriteImageActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-            } else {
-                RetrofitInstance.apiService.updateDraft("Bearer $token", draftId!!, dto)
-                    .enqueue(object : retrofit2.Callback<RecipeDraftDto> {
-                        override fun onResponse(
-                            call: retrofit2.Call<RecipeDraftDto>,
-                            response: retrofit2.Response<RecipeDraftDto>
-                        ) {
-                            isSavingDraft = false
-                            if (response.isSuccessful) {
-                                // 서버가 recipeId를 돌려주면 최신값으로 보정
-                                draftId = response.body()?.recipeId ?: draftId
-                                Toast.makeText(this@RecipeWriteImageActivity, "임시저장 업데이트 완료", Toast.LENGTH_SHORT).show()
-
-                                // ✅ 오버레이 닫기
-                                transientStorageLayout.visibility = View.GONE
-
-                                // ✅ 이전 화면에 결과 전달(선택 사항) + 뒤로
-                                setResult(RESULT_OK, Intent().apply {
-                                    putExtra("draftId", draftId)
-                                    putExtra("justSaved", true)
-                                })
-                                finish()
-                            } else {
-                                Toast.makeText(this@RecipeWriteImageActivity, "업데이트 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                            override fun onFailure(call: retrofit2.Call<RecipeCreateResponse>, t: Throwable) {
+                                isSavingDraft = false
+                                Toast.makeText(this@RecipeWriteImageActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
                             }
-                        }
-                        override fun onFailure(call: retrofit2.Call<RecipeDraftDto>, t: Throwable) {
-                            isSavingDraft = false
-                            Toast.makeText(this@RecipeWriteImageActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    })
+                        })
+                } else {
+                    // 업데이트
+                    RetrofitInstance.apiService.updateDraft("Bearer $token", draftId!!, dto)
+                        .enqueue(object : retrofit2.Callback<RecipeDraftDto> {
+                            override fun onResponse(
+                                call: retrofit2.Call<RecipeDraftDto>,
+                                response: retrofit2.Response<RecipeDraftDto>
+                            ) {
+                                isSavingDraft = false
+                                if (response.isSuccessful) {
+                                    // 서버가 recipeId를 돌려주면 최신값으로 보정
+                                    draftId = response.body()?.recipeId ?: draftId
+                                    Toast.makeText(this@RecipeWriteImageActivity, "임시저장 업데이트 완료", Toast.LENGTH_SHORT).show()
+
+                                    // ✅ 오버레이 닫기
+                                    findViewById<ConstraintLayout>(R.id.transientStorage)?.visibility = View.GONE
+                                    // 또는: transientStorageLayout.visibility = View.GONE
+
+                                    // ✅ 이전 화면에 결과 전달(선택 사항) + 뒤로
+                                    setResult(RESULT_OK, Intent().apply {
+                                        putExtra("draftId", draftId)
+                                        putExtra("justSaved", true)
+                                    })
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@RecipeWriteImageActivity, "업데이트 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            override fun onFailure(call: retrofit2.Call<RecipeDraftDto>, t: Throwable) {
+                                isSavingDraft = false
+                                Toast.makeText(this@RecipeWriteImageActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                }
             }
         }
+
 
         // 레시피 탭바와 바 선언
         textViewList = listOf(one, two, three, four, five, six)
@@ -822,8 +860,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         elementaryLevel.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             checkAndUpdateContinueButton()
         }
-
-
 
         // 레시피 대체재료 삭제하기 눌렀을때 재료명, 계량, 바, 삭제 버튼 삭제
         replaceMaterialDeleteTwo.setOnClickListener {
@@ -1209,99 +1245,145 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         draftId?.let { outState.putLong("draftId", it) }
     }
 
-    private fun buildDraftDto(): RecipeDraftDto {
-        val gson = Gson()
-
-        // ----- 1) 재료(동적 포함) -----
-        val collectedIngredients = mutableListOf<Ingredient>()
-        for (i in 0 until materialContainer.childCount) {
-            val row = materialContainer.getChildAt(i)
-
-            val nameTv = row.findViewById<TextView>(R.id.tvMaterialName)
-            val qtyEt  = row.findViewById<EditText>(R.id.etMeasuring)
-
-            val name = nameTv?.text?.toString()?.trim().orEmpty()
-            val qty  = qtyEt?.text?.toString()?.trim().orEmpty()
-
-            if (name.isNotEmpty() && qty.isNotEmpty()) {
-                collectedIngredients.add(Ingredient(name, qty))
+    private fun buildDraftDto(isDraft: Boolean = true): RecipeDraftDto {
+        fun splitAmount(amount: String): Pair<String, String> {
+            val t = amount.trim()
+            val spaceIdx = t.indexOf(' ')
+            return if (spaceIdx > 0) {
+                t.substring(0, spaceIdx) to t.substring(spaceIdx + 1)
+            } else {
+                val m = Regex("^([0-9]+(?:\\.[0-9]+)?)\\s*([^0-9].*)$").find(t)
+                if (m != null) m.groupValues[1] to m.groupValues[2] else t to ""
             }
         }
 
-        // ----- 2) 대체재료 (정적 + 동적) -----
-        val altPairs = mutableListOf<Pair<String,String>>()
-        fun addStaticAlt(origId: Int, replId: Int) {
-            val o = findViewById<EditText>(origId)?.text?.toString()?.trim().orEmpty()
-            val r = findViewById<EditText>(replId)?.text?.toString()?.trim().orEmpty()
-            if (o.isNotEmpty() && r.isNotEmpty()) altPairs += o to r
-        }
-        addStaticAlt(R.id.replaceMaterialName, R.id.replaceMaterial)
-        addStaticAlt(R.id.replaceMaterialMaterialTwo, R.id.replaceMaterialTwo)
+        val gson = Gson()
 
-        // 동적(있다면) replaceMaterialContainer 순회
-        for (i in 0 until replaceMaterialContainer.childCount) {
-            val row = replaceMaterialContainer.getChildAt(i) as? ViewGroup ?: continue
-            val o = (row.getChildAt(0) as? EditText)?.text?.toString()?.trim().orEmpty()
-            val r = (row.getChildAt(1) as? EditText)?.text?.toString()?.trim().orEmpty()
-            if (o.isNotEmpty() && r.isNotEmpty()) altPairs += o to r
-        }
+        // ===== 재료 수집 =====
+        val ingredientReqs = mutableListOf<RecipeIngredientReq>()
 
-        // ----- 3) 처리방법 (정적 + 동적) -----
-        val handlingPairs = mutableListOf<Pair<String,String>>()
-        fun addStaticHandling(nameId: Int, methodId: Int) {
-            val n = findViewById<EditText>(nameId)?.text?.toString()?.trim().orEmpty()
-            val m = findViewById<EditText>(methodId)?.text?.toString()?.trim().orEmpty()
-            if (n.isNotEmpty() && m.isNotEmpty()) handlingPairs += n to m
-        }
-        addStaticHandling(R.id.handlingMethodName, R.id.handlingMethod)
-        addStaticHandling(R.id.handlingMethodMaterialTwo, R.id.handlingMethodTwo)
+        // 1) 고정칸
+        run {
+            val name   = findViewById<EditText>(R.id.material)?.text?.toString()?.trim().orEmpty()
+            val qtyTxt = findViewById<EditText>(R.id.measuring)?.text?.toString()?.trim().orEmpty()
+            val unitTxt= findViewById<TextView?>(R.id.unit)?.text?.toString()?.trim().orEmpty()
 
-        for (i in 0 until handlingMethodContainer.childCount) {
-            val row = handlingMethodContainer.getChildAt(i) as? ViewGroup ?: continue
-            val n = (row.getChildAt(0) as? EditText)?.text?.toString()?.trim().orEmpty()
-            val m = (row.getChildAt(1) as? EditText)?.text?.toString()?.trim().orEmpty()
-            if (n.isNotEmpty() && m.isNotEmpty()) handlingPairs += n to m
+            if (name.isNotBlank() && qtyTxt.isNotBlank()) {
+                val id = allIngredients.firstOrNull { it.nameKo == name }?.id
+                val (qtyStrFromSplit, unitFromSplit) = splitAmount(qtyTxt)
+                val quantity = qtyStrFromSplit.toDoubleOrNull() ?: qtyTxt.toDoubleOrNull()
+                val unit = when {
+                    unitTxt.isNotBlank() && unitTxt != "단위" -> unitTxt
+                    unitFromSplit.isNotBlank() -> unitFromSplit
+                    else -> ""
+                }.ifBlank { null }
+
+                if (id != null && id > 0 && quantity != null) {
+                    ingredientReqs += RecipeIngredientReq(id = id, quantity = quantity)
+                }
+            }
         }
 
-        // ----- 4) 조리순서 텍스트/타이머/이미지 -----
-        val stepTexts = saveRecipeSteps()
-        val steps = stepTexts.mapIndexed { index, stepText ->
-            val stepNo = index + 1
-            val (h, m) = stepTimerMap[stepNo] ?: (0 to 0)
-            val totalSec = h * 3600 + m * 60
-            val img = stepImages[stepNo] ?: ""
-            CookingStep(step = stepNo, description = stepText, mediaUrl = img, mediaType = "IMAGE", timeInSeconds = totalSec)
+        // 2) 동적칸 (materialContainer의 각 행: 0=이름, 1=수량)
+        for (i in 0 until materialContainer.childCount) {
+            val row = materialContainer.getChildAt(i) as? ViewGroup ?: continue
+            val name = (row.getChildAtOrNull(0) as? TextView)?.text?.toString()?.trim()
+                ?: (row.getChildAtOrNull(0) as? EditText)?.text?.toString()?.trim().orEmpty()
+            val qtyTxt = (row.getChildAtOrNull(1) as? EditText)?.text?.toString()?.trim().orEmpty()
+
+            if (name.isBlank() || qtyTxt.isBlank()) continue
+
+            val id = allIngredients.firstOrNull { it.nameKo == name }?.id
+            val (qtyStr, unitStr) = splitAmount(qtyTxt)
+            val quantity = qtyStr.toDoubleOrNull()
+
+            if (id != null && id > 0 && quantity != null) {
+                ingredientReqs += RecipeIngredientReq(
+                    id = id,
+                    quantity = quantity
+                )
+            }
         }
 
-        // ----- 5) 단일 필드들 -----
-        val title = findViewById<EditText>(R.id.recipeTitleWrite).text.toString()
-        val categoryEnum = mapCategoryToEnum(findViewById<TextView>(R.id.koreanFood).text.toString())
-        val difficultyText = findViewById<TextView>(R.id.elementaryLevel).text.toString()
-        val tagsText = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite).text.toString()
-        val cookingTimeMinutes =
-            (findViewById<EditText>(R.id.zero).text.toString().toIntOrNull() ?: 0) * 60 +
-                    (findViewById<EditText>(R.id.halfHour).text.toString().toIntOrNull() ?: 0)
+        // ===== 대체재료 / 처리방법 → JSON 문자열 =====
+        val altPairs = listOf(
+            findViewById<EditText>(R.id.replaceMaterialName)?.text?.toString()?.trim().orEmpty() to
+                    findViewById<EditText>(R.id.replaceMaterial)?.text?.toString()?.trim().orEmpty(),
+            findViewById<EditText>(R.id.replaceMaterialMaterialTwo)?.text?.toString()?.trim().orEmpty() to
+                    findViewById<EditText>(R.id.replaceMaterialTwo)?.text?.toString()?.trim().orEmpty()
+        ).filter { it.first.isNotBlank() || it.second.isNotBlank() }
+
+        val handlingPairs = listOf(
+            findViewById<EditText>(R.id.handlingMethodName)?.text?.toString()?.trim().orEmpty() to
+                    findViewById<EditText>(R.id.handlingMethod)?.text?.toString()?.trim().orEmpty(),
+            findViewById<EditText>(R.id.handlingMethodMaterialTwo)?.text?.toString()?.trim().orEmpty() to
+                    findViewById<EditText>(R.id.handlingMethodTwo)?.text?.toString()?.trim().orEmpty()
+        ).filter { it.first.isNotBlank() || it.second.isNotBlank() }
+
+        val alternativeIngredientsJson = gson.toJson(
+            altPairs.map { com.example.test.model.Ingredient(it.first, it.second) }
+        )
+        val handlingMethodsJson = gson.toJson(
+            handlingPairs.map { "${it.first} : ${it.second}" }
+        )
+
+        // collectCookingStepsJson() 의존성 제거 → saveRecipeSteps() 결과를 JSON으로
+        val stepsJson = gson.toJson(buildStepObjectsFromCurrentUI())
+
+        // ===== 제목/카테고리/난이도/태그/시간 =====
+        val title        = findViewById<EditText>(R.id.recipeTitleWrite)?.text?.toString()?.trim().orEmpty()
+        val categoryText = findViewById<TextView>(R.id.koreanFood)?.text?.toString()
+        val categoryEnum = mapCategoryToEnum(categoryText)
+        val difficulty   = findViewById<TextView>(R.id.elementaryLevel)?.text?.toString()?.trim().orEmpty()
+        val tags         = findViewById<EditText>(R.id.detailSettleRecipeTitleWrite)?.text?.toString()?.trim().orEmpty()
+
+        val hours   = findViewById<EditText>(R.id.zero)?.text?.toString()?.toIntOrNull() ?: 0
+        val minutes = findViewById<EditText>(R.id.halfHour)?.text?.toString()?.toIntOrNull() ?: 0
+        val cookingTime = (hours * 60 + minutes).takeIf { it > 0 }
+
+        val ingredientRes: List<RecipeIngredientRes> = ingredientReqs.map { req ->
+            RecipeIngredientRes(
+                id = req.id ?: -1L,
+                name = resolveIngredientNameById(req.id), // 액티비티에 이미 있는 함수
+                amount = req.quantity ?: 0.0
+            )
+        }
 
         return RecipeDraftDto(
             recipeId = draftId,
             title = title,
-            category = categoryEnum,
-            ingredients = gson.toJson(collectedIngredients),
-            alternativeIngredients = gson.toJson(altPairs.map { Ingredient(it.first, it.second) }),
-            handlingMethods = gson.toJson(
-                handlingPairs.map { (name, method) -> "$name : $method" }
-            ),
-            cookingSteps = gson.toJson(steps),
-            mainImageUrl = mainImageUrl,
-            difficulty = difficultyText,
-            tags = tagsText,
-            cookingTime = cookingTimeMinutes,
-            servings = 2,
-            isPublic = false,
+            category = categoryEnum.ifEmpty { "etc" },
+            ingredients = ingredientRes,               // <- 여기만 바꾸기
+            alternativeIngredients = alternativeIngredientsJson,
+            handlingMethods = handlingMethodsJson,
+            cookingSteps = stepsJson,
+            mainImageUrl = mainImageUrl.ifBlank { "" },
+            difficulty = difficulty,
+            tags = tags,
+            cookingTime = cookingTime,
+            servings = null,
+            isPublic = null,
             videoUrl = "",
             recipeType = "IMAGE",
-            isDraft = true
+            isDraft = isDraft
         )
+    }
+
+    private fun ViewGroup.getChildAtOrNull(index: Int): View? =
+        if (index in 0 until childCount) getChildAt(index) else null
+
+    private fun parseAmountToDouble(raw: String): Double? {
+        val s = raw.trim()
+        // "1/2" 같은 분수 처리
+        val frac = Regex("""^\s*(\d+)\s*/\s*(\d+)\s*$""").matchEntire(s)
+        if (frac != null) {
+            val a = frac.groupValues[1].toDouble()
+            val b = frac.groupValues[2].toDouble()
+            return if (b != 0.0) a / b else null
+        }
+        // 일반 실수 추출
+        val number = Regex("""([-+]?\d*\.?\d+)""").find(s)?.groupValues?.getOrNull(1)
+        return number?.toDoubleOrNull()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -1688,6 +1770,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
         }
     }
+
     //조리 순서 추가
     private fun addCookingSteps(context: Context, steps: List<CookingStep>)  {
         val container = findViewById<LinearLayout>(R.id.stepSeeContainer)
@@ -1830,8 +1913,10 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val tvName = view.findViewById<TextView>(R.id.tvMaterialName)
         val etMeasuring = view.findViewById<EditText>(R.id.etMeasuring)
         val btnDelete = view.findViewById<ImageButton>(R.id.btnDelete)
-        view.tag = selected.id
+
         tvName.text = selected.nameKo
+
+        view.tag = (selected.id ?: -1L)
 
         btnDelete.setOnClickListener {
             materialContainer.removeView(view)
@@ -1845,9 +1930,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                 }
             }
         }
-
         materialContainer.addView(view)
-        itemCount++
         return view
     }
     // 임시 저장 복원용 (selected, sourceRect 없이도 호출 가능)
@@ -1888,24 +1971,19 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             representImageContainer.removeAllViews()
         }
 
-        // 3) 재료
-        val ingMaps = safeParseMapList(gson, dto.ingredients)
-        restoreIngredientsFromMaps(ingMaps)
+        bindIngredientsFromRes(dto.ingredients.orEmpty())
 
-        // 4) 대체재료
+        // ── 대체재료 / 처리방법 / 조리순서 복원 로직은 그대로 ──
         val altMaps = safeParseMapList(gson, dto.alternativeIngredients)
         restoreAlternativeIngredientsFromMaps(altMaps)
 
-        // 5) 처리방법  (저장 형식이 Pair 리스트이거나 "이름:방법" 문자열일 수 있음)
         val handlingPairs: List<Pair<String,String>> = parseHandlingPairs(gson, dto.handlingMethods)
         restoreHandlingMethods(handlingPairs)
 
-        // 6) 조리순서(텍스트/타이머/이미지)
         val type = object : TypeToken<List<CookingStep>>() {}.type
         val steps: List<CookingStep> = try { Gson().fromJson(dto.cookingSteps, type) } catch (_: Exception) { emptyList() }
         restoreSteps(steps)
 
-        // 마지막으로 버튼/탭 상태 갱신
         checkTabs()
         checkAndUpdateContinueButton()
         updateSelectedTab(textViewList[selectedIndex])
@@ -1923,6 +2001,88 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         "sideDish" -> "반찬"
         "etc", null, "" -> "기타"
         else -> "기타"
+    }
+
+    private fun bindIngredientsFromRes(list: List<RecipeIngredientRes>) {
+        materialContainer.removeAllViews()
+
+        list.forEach { ri ->
+            val row = addNewItem()                  // 동적 행 생성
+            val vg  = row as ViewGroup
+
+            val (nameV, qtyV) = vg.findNameAndQtyViews()
+
+            // 이름: id 매칭 우선, 없으면 서버 name, 둘 다 없으면 placeholder
+            val displayName = allIngredients.firstOrNull { it.id == (ri.id ?: -1L) }?.nameKo
+                ?: ri.name
+                ?: "(알 수 없음)"
+            nameV?.text = displayName
+
+            // 수량: Double → 문자열(정수면 3, 아니면 3.5)
+            val amountText = ri.amount?.let { if (it % 1.0 == 0.0) it.toLong().toString() else it.toString() } ?: ""
+            qtyV?.text = amountText
+
+            if (nameV == null || qtyV == null) {
+                Log.w("BindIngredient", "행에서 이름/계량 뷰를 못 찾음. 힌트/태그/구조 확인 필요")
+            }
+        }
+    }
+
+    private fun ViewGroup.findNameAndQtyViews(): Pair<TextView?, TextView?> {
+        var nameV: TextView? = null
+        var qtyV: TextView?  = null
+
+        fun isNameHint(h: String?) = h?.contains("재료", ignoreCase = true) == true || h == "재료명"
+        fun isQtyHint(h: String?)  = h?.contains("계량", ignoreCase = true) == true || h?.contains("수량") == true
+
+        for (i in 0 until childCount) {
+            val v = getChildAt(i)
+            if (v is TextView) {
+                val tag = (v.tag as? String)?.lowercase()
+                val hint = v.hint?.toString()
+
+                when {
+                    tag == "name" || isNameHint(hint) -> nameV = v
+                    tag == "qty"  || isQtyHint(hint)  -> qtyV  = v
+                }
+            }
+        }
+
+        // 힌트/태그로 못 찾은 경우 순서 fallback
+        if (nameV == null || qtyV == null) {
+            val tvs = (0 until childCount)
+                .map { getChildAt(it) }
+                .filterIsInstance<TextView>()
+            if (nameV == null) nameV = tvs.firstOrNull()
+            if (qtyV  == null) qtyV  = tvs.getOrNull(1)
+        }
+        return nameV to qtyV
+    }
+
+    data class CookingStep(
+        val step: Int? = null,
+        val description: String? = null,
+        val mediaType: String? = null,
+        val mediaUrl: String? = null,
+        val timeInSeconds: Int = 0   // ← non-null + 기본값
+    )
+
+    private fun ensureStepsObjectJson(raw: String?): String {
+        if (raw.isNullOrBlank()) return "[]"
+        val g = Gson()
+        return try {
+            val tObj = object : com.google.gson.reflect.TypeToken<List<CookingStep>>() {}.type
+            g.fromJson<List<CookingStep>>(raw, tObj)   // 이미 객체 배열
+            raw
+        } catch (_: Exception) {
+            val tStr = object : com.google.gson.reflect.TypeToken<List<String>>() {}.type
+            val texts = runCatching { g.fromJson<List<String>>(raw, tStr) }.getOrDefault(emptyList())
+            val objs = texts.filter { it.isNotBlank() }
+                .mapIndexed { idx, s ->
+                    CookingStep(step = idx + 1, description = s, timeInSeconds = 0) // ← 0으로 보정
+                }
+            g.toJson(objs)
+        }
     }
 
     /** Gson으로 List<T> 안전 파싱 */
@@ -2009,6 +2169,102 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val unit   = m["unit"] ?: m["단위"] ?: ""
         return if (unit.isNotBlank() && !amount.endsWith(" $unit")) "$amount $unit" else amount
     }
+
+
+    private fun collectIngredientReqs(): List<RecipeIngredientReq> {
+        val out = mutableListOf<RecipeIngredientReq>()
+
+        // 1) 고정칸
+        run {
+            val name   = findViewById<EditText>(R.id.material)?.text?.toString()?.trim().orEmpty()
+            val qtyTxt = findViewById<EditText>(R.id.measuring)?.text?.toString()?.trim().orEmpty()
+            if (name.isNotBlank() && qtyTxt.isNotBlank()) {
+                val id = allIngredients.firstOrNull { it.nameKo == name }?.id
+                val (qtyStr, unitStr) = splitAmount(qtyTxt)
+                val qty = qtyStr.toDoubleOrNull()
+                if (id != null && id > 0 && qty != null) {
+                    out += RecipeIngredientReq(
+                        id = id,
+                        quantity = qty
+                    )
+                }
+            }
+        }
+
+        // 2) 동적칸
+        for (i in 0 until materialContainer.childCount) {
+            val row = materialContainer.getChildAt(i) as? ViewGroup ?: continue
+
+            // 뷰 아이디가 다를 수 있으니 두 방식 모두 시도
+            val name = row.findViewById<TextView>(R.id.tvMaterialName)
+                ?.text?.toString()?.trim().orEmpty()
+            val qtyTxt = (row.findViewById<EditText>(R.id.etMeasuring) ?: row.getChildAt(1) as? EditText)
+                ?.text?.toString()?.trim().orEmpty()
+
+            if (name.isBlank() || qtyTxt.isBlank()) continue
+
+            val id = allIngredients.firstOrNull { it.nameKo == name }?.id
+            val (qtyStr, unitStr) = splitAmount(qtyTxt)
+            val qty = qtyStr.toDoubleOrNull()
+            if (id != null && id > 0 && qty != null) {
+                out += RecipeIngredientReq(
+                    id = id,
+                    quantity = qty
+                )
+            }
+        }
+
+        return out // 비어있어도 OK (null 금지)
+    }
+
+    // id -> 이름 복구용(없으면 "(알 수 없음)")
+    private fun resolveIngredientNameById(id: Long?): String {
+        if (id == null) return "(알 수 없음)"
+        val n = allIngredients.firstOrNull { it.id == id }?.nameKo
+        return if (!n.isNullOrBlank()) n else "(알 수 없음)"
+    }
+
+    private fun bindIngredientsFromReqs(list: List<RecipeIngredientRes>?) {
+        if (list.isNullOrEmpty()) return
+        materialContainer.removeAllViews()
+
+        // 고정칸
+        list.first().let { ri ->
+            findViewById<EditText>(R.id.material).setText(ri.name)
+            findViewById<EditText>(R.id.measuring).setText(
+                if (ri.amount % 1.0 == 0.0) ri.amount.toLong().toString() else ri.amount.toString()
+            )
+            findViewById<TextView?>(R.id.unit)?.text = "단위"
+        }
+        // 동적칸
+        list.drop(1).forEach { ri ->
+            val row = addNewItem() as ViewGroup
+            (row.getChildAt(0) as? EditText)?.setText(ri.name)
+            (row.getChildAt(1) as? EditText)?.setText(
+                if (ri.amount % 1.0 == 0.0) ri.amount.toLong().toString() else ri.amount.toString()
+            )
+        }
+    }
+
+    private fun buildStepObjectsFromCurrentUI(): List<CookingStepReq> {
+        // "STEP N: ..." 형태의 텍스트들을 재사용
+        val texts = saveRecipeSteps()
+        return texts.mapIndexed { idx, desc ->
+            val stepNo = idx + 1
+            val (h, m) = stepTimerMap[stepNo] ?: (0 to 0)
+            val sec = h * 3600 + m * 60
+            val url = stepImages[stepNo]?.trim().orEmpty()
+            val type = if (url.isNotBlank()) "IMAGE" else "NONE"
+            CookingStepReq(
+                step = stepNo,
+                description = desc,     // 예: "STEP 1: 물을 끓인다 → ..."
+                mediaType = type,
+                mediaUrl = url,
+                timeInSeconds = sec
+            )
+        }
+    }
+
 
     private fun restoreIngredientsFromMaps(items: List<Map<String,String>>) {
         materialContainer.removeAllViews()
@@ -2099,6 +2355,12 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             val methodEt = row.getChildAt(1) as EditText
             nameEt.setText(name)
             methodEt.setText(method)
+        }
+    }
+
+    private suspend fun awaitUploadsIfAny() {
+        while (uploadsInFlight > 0) {
+            kotlinx.coroutines.delay(50)
         }
     }
 
@@ -2511,7 +2773,6 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         timerButton.requestLayout()
     }
 
-
     private fun addNewStep(step: Int) {
         // (선택) 이전 step 숨기는 로직: 필요 없으면 제거하세요
         for (i in 0 until stepContainer.childCount) {
@@ -2856,14 +3117,21 @@ class RecipeWriteImageActivity : AppCompatActivity() {
 
     //백엔드 서버에 이미지 업로드
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
-        val file = uriToFile(this, uri) ?: return
+        uploadsInFlight++  // ⭐ 업로드 시작 카운트 +1
+
+        val file = uriToFile(this, uri) ?: run {
+            uploadsInFlight--          // ⭐ 예외 경로에서도 -1
+            callback(null)
+            return
+        }
         val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
         val token = App.prefs.token ?: ""
         if (token.isEmpty()) {
             Log.e("Upload", "토큰이 없음!")
-            callback(null) // 실패 시 null 반환
+            uploadsInFlight--          // ⭐ -1
+            callback(null)
             return
         }
 
@@ -2875,16 +3143,18 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val imageUrl = response.body()?.string()
                         Log.d("Upload", "이미지 업로드 성공! URL: $imageUrl")
-                        callback(imageUrl) // ✅ 성공 시 URL 반환
+                        callback(imageUrl)
                     } else {
                         Log.e("Upload", "이미지 업로드 실패: 응답 코드 ${response.code()}, 오류 메시지: ${response.errorBody()?.string()}")
-                        callback(null) // 실패 시 null 반환
+                        callback(null)
                     }
+                    uploadsInFlight--   // ⭐ (B) onResponse 마지막에 -1
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("Upload", "네트워크 요청 실패: ${t.message}")
-                    callback(null) // 실패 시 null 반환
+                    callback(null)
+                    uploadsInFlight--   // ⭐ (C) onFailure 마지막에 -1
                 }
             })
     }
@@ -3029,6 +3299,13 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
     }
 
+    private fun splitAmount(src: String): Pair<String, String> {
+        val trimmed = src.trim()
+        val m = Regex("""^\s*([0-9]+(?:\.[0-9]+)?)\s*([^\d\s].*)?$""").find(trimmed)
+        val qty = m?.groups?.get(1)?.value?.trim().orEmpty()
+        val unit = m?.groups?.get(2)?.value?.trim().orEmpty()
+        return qty to unit
+    }
 
     private fun Int.dpToPx(): Int {
         return (this * resources.displayMetrics.density).toInt()

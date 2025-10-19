@@ -73,6 +73,8 @@ import com.example.test.model.ingredients.IngredientResponse
 import com.example.test.model.recipeDetail.PublishRequest
 import com.example.test.model.recipeDetail.RecipeCreateResponse
 import com.example.test.model.recipeDetail.RecipeDraftDto
+import com.example.test.model.recipeDetail.RecipeIngredientReq
+import com.example.test.model.recipeDetail.RecipeIngredientRes
 
 private var draftId: Long? = null        // intent로 받아서 씀
 private var recipeType: String = "BOTH"  // IMAGE | VIDEO | BOTH
@@ -1258,22 +1260,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             // 네이티브 파일 Uri 아닐 수 있어 바로 Player에 못 넣을 수도 있다(서버 URL이면 가능)
             // 가능하면 showVideoPreview(Uri.parse(vUrl)) 호출
         }
-
-        bindIngredients(dto?.ingredients)
-        // 타입 고정
+        bindIngredients(dto?.ingredients)   // ✅ 이제 List 타입으로 맞음
         recipeType = dto?.recipeType ?: "BOTH"
-    }
-
-    // 3-2) 저장/발행 시 수집할 미디어 데이터
-    private fun collectMediaFields(): RecipeDraftDto {
-        return RecipeDraftDto(
-            recipeId = draftId,
-            mainImageUrl = mainImageUrl.ifBlank { null },
-            videoUrl = recipeVideoUrl?.ifBlank { null },
-            recipeType = "BOTH", // 이 화면은 둘다
-            isDraft = true
-            // 나머지는 null (공통에서 채움)
-        )
     }
 
     private fun onClickSaveDraft() {
@@ -1316,17 +1304,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     }
 
 
-    // === 7) 최종 DTO 만들기 (기존 함수 대체) ===
-    // 절대 null 안 보냄(숫자·Boolean 제외). 빈값은 "" / "[]"
+    // === collectAllFields 수정 ===
     private fun collectAllFields(isDraft: Boolean): RecipeDraftDto {
         val gson = Gson()
 
-        val ingredientsJson = collectIngredientsList()?.let { gson.toJson(it) } ?: "[]"
+        val ingredientsList = collectIngredientsForDraftRes()
         val altJson         = collectAlternativeOrNull()?.let { gson.toJson(it) } ?: "[]"
         val handlingJson    = collectHandlingOrNull()?.let { gson.toJson(it) } ?: "[]"
         val stepsJson       = collectCookingStepsJson() ?: "[]"
 
-        // 문자열은 전부 공백으로 정규화
         val titleTxt    = getEt(R.id.recipeTitleWrite)
         val categoryTxt = mapCategoryToEnum(getTv(R.id.koreanFood)).ifEmpty { "etc" }
         val difficulty  = getTv(R.id.elementaryLevel).ifEmpty { "" }
@@ -1338,22 +1324,43 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         return RecipeDraftDto(
             recipeId = draftId,
-            title = titleTxt,                          // "" 가능
-            category = categoryTxt,                    // "" 안 됨 → 최소 "etc"
-            ingredients = ingredientsJson,             // "[]"
-            alternativeIngredients = altJson,          // "[]"
-            handlingMethods = handlingJson,            // "[]"
-            cookingSteps = stepsJson,                  // "[]"
-            mainImageUrl = mainImageUrl.ifBlank { "" },// ""(null 금지)
-            difficulty = difficulty,                   // ""
-            tags = tagsTxt,                            // ""
-            cookingTime = cookingMin,                  // null 허용 (숫자)
+            title = titleTxt,
+            category = categoryTxt,
+            ingredients = ingredientsList,            // ✅ String 대신 List로 세팅
+            alternativeIngredients = altJson,         // 그대로 String(JSON)
+            handlingMethods = handlingJson,           // 그대로 String(JSON)
+            cookingSteps = stepsJson,                 // 그대로 String(JSON)
+            mainImageUrl = mainImageUrl.ifBlank { "" },
+            difficulty = difficulty,
+            tags = tagsTxt,
+            cookingTime = cookingMin,
             servings = null,
             isPublic = null,
-            videoUrl = recipeVideoUrl.orEmpty(),       // ""
+            videoUrl = recipeVideoUrl.orEmpty(),
             recipeType = "BOTH",
             isDraft = isDraft
         )
+    }
+
+    private fun collectIngredientsForDraftRes(): List<RecipeIngredientRes>? {
+        val simple = collectIngredientsList() ?: return null
+        val out = simple.mapNotNull { ing ->
+            // 이름으로 마스터 재료 찾기
+            val matched = allIngredients.firstOrNull { it.nameKo == ing.name }
+            val id = matched?.id ?: return@mapNotNull null
+
+            // "200 g" → ("200","g") → 200.0
+            val (qtyStr, _) = splitAmount(ing.amount)
+            val qty = qtyStr.toDoubleOrNull() ?: extractNumber(ing.amount)
+            if (qty == null) return@mapNotNull null
+
+            RecipeIngredientRes(
+                id = id,
+                name = ing.name,   // UI에 보이는 이름
+                amount = qty       // 서버 스키마는 Double
+            )
+        }
+        return out.takeIf { it.isNotEmpty() }
     }
 
     private fun parseCookingSteps(json: String?): List<CookingStep> {
@@ -1454,31 +1461,34 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         return if (out.isEmpty()) null else out
     }
 
-    private fun bindIngredients(json: String?) {
-        if (json.isNullOrBlank()) return
-        val listType = object : com.google.gson.reflect.TypeToken<List<Ingredient>>() {}.type
-        val items: List<Ingredient> = Gson().fromJson(json, listType)
-        if (items.isEmpty()) return
+    private fun bindIngredients(list: List<RecipeIngredientRes>?) {
+        if (list.isNullOrEmpty()) return
 
-        fun setFixed(idx: Int, nameId: Int, qtyId: Int) {
-            if (idx >= items.size) return
-            val item = items[idx]
-            val (qty) = splitAmount(item.amount)
-            findViewById<EditText>(nameId).setText(item.name)
-            findViewById<EditText>(qtyId).setText(qty)
+        // 고정칸 초기화
+        findViewById<EditText>(R.id.material).setText("")
+        findViewById<EditText>(R.id.measuring).setText("")
+        materialContainer.removeAllViews()
+
+        fun formatAmount(a: Double?): String = when {
+            a == null -> ""
+            a % 1.0 == 0.0 -> a.toLong().toString() // 200.0 -> "200"
+            else -> a.toString()                    // 12.5  -> "12.5"
         }
 
-        setFixed(0, R.id.material,      R.id.measuring)
+        // 첫 항목은 고정칸에
+        list.firstOrNull()?.let { ri ->
+            findViewById<EditText>(R.id.material).setText(ri.name)
+            findViewById<EditText>(R.id.measuring).setText(formatAmount(ri.amount))
+        }
 
-        for (i in 1 until items.size) {
-            val item = items[i]
+        // 나머지는 동적칸으로
+        list.drop(1).forEach { ri ->
             addNewItem()
-            val row = materialContainer.getChildAt(materialContainer.childCount - 1) as ConstraintLayout
-            val nameEt = row.getChildAt(0) as EditText
-            val qtyEt  = row.getChildAt(1) as EditText
-            val (qty) = splitAmount(item.amount)
-            nameEt.setText(item.name)
-            qtyEt.setText(qty)
+            val row = materialContainer.getChildAt(materialContainer.childCount - 1) as ViewGroup
+            (row.findViewById<EditText?>(R.id.tvMaterialName) ?: row.getChildAt(0) as? EditText)
+                ?.setText(ri.name)
+            (row.findViewById<EditText?>(R.id.etMeasuring) ?: row.getChildAt(1) as? EditText)
+                ?.setText(formatAmount(ri.amount))
         }
     }
 
@@ -1508,38 +1518,10 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.zero).setText((totalMin / 60).toString())      // 시
         findViewById<EditText>(R.id.halfHour).setText((totalMin % 60).toString())  // 분
 
-        // ── 재료(고정 6칸 + 동적) ──
-        val ingList: List<Ingredient> = parseIngredients(dto.ingredients)
-        fun setEt(id: Int, v: String?) = findViewById<EditText>(id).setText(v ?: "")
+        // ── 재료(고정 + 동적) : List<RecipeIngredientReq>? 직접 바인딩 ──
+        bindIngredients(dto.ingredients)
 
-        val fixedSlots = listOf(
-            Pair(R.id.material,     R.id.measuring)
-        )
-
-        // 고정칸 초기화
-        fixedSlots.forEach { (n, q) ->
-            setEt(n, "")
-            setEt(q, "")
-        }
-
-        ingList.take(1).forEachIndexed { i, ing ->
-            val (nameId, qtyId) = fixedSlots[i]
-            setEt(nameId, ing.name)
-            val (qty, unit) = splitAmount(ing.amount)
-            setEt(qtyId, qty)
-        }
-
-        materialContainer.removeAllViews()
-        ingList.drop(1).forEach { ing ->
-            addNewItem()
-            val row = materialContainer.getChildAt(materialContainer.childCount - 1) as? ConstraintLayout ?: return@forEach
-            (row.getChildAt(0) as? EditText)?.setText(ing.name)
-            val (qty, unit) = splitAmount(ing.amount)
-            (row.getChildAt(1) as? EditText)?.setText(qty)
-            (row.getChildAt(2) as? TextView)?.text = if (unit.isNotEmpty()) unit else "단위"
-        }
-
-        // ── 대체 재료 ──
+        // ── 대체 재료(문자열 JSON) ──
         val altList: List<Ingredient> = parseIngredients(dto.alternativeIngredients)
         findViewById<EditText>(R.id.replaceMaterialName).setText("")
         findViewById<EditText>(R.id.replaceMaterial).setText("")
@@ -1550,13 +1532,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.replaceMaterial).setText(ing.amount)
             } else {
                 replaceMaterialAddNewItem()
-                val row = replaceMaterialContainer.getChildAt(replaceMaterialContainer.childCount - 1) as? ConstraintLayout ?: return@forEachIndexed
+                val row = replaceMaterialContainer.getChildAt(
+                    replaceMaterialContainer.childCount - 1
+                ) as? ConstraintLayout ?: return@forEachIndexed
                 (row.getChildAt(0) as? EditText)?.setText(ing.name)
                 (row.getChildAt(1) as? EditText)?.setText(ing.amount)
             }
         }
 
-        // ── 사용된 재료 처리 방법 ──
+        // ── 사용된 재료 처리 방법(문자열 JSON) ──
         val handlingList: List<Ingredient> = parseIngredients(dto.handlingMethods)
         findViewById<EditText>(R.id.handlingMethodName).setText("")
         findViewById<EditText>(R.id.handlingMethod).setText("")
@@ -1567,7 +1551,9 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.handlingMethod).setText(ing.amount)
             } else {
                 handlingMethodAddNewItem()
-                val row = handlingMethodContainer.getChildAt(handlingMethodContainer.childCount - 1) as? ConstraintLayout ?: return@forEachIndexed
+                val row = handlingMethodContainer.getChildAt(
+                    handlingMethodContainer.childCount - 1
+                ) as? ConstraintLayout ?: return@forEachIndexed
                 (row.getChildAt(0) as? EditText)?.setText(ing.name)
                 (row.getChildAt(1) as? EditText)?.setText(ing.amount)
             }
@@ -1588,18 +1574,19 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             mainImageUrl = url
         }
 
-        // ── 조리 순서 ──
+        // ── 조리 순서(문자열 JSON) ──
         dto.cookingSteps?.let { json ->
             val steps = parseCookingSteps(json)
+
             // 미리보기(읽기용)
             addCookingSteps(this, steps)
 
-            // 편집용: 첫 줄만 기본칸에 넣어두고, 나머지는 필요 시 사용자가 step 추가해서 편집
+            // 편집 첫 줄
             findViewById<EditText>(R.id.cookOrderRecipeWrite)?.setText(
                 steps.firstOrNull()?.description ?: ""
             )
 
-            // 타이머/이미지 맵 복원(필요 시)
+            // 타이머/이미지 맵 복원
             stepTimerMap.clear()
             stepImages.clear()
             steps.forEach { s ->
@@ -3351,6 +3338,23 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    private fun extractNumber(amount: String): Double? {
+        val m = Regex("[-+]?\\d*\\.?\\d+").find(amount)
+        return m?.value?.toDoubleOrNull()
+    }
+
+    private fun collectIngredientsForDraft(): List<RecipeIngredientReq>? {
+        val simple = collectIngredientsList() ?: return null // Ingredient(name, amount="200 g")
+        return simple.map { ing ->
+            val matched = allIngredients.firstOrNull { it.nameKo == ing.name }
+            val (qtyStr, unit) = splitAmount(ing.amount)     // ("200","g")
+            RecipeIngredientReq(
+                id = matched?.id,
+                quantity = qtyStr.toDoubleOrNull()
+            )
         }
     }
 
