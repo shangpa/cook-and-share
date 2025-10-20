@@ -1,24 +1,36 @@
 package com.example.test.model.recipeDetail
 
-import com.example.test.model.Ingredient
+import com.google.gson.annotations.SerializedName
+
+data class RecipeIngredientRes(
+    @SerializedName("id") val id: Long,
+    @SerializedName("name") val name: String,
+    @SerializedName("amount") val amount: Double
+)
 
 data class RecipeDraftDto(
-    val recipeId: Long? = null,
-    val title: String? = null,
-    val category: String? = null,               // "koreaFood" 등
-    val ingredients: List<Ingredient>?,         // JSON string
-    val alternativeIngredients: String? = null, // JSON string
-    val handlingMethods: String? = null,        // JSON string
-    val cookingSteps: String? = null,           // JSON string
-    val mainImageUrl: String? = null,
-    val difficulty: String? = null,             // "초급","중급","상급"
-    val tags: String? = null,
-    val cookingTime: Int? = null,
-    val servings: Int? = null,
+    val recipeId: Long?,
+    val title: String?,
+    val category: String?,
+    @SerializedName("ingredients") val ingredients: List<RecipeIngredientRes>?, // ← Res로!
+    val alternativeIngredients: String?,
+    val handlingMethods: String?,
+    val cookingSteps: String?,
+    val mainImageUrl: String?,
+    val difficulty: String?,
+    val tags: String?,
+    val cookingTime: Int?,
+    val servings: Int?,
+    @SerializedName("isPublic") val isPublic: Boolean?,
+    val videoUrl: String?,
+    val recipeType: String?,
+    @SerializedName("isDraft") val isDraft: Boolean?,
     val createdAt: String? = null,
-    val isPublic: Boolean? = null,
-    val writer: String? = null,
-    val videoUrl: String? = null,
-    val recipeType: String? = "IMAGE",
-    val isDraft: Boolean? = true
+    val updatedAt: String? = null
+)
+
+data class RecipeIngredientReq(
+    @SerializedName("id") val id: Long?,
+    @SerializedName("amount") val quantity: Double?,   // ← 서버 필드명 amount로 매핑
+    // 서버는 unit을 받지 않으니 보내지 않아도 됨
 )

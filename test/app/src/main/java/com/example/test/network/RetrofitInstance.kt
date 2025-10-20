@@ -11,7 +11,7 @@ import android.net.Uri
 
 object RetrofitInstance {
 
-    const val BASE_URL = "http://172.30.1.78:8080/"
+    const val BASE_URL = "http://172.16.106.151:8080/"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
