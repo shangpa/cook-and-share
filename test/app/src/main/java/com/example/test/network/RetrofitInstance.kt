@@ -11,7 +11,7 @@ import android.net.Uri
 
 object RetrofitInstance {
 
-    const val BASE_URL = "http://172.16.106.151:8080/"
+    const val BASE_URL = "http://172.16.106.151:8080"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ApiService
@@ -57,7 +57,7 @@ object RetrofitInstance {
     /** 아이콘 키/경로를 절대 URL로 변환 */
     fun toIconUrl(iconKeyOrPath: String?): String? {
         if (iconKeyOrPath.isNullOrBlank()) return null
-        val s = iconKeyOrPath.trim()
+        val s = iconKeyOrPath.trim().removePrefix("icons/")
 
         // 이미 URL/절대경로면 그대로 절대경로화
         if (s.startsWith("http://", true) || s.startsWith("https://", true) || s.startsWith("/")) {
