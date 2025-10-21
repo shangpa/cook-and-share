@@ -264,8 +264,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val materialCook = findViewById<EditText>(R.id.materialCook)
         val material = findViewById<EditText>(R.id.material)
         val measuring = findViewById<EditText>(R.id.measuring)
-        val delete = findViewById<ImageButton>(R.id.delete)
-        val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
         val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
         val foodName = findViewById<TextView>(R.id.foodName)
         val materialKoreanFood = findViewById<TextView>(R.id.materialKoreanFood)
@@ -1448,21 +1446,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     // === 3) 재료 모으기 (고정 6칸 + 동적 materialContainer) ===
     private fun collectIngredientsList(): List<Ingredient>? {
         val result = mutableListOf<Ingredient>()
-
-        // 고정 슬롯들
-        val fixed = listOf(
-            Pair(R.id.material, R.id.measuring)
-        )
-
-        fixed.forEach { (n, q) ->
-            val name = getEt(n)
-            val amount = getEt(q)   // 단위 제거 → 계량값만 사용
-            if (name.isNotEmpty() || amount.isNotEmpty()) {
-                result += Ingredient(name, amount)
-            }
-        }
-
-        // 동적 영역
         val container = findViewById<android.widget.LinearLayout?>(R.id.materialContainer)
         if (container != null) {
             for (i in 0 until container.childCount) {
@@ -2076,18 +2059,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val hasTitle = titleView.text.isNotBlank()
             val hasCategory = categoryView.text.isNotBlank() && categoryView.text != "카테고리 선택"
             tabCompleted[0] = hasTitle && hasCategory
-        }
-
-        // ===== 2번 탭: 재료 =====
-        val materialView = findViewById<EditText?>(R.id.material)
-        val measuringView = findViewById<EditText?>(R.id.measuring)
-        val unitView = findViewById<TextView?>(R.id.unit)
-
-        if (materialView != null && measuringView != null && unitView != null) {
-            val hasMaterial = materialView.text.isNotBlank()
-            val hasMeasuring = measuringView.text.isNotBlank()
-            val hasUnit = unitView.text.isNotBlank() && unitView.text != "단위"
-            tabCompleted[1] = hasMaterial && hasMeasuring && hasUnit
         }
 
         // ===== 3번 탭: 대체재료 =====
