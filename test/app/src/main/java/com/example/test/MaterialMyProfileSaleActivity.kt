@@ -48,7 +48,7 @@ class MaterialMyProfileSaleActivity : AppCompatActivity() {
                                 id = it.tradePostId,
                                 title = it.title,
                                 imageUrl = BASE_URL + it.firstImageUrl,
-                                distance = "거리정보없음",
+                                distance = "800m",
                                 date = it.createdAt,
                                 price = "${it.price} P",
                                 isCompleted = it.status == 1

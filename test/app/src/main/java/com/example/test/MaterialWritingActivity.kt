@@ -42,6 +42,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.Stack
+import android.location.Address
+import android.location.Geocoder
+import java.util.Locale
+import android.os.Build
 
 class MaterialWritingActivity : AppCompatActivity() {
 
@@ -321,7 +325,7 @@ class MaterialWritingActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_select).setOnClickListener {
             if (selectedLat != null && selectedLng != null) {
-                wishPlaceText.text = "(${selectedLat}, ${selectedLng})"
+                updateLocationTextFromCoords(selectedLat!!, selectedLng!!, wishPlaceText)
                 exchangeWishPlaceChoice.visibility = View.GONE
                 newExchangeWrite.visibility = View.VISIBLE
             } else {
@@ -449,6 +453,87 @@ class MaterialWritingActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    /** 좌표(lat, lon)를 주소로 변환하여 TextView에 설정합니다. */
+    private fun updateLocationTextFromCoords(lat: Double, lon: Double, locationText: TextView) {
+        val geocoder = Geocoder(this, Locale.KOREAN)
+
+        // API 33 (Tiramisu) 이상 - 비동기 getFromLocation 사용
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            try {
+                geocoder.getFromLocation(lat, lon, 1) { addresses ->
+                    // 비동기 콜백
+                    val addressText = formatAddress(addresses.firstOrNull()) ?: "$lat, $lon"
+                    // UI 업데이트는 메인 스레드에서
+                    runOnUiThread {
+                        locationText.text = addressText
+                        // 주소가 변환되었으므로 텍스트 색상도 변경
+                        locationText.setTextColor(Color.parseColor("#2B2B2B"))
+                    }
+                }
+            } catch (e: Exception) {
+                // Geocoder.getFromLocation에서 IllegalArgumentException 등이 발생할 수 있음
+                runOnUiThread { locationText.text = "$lat, $lon" }
+            }
+        } else {
+            // API 33 미만 - 백그라운드 스레드에서 동기 getFromLocation 사용
+            Thread {
+                try {
+                    @Suppress("DEPRECATION")
+                    val addresses = geocoder.getFromLocation(lat, lon, 1)
+                    val addressText = formatAddress(addresses?.firstOrNull()) ?: "$lat, $lon"
+                    // UI 업데이트는 메인 스레드에서
+                    runOnUiThread {
+                        locationText.text = addressText
+                        // 주소가 변환되었으므로 텍스트 색상도 변경
+                        locationText.setTextColor(Color.parseColor("#2B2B2B"))
+                    }
+                } catch (e: Exception) {
+                    runOnUiThread { locationText.text = "$lat, $lon" } // 실패 시 좌표 표시
+                }
+            }.start()
+        }
+    }
+
+    /** Geocoder로 받은 주소를 "OO시 OO구 OO동" 또는 "OO시 OO동" 같이 조합하여 포맷합니다. */
+    private fun formatAddress(address: Address?): String? {
+        if (address == null) return null
+
+        val locality = address.locality     // e.g., "부천시" (시/군) 또는 "강남구" (서울시의 구)
+        val subLocality = address.subLocality // e.g., "심곡동" (동/읍/면)
+        val subAdmin = address.subAdminArea // e.g., "원미구" (일반시의 '구')
+        val thoroughfare = address.thoroughfare // e.g., "신흥로" (도로명)
+
+        // 1. [가장 상세]: "부천시 원미구 심곡동"
+        if (locality != null && subAdmin != null && subLocality != null && locality != subAdmin) {
+            return "$locality $subAdmin $subLocality"
+        }
+
+        // 2. [차선]: "부천시 심곡동" 또는 "강남구 심곡동"
+        if (locality != null && subLocality != null) {
+            return "$locality $subLocality"
+        }
+
+        // 3. [차선 (도로명)]: "부천시 신흥로"
+        if (locality != null && thoroughfare != null) {
+            return "$locality $thoroughfare"
+        }
+
+        // 4. [Fallback]: "심곡동"
+        if (subLocality != null) {
+            return subLocality
+        }
+
+        // 5. [Fallback]: "부천시"
+        if (locality != null) {
+            return locality
+        }
+
+        // 6. [최후의 수단]
+        return address.getAddressLine(0)?.replace(address.countryName, "")?.trim()
+    }
+
+
     fun uploadImageToServer(uri: Uri, callback: (String?) -> Unit) {
         val file = uriToFile(this, uri) ?: return
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())

@@ -32,6 +32,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
+import android.location.Address
+import android.location.Geocoder
+import java.util.Locale
 
 class MaterialDetailActivity : AppCompatActivity() {
 
@@ -50,6 +53,89 @@ class MaterialDetailActivity : AppCompatActivity() {
     private var writerName: String = ""
 
     private var isSaved = false
+
+    /** 좌표 문자열을 주소로 변환하여 TextView에 설정합니다. */
+    private fun updateLocationText(locationString: String, locationText: TextView) {
+        // "37.5665, 126.9780" 같은 좌표 문자열을 파싱
+        val parts = locationString.split(",")
+        if (parts.size != 2) {
+            locationText.text = locationString // 좌표 형식이 아니면 그냥 표시
+            return
+        }
+
+        try {
+            val lat = parts[0].trim().toDouble()
+            val lon = parts[1].trim().toDouble()
+            // Geocoder 인스턴스 생성 (한국어 주소 우선)
+            val geocoder = Geocoder(this, Locale.KOREAN)
+
+            // API 33 (Tiramisu) 이상 - 비동기 getFromLocation 사용
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(lat, lon, 1) { addresses ->
+                    // 비동기 콜백
+                    val addressText = formatAddress(addresses.firstOrNull()) ?: locationString
+                    // UI 업데이트는 메인 스레드에서
+                    runOnUiThread { locationText.text = addressText }
+                }
+            } else {
+                // API 33 미만 - 백그라운드 스레드에서 동기 getFromLocation 사용
+                Thread {
+                    try {
+                        @Suppress("DEPRECATION")
+                        val addresses = geocoder.getFromLocation(lat, lon, 1)
+                        val addressText = formatAddress(addresses?.firstOrNull()) ?: locationString
+                        // UI 업데이트는 메인 스레드에서
+                        runOnUiThread { locationText.text = addressText }
+                    } catch (e: Exception) {
+                        runOnUiThread { locationText.text = locationString } // 실패 시 원래 좌표 표시
+                    }
+                }.start()
+            }
+        } catch (e: Exception) {
+            // NumberFormatException 등 (좌표 파싱 실패)
+            locationText.text = locationString // 실패 시 원래 문자열 표시
+        }
+    }
+
+    /** Geocoder로 받은 주소를 "OO시 OO구 OO동" 또는 "OO시 OO동" 같이 조합하여 포맷합니다. */
+    private fun formatAddress(address: Address?): String? {
+        if (address == null) return null
+
+        val locality = address.locality     // e.g., "부천시" (시/군) 또는 "강남구" (서울시의 구)
+        val subLocality = address.subLocality // e.g., "심곡동" (동/읍/면)
+        val subAdmin = address.subAdminArea // e.g., "원미구" (일반시의 '구')
+        val thoroughfare = address.thoroughfare // e.g., "신흥로" (도로명)
+
+        // 1. [가장 상세]: "부천시 원미구 심곡동"
+        // (locality="부천시", subAdmin="원미구", subLocality="심곡동" 일 때)
+        if (locality != null && subAdmin != null && subLocality != null && locality != subAdmin) {
+            return "$locality $subAdmin $subLocality"
+        }
+
+        // 2. [차선 (특별시/광역시)]: "강남구 심곡동" (locality가 '구' 이름일 때)
+        // [차선 (일반시)]: "부천시 심곡동" (subAdmin '구' 정보가 없을 때)
+        if (locality != null && subLocality != null) {
+            return "$locality $subLocality"
+        }
+
+        // 3. [차선 (도로명)]: "부천시 신흥로" (동 정보가 없을 때)
+        if (locality != null && thoroughfare != null) {
+            return "$locality $thoroughfare"
+        }
+
+        // 4. [Fallback]: "심곡동" (현재 상태 - 시/구 정보가 없을 때)
+        if (subLocality != null) {
+            return subLocality
+        }
+
+        // 5. [Fallback]: "부천시" (이전 상태 - 동 정보가 없을 때)
+        if (locality != null) {
+            return locality
+        }
+
+        // 6. [최후의 수단]: Geocoder가 제공하는 주소 원본
+        return address.getAddressLine(0)?.replace(address.countryName, "")?.trim()
+    }
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,7 +261,7 @@ class MaterialDetailActivity : AppCompatActivity() {
                                 quantity1.text = post.category
                                 quantity2.text = "${post.quantity}개"
                                 itemSub.text = post.description
-                                locationText.text = post.location
+                                updateLocationText(post.location, locationText)
                                 itemPrice.text = if (post.price == 0) "나눔" else "${post.price} P"
                                 userName.text = post.writer
                                 writerName = post.writer
