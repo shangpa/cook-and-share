@@ -3,6 +3,7 @@ package com.example.test
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -40,7 +41,7 @@ class PantryMaterialAddActivity : AppCompatActivity() {
     private var pantryId: Long = -1L
     private var currentCategory: String = "Vegetables"
     private var keyword: String? = null
-
+    private var searchJob: Job? = null
     // 촬영 결과 저장 URI
     private var cameraUri: Uri? = null
 
@@ -186,16 +187,38 @@ class PantryMaterialAddActivity : AppCompatActivity() {
 
         // 검색
         searchBtn.setOnClickListener {
+            searchJob?.cancel()
             keyword = searchEt.text?.toString()?.trim().orEmpty().ifBlank { null }
             loadIngredients()
         }
         searchEt.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchJob?.cancel()
                 keyword = v.text?.toString()?.trim().orEmpty().ifBlank { null }
                 loadIngredients()
                 true
             } else false
         }
+        searchEt.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                searchJob?.cancel() // 이전 0.5초 대기 작업을 취소
+                searchJob = lifecycleScope.launch {
+                    delay(500L) // 0.5초 대기
+
+                    // 0.5초 후에 이 코드가 실행됨
+                    val newKeyword = s?.toString()?.trim().orEmpty().ifBlank { null }
+
+                    // 키워드가 실제로 바뀌었을 때만 검색 실행
+                    if (newKeyword != keyword) {
+                        keyword = newKeyword
+                        loadIngredients()
+                    }
+                }
+            }
+        })
     }
 
     /** 1차 메뉴: 영수증/사진 */
