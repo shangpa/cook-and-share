@@ -1943,24 +1943,19 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         showLoading(true)
 
         if (draftId == null) {
-            // 2) 초안이 없으면 먼저 초안 생성 -> 생성된 id로 바로 발행
-            val token = "Bearer ${App.prefs.token}"
-            RetrofitInstance.apiService.createDraft(token, dto).enqueue(object : retrofit2.Callback<RecipeCreateResponse> {
-                override fun onResponse(c: retrofit2.Call<RecipeCreateResponse>, r: retrofit2.Response<RecipeCreateResponse>) {
-                    if (r.isSuccessful) {
-                        // 생성된 draftId로 바로 발행
-                        draftId = r.body()?.recipeId
-                        publishDraftNow(draftId!!)
-                    } else {
-                        showLoading(false)
-                        Toast.makeText(this@RecipeWriteBothActivity, "임시저장 실패", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(c: retrofit2.Call<RecipeCreateResponse>, t: Throwable) {
-                    showLoading(false)
-                    Toast.makeText(this@RecipeWriteBothActivity, t.message ?: "네트워크 오류", Toast.LENGTH_SHORT).show()
-                }
+            // 🔸 초안이 없는 경우 → 바로 업로드
+            val dto = recipe!!.copy(isPublic = isPublic)
+            sendRecipeToServer(dto, onSuccess = { recipeId ->
+                showLoading(false)
+                val intent = Intent(this, RecipeSeeMainActivity::class.java)
+                intent.putExtra("recipeId", recipeId)
+                startActivity(intent)
+                finish()
+            }, onFailure = {
+                showLoading(false)
+                Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
             })
+
         } else {
             // 3) 초안이 이미 있으면, 최신 내용으로 초안 업데이트 후 발행
             val token = "Bearer ${App.prefs.token}"
@@ -3398,7 +3393,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
                 onSuccess(createdRecipeId!!)  // 서버에서 받은 id 전달
             } else {
-                Toast.makeText(this, "레시피 업로드 실패", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "레시피 업로드 실패3", Toast.LENGTH_SHORT).show()
                 onFailure?.invoke()
             }
         }
