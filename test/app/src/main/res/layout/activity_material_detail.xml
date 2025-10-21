@@ -254,9 +254,9 @@
 
                 <ImageView
                     android:id="@+id/img_m"
-                    android:layout_width="370dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:src="@drawable/img_material_map"
+                    android:src="@drawable/img_map"
                     android:layout_marginBottom="10dp"/>
 
                 <!-- 채팅, 조회 그룹 -->
