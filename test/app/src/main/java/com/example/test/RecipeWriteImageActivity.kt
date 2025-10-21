@@ -189,6 +189,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_write_image)
+        window.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         TabBarUtils.setupTabBar(this)
         draftId = savedInstanceState?.getLong("draftId")
             ?: intent.getLongExtra("draftId", -1L).takeIf { it > 0 }

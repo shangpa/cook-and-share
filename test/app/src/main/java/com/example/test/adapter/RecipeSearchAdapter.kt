@@ -48,7 +48,7 @@ class RecipeSearchAdapter(
         holder.reviewCount.text  = "(${recipe.reviewCount})"
         holder.recipeAuthor.text = recipe.user.name
 
-        val imageUrl = RetrofitInstance.BASE_URL + recipe.mainImageUrl.removePrefix("/")
+        val imageUrl = RetrofitInstance.BASE_URL + recipe.mainImageUrl
         Glide.with(holder.itemView.context).load(imageUrl).into(holder.recipeImage)
 
         renderHeart(holder.heartIcon, recipe.liked)

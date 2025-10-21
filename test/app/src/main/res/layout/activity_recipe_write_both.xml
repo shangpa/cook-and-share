@@ -889,68 +889,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <!-- 재료명 -->
-                    <EditText
-                        android:id="@+id/material"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="재료명"
-                        android:textSize="13sp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="#A1A9AD"
-                        android:background="@null"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
-                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour"/>
-
-                    <!-- 계량 -->
-                    <EditText
-                        android:id="@+id/measuring"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="계량"
-                        android:textSize="13sp"
-                        android:layout_marginStart="200dp"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="#A1A9AD"
-                        android:background="@null"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="@id/divideRectangleBarFour"
-                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour"/>
-
-                    <!-- 삭제 -->
-                    <ImageButton
-                        android:id="@+id/delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginTop="8dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_delete"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divideRectangleBarFour" />
-
-                    <!-- 재료명 아래 바 -->
-                    <View
-                        android:id="@+id/divideRectangleBarFive"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/bar_recipe_see_material"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/material"/>
 
                     <LinearLayout
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        app:layout_constraintTop_toBottomOf="@id/material"
-                        android:padding="16dp">
+                        android:padding="3dp">
 
                         <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
                         <LinearLayout

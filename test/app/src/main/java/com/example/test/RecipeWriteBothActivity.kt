@@ -262,12 +262,21 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val recipeWriteMaterialLayout =
             findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout)
         val materialCook = findViewById<EditText>(R.id.materialCook)
-        val material = findViewById<EditText>(R.id.material)
-        val measuring = findViewById<EditText>(R.id.measuring)
+        val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
         val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
         val foodName = findViewById<TextView>(R.id.foodName)
         val materialKoreanFood = findViewById<TextView>(R.id.materialKoreanFood)
 
+        materialCook.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // 텍스트가 변경될 때마다 filterIngredients 함수를 호출
+                filterIngredients(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         // 레시피 대체재료 선언
         val recipeWriteReplaceMaterialLayout =
@@ -760,25 +769,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             updateKoreanFoodTextViews(koreanFood.text.toString())
         }
 
-        //재료 채워지면 계속하기 버튼 바뀜
-        material.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                checkTabs()
-                checkAndUpdateContinueButton()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        measuring.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                checkTabs()
-                checkAndUpdateContinueButton()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
         //대체재료 채워지면 계속하기 바뀜
         replaceMaterialName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -1199,6 +1189,13 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun filterIngredients(keyword: String) {
+        val filtered = if (keyword.isBlank()) allIngredients
+        else allIngredients.filter { it.nameKo.contains(keyword) }
+        renderIngredientButtons(filtered)
+    }
+
     private fun renderIngredientButtons(list: List<IngredientResponse>) {
         container.removeAllViews()
 
@@ -1446,6 +1443,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     // === 3) 재료 모으기 (고정 6칸 + 동적 materialContainer) ===
     private fun collectIngredientsList(): List<Ingredient>? {
         val result = mutableListOf<Ingredient>()
+
+        // 동적 영역
         val container = findViewById<android.widget.LinearLayout?>(R.id.materialContainer)
         if (container != null) {
             for (i in 0 until container.childCount) {
@@ -2202,19 +2201,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     val title = titleView.text.toString()
                     val category = categoryView.text.toString()
                     isValid = title.isNotBlank() && category.isNotBlank()
-                }
-            }
-
-            R.id.recipeWriteMaterialLayout -> {
-                val materialView = currentLayout.findViewById<EditText?>(R.id.material)
-                val measuringView = currentLayout.findViewById<EditText?>(R.id.measuring)
-                val unitView = currentLayout.findViewById<TextView?>(R.id.unit)
-
-                if (materialView != null && measuringView != null && unitView != null) {
-                    val material = materialView.text.toString()
-                    val measuring = measuringView.text.toString()
-                    val unit = unitView.text.toString()
-                    isValid = material.isNotBlank() && measuring.isNotBlank() && unit != "단위"
                 }
             }
 
