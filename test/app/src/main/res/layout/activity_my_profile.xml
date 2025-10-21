@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:paddingStart="30dp"
-    android:paddingEnd="30dp"
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
 
@@ -13,7 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
 
         <ImageView
             android:id="@+id/backButton"
@@ -36,7 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
 
         <ImageView
             android:id="@+id/profile"
@@ -73,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="15dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="15dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="15dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -232,7 +234,7 @@
     <!-- 탭 하단 인디케이터 -->
     <View
         android:id="@+id/indicator"
-        android:layout_width="120dp"
+        android:layout_width="207dp"
         android:layout_height="2dp"
         android:background="@color/black" />
 
