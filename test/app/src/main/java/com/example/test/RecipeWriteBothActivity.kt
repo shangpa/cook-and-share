@@ -262,14 +262,21 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         val recipeWriteMaterialLayout =
             findViewById<ConstraintLayout>(R.id.recipeWriteMaterialLayout)
         val materialCook = findViewById<EditText>(R.id.materialCook)
-        val material = findViewById<EditText>(R.id.material)
-        val measuring = findViewById<EditText>(R.id.measuring)
-        val delete = findViewById<ImageButton>(R.id.delete)
         val divideRectangleBarFive = findViewById<View>(R.id.divideRectangleBarFive)
         val divideRectangleBarSix = findViewById<View>(R.id.divideRectangleBarSix)
         val foodName = findViewById<TextView>(R.id.foodName)
         val materialKoreanFood = findViewById<TextView>(R.id.materialKoreanFood)
 
+        materialCook.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // 텍스트가 변경될 때마다 filterIngredients 함수를 호출
+                filterIngredients(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         // 레시피 대체재료 선언
         val recipeWriteReplaceMaterialLayout =
@@ -762,25 +769,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             updateKoreanFoodTextViews(koreanFood.text.toString())
         }
 
-        //재료 채워지면 계속하기 버튼 바뀜
-        material.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                checkTabs()
-                checkAndUpdateContinueButton()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        measuring.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                checkTabs()
-                checkAndUpdateContinueButton()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
         //대체재료 채워지면 계속하기 바뀜
         replaceMaterialName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -1201,6 +1189,13 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun filterIngredients(keyword: String) {
+        val filtered = if (keyword.isBlank()) allIngredients
+        else allIngredients.filter { it.nameKo.contains(keyword) }
+        renderIngredientButtons(filtered)
+    }
+
     private fun renderIngredientButtons(list: List<IngredientResponse>) {
         container.removeAllViews()
 
@@ -1448,19 +1443,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     // === 3) 재료 모으기 (고정 6칸 + 동적 materialContainer) ===
     private fun collectIngredientsList(): List<Ingredient>? {
         val result = mutableListOf<Ingredient>()
-
-        // 고정 슬롯들
-        val fixed = listOf(
-            Pair(R.id.material, R.id.measuring)
-        )
-
-        fixed.forEach { (n, q) ->
-            val name = getEt(n)
-            val amount = getEt(q)   // 단위 제거 → 계량값만 사용
-            if (name.isNotEmpty() || amount.isNotEmpty()) {
-                result += Ingredient(name, amount)
-            }
-        }
 
         // 동적 영역
         val container = findViewById<android.widget.LinearLayout?>(R.id.materialContainer)
@@ -2078,18 +2060,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             tabCompleted[0] = hasTitle && hasCategory
         }
 
-        // ===== 2번 탭: 재료 =====
-        val materialView = findViewById<EditText?>(R.id.material)
-        val measuringView = findViewById<EditText?>(R.id.measuring)
-        val unitView = findViewById<TextView?>(R.id.unit)
-
-        if (materialView != null && measuringView != null && unitView != null) {
-            val hasMaterial = materialView.text.isNotBlank()
-            val hasMeasuring = measuringView.text.isNotBlank()
-            val hasUnit = unitView.text.isNotBlank() && unitView.text != "단위"
-            tabCompleted[1] = hasMaterial && hasMeasuring && hasUnit
-        }
-
         // ===== 3번 탭: 대체재료 =====
         val replaceMaterialNameView = findViewById<EditText?>(R.id.replaceMaterialName)
         val replaceMaterialView = findViewById<EditText?>(R.id.replaceMaterial)
@@ -2231,19 +2201,6 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     val title = titleView.text.toString()
                     val category = categoryView.text.toString()
                     isValid = title.isNotBlank() && category.isNotBlank()
-                }
-            }
-
-            R.id.recipeWriteMaterialLayout -> {
-                val materialView = currentLayout.findViewById<EditText?>(R.id.material)
-                val measuringView = currentLayout.findViewById<EditText?>(R.id.measuring)
-                val unitView = currentLayout.findViewById<TextView?>(R.id.unit)
-
-                if (materialView != null && measuringView != null && unitView != null) {
-                    val material = materialView.text.toString()
-                    val measuring = measuringView.text.toString()
-                    val unit = unitView.text.toString()
-                    isValid = material.isNotBlank() && measuring.isNotBlank() && unit != "단위"
                 }
             }
 
