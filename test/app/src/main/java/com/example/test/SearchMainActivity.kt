@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test.Utils.TabBarUtils
 import com.example.test.adapter.SeasonalRecipeAdapter
 import com.example.test.model.Recipe
+import com.example.test.model.recipeDetail.SeasonalRecipe
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -93,23 +94,22 @@ class SearchMainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.seasonalRecipeRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        RetrofitInstance.apiService.getSeasonalRecipes().enqueue(object : Callback<List<Recipe>> {
-            override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
-                if (response.isSuccessful) {
-                    val recipes = response.body() ?: return
-                    val adapter = SeasonalRecipeAdapter(recipes) { recipe ->
-                        val intent = Intent(this@SearchMainActivity, RecipeSeeActivity::class.java)
-                        intent.putExtra("recipeId", recipe.recipeId)
-                        startActivity(intent)
-                    }
-                    recyclerView.adapter = adapter
-                }
-            }
+        val adapter = SeasonalRecipeAdapter { r ->
+            startActivity(Intent(this, RecipeSeeActivity::class.java).putExtra("recipeId", r.recipeId))
+        }
+        recyclerView.adapter = adapter
 
-            override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
-                Toast.makeText(this@SearchMainActivity, "제철 요리 불러오기 실패", Toast.LENGTH_SHORT).show()
-            }
-        })
+        RetrofitInstance.apiService.getSeasonalRecipes()
+            .enqueue(object : Callback<List<SeasonalRecipe>> {
+                override fun onResponse(
+                    call: Call<List<SeasonalRecipe>>,
+                    response: Response<List<SeasonalRecipe>>
+                ) {
+                    val data = if (response.isSuccessful) response.body().orEmpty() else emptyList()
+                    adapter.submitList(data)   // ✅ 이제 인식됨
+                }
+                override fun onFailure(call: Call<List<SeasonalRecipe>>, t: Throwable) { /* ... */ }
+            })
 
     }
 }
