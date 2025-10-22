@@ -73,7 +73,7 @@ class TotalFeedAdapter(
             inner.adapter = innerAdapter
         }
         fun bind(items: List<Recipe>) {
-            innerAdapter.updateData(items.take(5)) // 안전
+            innerAdapter.updateData(items.take(5))
         }
     }
 
@@ -81,11 +81,11 @@ class TotalFeedAdapter(
         private val inner = v.findViewById<RecyclerView>(R.id.innerShortsGrid)
         private val innerAdapter = ShortsGridAdapter(emptyList(), onShortClick)
         init {
-            inner.layoutManager = GridLayoutManager(v.context, 2) // 2 x 2
+            inner.layoutManager = GridLayoutManager(v.context, 2)
             inner.adapter = innerAdapter
         }
         fun bind(items: List<ShortsSearchItem>) {
-            innerAdapter.submit(items.take(4)) // 2x2
+            innerAdapter.submit(items.take(2))
         }
     }
 }
