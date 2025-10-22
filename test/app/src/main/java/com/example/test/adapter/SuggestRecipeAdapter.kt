@@ -67,7 +67,7 @@ class SuggestRecipeAdapter(
             level.text = item.difficulty.ifBlank { "초급" }
             time.text = "${item.cookingTime}분"
 
-            val fallback = R.drawable.image_the_recipe_saw_recently_one
+            val fallback = R.drawable.image_recipe_thumbnail_placeholder
 
             // 1) 썸네일 후보 중 첫 유효값 선택 (필요한 필드만 남겨 쓰면 됨)
             val raw = firstNonBlank(

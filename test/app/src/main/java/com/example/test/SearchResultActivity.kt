@@ -1,4 +1,3 @@
-// SearchResultActivity.kt (핵심 부분 교체/추가)
 package com.example.test
 
 import android.content.Intent
@@ -6,7 +5,12 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,14 +20,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.Utils.TabBarUtils
-import com.example.test.adapter.*
-import com.example.test.model.Recipe
+import com.example.test.adapter.RecipeSearchAdapter
+import com.example.test.adapter.ShortsGridAdapter
+import com.example.test.adapter.TotalBlock
+import com.example.test.adapter.TotalFeedAdapter
+import com.example.test.adapter.RecipeBlock
+import com.example.test.adapter.ShortsBlock
+import com.example.test.model.recipeDetail.RecipeSearchResponseDTO
 import com.example.test.model.recipeDetail.ShortsSearchItem
 import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.math.roundToInt
+import com.example.test.model.Recipe
+import com.example.test.Utils.toUiRecipe
+import com.example.test.Utils.toUiRecipes
 
 class SearchResultActivity : AppCompatActivity() {
 
@@ -46,8 +58,7 @@ class SearchResultActivity : AppCompatActivity() {
     private val INACTIVE = Color.parseColor("#8A8A8A")
     private val density: Float get() = resources.displayMetrics.density
 
-    // 데이터 캐시
-    private var fullRecipeList: List<Recipe> = emptyList()
+    // 검색 결과를 DTO로 통일
     private var fullShortsList: List<ShortsSearchItem> = emptyList()
 
     // 어댑터
@@ -55,13 +66,20 @@ class SearchResultActivity : AppCompatActivity() {
     private lateinit var recipeOnlyAdapter: RecipeSearchAdapter
     private lateinit var shortsOnlyAdapter: ShortsGridAdapter
 
+    private var fullRecipeList: List<RecipeSearchResponseDTO> = emptyList()
+    private var fullRecipeUiList:  List<Recipe> = emptyList()
+
+    // 로딩 래치 플래그
+    private var recipesLoaded = false
+    private var shortsLoaded = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_result)
 
         TabBarUtils.setupTabBar(this)
 
-        // 탭
+        // 탭/뷰 바인딩
         totalTap = findViewById(R.id.totalTap)
         recipeTap = findViewById(R.id.recipeTap)
         videoTap = findViewById(R.id.videoTap)
@@ -75,7 +93,6 @@ class SearchResultActivity : AppCompatActivity() {
 
         // 어댑터/레이아웃매니저
         totalAdapter = TotalFeedAdapter(emptyList()) { short ->
-            // 쇼츠 클릭 이동 (ShortsActivity 등)
             startActivity(Intent(this, ShortsActivity::class.java))
         }
         rvTotal.layoutManager = LinearLayoutManager(this)
@@ -100,10 +117,12 @@ class SearchResultActivity : AppCompatActivity() {
         val elementaryLevel: TextView = findViewById(R.id.elementaryLevel)
         setupPopupMenu(dowArrow, elementaryLevel)
 
-        // 검색어
+        // 초기 검색어
         searchKeyword = intent.getStringExtra("searchKeyword") ?: ""
         val searchText: EditText = findViewById(R.id.writeSearchTxt)
         searchText.setText(searchKeyword)
+
+        // 상단 검색 아이콘
         findViewById<ImageButton>(R.id.searchIcon).setOnClickListener {
             val keyword = searchText.text.toString().trim()
             if (keyword.isNotBlank()) {
@@ -114,9 +133,11 @@ class SearchResultActivity : AppCompatActivity() {
                 Toast.makeText(this, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // 뒤로가기
         findViewById<ImageView>(R.id.SearchResultBackIcon).setOnClickListener { finish() }
 
-        // 카테고리
+        // 카테고리 필터
         setupCategoryButtons()
 
         // 탭 클릭
@@ -138,76 +159,111 @@ class SearchResultActivity : AppCompatActivity() {
         recipeTap.setTextColor(if (index == 1) ACTIVE else INACTIVE)
         videoTap.setTextColor(if (index == 2) ACTIVE else INACTIVE)
 
-        moveIndicatorTo(when (index) { 0 -> totalTap; 1 -> recipeTap; else -> videoTap })
+        moveIndicatorTo(
+            when (index) {
+                0 -> totalTap
+                1 -> recipeTap
+                else -> videoTap
+            }
+        )
         updateEmptyView()
     }
 
     private fun fetchAndRenderAll() {
-        // 1) 레시피
-        val token = "Bearer ${App.prefs.token}"
+        // 1) 레시피 검색
+        val token = App.prefs.token?.let { "Bearer $it" }
         RetrofitInstance.apiService.searchRecipes(
-            token = token, title = searchKeyword, sort = sortOrder
-        ).enqueue(object : Callback<List<Recipe>> {
-            override fun onResponse(call: Call<List<Recipe>>, resp: Response<List<Recipe>>) {
-                fullRecipeList = (resp.body() ?: emptyList()).let { list ->
-                    // 카테고리 필터(프론트측)
-                    currentSelectedCategory?.let { cat -> list.filter { it.category == cat } } ?: list
-                }
-                renderRecipeOnly()
-                maybeBuildTotal()
+            token = token,
+            title = searchKeyword,
+            category = currentSelectedCategory,
+            sort = sortOrder
+        ).enqueue(object : Callback<List<RecipeSearchResponseDTO>> {
+            override fun onResponse(
+                call: Call<List<RecipeSearchResponseDTO>>,
+                resp: Response<List<RecipeSearchResponseDTO>>
+            ) {
+                fullRecipeList  = resp.body().orEmpty()
+                fullRecipeUiList = fullRecipeList.toUiRecipes()
+                recipesLoaded = true
+                renderRecipeOnly()               // 레시피 전용 탭은 즉시 갱신
+                maybeBuildTotalIfReady()         // 둘 다 완료되면 전체 피드 갱신
             }
-            override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
-                fullRecipeList = emptyList()
+
+            override fun onFailure(call: Call<List<RecipeSearchResponseDTO>>, t: Throwable) {
+                fullRecipeList  = emptyList()
+                fullRecipeUiList = emptyList()
+                recipesLoaded = true
                 renderRecipeOnly()
-                maybeBuildTotal()
+                maybeBuildTotalIfReady()
             }
         })
 
-        // 2) 쇼츠
-        val bearer = App.prefs.token?.let { "Bearer $it" }
+        // 2) 쇼츠 검색
         RetrofitInstance.apiService.searchShorts(searchKeyword)
             .enqueue(object : Callback<List<ShortsSearchItem>> {
-                override fun onResponse(call: Call<List<ShortsSearchItem>>, resp: Response<List<ShortsSearchItem>>) {
+                override fun onResponse(
+                    call: Call<List<ShortsSearchItem>>,
+                    resp: Response<List<ShortsSearchItem>>
+                ) {
                     fullShortsList = resp.body().orEmpty()
-                    renderShortsOnly()
-                    maybeBuildTotal()
+                    fullShortsList = resp.body().orEmpty()
+                    shortsLoaded = true
+                    renderShortsOnly()               // 쇼츠 전용 탭은 즉시 갱신
+                    maybeBuildTotalIfReady()         // 둘 다 완료되면 전체 피드 갱신
                 }
+
                 override fun onFailure(call: Call<List<ShortsSearchItem>>, t: Throwable) {
                     fullShortsList = emptyList()
+                    shortsLoaded = true
                     renderShortsOnly()
-                    maybeBuildTotal()
+                    maybeBuildTotalIfReady()
                 }
             })
     }
 
+    private fun maybeBuildTotalIfReady() {
+        if (!(recipesLoaded && shortsLoaded)) return
+        // 필요하면 다음 검색을 위해 reset(옵션)
+        recipesLoaded = false
+        shortsLoaded = false
+        maybeBuildTotal()
+    }
+
     private fun maybeBuildTotal() {
-        // 두 리스트 중 하나라도 바뀔 때마다 전체 피드 재빌드
-        val blocks = buildAlternatingBlocks(fullRecipeList, fullShortsList)
+        val blocks = buildAlternatingBlocks(fullRecipeUiList, fullShortsList) // ★ UI 리스트 사용
         totalAdapter.submit(blocks)
-        number.text = (fullRecipeList.size + fullShortsList.size).toString()
+        number.text = (fullRecipeUiList.size + fullShortsList.size).toString()
         updateEmptyView()
     }
 
     private fun renderRecipeOnly() {
-        recipeOnlyAdapter.updateData(fullRecipeList)
+        // 어댑터는 List<Recipe> 기대
+        recipeOnlyAdapter.updateData(fullRecipeUiList)
     }
 
     private fun renderShortsOnly() {
         shortsOnlyAdapter.submit(fullShortsList)
     }
 
-    /** 레시피 5개 블록, 쇼츠 4개(2×2) 블록 번갈아 배치 */
-    private fun buildAlternatingBlocks(recipes: List<Recipe>, shorts: List<ShortsSearchItem>): List<TotalBlock> {
-        val rChunks = recipes.chunked(5).map { RecipeBlock(it) }
-        val sChunks = shorts.chunked(4).map { ShortsBlock(it) }
+    /** 전체 탭 전용: 레시피 5개, 쇼츠 2개 순으로 번갈아 배치 */
+    private fun buildAlternatingBlocks(
+        recipes: List<Recipe>,
+        shorts: List<ShortsSearchItem>
+    ): List<TotalBlock> {
+        val recipeBlocks = recipes.chunked(5).map { RecipeBlock(it) }
+        val shortsBlocks = shorts.chunked(2).map { ShortsBlock(it) }
 
         val out = mutableListOf<TotalBlock>()
+
+        // 항상 레시피 블록이 먼저, 그 다음 쇼츠 블록
         var i = 0
-        while (i < rChunks.size || i < sChunks.size) {
-            if (i < rChunks.size) out += rChunks[i]
-            if (i < sChunks.size) out += sChunks[i]
+        val max = maxOf(recipeBlocks.size, shortsBlocks.size)
+        while (i < max) {
+            if (i < recipeBlocks.size) out += recipeBlocks[i]
+            if (i < shortsBlocks.size) out += shortsBlocks[i]
             i++
         }
+
         return out
     }
 
@@ -247,9 +303,11 @@ class SearchResultActivity : AppCompatActivity() {
             buttons.forEach { btn ->
                 if (btn == b) {
                     val d = GradientDrawable().apply {
-                        cornerRadius = dp(40f); setColor(ContextCompat.getColor(this@SearchResultActivity, R.color.black))
+                        cornerRadius = dp(40f)
+                        setColor(ContextCompat.getColor(this@SearchResultActivity, R.color.black))
                     }
-                    btn.background = d; btn.setTextColor(Color.WHITE)
+                    btn.background = d
+                    btn.setTextColor(Color.WHITE)
                 } else {
                     btn.setBackgroundResource(R.drawable.btn_recipe_add)
                     btn.setTextColor(Color.parseColor("#8A8F9C"))
@@ -271,12 +329,12 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private fun updateEmptyView() {
-        val active = when {
-            rvTotal.visibility == View.VISIBLE    -> totalAdapter.itemCount
+        val activeCount = when {
+            rvTotal.visibility == View.VISIBLE -> totalAdapter.itemCount
             rvRecipesOnly.visibility == View.VISIBLE -> recipeOnlyAdapter.itemCount
             else -> shortsOnlyAdapter.itemCount
         }
-        emptyView.visibility = if (active == 0) View.VISIBLE else View.GONE
+        emptyView.visibility = if (activeCount == 0) View.VISIBLE else View.GONE
     }
 
     private fun moveIndicatorTo(target: View) {
@@ -284,17 +342,29 @@ class SearchResultActivity : AppCompatActivity() {
         ensureChildIds(parent)
         val cs = ConstraintSet().apply { clone(parent) }
         cs.clear(indicatorBar.id, ConstraintSet.TOP)
-        cs.connect(indicatorBar.id, ConstraintSet.TOP, target.id, ConstraintSet.BOTTOM, dp(13f).roundToInt())
+        cs.connect(
+            indicatorBar.id,
+            ConstraintSet.TOP,
+            target.id,
+            ConstraintSet.BOTTOM,
+            dp(13f).roundToInt()
+        )
         cs.applyTo(parent)
+
         indicatorBar.post {
             val targetCenter = target.x + target.width / 2f
             val barHalf = indicatorBar.width / 2f
             indicatorBar.animate().x(targetCenter - barHalf).setDuration(200L).start()
         }
     }
+
     private fun ensureChildIds(parent: ConstraintLayout) {
-        for (i in 0 until parent.childCount) if (parent.getChildAt(i).id == View.NO_ID)
-            parent.getChildAt(i).id = View.generateViewId()
+        for (i in 0 until parent.childCount) {
+            if (parent.getChildAt(i).id == View.NO_ID) {
+                parent.getChildAt(i).id = View.generateViewId()
+            }
+        }
     }
+
     private fun dp(v: Float) = v * density
 }

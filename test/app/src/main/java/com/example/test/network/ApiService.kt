@@ -200,10 +200,11 @@ interface ApiService {
     // 레시피 검색
     @GET("api/recipes/search")
     fun searchRecipes(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String? = null,
         @Query("title") title: String,
+        @Query("category") category: String? = null,
         @Query("sort") sort: String? = null
-    ): Call<List<Recipe>>
+    ): Call<List<com.example.test.model.recipeDetail.RecipeSearchResponseDTO>>
 
     @GET("api/shorts/search")
     fun searchShorts(
