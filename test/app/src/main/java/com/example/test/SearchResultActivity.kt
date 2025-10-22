@@ -121,11 +121,22 @@ class SearchResultActivity : AppCompatActivity() {
         searchKeyword = intent.getStringExtra("searchKeyword") ?: ""
         val searchText: EditText = findViewById(R.id.writeSearchTxt)
         searchText.setText(searchKeyword)
-
+        if (searchKeyword.isNotBlank()) {
+            RetrofitInstance.apiService.saveSearchKeyword(searchKeyword).enqueue(object: Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {}
+                override fun onFailure(call: Call<Void>, t: Throwable) {}
+            })
+        }
         // 상단 검색 아이콘
         findViewById<ImageButton>(R.id.searchIcon).setOnClickListener {
             val keyword = searchText.text.toString().trim()
             if (keyword.isNotBlank()) {
+                // 인기 검색어 저장 추가
+                RetrofitInstance.apiService.saveSearchKeyword(keyword).enqueue(object: Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) { /* no-op */ }
+                    override fun onFailure(call: Call<Void>, t: Throwable) { /* no-op */ }
+                })
+
                 searchKeyword = keyword
                 currentSelectedCategory = null
                 fetchAndRenderAll()
@@ -133,6 +144,7 @@ class SearchResultActivity : AppCompatActivity() {
                 Toast.makeText(this, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         // 뒤로가기
         findViewById<ImageView>(R.id.SearchResultBackIcon).setOnClickListener { finish() }
@@ -205,7 +217,6 @@ class SearchResultActivity : AppCompatActivity() {
                     call: Call<List<ShortsSearchItem>>,
                     resp: Response<List<ShortsSearchItem>>
                 ) {
-                    fullShortsList = resp.body().orEmpty()
                     fullShortsList = resp.body().orEmpty()
                     shortsLoaded = true
                     renderShortsOnly()               // 쇼츠 전용 탭은 즉시 갱신

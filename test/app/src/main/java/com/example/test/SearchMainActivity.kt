@@ -112,4 +112,32 @@ class SearchMainActivity : AppCompatActivity() {
             })
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        fetchPopularKeywords()
+    }
+
+    private fun fetchPopularKeywords() {
+        val keywordViews = listOf<TextView>(
+            findViewById(R.id.One), findViewById(R.id.Two), findViewById(R.id.Three),
+            findViewById(R.id.Four), findViewById(R.id.Five), findViewById(R.id.Six),
+            findViewById(R.id.Seven), findViewById(R.id.Eight), findViewById(R.id.Nine),
+            findViewById(R.id.Ten),
+        )
+        RetrofitInstance.apiService.getPopularKeywords().enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                if (response.isSuccessful) {
+                    val keywords = response.body().orEmpty()
+                    for (i in keywordViews.indices) {
+                        keywordViews[i].text = if (i < keywords.size) "${i + 1}.  ${keywords[i]}" else ""
+                    }
+                }
+            }
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                Toast.makeText(this@SearchMainActivity, "인기 검색어 불러오기 실패", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 }
