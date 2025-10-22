@@ -27,6 +27,7 @@ import com.example.test.model.recipeDetail.RecipeDraftDto
 import com.example.test.model.review.ReviewRequestDTO
 import com.example.test.model.review.ReviewResponseDTO
 import com.example.test.model.recipeDetail.RecipeMainSearchResponseDTO
+import com.example.test.model.recipeDetail.SeasonalRecipe
 import com.example.test.model.recipeDetail.ShortsSearchItem
 import com.example.test.model.review.TpReviewResponseDTO
 import com.example.test.model.shorts.CommentRequestDTO
@@ -210,8 +211,8 @@ interface ApiService {
     ): Call<List<ShortsSearchItem>>
 
     // 제철 음식 추천
-    @GET("/api/recipes/seasonal")
-    fun getSeasonalRecipes(): Call<List<Recipe>>
+    @GET("api/recipes/seasonal")
+    fun getSeasonalRecipes(): Call<List<SeasonalRecipe>>
 
     // 인기 검색어
     @GET("api/search/popular-keywords")
