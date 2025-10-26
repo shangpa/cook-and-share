@@ -41,6 +41,7 @@ import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 import androidx.appcompat.widget.AppCompatButton
 import com.example.test.Utils.RecommendUtils
+import android.widget.ScrollView
 
 
 private lateinit var steps: List<View>
@@ -81,6 +82,7 @@ class RecipeSeeActivity : AppCompatActivity() {
         val voiceBubble = findViewById<View>(R.id.voiceBubble)
         val beforeStep = findViewById<TextView>(R.id.beforeStep)
         val before = findViewById<TextView>(R.id.before)
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
 
         // 다음으로 버튼 선언
         steps = listOf(
@@ -202,6 +204,12 @@ class RecipeSeeActivity : AppCompatActivity() {
                 beforeStep.visibility = View.VISIBLE
                 before.visibility = View.VISIBLE
             }
+        }
+
+        // 화면 스크롤 시 음성 버튼 같이 이동
+        scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val y = scrollView.scrollY.toFloat()
+            voice.translationY = y
         }
 
         // 레시피 조회 기능 추가

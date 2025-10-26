@@ -39,6 +39,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Locale
+import android.widget.ScrollView
 
 
 class RecipeSeeNoTimerActivity : AppCompatActivity() {
@@ -62,6 +63,9 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
         val indicatorBar = findViewById<View>(R.id.divideRectangleBarTewleve)
         val downArrow = findViewById<ImageButton>(R.id.downArrow)
         val latest = findViewById<TextView>(R.id.latest)
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        val voice = findViewById<ImageButton>(R.id.voice)
+        val voiceTwo = findViewById<ImageButton>(R.id.voiceTwo)
 
         //리뷰
         val reviewRecyclerView = findViewById<RecyclerView>(R.id.reviewRecyclerView)
@@ -157,7 +161,6 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
             }
         }
 
-
         //리뷰 드롭다운 버튼 클릭
         downArrow.setOnClickListener {
             val popup = PopupMenu(this, downArrow)
@@ -173,8 +176,14 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
             popup.show()
         }
 
-        // 레시피 조회 기능 추가
+        // 화면 스크롤 시 음성 버튼 같이 이동
+        scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val y = scrollView.scrollY.toFloat()
+            voice.translationY = y
+            voiceTwo.translationY = y
+        }
 
+        // 레시피 조회 기능 추가
         val token = App.prefs.token.toString()
 
         RetrofitInstance.apiService.getRecipeById("Bearer $token", recipeId)
