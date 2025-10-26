@@ -862,9 +862,12 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="3dp">
 
                             <!-- 여기에 동적으로 아이템이 추가될 LinearLayout -->
                             <LinearLayout
@@ -872,6 +875,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"/>
+
+                        </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </ScrollView>

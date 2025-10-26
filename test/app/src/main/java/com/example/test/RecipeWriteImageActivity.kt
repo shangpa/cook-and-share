@@ -1435,6 +1435,34 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
     }
 
+    // 재료 이름 + 계량이 채워진 행이 1개 이상인지 확인
+    private fun hasValidIngredientEntry(): Boolean {
+        run {
+            val name   = findViewById<EditText?>(R.id.material)?.text?.toString()?.trim().orEmpty()
+            val qtyTxt = findViewById<EditText?>(R.id.measuring)?.text?.toString()?.trim().orEmpty()
+            val unitTv = findViewById<TextView?>(R.id.unit)?.text?.toString()?.trim()
+            val unitOk = (unitTv == null) || (unitTv.isNotBlank() && unitTv != "단위")
+            if (name.isNotEmpty() && qtyTxt.isNotEmpty() && unitOk) return true
+        }
+
+        for (i in 0 until materialContainer.childCount) {
+            val row = materialContainer.getChildAt(i)
+            val name = row.findViewById<TextView?>(R.id.tvMaterialName)
+                ?.text?.toString()?.trim().orEmpty()
+            val qty  = row.findViewById<EditText?>(R.id.etMeasuring)
+                ?.text?.toString()?.trim().orEmpty()
+
+            val unitText = row.findViewById<TextView?>(R.id.unit)
+                ?.text?.toString()?.trim()
+            val unitOk = (unitText == null) || (unitText.isNotBlank() && unitText != "단위")
+
+            if (name.isNotEmpty() && qty.isNotEmpty() && unitOk) {
+                return true
+            }
+        }
+        return false
+    }
+
     private fun checkTabs() {
         // ===== 1번 탭: 타이틀 =====
         val titleView = findViewById<EditText?>(R.id.recipeTitleWrite)
@@ -1447,7 +1475,7 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         }
 
         // ===== 2번 탭: 재료 =====
-        tabCompleted[1] = materialContainer.childCount > 0
+        tabCompleted[1] = hasValidIngredientEntry()
 
         // ===== 3번 탭: 대체재료 =====
         val replaceMaterialNameView = findViewById<EditText?>(R.id.replaceMaterialName)
@@ -1596,16 +1624,25 @@ class RecipeWriteImageActivity : AppCompatActivity() {
             }
 
             R.id.recipeWriteMaterialLayout -> {
-                val materialView = currentLayout.findViewById<EditText?>(R.id.material)
-                val measuringView = currentLayout.findViewById<EditText?>(R.id.measuring)
-                val unitView = currentLayout.findViewById<TextView?>(R.id.unit)
+                var anyValid = false
+                for (i in 0 until materialContainer.childCount) {
+                    val row = materialContainer.getChildAt(i)
+                    val name = row.findViewById<TextView?>(R.id.tvMaterialName)
+                        ?.text?.toString()?.trim().orEmpty()
+                    val qty  = row.findViewById<EditText?>(R.id.etMeasuring)
+                        ?.text?.toString()?.trim().orEmpty()
 
-                if (materialView != null && measuringView != null && unitView != null) {
-                    val material = materialView.text.toString()
-                    val measuring = measuringView.text.toString()
-                    val unit = unitView.text.toString()
-                    isValid = material.isNotBlank() && measuring.isNotBlank() && unit != "단위"
+                    // unit 뷰가 있으면 체크, 없으면 통과
+                    val unitText = row.findViewById<TextView?>(R.id.unit)
+                        ?.text?.toString()?.trim()
+                    val unitOk = (unitText == null) || (unitText.isNotBlank() && unitText != "단위")
+
+                    if (name.isNotEmpty() && qty.isNotEmpty() && unitOk) {
+                        anyValid = true
+                        break
+                    }
                 }
+                isValid = anyValid
             }
 
             R.id.recipeWriteReplaceMaterialLayout -> {
@@ -1916,13 +1953,25 @@ class RecipeWriteImageActivity : AppCompatActivity() {
         val btnDelete = view.findViewById<ImageButton>(R.id.btnDelete)
 
         tvName.text = selected.nameKo
-
         view.tag = (selected.id ?: -1L)
+
+        // ▷ 타이핑/지울 때마다 계속하기 버튼 상태 갱신
+        etMeasuring.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkAndUpdateContinueButton()
+                checkTabs()                            // ✅ 완료 여부 최신화
+                updateSelectedTab(textViewList[selectedIndex])  // (선택) 현재 탭 색 즉시 반영
+                updateProgressBars()                   // (선택) 바도 즉시 반영
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         btnDelete.setOnClickListener {
             materialContainer.removeView(view)
             itemCount--
 
+            // 선택 하이라이트 원복(있다면)
             val rectToClear = (sourceRect ?: view.tag) as? View
             rectToClear?.let { rect ->
                 rectToRow.remove(rect)
@@ -1930,10 +1979,22 @@ class RecipeWriteImageActivity : AppCompatActivity() {
                     rect.setBackgroundResource(R.drawable.rounded_rectangle_fridge)
                 }
             }
+
+            // ▷ 삭제 후에도 버튼 상태 갱신
+            checkAndUpdateContinueButton()
+            checkTabs()
+            updateSelectedTab(textViewList[selectedIndex])
+            updateProgressBars()
         }
+
         materialContainer.addView(view)
+
+        // ▷ 아이템 추가 직후에도 한번 갱신
+        checkAndUpdateContinueButton()
+
         return view
     }
+
     // 임시 저장 복원용 (selected, sourceRect 없이도 호출 가능)
     private fun addNewItem(): View {
         val dummy = IngredientResponse(

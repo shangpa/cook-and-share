@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.OpenableColumns
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
@@ -75,6 +76,7 @@ import com.example.test.model.recipeDetail.RecipeCreateResponse
 import com.example.test.model.recipeDetail.RecipeDraftDto
 import com.example.test.model.recipeDetail.RecipeIngredientReq
 import com.example.test.model.recipeDetail.RecipeIngredientRes
+import android.view.ViewTreeObserver
 
 private var draftId: Long? = null        // intent로 받아서 씀
 private var recipeType: String = "BOTH"  // IMAGE | VIDEO | BOTH
@@ -454,25 +456,42 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 }
 
                 val materialTextView = TextView(materialContainer.context).apply {
+                    id = R.id.tvMaterialName           // ★ checkTabs가 찾는 id 필수
                     text = materialName
                     textSize = 13f
                     setTextColor(Color.parseColor("#2B2B2B"))
                 }
 
-                val quantityTextView = TextView(materialContainer.context).apply {
-                    text = quantity
+                val quantityEditText = EditText(materialContainer.context).apply {
+                    id = R.id.etMeasuring              // ★ checkTabs가 찾는 id 유지
+                    setText(quantity)
+
+                    inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
                     textSize = 13f
                     setTextColor(Color.parseColor("#2B2B2B"))
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     ).apply { setMargins(115, 0, 0, 0) }
+
+                    addTextChangedListener(object : TextWatcher {
+                        override fun afterTextChanged(s: Editable?) {
+                            checkTabs()
+                            checkAndUpdateContinueButton()
+                        }
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    })
                 }
 
                 itemLayout.addView(materialTextView)
-                itemLayout.addView(quantityTextView)
+                itemLayout.addView(quantityEditText)
                 materialContainer.addView(itemLayout)
             }
+
+            // 리스트를 갱신한 직후에도 한 번 더 상태 갱신
+            checkTabs()
+            checkAndUpdateContinueButton()
         }
 
         // 계속하기 버튼 클릭시 다음 화면으로 이동
@@ -805,6 +824,16 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        //조리영상 채워지면 끝내기 바뀜
+        val videoContainer = findViewById<LinearLayout>(R.id.VideoContainer)
+
+        videoContainer.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                checkTabs() // 버튼 상태 업데이트
+                checkAndUpdateContinueButton()
+            }
         })
 
         //조리순서 채워지면 끝내기 바뀜
@@ -1251,6 +1280,15 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         tvName.text = selected.nameKo
 
         view.tag = (selected.id ?: -1L)
+
+        etMeasuring.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkTabs()
+                checkAndUpdateContinueButton()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         btnDelete.setOnClickListener {
             materialContainer.removeView(view)
@@ -2055,6 +2093,27 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             tabCompleted[0] = hasTitle && hasCategory
         }
 
+        // ===== 2번 탭: 재료 =====
+        val materialContainer = findViewById<LinearLayout?>(R.id.materialContainer) ?: run {
+            tabCompleted[1] = false
+            return@checkTabs
+        }
+        var filledRowCount = 0
+        for (i in 0 until materialContainer.childCount) {
+            val row = materialContainer.getChildAt(i)
+
+            val name = row.findViewById<TextView?>(R.id.tvMaterialName)
+                ?.text?.toString()?.trim().orEmpty()
+            val qty = row.findViewById<EditText?>(R.id.etMeasuring)
+                ?.text?.toString()?.trim().orEmpty()
+
+            // 수량은 숫자면 0보다 커야 하고, 숫자가 아니면(예: "적당량") 글자라도 있으면 인정
+            val qtyOk = qty.toDoubleOrNull()?.let { it > 0.0 } == true || qty.isNotEmpty()
+
+            if (name.isNotEmpty() && qtyOk) filledRowCount++
+        }
+        tabCompleted[1] = filledRowCount > 0
+
         // ===== 3번 탭: 대체재료 =====
         val replaceMaterialNameView = findViewById<EditText?>(R.id.replaceMaterialName)
         val replaceMaterialView = findViewById<EditText?>(R.id.replaceMaterial)
@@ -2073,11 +2132,33 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             tabCompleted[3] = hasHandlingName && hasHandling
         }
 
+        // ===== 6번 탭(가정): 조리영상 =====
+        // 인덱스는 프로젝트의 탭 순서에 맞게 조정하세요. (여기서는 6번이 '조리영상'이라고 가정)
+        val playerView = findViewById<PlayerView?>(R.id.videoPlayerView)
+        val videoContainer = findViewById<LinearLayout?>(R.id.VideoContainer)
+
+        // 1) URL/URI 로직 기반 (업로드/선택 시 변수에 담아두는 경우)
+        val hasVideoByUrl = !recipeVideoUrl.isNullOrBlank()
+
+        // 2) Player가 실제 미디어 아이템을 가진 경우
+        val hasVideoByPlayer = playerView?.player?.let { it.mediaItemCount > 0 } == true
+
+        // 3) PlayerView가 화면에 보이는 경우(가시성으로도 판단)
+        val hasVideoByVisibility = playerView?.visibility == View.VISIBLE
+
+        // 4) 컨테이너에 썸네일 등 자식 뷰가 들어간 경우(썸네일만 쓰는 UX도 커버)
+        val hasVideoByChild = (videoContainer?.childCount ?: 0) > 0
+
+        // 위 중 하나라도 true면 “영상 추가됨”으로 간주
+        tabCompleted[4] = hasVideoByUrl || hasVideoByPlayer || hasVideoByVisibility || hasVideoByChild
+
+
+
         // ===== 5번 탭: 조리순서 =====
         val cookOrderView = findViewById<EditText?>(R.id.cookOrderRecipeWrite)
         if (cookOrderView != null) {
             val hasCookOrder = cookOrderView.text.isNotBlank()
-            tabCompleted[4] = hasCookOrder
+            tabCompleted[5] = hasCookOrder
         }
 
         // ===== 6번: 세부설정 =====
@@ -2088,7 +2169,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val hasLevel = levelView.text.isNotBlank() && levelView.text !in listOf("난이도", "선택")
             val hasTime = timeView.text.isNotBlank()
             val hasTag = tagView.text.isNotBlank()
-            tabCompleted[5] = hasLevel && hasTime && hasTag
+            tabCompleted[6] = hasLevel && hasTime && hasTag
         }
     }
 
@@ -2199,6 +2280,10 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 }
             }
 
+            R.id.recipeWriteMaterialLayout -> {
+                isValid = hasAtLeastOneValidMaterialRow()
+            }
+
             R.id.recipeWriteReplaceMaterialLayout -> {
                 val nameView = currentLayout.findViewById<EditText?>(R.id.replaceMaterialName)
                 val materialView = currentLayout.findViewById<EditText?>(R.id.replaceMaterial)
@@ -2249,6 +2334,30 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         }
         // 버튼은 항상 클릭 가능
         continueButton.isEnabled = true
+    }
+
+    //재료
+    private fun hasAtLeastOneValidMaterialRow(): Boolean {
+        // materialContainer를 레이아웃에서 찾아서 사용
+        val container = findViewById<LinearLayout?>(R.id.materialContainer) ?: return false
+        for (i in 0 until container.childCount) {
+            val row = container.getChildAt(i)
+
+            val name = row.findViewById<TextView?>(R.id.tvMaterialName)
+                ?.text?.toString()?.trim().orEmpty()
+            val qty  = row.findViewById<EditText?>(R.id.etMeasuring)
+                ?.text?.toString()?.trim().orEmpty()
+
+            // unit 뷰가 있으면 체크, 없으면 통과
+            val unitText = row.findViewById<TextView?>(R.id.unit)
+                ?.text?.toString()?.trim()
+            val unitOk = (unitText == null) || (unitText.isNotBlank() && unitText != "단위")
+
+            if (name.isNotEmpty() && qty.isNotEmpty() && unitOk) {
+                return true
+            }
+        }
+        return false
     }
 
     //조리순서
@@ -2321,6 +2430,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     Log.e("Upload", "업로드 실패: ${t.message}")
                 }
             })
+        checkTabs()
     }
 
     //재료, 대체 재료, 재료 처리 방법 추가
