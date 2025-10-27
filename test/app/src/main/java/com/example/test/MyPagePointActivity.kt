@@ -2,7 +2,6 @@ package com.example.test
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -17,10 +16,10 @@ import com.example.test.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
+import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Locale
 
 class MyPagePointActivity : AppCompatActivity() {
 
@@ -57,32 +56,14 @@ class MyPagePointActivity : AppCompatActivity() {
                     textView.setTextColor(resources.getColor(R.color.white, null))
                 } else {
                     button.setBackgroundResource(R.drawable.rounded_rectangle_background)
-                    textView.setTextColor(resources.getColor(R.color.black, null)) // 예: #8A8F9C
+                    textView.setTextColor(resources.getColor(R.color.black, null))
                 }
             }
         }
 
-        //날짜
-/*        fun updateDateRangeText(monthsAgo: Int?, daysAgo: Int?) {
-            val today = Calendar.getInstance()
-            val start = Calendar.getInstance()
-
-            // 날짜 차이 적용
-            when {
-                monthsAgo != null -> start.add(Calendar.MONTH, -monthsAgo)
-                daysAgo != null -> start.add(Calendar.DAY_OF_YEAR, -daysAgo)
-            }
-
-            // yyyy-MM-dd 형식으로 포맷
-            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val dateRange = "${formatter.format(start.time)} ~ ${formatter.format(today.time)}"
-
-            val dateRangeView = findViewById<TextView>(R.id.dateRange)
-            dateRangeView.text = dateRange
-        }*/
         adapter = PointHistoryAdapter(fullData)
 
-        //드롭다운
+        // 드롭다운
         val dropDownIcon = findViewById<ImageView>(R.id.myPointDropDownIcon)
         val filterText = findViewById<TextView>(R.id.myPointfillterText)
 
@@ -102,7 +83,6 @@ class MyPagePointActivity : AppCompatActivity() {
 
         all.setOnClickListener {
             updateSelection(all)
-
             fromDate = ""
             toDate = ""
             findViewById<TextView>(R.id.dateRange).text = "전체 기간"
@@ -134,7 +114,7 @@ class MyPagePointActivity : AppCompatActivity() {
             updateDateFilter(12, null)
         }
 
-        // 드롭다운 클릭 시 어댑터의 filter 메서드를 사용하도록 수정
+        // 드롭다운 클릭 시 어댑터의 filter 메서드를 사용
         dropDownIcon.setOnClickListener {
             val popupMenu = PopupMenu(this, dropDownIcon)
             popupMenu.menu.add("전체")
@@ -144,9 +124,7 @@ class MyPagePointActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 selectedType = menuItem.title.toString()
                 filterText.text = selectedType
-
                 adapter.filter(selectedType, fromDate, toDate)
-
                 true
             }
 
@@ -160,27 +138,30 @@ class MyPagePointActivity : AppCompatActivity() {
 
         val token = "Bearer ${App.prefs.token}"
 
-        RetrofitInstance.apiService.getMyPointHistory(token).enqueue(object : Callback<List<PointHistoryResponse>> {
-            override fun onResponse(call: Call<List<PointHistoryResponse>>, response: Response<List<PointHistoryResponse>>) {
-                if (response.isSuccessful) {
-                    fullData = response.body() ?: emptyList()
-                    adapter = PointHistoryAdapter(fullData)
-                    recycler.adapter = adapter
-                    
-                    //기본값
-                    updateSelection(all)
-                    fromDate = ""
-                    toDate = ""
-                    findViewById<TextView>(R.id.dateRange).text = "전체 기간"
-                    adapter.filter(selectedType, fromDate, toDate)
+        RetrofitInstance.apiService.getMyPointHistory(token)
+            .enqueue(object : Callback<List<PointHistoryResponse>> {
+                override fun onResponse(
+                    call: Call<List<PointHistoryResponse>>,
+                    response: Response<List<PointHistoryResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        fullData = response.body() ?: emptyList()
+                        adapter = PointHistoryAdapter(fullData)
+                        recycler.adapter = adapter
+
+                        // 기본값
+                        updateSelection(all)
+                        fromDate = ""
+                        toDate = ""
+                        findViewById<TextView>(R.id.dateRange).text = "전체 기간"
+                        adapter.filter(selectedType, fromDate, toDate)
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<List<PointHistoryResponse>>, t: Throwable) {
-                Log.e("Point", "포인트 내역 조회 실패", t)
-            }
-        })
-
+                override fun onFailure(call: Call<List<PointHistoryResponse>>, t: Throwable) {
+                    Log.e("Point", "포인트 내역 조회 실패", t)
+                }
+            })
 
         val pointOwnerText = findViewById<TextView>(R.id.pointOwnerText)
         val totalPointText = findViewById<TextView>(R.id.totalPointText)
@@ -188,22 +169,27 @@ class MyPagePointActivity : AppCompatActivity() {
         // 사용자 이름
         RetrofitInstance.apiService.getUserInfo(token)
             .enqueue(object : Callback<LoginInfoResponse> {
-                override fun onResponse(call: Call<LoginInfoResponse>, response: Response<LoginInfoResponse>) {
+                override fun onResponse(
+                    call: Call<LoginInfoResponse>,
+                    response: Response<LoginInfoResponse>
+                ) {
                     if (response.isSuccessful) {
                         val user = response.body()
                         pointOwnerText.text = "${user?.name}님의 보유 포인트"
                     }
                 }
+
                 override fun onFailure(call: Call<LoginInfoResponse>, t: Throwable) {
                     pointOwnerText.text = "사용자님의 보유 포인트"
                 }
             })
 
-        // 사용자 포인트
+        // 사용자 포인트 (세 자리 콤마 적용)
         RetrofitInstance.apiService.getMyPoint(token)
             .enqueue(object : Callback<Int> {
                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
-                    totalPointText.text = "${response.body() ?: 0}"
+                    val point = response.body() ?: 0
+                    totalPointText.text = formatPoints(point)
                 }
 
                 override fun onFailure(call: Call<Int>, t: Throwable) {
@@ -214,6 +200,11 @@ class MyPagePointActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.backButton).setOnClickListener {
             finish()
         }
+    }
 
+    // ====== 포인트 포맷터 ======
+    private fun formatPoints(value: Number?): String {
+        val n = value?.toLong() ?: 0L
+        return NumberFormat.getNumberInstance(Locale.KOREA).format(n)
     }
 }
