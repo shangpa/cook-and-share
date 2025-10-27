@@ -227,20 +227,32 @@ class VideoTabFragment : Fragment() {
         override fun onBindViewHolder(holder: VH, position: Int) {
             val item = items[position]
             holder.title.text = item.title
-            holder.meta.text  = "조회수 ${formatViews(item.viewCount)}"
+            holder.meta.text = "조회수 ${formatViews(item.viewCount)}"
 
-            val url = item.thumbnailUrl?.trim()
-            if (!url.isNullOrEmpty()) {
+            // ✅ 썸네일 URL 절대경로 변환
+            val thumbUrl = item.thumbnailUrl?.trim()
+            val fullUrl = RetrofitInstance.toAbsoluteUrl(thumbUrl)
+
+            if (!fullUrl.isNullOrEmpty()) {
                 Glide.with(holder.thumb.context)
-                    .load(url)
+                    .load(fullUrl)
                     .placeholder(R.drawable.ic_writer_badge)
                     .centerCrop()
+                    .into(holder.thumb)
+            } else if (!item.videoUrl.isNullOrEmpty()) {
+                // ✅ 썸네일이 없으면 비디오 첫 프레임 표시
+                Glide.with(holder.thumb.context)
+                    .asBitmap()
+                    .load(item.videoUrl)
+                    .frame(1_000_000) // 1초 시점 프레임
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_writer_badge)
                     .into(holder.thumb)
             } else {
                 holder.thumb.setImageResource(R.drawable.ic_writer_badge)
             }
 
-            holder.root.setOnClickListener { onClick(position, item) } // ← position 같이 전달
+            holder.root.setOnClickListener { onClick(position, item) }
         }
 
         override fun getItemCount() = items.size
