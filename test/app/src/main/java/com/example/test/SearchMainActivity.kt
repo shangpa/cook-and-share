@@ -95,7 +95,7 @@ class SearchMainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val adapter = SeasonalRecipeAdapter { r ->
-            startActivity(Intent(this, RecipeSeeActivity::class.java).putExtra("recipeId", r.recipeId))
+            startActivity(Intent(this, RecipeSeeMainActivity::class.java).putExtra("recipeId", r.recipeId))
         }
         recyclerView.adapter = adapter
 

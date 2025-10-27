@@ -99,7 +99,7 @@ class SearchResultActivity : AppCompatActivity() {
         rvTotal.adapter = totalAdapter
 
         recipeOnlyAdapter = RecipeSearchAdapter(emptyList()) { recipe ->
-            val i = Intent(this, RecipeSeeActivity::class.java)
+            val i = Intent(this, RecipeSeeMainActivity::class.java)
             i.putExtra("recipeId", recipe.recipeId)
             startActivity(i)
         }
