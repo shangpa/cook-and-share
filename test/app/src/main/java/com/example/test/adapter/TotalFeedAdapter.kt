@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.example.test.R
 import com.example.test.RecipeSeeActivity
+import com.example.test.RecipeSeeMainActivity
 import com.example.test.model.Recipe
 import com.example.test.model.recipeDetail.ShortsSearchItem
 
@@ -64,7 +65,7 @@ class TotalFeedAdapter(
         private val inner = v.findViewById<RecyclerView>(R.id.innerRecipes)
         private val innerAdapter = RecipeSearchAdapter(emptyList()) { recipe ->
             val ctx = itemView.context
-            val i = Intent(ctx, RecipeSeeActivity::class.java)
+            val i = Intent(ctx, RecipeSeeMainActivity::class.java)
             i.putExtra("recipeId", recipe.recipeId)
             ctx.startActivity(i)
         }
