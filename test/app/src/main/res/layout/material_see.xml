@@ -84,32 +84,28 @@
 
                 <!-- 비엔나소세지, 25개 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 비엔나소세지 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="비엔나소세지"
+                        android:layout_weight="1"
+                        android:text="비엔나소시지"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 25개 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="25개"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="115dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -130,32 +126,28 @@
 
                 <!-- 양파, 1/2개 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 양파 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="양파"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 1/2개 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1/2개"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="159dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -175,6 +167,30 @@
                 android:layout_marginTop="1dp">
 
                 <!-- 파프리카, 1/3개 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="파프리카"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/3개"
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"/>
+                </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
@@ -222,32 +238,28 @@
 
                 <!-- 식용유, 약간 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 식용유 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="식용유"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 약간 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="약간"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="148dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -268,32 +280,28 @@
 
                 <!-- 파슬리, 약간 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 파슬리 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="파슬리"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 약간 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="약간"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="148dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -314,32 +322,28 @@
 
                 <!-- 통깨, 약간 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 통깨 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="통깨"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 약간 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="약간"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="160dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -395,32 +399,28 @@
 
                 <!-- 케첩, 4큰술 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 케첩 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="케첩"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 4큰술 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4큰술"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="159dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -441,32 +441,28 @@
 
                 <!-- 굴소스, 1큰술 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 굴소스 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="굴소스"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 1큰술 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1큰술"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="148dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -487,32 +483,28 @@
 
                 <!-- 맛술, 1큰술 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 맛술 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="맛술"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 1큰술 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1큰술"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="160dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -533,32 +525,28 @@
 
                 <!-- 물엿, 1큰술 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 물엿 -->
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="물엿"
-                        android:textColor="#2B2B2B"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 1큰술 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1큰술"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="160dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -579,32 +567,28 @@
 
                 <!-- 다진 마늘, 1/2큰술 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 다진 마늘 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="다진 마늘"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 1/2큰술 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1/2큰술"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="135dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -625,32 +609,28 @@
 
                 <!-- 후추, 약간 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 후추 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="후추"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 약간 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="약간"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="158dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -706,32 +686,28 @@
 
                 <!-- 파슬리, 생략-->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 파슬리 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="파슬리"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 생략 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="생략"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="147dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -752,32 +728,28 @@
 
                 <!-- 통깨, 생략-->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 통깨 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="통깨"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 생략 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="생략"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="159dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -833,32 +805,28 @@
 
                 <!-- 모든 재료, 음식물 쓰레기 -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:gravity="center_vertical">
 
-                    <!-- 모든 재료 -->
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="모든 재료"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="start"/>
+                        android:textColor="#2B2B2B"/>
 
-                    <!-- 음식물 쓰레기 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="음식물 쓰레기"
                         android:textSize="13sp"
-                        android:textColor="#2B2B2B"
-                        android:layout_marginStart="134dp"
-                        android:layout_gravity="center_vertical"/>
-
+                        android:textColor="#2B2B2B"/>
                 </LinearLayout>
             </LinearLayout>
 
