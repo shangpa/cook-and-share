@@ -218,7 +218,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:text="개 레시피"
+                        android:text="개 거래글"
                         android:textColor="#2B2B2B"
                         android:textSize="13sp" />
 
