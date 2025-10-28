@@ -404,8 +404,8 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         two.setOnClickListener { changeLayout(recipeWriteMaterialLayout) }
         three.setOnClickListener { changeLayout(recipeWriteReplaceMaterialLayout) }
         four.setOnClickListener { changeLayout(recipeWriteHandlingMethodLayout) }
-        six.setOnClickListener { changeLayout(recipeWriteCookVideoLayout) }
-        five.setOnClickListener { changeLayout(recipeWriteCookOrderLayout) }
+        five.setOnClickListener { changeLayout(recipeWriteCookVideoLayout) }
+        six.setOnClickListener { changeLayout(recipeWriteCookOrderLayout) }
         seven.setOnClickListener{ changeLayout(recipeWriteDetailSettleLayout)}
 
         progressBars = listOf(
@@ -1039,13 +1039,10 @@ class RecipeWriteBothActivity : AppCompatActivity() {
 
         // 레시피 조리순서 끝내기 버튼 클릭시
         endFixButton.setOnClickListener {
-            layoutHistory.push(currentLayout)
-
-            val detailSettleLayout = findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout)
-            showOnlyLayout(detailSettleLayout)
-
-            updateSelectedTab(seven)
-            moveUnderlineBar(seven)
+            checkTabs()
+            val detailIdx = layoutList.indexOf(findViewById<ConstraintLayout>(R.id.recipeWriteDetailSettleLayout))
+            switchTo(detailIdx, pushHistory = true)
+            findViewById<ConstraintLayout>(R.id.cookOrderTapBar).visibility = View.GONE
         }
 
         // 레시피 조리순서 다른 레이아웃 목록을 먼저 선언
@@ -1269,7 +1266,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             container.addView(view)
         }
     }
-    // [수정] 기존 addNewItem 함수들을 모두 지우고 이걸로 교체하세요.
+
     private fun addNewItem(selected: IngredientResponse, sourceRect: View?): View {
         val view = layoutInflater.inflate(R.layout.item_recipe_material, materialContainer, false)
 
@@ -2441,10 +2438,11 @@ class RecipeWriteBothActivity : AppCompatActivity() {
         // 공통으로 쓰이는 구분선 뷰 생성 함수
         fun createDivider(drawableId: Int): View {
             return View(this).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 2.dpToPx()
-                ).apply {
-                    topMargin = 12.dpToPx()
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = GridLayout.LayoutParams.MATCH_PARENT
+                    height = 2.dpToPx()            // 필요하면 1dp로 바꿔도 됨
+                    setMargins(0.dpToPx(), 12.dpToPx(), 20.dpToPx(), 0)  // ← 좌우 20dp
+                    // RTL 대응하려면 marginStart/marginEnd 있는 확장 사용 권장
                 }
                 setBackgroundResource(drawableId)
             }
@@ -2477,32 +2475,48 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             val rowLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
                     topMargin = 10.dpToPx()
                     leftMargin = 15.dpToPx()
                 }
             }
 
+            // 이름: 고정폭 115dp
             val nameText = TextView(this).apply {
                 text = name
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
                 setTextColor(Color.parseColor("#2B2B2B"))
+                maxLines = 1
+                ellipsize = android.text.TextUtils.TruncateAt.END
             }
+            rowLayout.addView(
+                nameText,
+                LinearLayout.LayoutParams(115.dpToPx(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            )
 
+            // 스페이서: 가변 영역(수량을 오른쪽으로 밀어냄)
+            rowLayout.addView(
+                View(this),
+                LinearLayout.LayoutParams(0, 0, 1f)
+            )
+
+            // 수량: 우측 정렬 + 끝에서 15dp 띄우기
             val amountText = TextView(this).apply {
                 text = amount
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
                 setTextColor(Color.parseColor("#2B2B2B"))
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    leftMargin = 140.dpToPx()
-                }
+                gravity = Gravity.END
+                maxLines = 1
             }
-
-            rowLayout.addView(nameText)
-            rowLayout.addView(amountText)
+            rowLayout.addView(
+                amountText,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { marginEnd = 35.dpToPx() }
+            )
 
             categoryGroup.addView(rowLayout)
             categoryGroup.addView(createDivider(R.drawable.bar_recipe_see_material))

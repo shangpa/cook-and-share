@@ -276,7 +276,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                                 ).apply {
-                                    setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
+                                    setMargins(35.dpToPx(), 11.dpToPx(), 35.dpToPx(), 0)
                                 }
                             }
 
@@ -350,7 +350,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                                 ).apply {
-                                    setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
+                                    setMargins(35.dpToPx(), 11.dpToPx(), 35.dpToPx(), 0)
                                 }
                             }
 
@@ -424,7 +424,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                                 ).apply {
-                                    setMargins(20.dpToPx(), 11.dpToPx(), 20.dpToPx(), 0)
+                                    setMargins(35.dpToPx(), 11.dpToPx(), 35.dpToPx(), 0)
                                 }
                             }
 
