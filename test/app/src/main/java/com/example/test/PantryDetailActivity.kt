@@ -22,6 +22,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.appcompat.app.AlertDialog
+import java.math.BigDecimal
+import kotlin.math.abs
 
 class PantryDetailActivity : AppCompatActivity() {
 
@@ -66,6 +68,8 @@ class PantryDetailActivity : AppCompatActivity() {
 
     // 현재 탭 (TOTAL/FRIDGE/FREEZER/PANTRY)
     private var currentTab: String = "TOTAL"
+
+    private var showMergedView: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -215,6 +219,10 @@ class PantryDetailActivity : AppCompatActivity() {
                 Toast.makeText(this, "수정은 하나만 선택하세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if (showMergedView) {
+                Toast.makeText(this, "합쳐보기 모드에서는 개별 수정이 불가해요.\n재료 상세에서 처리하세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val s = selected.first()
             startActivity(Intent(this, PantryMaterialAddDetailActivity::class.java).apply {
                 putExtra("mode", "edit")
@@ -244,23 +252,31 @@ class PantryDetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // 합쳐보기 여부와 상관없이 "실제 삭제 대상(진짜 id들)"로 확장
+            val targets: List<PantryStockUi> = selected.flatMap { expandMerged(it) }
+            // 중복 제거(혹시 같은 그룹을 여러 줄 선택한 경우)
+            val uniqueTargets = targets.distinctBy { it.id }.filter { it.id > 0 }
+            if (uniqueTargets.isEmpty()) {
+                Toast.makeText(this, "삭제할 항목을 찾지 못했어요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val previewName = if (uniqueTargets.size == 1) uniqueTargets.first().name else "${uniqueTargets.first().name} 외 ${uniqueTargets.size - 1}개"
             AlertDialog.Builder(this)
                 .setTitle("삭제 확인")
-                .setMessage("선택한 재료 ${selected.size}개를 삭제할까요?")
+                .setMessage("선택한 재료(${previewName})\n총 ${uniqueTargets.size}개 항목을 삭제할까요?")
                 .setPositiveButton("삭제") { _, _ ->
                     val token = getBearer()
                     if (token == null) {
                         Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
                         return@setPositiveButton
                     }
-                    // 버튼 잠금(중복 클릭 방지)
-                    tvDelete.isEnabled = false
 
+                    tvDelete.isEnabled = false
                     lifecycleScope.launch {
                         var success = 0
                         var fail = 0
-                        // 서버에 하나씩 삭제 (백엔드가 벌크 삭제를 지원하지 않으므로)
-                        for (item in selected) {
+                        for (item in uniqueTargets) {
                             val res = runCatching {
                                 withContext(Dispatchers.IO) {
                                     RetrofitInstance.pantryApi.deletePantryStock(token, pantryId, item.id)
@@ -269,18 +285,17 @@ class PantryDetailActivity : AppCompatActivity() {
 
                             if (res != null && res.isSuccessful) success++ else fail++
                         }
-
-                        // 로컬에서도 제거
                         if (success > 0) {
-                            val ids = selected.map { it.id }.toSet()
-                            allStocks = allStocks.filterNot { ids.contains(it.id) }
+                            val removedIds = uniqueTargets.map { it.id }.toSet()
+                            allStocks = allStocks.filterNot { removedIds.contains(it.id) }
                             distributeToAdapters()
+                            applySearch(searchEdit.text?.toString().orEmpty())
                             resetAllSelectUi()
                         }
                         tvDelete.isEnabled = true
                         Toast.makeText(
                             this@PantryDetailActivity,
-                            "재료가 삭제되었어요",
+                            if (fail == 0) "재료가 삭제되었어요." else "일부 삭제 실패($fail) — 다시 시도해주세요.",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -360,10 +375,14 @@ class PantryDetailActivity : AppCompatActivity() {
     }
 
     private fun distributeToAdapters() {
-        val totalItems = allStocks
-        val fridgeItems = allStocks.filter { it.storageEnum == "FRIDGE" }
-        val freezerItems = allStocks.filter { it.storageEnum == "FREEZER" }
-        val pantryItems = allStocks.filter { it.storageEnum == "PANTRY" }
+        val totalItems = if (showMergedView) mergeByIngredient(allStocks) else allStocks
+        val fridgeItemsSrc = allStocks.filter { it.storageEnum == "FRIDGE" }
+        val freezerItemsSrc = allStocks.filter { it.storageEnum == "FREEZER" }
+        val pantryItemsSrc = allStocks.filter { it.storageEnum == "PANTRY" }
+
+        val fridgeItems = if (showMergedView) mergeByIngredient(fridgeItemsSrc) else fridgeItemsSrc
+        val freezerItems = if (showMergedView) mergeByIngredient(freezerItemsSrc) else freezerItemsSrc
+        val pantryItems = if (showMergedView) mergeByIngredient(pantryItemsSrc) else pantryItemsSrc
 
         totalAdapter.submit(totalItems)
         fridgeAdapter.submit(fridgeItems)
@@ -373,14 +392,17 @@ class PantryDetailActivity : AppCompatActivity() {
 
     private fun applySearch(q: String) {
         val query = q.trim()
+
         fun filter(list: List<PantryStockUi>): List<PantryStockUi> {
-            if (query.isEmpty()) return list
-            return list.filter { it.name.contains(query, ignoreCase = true) }
+            val base = if (showMergedView) mergeByIngredient(list) else list
+            if (query.isEmpty()) return base
+            return base.filter { it.name.contains(query, ignoreCase = true) }
         }
+
         when (currentTab) {
-            "TOTAL" -> totalAdapter.submit(filter(allStocks))
+            "TOTAL"  -> totalAdapter.submit(filter(allStocks))
             "FRIDGE" -> fridgeAdapter.submit(filter(allStocks.filter { it.storageEnum == "FRIDGE" }))
-            "FREEZER" -> freezeAdapter.submit(filter(allStocks.filter { it.storageEnum == "FREEZER" }))
+            "FREEZER"-> freezeAdapter.submit(filter(allStocks.filter { it.storageEnum == "FREEZER" }))
             "PANTRY" -> outsideAdapter.submit(filter(allStocks.filter { it.storageEnum == "PANTRY" }))
         }
         currentAdapter().clearSelection()
@@ -507,6 +529,53 @@ class PantryDetailActivity : AppCompatActivity() {
             intent.putExtra("selectedIngredientIds", selectedIds.toLongArray()) // ✅ LongArray로 전달
             startActivity(intent)
         }
+    }
+
+    // 표시용: 동일 재료+단위+보관 기준으로 합치기
+    private fun mergeByIngredient(list: List<PantryStockUi>): List<PantryStockUi> {
+        if (list.isEmpty()) return list
+        // ingredientId가 null일 수도 있어 name으로 보조키 수행
+        return list
+            .groupBy { Triple(listKeyOf(it), it.unitId ?: 0L, it.storageEnum) }
+            .map { (key, items) ->
+                val qtySum = items.fold(BigDecimal.ZERO) { acc, it ->
+                    acc + (it.quantityRaw.toBigDecimalOrNull() ?: BigDecimal.ZERO)
+                }
+                val first = items.first()
+                // 합쳐진 항목은 실제 단일 stock이 아니므로 가짜(-) id 사용 (선택/강조엔 쓰되 수정/삭제는 금지)
+                val syntheticId = -abs("${key.first}_${key.second}_${key.third}".hashCode().toLong())
+                first.copy(
+                    id = syntheticId,
+                    quantityRaw = qtySum.toPlainString(),
+                    quantity = qtySum.stripTrailingZeros().toPlainString(),
+                    // 합치면 날짜 의미가 사라지니 화면 혼동 방지로 null 처리
+                    purchasedAt = null,
+                    expiresAt = null
+                )
+            }
+            .sortedWith(compareBy({ it.name.lowercase() }, { it.storageEnum }))
+    }
+
+    private fun listKeyOf(it: PantryStockUi): Long {
+        // ingredientId가 있으면 그걸, 없으면 name 해시로 보조키
+        return it.ingredientId ?: -abs(it.name.hashCode().toLong())
+    }
+
+    private fun nameKey(n: String) = -abs(n.hashCode().toLong())
+
+    private fun sameMergedGroup(a: PantryStockUi, b: PantryStockUi): Boolean {
+        val aKey = a.ingredientId ?: nameKey(a.name)
+        val bKey = b.ingredientId ?: nameKey(b.name)
+        val aUnit = a.unitId ?: 0L
+        val bUnit = b.unitId ?: 0L
+        return aKey == bKey && aUnit == bUnit && a.storageEnum == b.storageEnum
+    }
+
+    /** 합쳐진(가짜 id<0) 아이템을 실제 항목들로 확장 */
+    private fun expandMerged(item: PantryStockUi): List<PantryStockUi> {
+        if (item.id > 0) return listOf(item) // 원래 단일 항목
+        // 같은 재료키 + 같은 단위 + 같은 보관
+        return allStocks.filter { sameMergedGroup(it, item) }
     }
 }
 
