@@ -265,7 +265,13 @@ class MaterialDetailActivity : AppCompatActivity() {
                                 itemPrice.text = if (post.price == 0) "나눔" else "${post.price} P"
                                 userName.text = post.writer
                                 writerName = post.writer
-
+                                val distText = formatDistance(post.distance)
+                                if (distText != null) {
+                                    distance.visibility = View.VISIBLE
+                                    distance.text = distText
+                                } else {
+                                    distance.visibility = View.GONE
+                                }
                                 val original = post.purchaseDate // 예: "2024-04-12"
                                 val formattedDate = try {
                                     val parsed = LocalDate.parse(original)
@@ -473,6 +479,16 @@ class MaterialDetailActivity : AppCompatActivity() {
             urls.map { RetrofitInstance.BASE_URL + it.trim() }
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    private fun formatDistance(distanceKm: Double?): String? {
+        if (distanceKm == null) return null
+        return if (distanceKm < 1.0) {
+            val m = (distanceKm * 1000).toInt()
+            "${m}m"
+        } else {
+            String.format(Locale.getDefault(), "%.1f km", distanceKm)
         }
     }
 
