@@ -4,6 +4,7 @@ package com.example.test
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -150,11 +151,7 @@ class ShortsActivity : AppCompatActivity() {
                 val data = response.body().orEmpty()
 
                 if (data.isEmpty()) {
-                    Toast.makeText(
-                        this@ShortsActivity,
-                        "랜덤 결과 0개 (필터/매핑 확인)",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Log.d("데이터비어있음","왜지")
                 } else {
                     val start = items.size
                     items.addAll(data)
