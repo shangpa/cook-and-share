@@ -10,6 +10,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.test.MaterialChatDetailActivity
+import com.example.test.MaterialMyProfileSaleActivity
 import com.example.test.R
 import com.example.test.Utils.ChatSessionManager
 import com.example.test.model.notification.FcmTokenRequestDTO
@@ -33,18 +34,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         Log.d("FCM", "알림 수신됨 - category: $category")
 
-        // 채팅 알림일 경우 → 별도 처리
-        if (category == "CHAT") {
-            if (roomKey != null && roomKey == ChatSessionManager.currentChatRoomKey) {
-                Log.d("FCM", "현재 채팅방 열려있음 → 알림 무시")
-                return
+        when (category) {
+            "CHAT" -> {
+                if (roomKey != null && roomKey == ChatSessionManager.currentChatRoomKey) {
+                    Log.d("FCM", "현재 채팅방 열려있음 → 알림 무시")
+                    return
+                }
+                showChatNotification(applicationContext, title, body, roomKey)
             }
-            // 채팅 알림은 별도로 처리 (채팅방으로 이동할 수 있게)
-            showChatNotification(applicationContext, title, body, roomKey)
-            return
+            // ✅ 거래 요청 알림 → 판매내역 화면으로 이동
+            "TRADE_REQUEST" -> {
+                showTradeRequestNotification(applicationContext, title, body)
+            }
+            else -> {
+                showSimpleNotification(applicationContext, title, body)
+            }
         }
-        // 일반 알림 처리
-        showSimpleNotification(applicationContext, title, body)
     }
     fun showSimpleNotification(context: Context, title: String, message: String) {
         val builder = NotificationCompat.Builder(context, "default")
@@ -80,6 +85,29 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
+    }
+    private fun showTradeRequestNotification(context: Context, title: String, message: String) {
+        val intent = Intent(context, MaterialMyProfileSaleActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            2,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val builder = NotificationCompat.Builder(context, "default")
+            .setSmallIcon(R.drawable.ic_bell_light)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+
+        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(System.currentTimeMillis().toInt(), builder.build())
     }
 
     // 새 토큰 수신 시 자동 호출됨
