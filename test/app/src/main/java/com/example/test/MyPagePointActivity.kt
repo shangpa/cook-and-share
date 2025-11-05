@@ -205,6 +205,7 @@ class MyPagePointActivity : AppCompatActivity() {
     // ====== 포인트 포맷터 ======
     private fun formatPoints(value: Number?): String {
         val n = value?.toLong() ?: 0L
-        return NumberFormat.getNumberInstance(Locale.KOREA).format(n)
+        val formatted = NumberFormat.getNumberInstance(Locale.KOREA).format(n)
+        return "$formatted P" // ✅ 세 자리 콤마 + P 추가
     }
 }

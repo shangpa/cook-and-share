@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="레시피 이름"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textColor="#2B2B2B"
         android:layout_marginTop="10dp"
         android:layout_marginStart="0dp"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="초급"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textColor="#9B9B9B"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="19dp" />
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="30분"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textColor="#9B9B9B"
             android:layout_marginStart="5dp"/>
     </LinearLayout>

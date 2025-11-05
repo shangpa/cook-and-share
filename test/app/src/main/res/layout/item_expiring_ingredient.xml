@@ -23,9 +23,9 @@
         <!-- 배경/썸네일 (필수는 아니지만 어댑터가 findViewById 하므로 id만 맞추면 됨) -->
         <ImageView
             android:id="@+id/ivBg"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="8dp"
             android:layout_alignParentStart="true"
             android:scaleType="centerCrop"
             android:src="@drawable/image_recently_stored_materials_food" />
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="재료명"
-            android:textSize="16sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             android:textColor="#2B2B2B" />
 
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="500"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:textColor="#666" />
 
         <!-- 단위 -->
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="g"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:textColor="#666" />
 
         <!-- 유통기한 텍스트 -->
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2025-01-01"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="#9B9B9B" />
 
         <!-- 가로 레시피 리스트 -->
