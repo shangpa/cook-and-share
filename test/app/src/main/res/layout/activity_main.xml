@@ -92,7 +92,7 @@
                         android:layout_marginTop="20dp"
                         android:text="이번 달 인기 레시피"
                         android:textColor="#FFFFFF"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:layout_marginTop="48dp"
                         android:text="Top 1"
                         android:textColor="#FFFFFF"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         android:textStyle="bold" />
 
                     <!-- 왼쪽 화살표 -->
@@ -136,7 +136,7 @@
                         android:layout_marginBottom="20dp"
                         android:text="1/5"
                         android:textColor="#FFFFFF"
-                        android:textSize="13sp" />
+                        android:textSize="16sp" />
 
                 </FrameLayout>
 
@@ -171,7 +171,7 @@
                                 android:layout_marginTop="5dp"
                                 android:text="냉장고의\n재료 추가하기"
                                 android:textColor="#3D4551"
-                                android:textSize="13sp" />
+                                android:textSize="14sp" />
 
                             <ImageView
                                 android:layout_width="108dp"
@@ -202,7 +202,7 @@
                                 android:layout_marginTop="5dp"
                                 android:text="두근두근\n레시피 작성하기"
                                 android:textColor="#3D4551"
-                                android:textSize="13sp" />
+                                android:textSize="14sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -234,7 +234,7 @@
                                 android:layout_marginTop="5dp"
                                 android:text="동네주방에서\n채팅하기"
                                 android:textColor="#3D4551"
-                                android:textSize="13sp" />
+                                android:textSize="14sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -255,7 +255,7 @@
                     android:layout_marginBottom="40dp"
                     android:text="테마별 레시피"
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <!-- 테마별 레시피 리스트 -->
@@ -290,7 +290,7 @@
                             android:layout_marginTop="5dp"
                             android:text="전체"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 한식 -->
@@ -313,7 +313,7 @@
                             android:layout_marginTop="5dp"
                             android:text="한식"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 양식 -->
@@ -336,7 +336,7 @@
                             android:layout_marginTop="5dp"
                             android:text="양식"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 일식 -->
@@ -359,7 +359,7 @@
                             android:layout_marginTop="5dp"
                             android:text="일식"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 중식 -->
@@ -381,7 +381,7 @@
                             android:layout_marginTop="5dp"
                             android:text="중식"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                 </GridLayout>
@@ -417,7 +417,7 @@
                             android:layout_marginTop="5dp"
                             android:text="채식"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 간식 -->
@@ -441,7 +441,7 @@
                             android:layout_marginTop="5dp"
                             android:text="간식"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 안주 -->
@@ -465,7 +465,7 @@
                             android:layout_marginTop="5dp"
                             android:text="안주"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- 밑반찬 -->
@@ -489,7 +489,7 @@
                             android:layout_marginTop="5dp"
                             android:text="밑반찬"
                             android:textColor="#2B2B2B"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </GridLayout>
                 <!--                &lt;!&ndash; 기타 &ndash;&gt;
@@ -539,7 +539,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="냉장고 재료"
-                        android:textSize="17sp"
+                        android:textSize="20dp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black" />
 
@@ -549,7 +549,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="더보기"
-                        android:textSize="14sp"
+                        android:textSize="17sp"
                         android:textColor="#9B9B9B"/>
                 </LinearLayout>
 
@@ -559,7 +559,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="유통기한이 임박한 냉장고 재료를 알려드려요!"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#9B9B9B"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="20dp"/>
@@ -610,7 +610,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="동네주방 HOT 거래글"
-                                android:textSize="17sp"
+                                android:textSize="20sp"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"/>
 
@@ -620,7 +620,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="더보기"
-                                android:textSize="14sp"
+                                android:textSize="17sp"
                                 android:textColor="#9B9B9B"/>
                         </LinearLayout>
 
@@ -628,7 +628,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="동네 주민과 주방 용품을 공유해보세요"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </FrameLayout>
@@ -670,7 +670,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="선호하는 레시피 요리"
-                    android:textSize="17sp"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
@@ -705,15 +705,15 @@
 
                         <FrameLayout
                             android:id="@+id/moreSee"
-                            android:layout_width="210dp"
-                            android:layout_height="40dp"
+                            android:layout_width="213dp"
+                            android:layout_height="43dp"
                             android:background="@drawable/ic_activity_main_rect">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="더 많은 레시피 보러가기"
-                                android:textSize="13sp"
+                                android:textSize="16sp"
                                 android:textColor="#9B9B9B"
                                 android:layout_marginStart="19dp"/>
 
@@ -721,7 +721,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_rigth_arrow"
-                                android:layout_marginStart="68dp"
+                                android:layout_marginStart="87dp"
                                 android:layout_gravity="center" />
 
                         </FrameLayout>
@@ -742,7 +742,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="관심있는 레시피 동영상"
-                    android:textSize="17sp"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
