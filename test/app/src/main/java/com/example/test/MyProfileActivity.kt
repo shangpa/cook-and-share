@@ -1,6 +1,7 @@
 package com.example.test
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
@@ -144,9 +145,22 @@ class MyProfileActivity : AppCompatActivity() {
             })
     }
     private fun renderFollowButton() {
-        followButton.text = if (isFollowing) "팔로우중" else "팔로우"
+        if (isFollowing) {
+            followButton.text = "팔로우중"
+            followButton.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.green)
+            )
+            followButton.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+        } else {
+            followButton.text = "팔로우"
+            followButton.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.black)
+            )
+            followButton.setTextColor(ContextCompat.getColor(this, R.color.color_follow_text))
+        }
     }
     private fun toggleFollow() {
+        
         val token = App.prefs.token ?: return
         isFollowing = !isFollowing
         renderFollowButton() // UI 즉시 반영
