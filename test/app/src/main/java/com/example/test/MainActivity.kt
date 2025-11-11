@@ -48,6 +48,7 @@ import com.example.test.ui.ExpiringItemUi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import com.example.test.model.pantry.PantryStockDto
+import com.example.test.ui.fridge.PantryListActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, MaterialActivity::class.java))
         }
         findViewById<TextView>(R.id.seeMore).setOnClickListener {
-            startActivity(Intent(this, FridgeActivity::class.java))
+            startActivity(Intent(this, PantryListActivity::class.java))
         }
         findViewById<LinearLayout>(R.id.moreSeeRecipe).setOnClickListener {
             startActivity(Intent(this, RecipeTapActivity::class.java))
