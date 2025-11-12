@@ -84,10 +84,10 @@ class MaterialMyLocationActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@MaterialMyLocationActivity, "위치 저장 완료", Toast.LENGTH_SHORT).show()
-                            // 저장 완료 후 MaterialActivity에 알림
-                            val resultIntent = Intent()
-                            resultIntent.putExtra("locationSaved", true)
-                            setResult(RESULT_OK, resultIntent)
+                            val intent = Intent(this@MaterialMyLocationActivity, MaterialActivity::class.java)
+                            intent.putExtra("forceReload", true) // 필요 시 플래그 전달
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
                             finish()
                         } else {
                             Toast.makeText(this@MaterialMyLocationActivity, "저장 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
