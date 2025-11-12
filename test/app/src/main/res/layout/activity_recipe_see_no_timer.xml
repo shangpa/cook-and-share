@@ -116,7 +116,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginStart="23dp"
                 android:text="채식"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="#2B2B2B"
                 app:layout_constraintTop_toBottomOf="@id/riceImage"
                 app:layout_constraintStart_toStartOf="@id/riceImage" />
@@ -129,7 +129,7 @@
                 android:layout_marginTop="9dp"
                 android:layout_marginStart="0dp"
                 android:text="알배추전골과 구운 두부 버섯 샐러드"
-                android:textSize="20sp"
+                android:textSize="23sp"
                 android:textColor="#2B2B2B"
                 app:layout_constraintTop_toBottomOf="@id/vegetarianDiet"
                 app:layout_constraintStart_toStartOf="@id/vegetarianDiet" />
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="소금쇼"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="#2B2B2B"
                 android:layout_marginTop="9dp"
                 android:layout_marginStart="0dp"
@@ -154,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="|"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8A8A"
                 android:layout_marginTop="9dp"
                 android:layout_marginStart="6dp"
@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="01.17"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="#2B2B2B"
                 android:layout_marginTop="9dp"
                 android:layout_marginStart="6dp"
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="난이도"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="#2B2B2B"
                 android:layout_marginTop="26dp"
                 android:layout_marginStart="0dp"
@@ -196,7 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="초급"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="#35A825"
                 android:layout_marginTop="26dp"
                 android:layout_marginStart="10dp"
@@ -210,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="시간"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="#2B2B2B"
                 android:layout_marginTop="26dp"
                 android:layout_marginStart="28dp"
@@ -228,7 +228,7 @@
                 android:layout_toEndOf="@id/riceImage"
                 android:text="30분"
                 android:textColor="#35A825"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/time"
                 app:layout_constraintTop_toBottomOf="@id/saltShow" />
 
@@ -268,7 +268,7 @@
                 android:layout_toStartOf="@id/riceImage"
                 android:text="재료"
                 android:textColor="#000000"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/divideRectangleBarOne"
                 app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
 
@@ -293,7 +293,7 @@
                 android:layout_toStartOf="@id/riceImage"
                 android:text="조리 순서"
                 android:textColor="#A1A9AD"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/material"
                 app:layout_constraintTop_toTopOf="@id/material" />
 
@@ -307,7 +307,7 @@
                 android:layout_toStartOf="@id/riceImage"
                 android:text="리뷰"
                 android:textColor="#A1A9AD"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/cookOrder"
                 app:layout_constraintTop_toTopOf="@id/material" />
 
@@ -415,7 +415,7 @@
                     android:layout_marginStart="20dp"
                     android:text="전체 리뷰"
                     android:textColor="#2B2B2B"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -427,9 +427,10 @@
                     android:layout_marginEnd="7dp"
                     android:text="최신순"
                     android:textColor="#2B2B2B"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@id/downArrow"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/totalReview"
+                    app:layout_constraintBottom_toBottomOf="@id/totalReview"  />
 
                 <!-- 전체 리뷰 아래 바 -->
                 <View
@@ -445,12 +446,12 @@
                     android:id="@+id/downArrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
                     android:layout_marginEnd="20dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_arrow_down"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/totalReview"/>
+                    app:layout_constraintTop_toTopOf="@id/latest"
+                    app:layout_constraintBottom_toBottomOf="@id/latest" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/reviewRecyclerView"
@@ -468,7 +469,7 @@
                     android:layout_width="179dp"
                     android:layout_height="40dp"
                     android:text="리뷰 작성하러 가기"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#9B9B9B"
                     android:layout_marginTop="30dp"
                     android:background="@drawable/btn_recipe_add"
@@ -536,7 +537,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -563,7 +564,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -604,7 +605,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -629,7 +630,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

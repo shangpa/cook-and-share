@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="냉장고 재료 관리"
-                android:textSize="16sp"
+                android:textSize="19sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="분석"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="재료추가"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="오늘의 날짜"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textStyle="bold"/>
 
             <View
@@ -143,7 +143,7 @@
                 android:background="@null"
                 android:backgroundTint="#9B9B9B"
                 android:hint="냉장고 속 재료를 검색해보세요"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#8A8F9C"
                 android:layout_marginTop="3dp"
@@ -192,7 +192,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="전체"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/white"/>
                 </LinearLayout>
 
@@ -211,7 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="냉장"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
                 </LinearLayout>
 
@@ -230,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="냉동"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
                 </LinearLayout>
 
@@ -249,7 +249,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="실온"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
@@ -274,7 +274,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="재료추가"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#A2A2A2"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="2dp"/>
@@ -316,7 +316,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체선택"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#454A52"
                     android:layout_marginStart="5dp"/>
             </LinearLayout>
@@ -332,7 +332,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="수정"
-                    android:textSize="13sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="2dp"
@@ -346,7 +346,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="삭제"
-                    android:textSize="13sp"/>
+                    android:textSize="16sp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -380,7 +380,7 @@
             android:layout_height="wrap_content"
             android:text="레시피 추천받기"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <!-- ✅ 탭바 -->
@@ -424,7 +424,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -450,7 +450,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -491,7 +491,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -517,7 +517,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

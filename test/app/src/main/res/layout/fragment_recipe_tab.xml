@@ -17,8 +17,8 @@
         <!-- 카테고리 최신순 -->
         <LinearLayout
             android:id="@+id/latest"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="57dp"
+            android:layout_height="28dp"
             android:orientation="horizontal"
             android:background="@drawable/btn_fridge_ct_ck"
             android:gravity="center">
@@ -28,15 +28,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="최신순"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="@color/white" />
         </LinearLayout>
 
         <!-- 카테고리 인기순 -->
         <LinearLayout
             android:id="@+id/popularity"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="57dp"
+            android:layout_height="28dp"
             android:orientation="horizontal"
             android:background="@drawable/btn_fridge_ct"
             android:gravity="center"
@@ -47,15 +47,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="인기순"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="#8A8F9C" />
         </LinearLayout>
 
         <!-- 카테고리 날짜순 -->
         <LinearLayout
             android:id="@+id/date"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="57dp"
+            android:layout_height="28dp"
             android:orientation="horizontal"
             android:background="@drawable/btn_fridge_ct"
             android:gravity="center"
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="날짜순"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="#8A8F9C" />
         </LinearLayout>
     </LinearLayout>

@@ -74,7 +74,7 @@
         android:layout_marginTop="72dp"
         android:text="나만의 레시피"
         android:textColor="#35A825"
-        android:textSize="16sp"
+        android:textSize="19sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
@@ -88,7 +88,7 @@
         android:layout_marginTop="72dp"
         android:text="를 만들어볼까요?"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="19sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/myOwnRecipe"
         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne" />
@@ -102,7 +102,7 @@
         android:layout_marginTop="10dp"
         android:text="어떤 방식으로 레시피를 작성하고 싶으신가요?"
         android:textColor="#2B2B2B"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/myOwnRecipe"
         app:layout_constraintTop_toBottomOf="@id/myOwnRecipe" />
@@ -124,7 +124,7 @@
             android:layout_marginStart="35dp"
             android:text="이미지 작성하기"
             android:textColor="#2B2B2B"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -134,11 +134,11 @@
             android:id="@+id/rigthArrowTwo"
             android:layout_width="7dp"
             android:layout_height="13dp"
-            android:layout_marginTop="3dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/ic_rigth_arrow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/imageWrite" />
+            app:layout_constraintTop_toTopOf="@id/imageWrite"
+            app:layout_constraintBottom_toBottomOf="@id/imageWrite"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -172,7 +172,7 @@
             android:layout_marginStart="35dp"
             android:text="동영상 작성하기"
             android:textColor="#2B2B2B"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -182,11 +182,11 @@
             android:id="@+id/rigthArrowThree"
             android:layout_width="7dp"
             android:layout_height="13dp"
-            android:layout_marginTop="3dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/ic_rigth_arrow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/videoWrite" />
+            app:layout_constraintTop_toTopOf="@id/videoWrite"
+            app:layout_constraintBottom_toBottomOf="@id/videoWrite" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,7 +220,7 @@
             android:layout_marginStart="35dp"
             android:text="이미지+동영상 작성하기"
             android:textColor="#2B2B2B"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -229,11 +229,11 @@
             android:id="@+id/rigthArrow"
             android:layout_width="7dp"
             android:layout_height="13dp"
-            android:layout_marginTop="3dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/ic_rigth_arrow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/bothWrite" />
+            app:layout_constraintTop_toTopOf="@id/bothWrite"
+            app:layout_constraintBottom_toBottomOf="@id/bothWrite" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -267,7 +267,7 @@
             android:layout_marginStart="35dp"
             android:text="1분 레시피 작성하기"
             android:textColor="#2B2B2B"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -277,10 +277,10 @@
             android:id="@+id/rigthArrowFour"
             android:layout_width="7dp"
             android:layout_height="13dp"
-            android:layout_marginTop="3dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/ic_rigth_arrow"
             app:layout_constraintTop_toTopOf="@id/oneMinuteWrite"
+            app:layout_constraintBottom_toBottomOf="@id/oneMinuteWrite"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -340,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -367,7 +367,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -408,7 +408,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -433,7 +433,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

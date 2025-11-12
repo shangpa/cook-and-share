@@ -92,7 +92,7 @@
                     android:text="사용자 닉네임"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:layout_marginEnd="8dp" />
 
                 <Button
@@ -100,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="팔로우"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:backgroundTint="#35A825"
                     android:textColor="@android:color/white"
                     android:paddingHorizontal="12dp"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="영상 제목"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textSize="17sp"
                 android:maxLines="2"
                 android:layout_marginTop="6dp" />
 
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:text="조회수 1.2만회"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 

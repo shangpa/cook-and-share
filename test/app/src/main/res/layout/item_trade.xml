@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="그릇 팔아요"
-                    android:textSize="14sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:maxLines="1"
                     android:ellipsize="end" />
@@ -67,6 +67,7 @@
                     android:layout_height="16dp"
                     android:src="@drawable/ic_location"
                     android:contentDescription="거리 아이콘"
+                    android:layout_marginTop="3dp"
                     android:layout_marginEnd="4dp"/>
 
                 <TextView
@@ -74,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="500m"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8A8A"/>
 
                 <TextView
@@ -82,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="|"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8A8A"
                     android:layout_marginHorizontal="5dp"/>
 
@@ -91,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="01.15"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8A8A"/>
 
                 <!-- 끌어올리기 드롭다운 메뉴 -->
@@ -111,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="끌어올리기"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#000000"
                         android:padding="6dp" />
                 </LinearLayout>
@@ -139,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="800 P"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textColor="#35A825"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -162,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="거래완료하기"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textColor="#8A8F9C"
             android:gravity="center"
             android:textStyle="bold"/>

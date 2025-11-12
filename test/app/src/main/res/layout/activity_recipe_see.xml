@@ -117,7 +117,7 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginStart="23dp"
                         android:text="채식"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#2B2B2B"
                         app:layout_constraintTop_toBottomOf="@id/riceImage"
                         app:layout_constraintStart_toStartOf="@id/riceImage" />
@@ -130,7 +130,7 @@
                         android:layout_marginTop="9dp"
                         android:layout_marginStart="0dp"
                         android:text="알배추전골과 구운 두부 버섯 샐러드"
-                        android:textSize="20sp"
+                        android:textSize="23sp"
                         android:textColor="#2B2B2B"
                         app:layout_constraintTop_toBottomOf="@id/vegetarianDiet"
                         app:layout_constraintStart_toStartOf="@id/vegetarianDiet" />
@@ -141,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="소금쇼"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#2B2B2B"
                         android:layout_marginTop="9dp"
                         android:layout_marginStart="0dp"
@@ -155,7 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="|"
-                        android:textSize="11sp"
+                        android:textSize="14sp"
                         android:textColor="#8A8A8A"
                         android:layout_marginTop="9dp"
                         android:layout_marginStart="6dp"
@@ -169,7 +169,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="01.17"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#2B2B2B"
                         android:layout_marginTop="9dp"
                         android:layout_marginStart="6dp"
@@ -183,7 +183,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="난이도"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#2B2B2B"
                         android:layout_marginTop="26dp"
                         android:layout_marginStart="0dp"
@@ -197,7 +197,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="초급"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#35A825"
                         android:layout_marginTop="26dp"
                         android:layout_marginStart="10dp"
@@ -211,7 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="시간"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#2B2B2B"
                         android:layout_marginTop="26dp"
                         android:layout_marginStart="28dp"
@@ -229,7 +229,7 @@
                         android:layout_toEndOf="@id/riceImage"
                         android:text="30분"
                         android:textColor="#35A825"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/time"
                         app:layout_constraintTop_toBottomOf="@id/saltShow" />
 
@@ -249,7 +249,6 @@
                         app:alignItems="flex_start"
                         android:orientation="horizontal" />
 
-
                     <!-- 태그 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarOne"
@@ -267,7 +266,7 @@
                         android:layout_marginTop="20dp"
                         android:text="재료"
                         android:textColor="#000000"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarOne"
                         app:layout_constraintStart_toStartOf="parent"
@@ -282,7 +281,7 @@
                         android:layout_marginTop="13dp"
                         android:text="이전 스텝으로 가기"
                         android:textColor="#FFFFFF"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/voiceBubble"
                         app:layout_constraintTop_toTopOf="@id/voiceBubble"
                         android:visibility="gone" />
@@ -296,7 +295,7 @@
                         android:layout_marginTop="5dp"
                         android:text="이전으로"
                         android:textColor="#FFFFFF"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         app:layout_constraintStart_toStartOf="@id/beforeStep"
                         app:layout_constraintTop_toBottomOf="@id/beforeStep"
                         android:visibility="gone" />
@@ -320,7 +319,7 @@
                         android:layout_marginTop="13dp"
                         android:text="다음 스텝으로 가기"
                         android:textColor="#FFFFFF"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         app:layout_constraintEnd_toEndOf="@id/voiceBubble"
                         app:layout_constraintTop_toTopOf="@id/voiceBubble" />
 
@@ -333,7 +332,7 @@
                         android:layout_marginTop="5dp"
                         android:text="다음으로"
                         android:textColor="#FFFFFF"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         app:layout_constraintEnd_toEndOf="@id/nextStep"
                         app:layout_constraintTop_toBottomOf="@id/nextStep" />
 
@@ -410,12 +409,11 @@
                     android:id="@+id/tapFixBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="0dp"
                     android:src="@drawable/bar_tap_bg"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <!-- 끝내기 버튼 -->
                 <androidx.appcompat.widget.AppCompatButton
@@ -424,7 +422,7 @@
                     android:layout_height="45dp"
                     android:text="끝내기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:textColor="#A1A9AD"
                     android:textStyle="bold"
                     android:background="@drawable/btn_step_recipe_see_end"
@@ -441,7 +439,7 @@
                     android:layout_height="45dp"
                     android:text="다음으로"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     android:background="@drawable/btn_step_recipe_see_next"

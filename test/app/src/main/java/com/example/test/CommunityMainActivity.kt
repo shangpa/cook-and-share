@@ -263,7 +263,7 @@ class CommunityMainActivity : AppCompatActivity() {
                 text = post.content.let {
                     if (it.length > 20) it.take(20) + "..." else it
                 }
-                textSize = 13f
+                textSize = 16f
                 setTextColor(Color.parseColor("#2B2B2B"))
                 setPadding(0, dp(11), 0, 0)
             }
@@ -276,13 +276,13 @@ class CommunityMainActivity : AppCompatActivity() {
 
             val authorText = TextView(context).apply {
                 text = post.writer
-                textSize = 11f
+                textSize = 14f
                 setTextColor(Color.parseColor("#8A8A8A"))
             }
 
             val divider = TextView(context).apply {
                 text = "|"
-                textSize = 11f
+                textSize = 14f
                 setTextColor(Color.parseColor("#8A8A8A"))
                 setPadding(dp(6), 0, dp(6), 0)
             }
@@ -295,7 +295,7 @@ class CommunityMainActivity : AppCompatActivity() {
                         else it
                     } catch (e: Exception) { it }
                 }
-                textSize = 11f
+                textSize = 14f
                 setTextColor(Color.parseColor("#8A8A8A"))
             }
 
@@ -402,7 +402,7 @@ class CommunityMainActivity : AppCompatActivity() {
                 text = post.content.let {
                     if (it.length > 20) it.take(20) + "..." else it
                 }
-                textSize = 13f
+                textSize = 16f
                 setTextColor(Color.parseColor("#2B2B2B"))
                 setPadding(0, dp(11), 0, 0)
             }
@@ -415,13 +415,13 @@ class CommunityMainActivity : AppCompatActivity() {
 
             val authorText = TextView(context).apply {
                 text = post.writer
-                textSize = 11f
+                textSize = 14f
                 setTextColor(Color.parseColor("#8A8A8A"))
             }
 
             val divider = TextView(context).apply {
                 text = "|"
-                textSize = 11f
+                textSize = 14f
                 setTextColor(Color.parseColor("#8A8A8A"))
                 setPadding(dp(6), 0, dp(6), 0)
             }
@@ -433,7 +433,7 @@ class CommunityMainActivity : AppCompatActivity() {
                         else it
                     } catch (e: Exception) { it }
                 }
-                textSize = 11f
+                textSize = 14f
                 setTextColor(Color.parseColor("#8A8A8A"))
             }
 
@@ -527,7 +527,7 @@ class CommunityMainActivity : AppCompatActivity() {
                 text = post.content.let {
                     if (it.length > 35) it.take(35) + "..." else it
                 }
-                textSize = 12f
+                textSize = 15f
                 setTextColor(Color.parseColor("#2B2B2B"))
                 setPadding(0, dp(11), 0, 0)
                 maxLines = 2

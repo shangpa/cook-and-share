@@ -51,7 +51,7 @@
                     android:layout_marginStart="20dp"
                     android:text="재료 추가하기"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/backArrow"
                     app:layout_constraintTop_toTopOf="@id/backArrow"
@@ -116,7 +116,7 @@
                         android:layout_marginTop="11dp"
                         android:text="가지"
                         android:textColor="#000000"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@id/materialAddRect"
                         app:layout_constraintEnd_toEndOf="@id/materialAddRect"
@@ -130,7 +130,7 @@
                         android:layout_marginTop="8dp"
                         android:text="채소류"
                         android:textColor="#454A52"
-                        android:textSize="11sp"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@id/materialAddRect"
                         app:layout_constraintEnd_toEndOf="@id/materialAddRect"
                         app:layout_constraintTop_toBottomOf="@id/tvIngredientName"/>
@@ -155,7 +155,7 @@
                         android:layout_marginStart="25dp"
                         android:text="보관장소"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/materialAddRect"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo"/>
 
@@ -168,7 +168,7 @@
                         android:layout_marginStart="25dp"
                         android:text="냉장"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/storagePlace"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwo"/>
 
@@ -191,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:hint="수량"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:gravity="center"
                         android:layout_marginTop="45dp"
                         android:backgroundTint="#A1A9AD"
@@ -217,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
                         android:text="단위"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#2B2B2B"
                         app:layout_constraintStart_toEndOf="@id/number"
                         app:layout_constraintTop_toTopOf="@id/number"
@@ -232,7 +232,7 @@
                         android:layout_marginTop="45dp"
                         android:text="구매일자"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/storagePlace"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThree"/>
 
@@ -241,7 +241,7 @@
                         android:id="@+id/purchaseDateDropBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="43dp"
+                        android:layout_marginTop="45dp"
                         android:layout_marginStart="1dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_fridge_dropbox"
@@ -254,7 +254,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="날짜 입력 ( 예시. 0000-00-00 )"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:gravity="center"
                         android:backgroundTint="#A1A9AD"
                         android:background="@null"
@@ -281,7 +281,7 @@
                         android:layout_height="50dp"
                         android:text="등록하기"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textColor="#A1A9AD"
                         android:layout_marginBottom="47dp"
                         android:background="@drawable/btn_number_of_people"
@@ -337,7 +337,7 @@
                         android:layout_height="wrap_content"
                         android:text="동네주방"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginBottom="4dp" />
                 </LinearLayout>
 
@@ -363,7 +363,7 @@
                         android:layout_height="wrap_content"
                         android:text="레시피"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="6dp"/>
                 </LinearLayout>
 
@@ -404,7 +404,7 @@
                         android:layout_height="wrap_content"
                         android:text="커뮤니티"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
@@ -430,7 +430,7 @@
                         android:layout_height="wrap_content"
                         android:text="냉장고"
                         android:textColor="#2B2B2B"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="4dp"/>
 
                 </LinearLayout>

@@ -458,7 +458,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 val materialTextView = TextView(materialContainer.context).apply {
                     id = R.id.tvMaterialName           // ★ checkTabs가 찾는 id 필수
                     text = materialName
-                    textSize = 13f
+                    textSize = 16f
                     setTextColor(Color.parseColor("#2B2B2B"))
                 }
 
@@ -467,7 +467,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                     setText(quantity)
 
                     inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-                    textSize = 13f
+                    textSize = 16f
                     setTextColor(Color.parseColor("#2B2B2B"))
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -508,6 +508,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 findViewById<ConstraintLayout>(R.id.recipeWriteCategory).visibility = View.GONE
                 findViewById<View>(R.id.divideRectangleBarTwo).visibility = View.GONE
                 findViewById<View>(R.id.divideRectangleBarTwentythree).visibility = View.GONE
+                findViewById<View>(R.id.barCategory).visibility = View.GONE
 
                 // 대표이미지 로드(빈값/절대경로 대비)
                 val representativeImage = findViewById<ImageView>(R.id.representativeImage)
@@ -2554,7 +2555,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             // STEP 제목
             val stepTitle = TextView(context).apply {
                 text = "STEP ${index + 1}"
-                textSize = 15f
+                textSize = 18f
                 setTextColor(Color.BLACK)
                 setPadding(20, 26, 0, 0)
             }
@@ -2583,7 +2584,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             // 설명 텍스트
             val description = TextView(context).apply {
                 text = step.description
-                textSize = 13f
+                textSize = 16f
                 setTextColor(Color.BLACK)
                 setPadding(20, 26, 20, 0)
             }
@@ -2594,7 +2595,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
             if (step.timeInSeconds > 0) {
                 val timerText = TextView(context).apply {
                     text = "타이머"
-                    textSize = 15f
+                    textSize = 18f
                     setTextColor(Color.BLACK)
                     setPadding(20, 20, 0, 0)
                 }
@@ -2605,7 +2606,7 @@ class RecipeWriteBothActivity : AppCompatActivity() {
                 )
                 val timeValue = TextView(context).apply {
                     text = timeFormatted
-                    textSize = 32f
+                    textSize = 35f
                     setTextColor(Color.parseColor("#2B2B2B"))
                     setPadding(0, 10, 30, 0)
                     gravity = Gravity.END

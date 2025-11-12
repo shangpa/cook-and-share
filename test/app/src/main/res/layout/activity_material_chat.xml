@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="채팅"
-            android:textSize="16sp"
+            android:textSize="19sp"
             android:textStyle="bold"/>
     </LinearLayout>
 
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#FFFFFF"/>
             </LinearLayout>
 
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="판매"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8F9C"
                     android:layout_marginEnd="4dp" />
             </LinearLayout>
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="구매"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8F9C"
                     android:layout_marginEnd="4dp" />
             </LinearLayout>
@@ -125,10 +125,11 @@
                 android:layout_marginLeft="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="97dp"
                     android:layout_height="wrap_content"
                     android:text="안 읽은 채팅방"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
+                    android:gravity="center"
                     android:textColor="#8A8F9C"
                     android:layout_marginEnd="4dp" />
             </LinearLayout>
@@ -194,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -220,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -261,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -286,7 +287,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

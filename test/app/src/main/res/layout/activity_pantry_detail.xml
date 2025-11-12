@@ -54,7 +54,7 @@
                     android:layout_marginStart="20dp"
                     android:text="냉장고 관리"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/backArrow"
                     app:layout_constraintTop_toTopOf="@id/backArrow"
@@ -80,10 +80,10 @@
                     android:layout_height="wrap_content"
                     android:text="분석"
                     android:textColor="#2B2B2B"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:layout_marginTop="2.5dp"
-                    android:layout_marginStart="2dp"
                     app:layout_constraintStart_toStartOf="@id/analysisIcon"
+                    app:layout_constraintEnd_toEndOf="@id/analysisIcon"
                     app:layout_constraintTop_toBottomOf="@id/analysisIcon" />
 
                 <!-- 더하기 버튼 -->
@@ -106,9 +106,9 @@
                     android:layout_height="wrap_content"
                     android:text="추가"
                     android:textColor="#2B2B2B"
-                    android:textSize="11sp"
-                    android:layout_marginStart="5dp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@id/plusIcon"
+                    app:layout_constraintEnd_toEndOf="@id/plusIcon"
                     app:layout_constraintTop_toBottomOf="@id/plusIcon" />
 
                 <!-- 구분 바 -->
@@ -143,7 +143,7 @@
                     android:layout_marginStart="20dp"
                     android:text="메인 냉장고"
                     android:textColor="#2B2B2B"
-                    android:textSize="18sp"
+                    android:textSize="21sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -165,7 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="냉장고 속 재료로 요리해볼까요?"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="24dp"
                     android:backgroundTint="#9B9B9B"
                     android:background="@null"
@@ -192,7 +192,7 @@
                     android:layout_width="53dp"
                     android:layout_height="27dp"
                     android:text="전체"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     android:layout_marginTop="17dp"
@@ -207,7 +207,7 @@
                     android:layout_width="53dp"
                     android:layout_height="27dp"
                     android:text="냉장"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8F9C"
                     android:textStyle="bold"
                     android:layout_marginStart="7dp"
@@ -222,7 +222,7 @@
                     android:layout_width="53dp"
                     android:layout_height="27dp"
                     android:text="냉동"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8F9C"
                     android:textStyle="bold"
                     android:layout_marginStart="7dp"
@@ -237,7 +237,7 @@
                     android:layout_width="53dp"
                     android:layout_height="27dp"
                     android:text="실온"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#8A8F9C"
                     android:textStyle="bold"
                     android:layout_marginStart="7dp"
@@ -277,7 +277,7 @@
                         android:layout_marginStart="3dp"
                         android:text="전체 선택"
                         android:textColor="#454A52"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/check"
                         app:layout_constraintTop_toTopOf="@id/check"
                         app:layout_constraintBottom_toBottomOf="@id/check" />
@@ -290,7 +290,7 @@
                         android:layout_marginEnd="9dp"
                         android:text="수정"
                         android:textColor="#454A52"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toStartOf="@id/divideRectangleBarTwo"
                         app:layout_constraintTop_toTopOf="@id/allCheck"
                         app:layout_constraintBottom_toBottomOf="@id/allCheck" />
@@ -313,7 +313,7 @@
                         android:layout_height="wrap_content"
                         android:text="삭제"
                         android:textColor="#454A52"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/modification"
                         app:layout_constraintBottom_toBottomOf="@id/modification" />
@@ -442,12 +442,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-
                 <!-- 요리 뒤에 하얀 배경 -->
                 <ImageView
                     android:id="@+id/cookBackground"
                     android:layout_width="53dp"
-                    android:layout_height="73dp"
+                    android:layout_height="76dp"
                     android:elevation="8dp"
                     android:background="@drawable/ic_tap_circle"
                     android:layout_marginEnd="20dp"
@@ -483,10 +482,10 @@
                     android:id="@+id/cook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="8dp"
                     android:text="요리"
                     android:textColor="#000000"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:textStyle="bold"
                     android:elevation="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/cookBackground"
@@ -539,7 +538,7 @@
                         android:layout_height="wrap_content"
                         android:text="동네주방"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginBottom="4dp" />
                 </LinearLayout>
 
@@ -565,7 +564,7 @@
                         android:layout_height="wrap_content"
                         android:text="레시피"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="6dp"/>
                 </LinearLayout>
 
@@ -606,7 +605,7 @@
                         android:layout_height="wrap_content"
                         android:text="커뮤니티"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
@@ -632,7 +631,7 @@
                         android:layout_height="wrap_content"
                         android:text="냉장고"
                         android:textColor="#2B2B2B"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="4dp"/>
 
                 </LinearLayout>

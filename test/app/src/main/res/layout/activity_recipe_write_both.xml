@@ -40,9 +40,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"  />
+                    app:layout_constraintTop_toTopOf="@id/writeReview"
+                    app:layout_constraintBottom_toBottomOf="@id/writeReview"/>
 
                 <!-- 레시피 작성 -->
                 <TextView
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="레시피 작성"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textColor="#000000"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent"
@@ -61,11 +61,11 @@
                 <!-- 임시저장 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/temporaryStorage"
-                    android:layout_width="69dp"
-                    android:layout_height="25dp"
+                    android:layout_width="75dp"
+                    android:layout_height="31dp"
                     android:text="임시저장"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="#FFFFFF"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/btn_step_recipe_see_next"
@@ -97,13 +97,13 @@
                 <!-- 타이틀 -->
                 <TextView
                     android:id="@+id/one"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="14dp"
                     android:text="타이틀"
                     android:textColor="#2B2B2B"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -112,12 +112,12 @@
                 <!-- 재료 -->
                 <TextView
                     android:id="@+id/two"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="재  료"
                     android:textColor="#A1A9AD"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/one"
                     app:layout_constraintTop_toTopOf="parent"
@@ -126,12 +126,12 @@
                 <!-- 대체재료 -->
                 <TextView
                     android:id="@+id/three"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="대체재료"
                     android:textColor="#A1A9AD"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/two"
                     app:layout_constraintTop_toTopOf="parent"
@@ -140,12 +140,12 @@
                 <!-- 처리방법 -->
                 <TextView
                     android:id="@+id/four"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="처리방법"
                     android:textColor="#A1A9AD"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/three"
                     app:layout_constraintTop_toTopOf="parent"
@@ -154,12 +154,12 @@
                 <!-- 조리영상 -->
                 <TextView
                     android:id="@+id/five"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="조리영상"
                     android:textColor="#A1A9AD"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/four"
                     app:layout_constraintTop_toTopOf="parent"
@@ -168,12 +168,12 @@
                 <!-- 조리순서 -->
                 <TextView
                     android:id="@+id/six"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="조리순서"
                     android:textColor="#A1A9AD"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/five"
                     app:layout_constraintTop_toTopOf="parent"
@@ -182,13 +182,13 @@
                 <!-- 세부설정 -->
                 <TextView
                     android:id="@+id/seven"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="14dp"
                     android:text="세부설정"
                     android:textColor="#A1A9AD"
-                    android:textSize="12sp"
+                    android:textSize="14dp"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/six"
                     app:layout_constraintTop_toTopOf="parent"
@@ -321,7 +321,7 @@
                     android:layout_marginStart="23dp"
                     android:text="레시피의"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -334,7 +334,7 @@
                     android:layout_marginStart="23dp"
                     android:text="카테고리와 제목을 입력해주세요"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recipe"/>
 
@@ -356,7 +356,7 @@
                     android:layout_marginStart="41dp"
                     android:text="카테고리"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -368,7 +368,7 @@
                     android:layout_marginTop="1dp"
                     android:text="한식"
                     android:textColor="#A1A9AD"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/divideRectangleBar"
                     app:layout_constraintEnd_toEndOf="@id/divideRectangleBar"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -376,7 +376,7 @@
                 <!-- 한식 아래 바 -->
                 <View
                     android:id="@+id/divideRectangleBar"
-                    android:layout_width="43dp"
+                    android:layout_width="46dp"
                     android:layout_height="1dp"
                     android:background="@drawable/bar_number_of_people"
                     android:layout_marginEnd="52dp"
@@ -411,7 +411,7 @@
                         android:layout_marginStart="41dp"
                         android:text="레시피 제목"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -421,7 +421,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="레시피 제목을 입력해주세요"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:gravity="center"
                         android:layout_marginTop="0dp"
                         android:backgroundTint="#A1A9AD"
@@ -434,7 +434,7 @@
                     <!-- 레시피 제목을 입력해주세요 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarThree"
-                        android:layout_width="165dp"
+                        android:layout_width="210dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="28dp"
@@ -474,11 +474,11 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/beforeButton"
-                    android:layout_width="171dp"
+                    android:layout_width="165dp"
                     android:layout_height="50dp"
                     android:text="이전으로"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#A1A9AD"
                     android:layout_marginStart="27dp"
                     android:background="@drawable/btn_mypage_recipe_more"
@@ -489,11 +489,11 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/continueButton"
-                    android:layout_width="171dp"
+                    android:layout_width="165dp"
                     android:layout_height="50dp"
                     android:text="계속하기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#A1A9AD"
                     android:layout_marginEnd="27dp"
                     android:background="@drawable/btn_number_of_people"
@@ -538,7 +538,7 @@
                         android:layout_marginTop="25dp"
                         android:text="레시피를 임시저장 하시겠습니까?"
                         android:textColor="#000000"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/recipeRegisterBoxTwo"/>
@@ -547,10 +547,10 @@
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/cancelThree"
                         android:layout_width="115dp"
-                        android:layout_height="33dp"
+                        android:layout_height="35dp"
                         android:text="취소"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textSize="11sp"
+                        android:textSize="14sp"
                         android:textColor="#000000"
                         android:layout_marginStart="20dp"
                         android:layout_marginBottom="12dp"
@@ -563,10 +563,10 @@
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/store"
                         android:layout_width="115dp"
-                        android:layout_height="33dp"
+                        android:layout_height="35dp"
                         android:text="저장"
                         android:fontFamily="@font/pretendard_medium"
-                        android:textSize="11sp"
+                        android:textSize="14sp"
                         android:textColor="#FFFFFF"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="12dp"
@@ -620,7 +620,7 @@
                             android:layout_height="wrap_content"
                             android:text="동네주방"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginBottom="4dp" />
                     </LinearLayout>
 
@@ -647,7 +647,7 @@
                             android:layout_height="wrap_content"
                             android:text="레시피"
                             android:textColor="#2B2B2B"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
 
@@ -688,7 +688,7 @@
                             android:layout_height="wrap_content"
                             android:text="커뮤니티"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
 
@@ -713,7 +713,7 @@
                             android:layout_height="wrap_content"
                             android:text="냉장고"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="4dp"/>
 
                     </LinearLayout>
@@ -745,7 +745,7 @@
                     android:layout_marginTop="35dp"
                     android:text=""
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -758,7 +758,7 @@
                     android:layout_marginTop="3dp"
                     android:text="레시피의"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/materialKoreanFood" />
 
@@ -771,7 +771,7 @@
                     android:layout_marginTop="3dp"
                     android:text="재료"
                     android:textColor="#35A825"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/foodName" />
@@ -785,7 +785,7 @@
                     android:layout_marginTop="0dp"
                     android:text="를 입력해주세요"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toEndOf="@id/myOwnRecipe"
                     app:layout_constraintTop_toTopOf="@id/myOwnRecipe" />
 
@@ -809,7 +809,7 @@
                     <View
                         android:id="@+id/searchBox"
                         android:layout_width="371dp"
-                        android:layout_height="45dp"
+                        android:layout_height="49dp"
                         android:background="@drawable/ic_fridge_search"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -821,7 +821,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="냉장고 속 재료로 요리해볼까요?"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:layout_marginStart="24dp"
                         android:backgroundTint="#9B9B9B"
                         android:background="@null"
@@ -932,7 +932,7 @@
                     android:layout_marginTop="35dp"
                     android:text=""
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -945,7 +945,7 @@
                     android:layout_marginTop="3dp"
                     android:text="레시피의"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/replaceMaterialKoreanFood" />
 
@@ -958,7 +958,7 @@
                     android:layout_marginTop="3dp"
                     android:text="대체 가능한 재료"
                     android:textColor="#35A825"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/replaceMaterialfoodName" />
@@ -972,7 +972,7 @@
                     android:layout_marginTop="0dp"
                     android:text="를 입력해주세요"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toEndOf="@id/replacePossibleMaterial"
                     app:layout_constraintTop_toTopOf="@id/replacePossibleMaterial" />
 
@@ -1003,7 +1003,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="재료명"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1017,7 +1017,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="대체 가능한 재료명"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="200dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1031,7 +1031,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_delete"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -1056,7 +1056,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="재료명"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1070,7 +1070,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="대체 가능한 재료명"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="200dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1084,7 +1084,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_delete"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -1106,11 +1106,11 @@
                 <!-- 추가하기 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/replaceMaterialAddFixButton"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
                     android:text="추가하기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#9B9B9B"
                     android:layout_marginTop="37dp"
                     android:background="@drawable/btn_recipe_add"
@@ -1164,7 +1164,7 @@
                     android:layout_marginTop="35dp"
                     android:text=""
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -1177,7 +1177,7 @@
                     android:layout_marginTop="3dp"
                     android:text="레시피의"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/handlingMethodKoreanFood" />
 
@@ -1190,7 +1190,7 @@
                     android:layout_marginTop="3dp"
                     android:text="사용된 재료 처리 방법"
                     android:textColor="#35A825"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/handlingMethodFoodName" />
@@ -1204,7 +1204,7 @@
                     android:layout_marginTop="0dp"
                     android:text="를 입력해주세요"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toEndOf="@id/handlingMethodUsedMethod"
                     app:layout_constraintTop_toTopOf="@id/handlingMethodUsedMethod" />
 
@@ -1235,7 +1235,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="재료명"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1249,7 +1249,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="처리 방법"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="200dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1263,7 +1263,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_delete"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -1288,7 +1288,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="재료명"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1302,7 +1302,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="처리 방법"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="200dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#A1A9AD"
@@ -1316,7 +1316,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_delete"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -1338,11 +1338,11 @@
                 <!-- 추가하기 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/handlingMethodAddFixButton"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
                     android:text="추가하기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#9B9B9B"
                     android:layout_marginTop="37dp"
                     android:background="@drawable/btn_recipe_add"
@@ -1408,7 +1408,7 @@
                             android:layout_marginTop="35dp"
                             android:text="한식"
                             android:textColor="#2B2B2B"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -1421,7 +1421,7 @@
                             android:layout_marginTop="3dp"
                             android:text="레시피의"
                             android:textColor="#2B2B2B"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/cookOrderKoreanFood" />
 
@@ -1434,7 +1434,7 @@
                             android:layout_marginTop="3dp"
                             android:text="조리 순서"
                             android:textColor="#35A825"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/cookOrderFoodName" />
@@ -1448,7 +1448,7 @@
                             android:layout_marginTop="0dp"
                             android:text="를"
                             android:textColor="#000000"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             app:layout_constraintStart_toEndOf="@id/cookOrderCookOder"
                             app:layout_constraintTop_toTopOf="@id/cookOrderCookOder" />
 
@@ -1461,7 +1461,7 @@
                             android:layout_marginTop="3dp"
                             android:text="이미지"
                             android:textColor="#35A825"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="@id/is"
                             app:layout_constraintTop_toBottomOf="@id/cookOrderFoodName" />
@@ -1475,7 +1475,7 @@
                             android:layout_marginTop="0dp"
                             android:text="로 입력해주세요"
                             android:textColor="#000000"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             app:layout_constraintStart_toEndOf="@id/cookOrderImage"
                             app:layout_constraintTop_toTopOf="@id/cookOrderCookOder" />
 
@@ -1503,7 +1503,7 @@
                                 android:layout_marginStart="23dp"
                                 android:text="STEP 1"
                                 android:textColor="#2B2B2B"
-                                android:textSize="15sp"
+                                android:textSize="18sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -1556,7 +1556,7 @@
                                 android:layout_marginStart="23dp"
                                 android:text="1-1"
                                 android:textColor="#2B2B2B"
-                                android:textSize="13sp"
+                                android:textSize="16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -1566,7 +1566,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:hint="레시피를 입력해주세요."
-                                android:textSize="13sp"
+                                android:textSize="16sp"
                                 android:layout_marginStart="7dp"
                                 android:backgroundTint="#A1A9AD"
                                 android:background="@null"
@@ -1606,11 +1606,11 @@
                             <!-- 내용 추가하기 -->
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/contentAdd"
-                                android:layout_width="131dp"
-                                android:layout_height="35dp"
+                                android:layout_width="139dp"
+                                android:layout_height="40dp"
                                 android:text="내용 추가하기"
                                 android:fontFamily="@font/pretendard_medium"
-                                android:textSize="12sp"
+                                android:textSize="15sp"
                                 android:textColor="#9B9B9B"
                                 android:layout_marginEnd="7dp"
                                 android:background="@drawable/btn_recipe_add"
@@ -1621,11 +1621,11 @@
                             <!-- 타이머 추가하기 -->
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/timerAdd"
-                                android:layout_width="131dp"
-                                android:layout_height="35dp"
+                                android:layout_width="139dp"
+                                android:layout_height="40dp"
                                 android:text="타이머 추가하기"
                                 android:fontFamily="@font/pretendard_medium"
-                                android:textSize="12sp"
+                                android:textSize="15sp"
                                 android:textColor="#9B9B9B"
                                 android:layout_marginEnd="20dp"
                                 android:background="@drawable/btn_recipe_add"
@@ -1653,7 +1653,7 @@
                             android:layout_marginStart="20dp"
                             android:text="타이머"
                             android:textColor="#2B2B2B"
-                            android:textSize="15sp"
+                            android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -1663,7 +1663,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="00"
-                            android:textSize="32sp"
+                            android:textSize="35sp"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="21dp"
                             android:textColor="#2B2B2B"
@@ -1690,7 +1690,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="00"
-                            android:textSize="32sp"
+                            android:textSize="35sp"
                             android:layout_marginStart="4dp"
                             android:layout_marginTop="21dp"
                             android:textColor="#2B2B2B"
@@ -1707,7 +1707,7 @@
                             android:layout_marginTop="23dp"
                             android:text="시작"
                             android:textColor="#A1A9AD"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             app:layout_constraintEnd_toStartOf="@id/middle"
                             app:layout_constraintTop_toTopOf="@id/time"/>
 
@@ -1720,7 +1720,7 @@
                             android:layout_marginTop="23dp"
                             android:text="|"
                             android:textColor="#A1A9AD"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             app:layout_constraintEnd_toStartOf="@id/timerDelete"
                             app:layout_constraintTop_toTopOf="@id/time"/>
 
@@ -1733,7 +1733,7 @@
                             android:layout_marginTop="23dp"
                             android:text="삭제"
                             android:textColor="#A1A9AD"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/time"/>
 
@@ -1787,11 +1787,11 @@
                         <!-- 저장하기 -->
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/storeBtn"
-                            android:layout_width="131dp"
-                            android:layout_height="35dp"
+                            android:layout_width="139dp"
+                            android:layout_height="40dp"
                             android:text="저장하기"
                             android:fontFamily="@font/pretendard_medium"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#9B9B9B"
                             android:background="@drawable/btn_recipe_add"
                             android:stateListAnimator="@null"
@@ -1836,7 +1836,7 @@
                     android:layout_height="50dp"
                     android:text="끝내기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#9B9B9B"
                     android:layout_marginStart="27dp"
                     android:background="@drawable/btn_mypage_recipe_more"
@@ -1852,7 +1852,7 @@
                     android:layout_height="50dp"
                     android:text="STEP 추가하기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="#A1A9AD"
                     android:layout_marginEnd="27dp"
                     android:background="@drawable/btn_number_of_people"
@@ -1906,7 +1906,7 @@
                             android:layout_height="wrap_content"
                             android:text="동네주방"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginBottom="4dp" />
                     </LinearLayout>
 
@@ -1933,7 +1933,7 @@
                             android:layout_height="wrap_content"
                             android:text="레시피"
                             android:textColor="#2B2B2B"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
 
@@ -1974,7 +1974,7 @@
                             android:layout_height="wrap_content"
                             android:text="커뮤니티"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
 
@@ -1999,7 +1999,7 @@
                             android:layout_height="wrap_content"
                             android:text="냉장고"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="4dp"/>
 
                     </LinearLayout>
@@ -2031,7 +2031,7 @@
                     android:layout_marginTop="35dp"
                     android:text=""
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -2044,7 +2044,7 @@
                     android:layout_marginTop="3dp"
                     android:text="레시피의"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cookVideoKoreanFood" />
 
@@ -2057,7 +2057,7 @@
                     android:layout_marginTop="3dp"
                     android:text="레시피 동영상"
                     android:textColor="#35A825"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cookVideoFoodName" />
@@ -2071,7 +2071,7 @@
                     android:layout_marginTop="0dp"
                     android:text="를 입력해주세요"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toEndOf="@id/cookVideoRecipeVideo"
                     app:layout_constraintTop_toTopOf="@id/cookVideoRecipeVideo" />
 
@@ -2092,7 +2092,7 @@
                     android:layout_marginStart="23dp"
                     android:text="동영상 업로드하기"
                     android:textColor="#2B2B2B"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -2163,7 +2163,7 @@
                     android:layout_marginStart="23dp"
                     android:text=""
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -2176,7 +2176,7 @@
                     android:layout_marginTop="3dp"
                     android:text="레시피의"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/detailSettleKoreanFood" />
 
@@ -2189,7 +2189,7 @@
                     android:layout_marginTop="3dp"
                     android:text="마지막 단계예요!"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/detailSettleFoodName"/>
 
@@ -2210,7 +2210,7 @@
                     android:layout_marginStart="23dp"
                     android:text="대표 사진"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -2262,7 +2262,7 @@
                     android:layout_marginStart="23dp"
                     android:text="난이도"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -2274,7 +2274,7 @@
                     android:layout_marginTop="0dp"
                     android:text="초급"
                     android:textColor="#A1A9AD"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/divideRectangleBarNineteen"
                     app:layout_constraintEnd_toEndOf="@+id/divideRectangleBarNineteen"
                     app:layout_constraintTop_toTopOf="@id/level" />
@@ -2282,7 +2282,7 @@
                 <!-- 초급 아래 바 -->
                 <View
                     android:id="@+id/divideRectangleBarNineteen"
-                    android:layout_width="43dp"
+                    android:layout_width="49dp"
                     android:layout_height="1dp"
                     android:background="@drawable/bar_number_of_people"
                     android:layout_marginEnd="37dp"
@@ -2321,7 +2321,7 @@
                     android:layout_marginStart="20dp"
                     android:text="소요시간"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -2331,7 +2331,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="0"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="#A1A9AD"
@@ -2343,7 +2343,7 @@
                 <!-- 0 바 -->
                 <View
                     android:id="@+id/divideRectangleBarTwenty"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="1dp"
                     android:background="@drawable/bar_number_of_people"
                     android:layout_marginEnd="3dp"
@@ -2360,7 +2360,7 @@
                     android:layout_marginEnd="3dp"
                     android:text="시간"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@id/divideRectangleBartTwentyone"
                     app:layout_constraintTop_toTopOf="@id/requiredTime" />
 
@@ -2370,7 +2370,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="30"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="#A1A9AD"
@@ -2382,7 +2382,7 @@
                 <!-- 30 바 -->
                 <View
                     android:id="@+id/divideRectangleBartTwentyone"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="1dp"
                     android:background="@drawable/bar_number_of_people"
                     android:layout_marginEnd="3dp"
@@ -2399,7 +2399,7 @@
                     android:layout_marginEnd="20dp"
                     android:text="분"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/requiredTime" />
 
@@ -2412,7 +2412,7 @@
                     android:layout_marginStart="20dp"
                     android:text="태그"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/requiredTime" />
 
@@ -2422,7 +2422,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="태그명을 입력해주세요"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="#A1A9AD"
@@ -2434,7 +2434,7 @@
                 <!-- 태그명을 입력해주세요 아래 바 -->
                 <View
                     android:id="@+id/divideRectangleBarTwentytwo"
-                    android:layout_width="175dp"
+                    android:layout_width="181dp"
                     android:layout_height="1dp"
                     android:background="@drawable/bar_number_of_people"
                     android:layout_marginEnd="20dp"
@@ -2473,7 +2473,7 @@
                         android:layout_marginStart="20dp"
                         android:text="작성한 내용을 확인해보세요!"
                         android:textColor="#2B2B2B"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -2486,7 +2486,7 @@
                         android:layout_marginStart="20dp"
                         android:text="기본정보"
                         android:textColor="#2B2B2B"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/contentCheckCheck" />
 
@@ -2510,7 +2510,7 @@
                         android:layout_marginStart="20dp"
                         android:text="대표사진"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarTwentysix" />
 
@@ -2537,7 +2537,7 @@
                         android:layout_marginStart="20dp"
                         android:text="카테고리"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/representativeImage" />
 
@@ -2549,7 +2549,7 @@
                         android:layout_marginTop="30dp"
                         android:text=""
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyseven"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyseven"
                         app:layout_constraintTop_toBottomOf="@id/representativeImage" />
@@ -2557,7 +2557,7 @@
                     <!-- 한식 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentyseven"
-                        android:layout_width="43dp"
+                        android:layout_width="48dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="20dp"
@@ -2574,7 +2574,7 @@
                         android:layout_marginStart="20dp"
                         android:text="레시피 제목"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/contentCheckCategory" />
 
@@ -2586,7 +2586,7 @@
                         android:layout_marginTop="0dp"
                         android:text="소세지야채볶음"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentyeight"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentyeight"
                         app:layout_constraintTop_toTopOf="@id/contentCheckRecipeTitle" />
@@ -2594,7 +2594,7 @@
                     <!-- 소세지야채볶음 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentyeight"
-                        android:layout_width="95dp"
+                        android:layout_width="108dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="20dp"
@@ -2611,7 +2611,7 @@
                         android:layout_marginStart="20dp"
                         android:text="난이도"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/contentCheckRecipeTitle" />
 
@@ -2623,7 +2623,7 @@
                         android:layout_marginTop="0dp"
                         android:text="초급"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarTwentynine"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarTwentynine"
                         app:layout_constraintTop_toTopOf="@id/contentCheckLevel" />
@@ -2631,7 +2631,7 @@
                     <!-- 초급 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarTwentynine"
-                        android:layout_width="43dp"
+                        android:layout_width="47dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="20dp"
@@ -2648,7 +2648,7 @@
                         android:layout_marginStart="20dp"
                         android:text="소요시간"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/contentCheckLevel" />
 
@@ -2660,7 +2660,7 @@
                         android:layout_marginTop="0dp"
                         android:text="0"
                         android:textColor="#A1A9AD"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarThirty"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThirty"
                         app:layout_constraintTop_toTopOf="@id/contentCheckRequiredTime" />
@@ -2668,7 +2668,7 @@
                     <!-- 0 바 -->
                     <View
                         android:id="@+id/divideRectangleBarThirty"
-                        android:layout_width="32dp"
+                        android:layout_width="35dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="3dp"
@@ -2685,7 +2685,7 @@
                         android:layout_marginEnd="3dp"
                         android:text="시간"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toStartOf="@id/divideRectangleBarThirtyone"
                         app:layout_constraintTop_toTopOf="@id/contentCheckRequiredTime" />
 
@@ -2697,7 +2697,7 @@
                         android:layout_marginTop="0dp"
                         android:text="30"
                         android:textColor="#A1A9AD"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarThirtyone"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThirtyone"
                         app:layout_constraintTop_toTopOf="@id/contentCheckRequiredTime" />
@@ -2705,7 +2705,7 @@
                     <!-- 30 바 -->
                     <View
                         android:id="@+id/divideRectangleBarThirtyone"
-                        android:layout_width="32dp"
+                        android:layout_width="35dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="3dp"
@@ -2722,7 +2722,7 @@
                         android:layout_marginEnd="20dp"
                         android:text="분"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/contentCheckRequiredTime" />
 
@@ -2735,7 +2735,7 @@
                         android:layout_marginStart="20dp"
                         android:text="태그"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/contentCheckRequiredTime" />
 
@@ -2747,7 +2747,7 @@
                         android:layout_marginTop="0dp"
                         android:text="소세지, 야채"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@id/divideRectangleBarThirtytwo"
                         app:layout_constraintEnd_toEndOf="@id/divideRectangleBarThirtytwo"
                         app:layout_constraintTop_toTopOf="@id/tag" />
@@ -2755,7 +2755,7 @@
                     <!-- 소세지, 야채 아래 바 -->
                     <View
                         android:id="@+id/divideRectangleBarThirtytwo"
-                        android:layout_width="84dp"
+                        android:layout_width="91dp"
                         android:layout_height="1dp"
                         android:background="@drawable/bar_number_of_people"
                         android:layout_marginEnd="20dp"
@@ -2781,7 +2781,7 @@
                         android:layout_marginTop="26dp"
                         android:text="재료"
                         android:textColor="#000000"
-                        android:textSize="16sp"
+                        android:textSize="19sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThirtythree" />
@@ -2815,7 +2815,7 @@
                         android:layout_marginTop="26dp"
                         android:text="조리 순서"
                         android:textColor="#000000"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThirtyfour" />
 
@@ -2883,7 +2883,7 @@
                     android:layout_marginTop="30dp"
                     android:text="공개 설정"
                     android:textColor="#000000"
-                    android:textSize="14sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -2898,7 +2898,7 @@
                     android:layout_marginStart="30dp"
                     android:text="전체공개"
                     android:textColor="#000000"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/shareSettleBox"
                     app:layout_constraintTop_toTopOf="@id/shareSettleBox"/>
 
@@ -2923,7 +2923,7 @@
                     android:layout_marginStart="30dp"
                     android:text="나만보기"
                     android:textColor="#000000"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/shareSettleBox"
                     app:layout_constraintTop_toTopOf="@id/totalShare"/>
 
@@ -2943,10 +2943,10 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/cancel"
                     android:layout_width="115dp"
-                    android:layout_height="33dp"
+                    android:layout_height="36dp"
                     android:text="취소"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="#000000"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="20dp"
@@ -2959,10 +2959,10 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/settle"
                     android:layout_width="115dp"
-                    android:layout_height="33dp"
+                    android:layout_height="36dp"
                     android:text="설정"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
@@ -3006,7 +3006,7 @@
                     android:layout_marginTop="25dp"
                     android:text="레시피를 등록하시겠습니까?"
                     android:textColor="#000000"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/recipeRegisterBox"/>
@@ -3015,10 +3015,10 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/cancelTwo"
                     android:layout_width="115dp"
-                    android:layout_height="33dp"
+                    android:layout_height="36dp"
                     android:text="취소"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="#000000"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="12dp"
@@ -3031,10 +3031,10 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/register"
                     android:layout_width="115dp"
-                    android:layout_height="33dp"
+                    android:layout_height="36dp"
                     android:text="등록"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="12dp"
@@ -3150,7 +3150,7 @@
                             android:layout_height="wrap_content"
                             android:text="동네주방"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginBottom="4dp" />
                     </LinearLayout>
 
@@ -3177,7 +3177,7 @@
                             android:layout_height="wrap_content"
                             android:text="레시피"
                             android:textColor="#2B2B2B"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
 
@@ -3218,7 +3218,7 @@
                             android:layout_height="wrap_content"
                             android:text="커뮤니티"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
 
@@ -3243,7 +3243,7 @@
                             android:layout_height="wrap_content"
                             android:text="냉장고"
                             android:textColor="#B9BEC1"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:layout_marginTop="4dp"/>
 
                     </LinearLayout>

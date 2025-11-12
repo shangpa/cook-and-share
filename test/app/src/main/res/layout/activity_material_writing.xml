@@ -55,7 +55,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="거래 규칙"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="개인정보"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -93,7 +93,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="· 주방용품을 판매할 때도 개인정보 노출을 최소화한다."
-                                android:textSize="13sp"
+                                android:textSize="16sp"
                                 android:layout_gravity="start"
                                 android:layout_marginRight="20dp"
                                 android:layout_marginLeft="20dp"
@@ -113,7 +113,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="채팅"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -123,7 +123,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="· 카카오톡 거래는 피하고, 가급적 쿡앤쉐어 채팅을 활용한다."
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -142,7 +142,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="거래장소"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -151,8 +151,8 @@
                             android:id="@+id/exchangePlaceText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="· 거래장소는 지하철역이나 버스정류장 등 사람이 많은 곳에서 한다."
-                            android:textSize="13sp"
+                            android:text="· 거래장소는 지하철역이나 버스정류장 등 사람이 많은 곳에\n  서 한다."
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -171,7 +171,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="거래글 작성"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -180,8 +180,8 @@
                             android:id="@+id/exchangeWriteText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="· 주방용품 사진을 촬영할 때는 불필요한 배경이나 개인 정보가 포함되지 \n  않도록 한다."
-                            android:textSize="13sp"
+                            android:text="· 주방용품 사진을 촬영할 때는 불필요한 배경이나 개인 정보\n  가 포함되지   않도록 한다."
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -193,7 +193,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="· 닉네임을 적은 메모지는 함께 찍는 것이 좋다."
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -205,7 +205,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="· 거래글에는 시,군,구,동까지만 위치를 작성한다."
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -216,8 +216,8 @@
                             android:id="@+id/exchangeWriteTextFour"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="· 외부 링크(제품 설명, 제조사 사이트, 카페/블로그 링크 포함)는 금지된다."
-                            android:textSize="13sp"
+                            android:text="· 외부 링크(제품 설명, 제조사 사이트, 카페/블로그 링크 포\n  함)는 금지된다."
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -236,7 +236,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="거래금지용품"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -245,8 +245,8 @@
                             android:id="@+id/exchangeProhibitionProductText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="· 전자기능이 있는 주방기기의 경우, 국내 인증을 받지 않은 제품은 판매\n  하면 안 된다."
-                            android:textSize="13sp"
+                            android:text="· 전자기능이 있는 주방기기의 경우, 국내 인증을 받지 않은\n  제품은 판매 하면 안 된다."
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -257,8 +257,8 @@
                             android:id="@+id/exchangeProhibitionProductTextTwo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="· 임직원가로 구매한 제품(사내용 등외급 제품)은 판매하면 안 된다."
-                            android:textSize="13sp"
+                            android:text="· 임직원가로 구매한 제품(사내용 등외급 제품)은 판매하면\n  안 된다."
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -277,8 +277,8 @@
                             android:id="@+id/limitGuideText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="위 사항을 위반한 거래글을 작성한 경우, 앱 사용에 제한이 있을 수 \n있습니다."
-                            android:textSize="13sp"
+                            android:text="위 사항을 위반한 거래글을 작성한 경우, 앱 사용에 제한이\n있을 수 있습니다."
+                            android:textSize="16sp"
                             android:layout_gravity="start"
                             android:layout_marginRight="20dp"
                             android:layout_marginLeft="20dp"
@@ -297,7 +297,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="위 사항을 지켜 거래글을 작성하시겠습니까?"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="100dp"/>
                     </LinearLayout>
@@ -321,6 +321,7 @@
                 android:text="위 사항에 동의합니다"
                 android:backgroundTint="#35A825"
                 android:textColor="#FFFFFF"
+                android:textSize="16dp"
                 app:layout_constraintTop_toTopOf="@id/tapFixBar"
                 app:layout_constraintBottom_toBottomOf="@id/tapFixBar"
                 app:layout_constraintStart_toStartOf="@id/tapFixBar"
@@ -366,7 +367,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="새로운 거래글"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -399,14 +400,13 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="0/10"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#8A8A8A"/>
                     </LinearLayout>
                     <HorizontalScrollView
                         android:id="@+id/photoScrollView"
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
-                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="25dp"
                         android:visibility="gone">
                         <!-- 사진 넣는곳 -->
@@ -432,7 +432,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="카테고리"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -447,7 +447,7 @@
                                 android:layout_width="340dp"
                                 android:layout_height="wrap_content"
                                 android:text="카테고리를 선택해주세요."
-                                android:textSize="12sp"
+                                android:textSize="15sp"
                                 android:textColor="#8A8A8E"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginBottom="8dp"/>
@@ -719,7 +719,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="제목"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -734,7 +734,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="8dp"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#2B2B2B" />
 
                         <View
@@ -757,7 +757,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="수량"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -772,7 +772,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="8dp"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#2B2B2B" />
 
                         <View
@@ -795,7 +795,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="거래 가격"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -810,7 +810,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="8dp"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#2B2B2B"/>
 
                         <View
@@ -833,7 +833,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="구매 날짜"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -848,7 +848,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="8dp"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#2B2B2B" />
 
                         <View
@@ -871,7 +871,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="설명"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -880,14 +880,14 @@
                             android:id="@+id/descriptionText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="거래글의 내용을 작성해주세요.(판매 금지 물품은 게시가 제한될 수 있어\n요.)
-\n\n 욕설, 비방 등 불건전한 내용을 작성한 경우, 앱 사용에 제한이 있을 수 있습\n니다. "
+                            android:hint="거래글의 내용을 작성해주세요.(판매 금지 물품은 게시가\n제한될 수 있어요.)
+\n\n욕설, 비방 등 불건전한 내용을 작성한 경우, 앱 사용에 제한\n이 있을 수 있습니다. "
                             android:background="@null"
                             android:layout_gravity="start"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="8dp"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="#2B2B2B" />
 
                         <View
@@ -910,7 +910,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="거래 희망 장소"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"/>
 
@@ -925,10 +925,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="거래 희망 장소를 간단히 작성해주세요."
-                                android:textSize="12sp"
+                                android:textSize="15sp"
                                 android:textColor="#8A8A8E"
                                 android:layout_marginLeft="20dp"
-                                android:layout_marginRight="167dp"
+                                android:layout_marginRight="120dp"
                                 android:layout_marginBottom="8dp"/>
 
                             <ImageView
@@ -969,6 +969,7 @@
                 android:text="게시하기"
                 android:backgroundTint="#E7E7E7"
                 android:textColor="#A1A9AD"
+                android:textSize="16dp"
                 app:layout_constraintTop_toTopOf="@id/tapFixBarTwo"
                 app:layout_constraintBottom_toBottomOf="@id/tapFixBarTwo"
                 app:layout_constraintStart_toStartOf="@id/tapFixBarTwo"
@@ -1008,7 +1009,7 @@
                     android:layout_marginTop="30dp"
                     android:text="게시글을 등록하시겠습니까?"
                     android:textColor="#000000"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/registerBox"/>
@@ -1017,13 +1018,13 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/cancel"
                     android:layout_width="115dp"
-                    android:layout_height="34dp"
+                    android:layout_height="38dp"
                     android:text="취소"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="#000000"
                     android:background="@drawable/ic_recipe_main_rect_no"
                     android:layout_marginStart="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="13dp"
                     android:stateListAnimator="@null"
                     app:layout_constraintBottom_toBottomOf="@id/registerBox"
                     app:layout_constraintStart_toStartOf="@id/registerBox"/>
@@ -1032,13 +1033,13 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/register"
                     android:layout_width="115dp"
-                    android:layout_height="34dp"
+                    android:layout_height="38dp"
                     android:text="등록"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
                     android:background="@drawable/ic_recipe_main_rect_yes"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="13dp"
                     android:stateListAnimator="@null"
                     app:layout_constraintBottom_toBottomOf="@id/registerBox"
                     app:layout_constraintEnd_toEndOf="@id/registerBox"/>
@@ -1072,7 +1073,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="거래할 위치를 선택해주세요."
-            android:textSize="16sp"
+            android:textSize="19sp"
             android:textColor="#333333"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/btn_close"
@@ -1213,7 +1214,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textStyle="bold"
                             android:textColor="#FFFFFF"
                             android:layout_marginEnd="2dp"/>
@@ -1223,7 +1224,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="/1"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
 
@@ -1247,9 +1248,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="다이소 채소 다지기 팝니다"
-                            android:textSize="16sp"
+                            android:textSize="19sp"
                             android:textStyle="bold"
-                            android:layout_marginEnd="170dp"/>
+                            android:layout_marginEnd="159dp"/>
 
                         <ImageView
                             android:id="@+id/itemMore"
@@ -1270,6 +1271,7 @@
                             android:id="@+id/mapIcon"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
+                            android:layout_marginTop="3dp"
                             android:layout_marginEnd="4dp"
                             android:contentDescription="지도 아이콘"
                             android:src="@drawable/ic_location" />
@@ -1280,7 +1282,7 @@
                             android:layout_height="wrap_content"
                             android:text="500m | 01.16"
                             android:textColor="#8A8A8A"
-                            android:textSize="12sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <!-- 구분선 -->
@@ -1309,7 +1311,7 @@
                                 android:layout_weight="1"
                                 android:text="카테고리"
                                 android:textColor="#8A8A8A"
-                                android:textSize="12sp" />
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/quantity1"
@@ -1317,7 +1319,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="조리기구"
-                                android:textSize="12sp"
+                                android:textSize="15sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -1334,7 +1336,7 @@
                                 android:layout_weight="1"
                                 android:text="수량"
                                 android:textColor="#8A8A8A"
-                                android:textSize="12sp" />
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/quantity2"
@@ -1342,7 +1344,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="1개"
-                                android:textSize="12sp"
+                                android:textSize="15sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1353,7 +1355,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
                         android:text="사놓고 사용 안 한 다이소 채소 다지기입니다.\n미개봉인 점 참고해주세요.\n필요하신 분 채팅주세요."
-                        android:textSize="14sp"/>
+                        android:textSize="17sp"/>
 
                     <!-- 거래희망장소, 지도 및 상세보기 그룹 -->
                     <LinearLayout
@@ -1369,7 +1371,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="거래희망장소"
-                            android:textSize="11sp"
+                            android:textSize="14sp"
                             android:textColor="#8A8A8A"/>
 
                         <TextView
@@ -1378,7 +1380,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="성리초등학교 앞"
-                            android:textSize="11sp"
+                            android:textSize="14sp"
                             android:layout_marginLeft="200dp"/>
                     </LinearLayout>
 
@@ -1403,7 +1405,7 @@
                             android:layout_height="wrap_content"
                             android:text="채팅"
                             android:textColor="#8A8A8A"
-                            android:textSize="10sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/chatCount2"
@@ -1411,7 +1413,7 @@
                             android:layout_height="wrap_content"
                             android:text="2   "
                             android:textColor="#8A8A8A"
-                            android:textSize="10sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/viewCount1"
@@ -1419,7 +1421,7 @@
                             android:layout_height="wrap_content"
                             android:text="|   조회"
                             android:textColor="#8A8A8A"
-                            android:textSize="10sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/viewCount2"
@@ -1427,7 +1429,7 @@
                             android:layout_height="wrap_content"
                             android:text="6"
                             android:textColor="#8A8A8A"
-                            android:textSize="10sp" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <!-- 사용자 정보 및 상품 판매 정보 -->
@@ -1459,7 +1461,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="소금시러설탕시러"
-                                android:textSize="12sp" />
+                                android:textSize="15sp" />
 
                             <LinearLayout
                                 android:layout_width="380dp"
@@ -1482,7 +1484,7 @@
                                     android:layout_marginEnd="8dp"
                                     android:text="5.0  |"
                                     android:textColor="#8A8A8A"
-                                    android:textSize="11sp" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/reviewCount"
@@ -1491,7 +1493,7 @@
                                     android:layout_marginEnd="8dp"
                                     android:text="후기 3  |"
                                     android:textColor="#8A8A8A"
-                                    android:textSize="11sp" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/transactionHistory"
@@ -1499,7 +1501,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="거래내역 3"
                                     android:textColor="#8A8A8A"
-                                    android:textSize="11sp" />
+                                    android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -1531,7 +1533,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="소금시러설탕시러님이 판매하시는 다른 상품"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginBottom="20dp"/>
 
@@ -1558,7 +1560,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="그릇 팔아요"
-                                    android:textSize="11sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:layout_marginTop="10dp"/>
 
@@ -1567,7 +1569,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="800P"
-                                    android:textSize="12sp"
+                                    android:textSize="15sp"
                                     android:textStyle="bold"
                                     android:layout_marginTop="3dp"/>
                             </LinearLayout>
@@ -1589,7 +1591,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="귀여운 컵 팔아요"
-                                    android:textSize="11sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:layout_marginTop="10dp"/>
 
@@ -1598,7 +1600,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="200P"
-                                    android:textSize="12sp"
+                                    android:textSize="15sp"
                                     android:textStyle="bold"
                                     android:layout_marginTop="3dp"/>
                             </LinearLayout>
@@ -1619,8 +1621,8 @@
                                     android:id="@+id/otherItemText3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="스탠리 라일락색 887\n팔아요"
-                                    android:textSize="11sp"
+                                    android:text="스탠리 라일락색\n887 팔아요"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:layout_marginTop="10dp"/>
 
@@ -1629,7 +1631,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="990P"
-                                    android:textSize="12sp"
+                                    android:textSize="15sp"
                                     android:textStyle="bold"
                                     android:layout_marginTop="3dp"
                                     android:layout_marginBottom="130dp"/>
@@ -1679,7 +1681,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="500 P"
-            android:textSize="16sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             android:layout_marginStart="15dp"
             app:layout_constraintTop_toTopOf="@id/tapFixBarThree"
@@ -1691,7 +1693,7 @@
             android:layout_width="145dp"
             android:layout_height="45dp"
             android:text="채팅하기"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:textColor="@android:color/white"
             android:background="@drawable/rounded_button"
             android:layout_marginEnd="20dp"

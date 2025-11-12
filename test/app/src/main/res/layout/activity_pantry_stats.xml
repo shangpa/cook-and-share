@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="분석"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"
                     app:layout_constraintStart_toEndOf="@id/backBtn"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:text="나의 냉장고 분석을 확인해보세요!"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="19sp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="40dp"
                 app:layout_constraintTop_toBottomOf="@id/topDivider"
@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:text="종합 분석"
                         android:textStyle="bold"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
@@ -163,7 +163,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="이번 달 가장 많이 먹은 재료"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:layout_marginStart="20dp"
                             app:layout_constraintStart_toEndOf="@id/topConsumedIc"
                             app:layout_constraintEnd_toStartOf="@id/topConsumedValue"
@@ -176,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:text="감자"
                             android:textStyle="bold"
-                            android:textSize="15sp"
+                            android:textSize="17sp"
                             android:textColor="#30C763"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -208,7 +208,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="유통기한 내에 먹은 재료 수"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:layout_marginStart="20dp"
                             app:layout_constraintStart_toEndOf="@id/expirationDateEatIc"
                             app:layout_constraintEnd_toStartOf="@id/expirationDateEatValue"
@@ -252,7 +252,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="유통기한을 지키지 못한 재료 수"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:layout_marginStart="20dp"
                             app:layout_constraintStart_toEndOf="@id/expirationDateNotIc"
                             app:layout_constraintEnd_toStartOf="@id/expirationDateNotValue"
@@ -349,7 +349,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -375,7 +375,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -416,7 +416,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -442,7 +442,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

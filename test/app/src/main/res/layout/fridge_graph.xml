@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="식품 유형"
                 android:textStyle="bold"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
