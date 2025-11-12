@@ -262,7 +262,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                             val tagView = TextView(this@RecipeSeeActivity) // ← Activity의 Context 명확히 지정
                                 .apply {
                                     text = "# $tag"
-                                    textSize = 10f
+                                    textSize = 16f
                                     setTextColor(Color.parseColor("#747474"))
                                     setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
                                     setPadding(20, 4, 20, 4) // 태그 내부 여백
@@ -279,7 +279,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                         // 재료 탭
                         val titleText = TextView(this@RecipeSeeActivity).apply {
                             text = "${recipe.title} 재료"
-                            textSize = 15f
+                            textSize = 18f
                             setTextColor(Color.parseColor("#2B2B2B"))
                             setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
                         }
@@ -311,14 +311,14 @@ class RecipeSeeActivity : AppCompatActivity() {
 
                             val nameText = TextView(this@RecipeSeeActivity).apply {
                                 text = ingredient.name
-                                textSize = 13f
+                                textSize = 16f
                                 setTextColor(Color.parseColor("#2B2B2B"))
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val amountText = TextView(this@RecipeSeeActivity).apply {
                                 text = ingredient.amount.toString()
-                                textSize = 13f
+                                textSize = 16f
                                 setTextColor(Color.parseColor("#2B2B2B"))
                                 gravity = Gravity.END
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
@@ -350,7 +350,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                         //대체 재료탭
                         val altTitleText = TextView(this@RecipeSeeActivity).apply {
                             text = "대체 재료"
-                            textSize = 15f
+                            textSize = 18f
                             setTextColor(Color.parseColor("#2B2B2B"))
                             setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
                         }
@@ -385,13 +385,13 @@ class RecipeSeeActivity : AppCompatActivity() {
 
                             val nameText = TextView(this@RecipeSeeActivity).apply {
                                 text = "${ingredient.name}"
-                                textSize = 13f
+                                textSize = 16f
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val amountText = TextView(this@RecipeSeeActivity).apply {
                                 text = ingredient.amount
-                                textSize = 13f
+                                textSize = 16f
                                 gravity = Gravity.END
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
@@ -423,7 +423,7 @@ class RecipeSeeActivity : AppCompatActivity() {
                         //재료 처리 방법 탭
                         val handlingTitleText = TextView(this@RecipeSeeActivity).apply {
                             text = "재료 처리 방법"
-                            textSize = 15f
+                            textSize = 18f
                             setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
                         }
                         ingredientContainer.addView(handlingTitleText)
@@ -460,13 +460,13 @@ class RecipeSeeActivity : AppCompatActivity() {
 
                             val nameText = TextView(this@RecipeSeeActivity).apply {
                                 text = "$name"
-                                textSize = 13f
+                                textSize = 16f
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val handlingText = TextView(this@RecipeSeeActivity).apply {
                                 text = handling
-                                textSize = 13f
+                                textSize = 16f
                                 gravity = Gravity.END
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }

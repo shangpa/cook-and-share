@@ -24,7 +24,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/reviewWriteSuggestion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <!-- 로고, 검색, 알림, 마이페이지 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,7 +101,7 @@
                     android:layout_marginStart="23dp"
                     android:text="요리를 완성하셨나요?"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,7 +114,7 @@
                     android:layout_marginStart="23dp"
                     android:text="레시피"
                     android:textColor="#35A825"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recipeComplete" />
@@ -127,7 +128,7 @@
                     android:layout_marginEnd="0dp"
                     android:text="가 어떠셨는지 리뷰를 작성해주세요!"
                     android:textColor="#2B2B2B"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     app:layout_constraintStart_toEndOf="@id/recipe"
                     app:layout_constraintTop_toBottomOf="@id/recipeComplete" />
 
@@ -148,7 +149,7 @@
                     android:layout_height="50dp"
                     android:text="리뷰 작성하러 가기"
                     android:fontFamily="@font/pretendard_medium"
-                    android:textSize="14sp"
+                    android:textSize="17sp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     android:background="@drawable/btn_step_recipe_see_next"
@@ -167,7 +168,7 @@
             android:id="@+id/writeReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="visible">
 
         <!-- 뒤로가기, 리뷰 작성 -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -182,11 +183,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_lelft_arrow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/writeReviewTwo"
+                app:layout_constraintBottom_toBottomOf="@id/writeReviewTwo"  />
 
             <!-- 리뷰 작성 -->
             <TextView
@@ -196,7 +197,7 @@
                 android:layout_marginTop="20dp"
                 android:text="리뷰 작성"
                 android:textColor="#000000"
-                android:textSize="16sp"
+                android:textSize="19sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -241,7 +242,7 @@
                 android:layout_marginStart="15dp"
                 android:text="알배추전골과 구운 두부 버섯 샐러드"
                 android:textColor="#2B2B2B"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/Image"
                 app:layout_constraintTop_toTopOf="@id/Image" />
 
@@ -251,7 +252,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/image_recently_stored_materials_step"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="0dp"
                 app:layout_constraintStart_toStartOf="@id/foodName"
                 app:layout_constraintTop_toBottomOf="@id/foodName"/>
@@ -262,7 +263,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="초급"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#9B9B9B"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="2dp"
@@ -275,7 +276,7 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/image_recently_stored_materials_time"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginStart="15dp"
                 app:layout_constraintStart_toEndOf="@id/elementary"
                 app:layout_constraintTop_toBottomOf="@id/foodName"/>
@@ -286,7 +287,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30분"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#9B9B9B"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="2dp"
@@ -299,7 +300,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="소금쇼"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#35A825"
                 android:layout_marginTop="7dp"
                 android:layout_marginStart="15dp"
@@ -338,7 +339,7 @@
                     android:layout_marginStart="23dp"
                     android:text="평점"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -348,7 +349,7 @@
                     android:layout_width="18dp"
                     android:layout_height="17dp"
                     android:layout_marginStart="43dp"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="2dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_star_no_fill"
                     app:layout_constraintStart_toStartOf="@id/grade"
@@ -364,7 +365,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_star_no_fill"
                     app:layout_constraintStart_toStartOf="@id/star"
-                    app:layout_constraintTop_toTopOf="@id/grade" />
+                    app:layout_constraintTop_toTopOf="@id/star" />
 
                 <!-- 별 -->
                 <ImageButton
@@ -376,7 +377,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_star_no_fill"
                     app:layout_constraintStart_toStartOf="@id/starTwo"
-                    app:layout_constraintTop_toTopOf="@id/grade" />
+                    app:layout_constraintTop_toTopOf="@id/starTwo" />
 
                 <!-- 별 -->
                 <ImageButton
@@ -388,7 +389,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_star_no_fill"
                     app:layout_constraintStart_toStartOf="@id/starThree"
-                    app:layout_constraintTop_toTopOf="@id/grade" />
+                    app:layout_constraintTop_toTopOf="@id/starThree" />
 
                 <!-- 별 -->
                 <ImageButton
@@ -400,7 +401,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_star_no_fill"
                     app:layout_constraintStart_toStartOf="@id/starFour"
-                    app:layout_constraintTop_toTopOf="@id/grade" />
+                    app:layout_constraintTop_toTopOf="@id/starFour" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -430,7 +431,7 @@
                 android:layout_marginStart="23dp"
                 android:text="내용"
                 android:textColor="#2B2B2B"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -453,7 +454,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="리뷰 내용을 작성해주세요"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:layout_marginTop="11dp"
                 android:layout_marginStart="11dp"
                 android:backgroundTint="#A1A9AD"

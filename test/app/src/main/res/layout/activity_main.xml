@@ -801,7 +801,7 @@
                         android:layout_height="wrap_content"
                         android:text="동네주방"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginBottom="4dp" />
                 </LinearLayout>
 
@@ -826,7 +826,7 @@
                         android:layout_height="wrap_content"
                         android:text="레시피"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="6dp"/>
                 </LinearLayout>
 
@@ -867,7 +867,7 @@
                         android:layout_height="wrap_content"
                         android:text="커뮤니티"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
@@ -892,7 +892,7 @@
                         android:layout_height="wrap_content"
                         android:text="냉장고"
                         android:textColor="#B9BEC1"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         android:layout_marginTop="4dp"/>
 
                 </LinearLayout>

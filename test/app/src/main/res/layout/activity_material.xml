@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="동네주방"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="내 위치"
-                        android:textSize="14sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"/>
 
                     <!-- 화살표 아이콘 -->
@@ -98,7 +98,7 @@
                 <!-- 첫 번째 거리순 컨테이너 (재료) -->
                 <LinearLayout
                     android:id="@+id/materialFilter"
-                    android:layout_width="wrap_content"
+                    android:layout_width="81dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_rectangle_background"
@@ -106,7 +106,7 @@
                     android:gravity="center"
                     android:strokeColor="#D2D5D6"
                     android:layout_marginRight="11dp"
-                    android:layout_marginLeft="175dp">
+                    android:layout_marginLeft="134dp">
 
                     <!-- 재료 텍스트 -->
                     <TextView
@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="카테고리"
-                        android:textSize="11sp"
+                        android:textSize="14sp"
                         android:textColor="#8A8F9C"
                         android:layout_marginEnd="4dp" />
 
@@ -131,7 +131,7 @@
                 <!-- 두 번째 거리순 컨테이너 (거리) -->
                 <LinearLayout
                     android:id="@+id/distanceFilter"
-                    android:layout_width="wrap_content"
+                    android:layout_width="81dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/rounded_rectangle_background"
@@ -145,7 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="거리"
-                        android:textSize="11sp"
+                        android:textSize="14dp"
                         android:textColor="#8A8F9C"
                         android:layout_marginEnd="4dp" />
 
@@ -200,7 +200,7 @@
                         android:layout_marginStart="2dp"
                         android:text="총"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp" />
+                        android:textSize="16sp" />
 
                     <!-- 150 -->
                     <TextView
@@ -210,7 +210,7 @@
                         android:layout_marginStart="5dp"
                         android:text=""
                         android:textColor="#35A825"
-                        android:textSize="13sp" />
+                        android:textSize="16sp" />
 
                     <!-- 개 검색결과 -->
                     <TextView
@@ -220,37 +220,42 @@
                         android:layout_marginStart="2dp"
                         android:text="개 거래글"
                         android:textColor="#2B2B2B"
-                        android:textSize="13sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="240dp">
+                    android:gravity="end|center_vertical">
 
-                    <!-- 최신순 텍스트 -->
-                    <TextView
-                        android:id="@+id/materailMainFilterText"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="최신순"
-                        android:textSize="12sp"
-                        android:textColor="#2B2B2B"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="20dp">
 
-                    <!-- 화살표 -->
-                    <ImageView
-                        android:id="@+id/sortArrow"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_arrow_down"
-                        android:contentDescription="거리순 화살표"
-                        app:tint="#2B2B2B" />
+                        <TextView
+                            android:id="@+id/materailMainFilterText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="최신순"
+                            android:textSize="15sp"
+                            android:textColor="#2B2B2B"/>
+
+                        <ImageView
+                            android:id="@+id/sortArrow"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_arrow_down"
+                            android:contentDescription="정렬 화살표"
+                            app:tint="#2B2B2B" />
+                    </LinearLayout>
                 </LinearLayout>
+
 
             </LinearLayout>
 
@@ -295,7 +300,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="전체"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -303,52 +308,52 @@
             <!-- 조리기구 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cookware"
-                android:layout_width="63dp"
+                android:layout_width="67dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="조리기구"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
             <!-- 팬/냄비류 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/fans_pots"
-                android:layout_width="67dp"
+                android:layout_width="71dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="팬/냄비류"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
             <!-- 용기 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/containers"
-                android:layout_width="55dp"
+                android:layout_width="59dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="용기류"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
             <!-- 식기 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/tableware"
-                android:layout_width="55dp"
+                android:layout_width="59dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="식기류"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
@@ -363,52 +368,52 @@
             <!-- 수납용품 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/storageSupplies"
-                android:layout_width="63dp"
+                android:layout_width="67dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="수납용품"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
             <!-- 위생용품 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/sanitaryProducts"
-                android:layout_width="63dp"
+                android:layout_width="67dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="위생용품"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
             <!-- 소형가전 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/smallAppliances"
-                android:layout_width="63dp"
+                android:layout_width="67dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="소형가전"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
             <!-- 일회용품 선택 -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/disposableProducts"
-                android:layout_width="63dp"
+                android:layout_width="67dp"
                 android:layout_height="25dp"
                 android:background="@drawable/rounded_rectangle_background"
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="일회용품"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -421,7 +426,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="기타"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -459,7 +464,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="전체"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -472,7 +477,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="300m 이내"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -485,7 +490,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="500m 이내"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -498,7 +503,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="1km 이내"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
@@ -519,7 +524,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="1.5km 이내"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
 
@@ -532,7 +537,7 @@
                 android:padding="2dp"
                 android:gravity="center"
                 android:text="2km 이내"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
@@ -670,7 +675,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -696,7 +701,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -737,7 +742,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -762,7 +767,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

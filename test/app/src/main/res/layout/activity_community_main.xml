@@ -16,7 +16,7 @@
         android:layout_marginTop="20dp"
         android:text="커뮤니티"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="19sp"
         android:textStyle="bold"
         android:gravity="center" />
 
@@ -49,35 +49,35 @@
 
                 <TextView
                     android:id="@+id/popularPost"
-                    android:layout_width="96dp"
-                    android:layout_height="35dp"
+                    android:layout_width="105dp"
+                    android:layout_height="39dp"
                     android:background="@drawable/ic_community_main_rect"
                     android:gravity="center"
                     android:text="인기 게시판"
                     android:textColor="#2B2B2B"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:paddingHorizontal="12dp" />
 
                 <TextView
                     android:id="@+id/freePost"
-                    android:layout_width="96dp"
-                    android:layout_height="35dp"
+                    android:layout_width="105dp"
+                    android:layout_height="39dp"
                     android:background="@drawable/ic_community_main_rect_gray"
                     android:gravity="center"
                     android:text="자유 게시판"
                     android:textColor="#A1A9AD"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:paddingHorizontal="12dp" />
 
                 <TextView
                     android:id="@+id/cookPost"
-                    android:layout_width="96dp"
-                    android:layout_height="35dp"
+                    android:layout_width="105dp"
+                    android:layout_height="39dp"
                     android:background="@drawable/ic_community_main_rect_gray"
                     android:gravity="center"
                     android:text="요리 게시판"
                     android:textColor="#A1A9AD"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:paddingHorizontal="12dp" />
             </LinearLayout>
 
@@ -132,14 +132,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="인기 게시물"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TOP 10"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#35A825"
                     android:layout_marginStart="5dp" />
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="어떤 레시피가 맛있을까?"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -230,7 +230,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="더보기"
-                            android:textSize="14sp"
+                            android:textSize="17sp"
                             android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -269,7 +269,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="HOT 게시물"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -289,7 +289,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="더보기"
-                            android:textSize="14sp"
+                            android:textSize="17sp"
                             android:textColor="#9B9B9B" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -349,7 +349,7 @@
                     android:layout_height="wrap_content"
                     android:text="동네주방"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
@@ -375,7 +375,7 @@
                     android:layout_height="wrap_content"
                     android:text="레시피"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
 
@@ -417,7 +417,7 @@
                     android:layout_height="wrap_content"
                     android:text="커뮤니티"
                     android:textColor="#2B2B2B"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -442,7 +442,7 @@
                     android:layout_height="wrap_content"
                     android:text="냉장고"
                     android:textColor="#B9BEC1"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     android:layout_marginTop="4dp"/>
 
             </LinearLayout>

@@ -11,8 +11,8 @@
     <!-- 요리 이미지 -->
     <ImageView
         android:id="@+id/imageThumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
         android:scaleType="centerCrop"
         android:contentDescription="레시피 이미지" />
 
@@ -36,7 +36,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="레시피 이름"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="@color/black"
                 android:maxLines="1"
                 android:ellipsize="end" />
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="9dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="@color/black"
                     android:layout_marginStart="3dp"/>
             </LinearLayout>
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="@color/black"
                     android:layout_marginStart="3dp"/>
             </LinearLayout>
@@ -112,14 +112,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="12dp">
 
             <!-- 작성일자 고정 텍스트 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="작성일자 : "
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="#8A8F9C" />
 
             <!-- 작성일자 값 -->
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2025.01.01"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="#8A8F9C"
                 android:layout_marginStart="2dp"/>
         </LinearLayout>

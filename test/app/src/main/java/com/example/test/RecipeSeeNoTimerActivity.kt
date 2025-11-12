@@ -233,7 +233,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             val tagView = TextView(this@RecipeSeeNoTimerActivity) // ← Activity의 Context 명확히 지정
                                 .apply {
                                     text = "# $tag"
-                                    textSize = 10f
+                                    textSize = 13f
                                     setTextColor(Color.parseColor("#747474"))
                                     setBackgroundResource(R.drawable.ic_step_recipe_see_main_rect)
                                     setPadding(20, 4, 20, 4) // 태그 내부 여백
@@ -250,7 +250,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         // 재료 탭
                         val titleText = TextView(this@RecipeSeeNoTimerActivity).apply {
                             text = "${recipe.title} 재료"
-                            textSize = 15f
+                            textSize = 18f
                             setTextColor(Color.parseColor("#2B2B2B"))
                             setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
                         }
@@ -282,14 +282,14 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
                             val nameText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = ingredient.name
-                                textSize = 13f
+                                textSize = 16f
                                 setTextColor(Color.parseColor("#2B2B2B"))
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val amountText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = ingredient.amount.toString()
-                                textSize = 13f
+                                textSize = 16f
                                 setTextColor(Color.parseColor("#2B2B2B"))
                                 gravity = Gravity.END
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
@@ -321,7 +321,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         //대체 재료탭
                         val altTitleText = TextView(this@RecipeSeeNoTimerActivity).apply {
                             text = "대체 재료"
-                            textSize = 15f
+                            textSize = 18f
                             setTextColor(Color.parseColor("#2B2B2B"))
                             setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
                         }
@@ -356,13 +356,13 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
                             val nameText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = "${ingredient.name}"
-                                textSize = 13f
+                                textSize = 16f
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val amountText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = ingredient.amount
-                                textSize = 13f
+                                textSize = 16f
                                 gravity = Gravity.END
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
@@ -394,7 +394,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                         //재료 처리 방법 탭
                         val handlingTitleText = TextView(this@RecipeSeeNoTimerActivity).apply {
                             text = "재료 처리 방법"
-                            textSize = 15f
+                            textSize = 18f
                             setPadding(20.dpToPx(), 10.dpToPx(), 0, 0)
                         }
                         ingredientContainer.addView(handlingTitleText)
@@ -414,7 +414,8 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             recipe.handlingMethods, object : TypeToken<List<String>>() {}.type
                         )
 
-                        handlingMethods.withIndex().forEach { (index, method) ->                            val parts = method.split(" : ")
+                        handlingMethods.withIndex().forEach { (index, method) ->
+                            val parts = method.split(" : ")
                             val name = parts.getOrNull(0) ?: ""
                             val handling = parts.getOrNull(1) ?: ""
 
@@ -430,13 +431,13 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
 
                             val nameText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = "$name"
-                                textSize = 13f
+                                textSize = 16f
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
 
                             val handlingText = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = handling
-                                textSize = 13f
+                                textSize = 16f
                                 gravity = Gravity.END
                                 layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
                             }
@@ -478,7 +479,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             // STEP 타이틀
                             val stepTitle = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = "STEP ${step.step}"
-                                textSize = 14f
+                                textSize = 17f
                                 setTextColor(Color.BLACK)
                                 setPadding(0, 12.dpToPx(), 0, 4.dpToPx())
                                 setTypeface(null, Typeface.BOLD)
@@ -487,7 +488,7 @@ class RecipeSeeNoTimerActivity : AppCompatActivity() {
                             // 설명 (이미지 없으면 paddingBottom 20dp, 있으면 6dp)
                             val description = TextView(this@RecipeSeeNoTimerActivity).apply {
                                 text = step.description
-                                textSize = 13f
+                                textSize = 16f
                                 setTextColor(Color.DKGRAY)
                                 setPadding(0, 0, 0, if (step.mediaUrl.isNullOrBlank()) 20.dpToPx() else 6.dpToPx())
                             }

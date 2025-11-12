@@ -80,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="레시피"
-                        android:textSize="14sp"
+                        android:textSize="17sp"
                         android:layout_marginStart="4dp"
                         android:textColor="#8A8A8A"
                         android:layout_gravity="center"/>
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="312"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="4dp"
                         android:contentDescription="레시피 수"
                         android:textStyle="bold"
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="동영상"
-                        android:textSize="14sp"
+                        android:textSize="17sp"
                         android:layout_marginStart="4dp"
                         android:textColor="#8A8A8A"
                         android:layout_gravity="center"/>
@@ -117,7 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="111"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="4dp"
                         android:contentDescription="동영상 수"
                         android:textStyle="bold"
@@ -127,15 +127,16 @@
                 <!-- 팔로워 -->
                 <LinearLayout
                     android:id="@+id/followers"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_marginRight="15dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="팔로워"
-                        android:textSize="14sp"
+                        android:textSize="17sp"
                         android:layout_marginStart="4dp"
                         android:textColor="#8A8A8A"
                         android:layout_gravity="center"/>
@@ -145,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1,890"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="4dp"
                         android:contentDescription="팔로우 수"
                         android:textStyle="bold"
@@ -155,15 +156,16 @@
                 <!-- 팔로잉 -->
                 <LinearLayout
                     android:id="@+id/followings"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_marginRight="10dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="팔로잉"
-                        android:textSize="15sp"
+                        android:textSize="17sp"
                         android:layout_marginStart="4dp"
                         android:textColor="#8A8A8A"
                         android:layout_gravity="center"/>
@@ -173,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1,890"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="4dp"
                         android:contentDescription="팔로우 수"
                         android:textStyle="bold"
@@ -188,10 +190,10 @@
     <Button
         android:id="@+id/followButton"
         android:layout_width="352dp"
-        android:layout_height="36dp"
+        android:layout_height="42dp"
         android:layout_gravity="center"
         android:text="팔로우"
-        android:textSize="14sp"
+        android:textSize="17sp"
         android:background="@drawable/btn_follow"
         android:textColor="@color/color_follow_text"
         android:paddingLeft="12dp"

@@ -15,7 +15,7 @@
         android:layout_marginStart="23dp"
         android:text="STEP 1"
         android:textColor="#2B2B2B"
-        android:textSize="15sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
         android:layout_marginStart="23dp"
         android:text="1-1"
         android:textColor="#2B2B2B"
-        android:textSize="13sp"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/cookOrderRecipeContainerAdd"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,7 +63,7 @@
         android:background="@null"
         android:backgroundTint="#A1A9AD"
         android:hint="레시피를 입력해주세요."
-        android:textSize="13sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/stepLittleOne"
         app:layout_constraintTop_toTopOf="@id/stepLittleOne"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -84,12 +84,12 @@
     <!-- 내용 추가하기 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/contentAddTwo"
-        android:layout_width="131dp"
-        android:layout_height="35dp"
+        android:layout_width="139dp"
+        android:layout_height="40dp"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="100dp"
         android:text="내용 추가하기"
-        android:textSize="12sp"
+        android:textSize="15sp"
         android:textColor="#9B9B9B"
         android:background="@drawable/btn_recipe_add"
         android:stateListAnimator="@null"
@@ -100,12 +100,12 @@
     <!-- 타이머 추가하기 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/timerAddTwo"
-        android:layout_width="131dp"
-        android:layout_height="35dp"
+        android:layout_width="139dp"
+        android:layout_height="40dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:text="타이머 추가하기"
-        android:textSize="12sp"
+        android:textSize="15sp"
         android:textColor="#9B9B9B"
         android:background="@drawable/btn_recipe_add"
         android:stateListAnimator="@null"

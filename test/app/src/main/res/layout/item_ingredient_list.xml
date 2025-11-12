@@ -29,11 +29,12 @@
             <!-- 이미지 -->
             <ImageView
                 android:id="@+id/materialImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/image_eggplant"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <!-- 이름 -->
             <TextView
@@ -41,10 +42,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="가지"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/materialImage"
-                app:layout_constraintTop_toTopOf="@id/materialImage"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="12dp"/>
 
             <!-- 카테고리 -->
@@ -53,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="채소류"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/material"
                 app:layout_constraintTop_toBottomOf="@id/material" />
 
@@ -65,7 +66,7 @@
                 android:layout_marginTop="4dp"
                 android:text="보관장소 : "
                 android:textColor="#000000"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/greengrocery"
                 app:layout_constraintTop_toBottomOf="@id/greengrocery" />
 
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="실온"
                 android:textColor="#000000"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@id/storagePlace"
                 app:layout_constraintTop_toTopOf="@id/storagePlace" />
 
@@ -86,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="16"
                 android:textColor="#35A825"
-                android:textSize="14sp"
+                android:textSize="17sp"
                 android:layout_marginEnd="2dp"
                 app:layout_constraintEnd_toStartOf="@id/unit"
                 app:layout_constraintBaseline_toBaselineOf="@id/unit" />
@@ -98,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="개"
                 android:textColor="#35A825"
-                android:textSize="14sp"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
