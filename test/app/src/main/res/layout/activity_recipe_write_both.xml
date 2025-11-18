@@ -474,7 +474,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/beforeButton"
-                    android:layout_width="171dp"
+                    android:layout_width="163dp"
                     android:layout_height="50dp"
                     android:text="이전으로"
                     android:fontFamily="@font/pretendard_medium"
@@ -489,7 +489,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/continueButton"
-                    android:layout_width="171dp"
+                    android:layout_width="163dp"
                     android:layout_height="50dp"
                     android:text="계속하기"
                     android:fontFamily="@font/pretendard_medium"
@@ -1832,7 +1832,7 @@
                 <!-- 끝내기 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/endFixButton"
-                    android:layout_width="171dp"
+                    android:layout_width="163dp"
                     android:layout_height="50dp"
                     android:text="끝내기"
                     android:fontFamily="@font/pretendard_medium"
@@ -1848,7 +1848,7 @@
                 <!-- STEP 추가하기 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/stepAddFixButton"
-                    android:layout_width="171dp"
+                    android:layout_width="163dp"
                     android:layout_height="50dp"
                     android:text="STEP 추가하기"
                     android:fontFamily="@font/pretendard_medium"
@@ -2836,6 +2836,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
                         app:layout_constraintTop_toBottomOf="@id/divideRectangleBarThirtyfive"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -3092,7 +3094,7 @@
                 <!-- 등록하기 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/registerFixButton"
-                    android:layout_width="223dp"
+                    android:layout_width="207dp"
                     android:layout_height="50dp"
                     android:text="등록하기"
                     android:fontFamily="@font/pretendard_medium"
