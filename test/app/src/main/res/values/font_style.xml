@@ -3,4 +3,16 @@
     <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="android:fontFamily">@font/pretendard_medium</item>
     </style>
+
+    <!-- Button 공통 폰트 -->
+    <style name="customButtonFontStyle" parent="@style/Widget.AppCompat.Button">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <!-- EditText 공통 폰트 -->
+    <style name="customEditTextFontStyle" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
 </resources>
