@@ -102,7 +102,7 @@
                 android:id="@+id/riceImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src=""
+                android:src="@drawable/image_recipe_thumbnail_placeholder"
                 android:layout_marginTop="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
