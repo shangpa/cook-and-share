@@ -3509,19 +3509,50 @@ class RecipeWriteBothActivity : AppCompatActivity() {
     private fun Int.dpToPx(): Int {
         return (this * resources.displayMetrics.density).toInt()
     }
-    fun sendRecipeToServer(recipe: RecipeRequest, onSuccess: (Long) -> Unit, onFailure: (() -> Unit)? = null) {
+    fun sendRecipeToServer(
+        recipe: RecipeRequest,
+        onSuccess: (Long) -> Unit,
+        onFailure: (() -> Unit)? = null
+    ) {
         val token = App.prefs.token
+
+        // 요청 보내기
         RecipeRepository.uploadRecipe(token.toString(), recipe) { response ->
-            if (response != null && response.recipeId != null) {
+
+            // 🔍 1) 서버 raw response 로그
+            Log.e("RECIPE_UPLOAD", "📦 서버 응답 객체 = $response")
+
+            // 🔍 2) response null 여부 확인
+            if (response == null) {
+                Log.e("RECIPE_UPLOAD", "❌ response == null → 서버 JSON과 DTO가 안 맞을 확률 높음!")
+                Toast.makeText(this, "레시피 업로드 실패(response null)", Toast.LENGTH_SHORT).show()
+                onFailure?.invoke()
+                return@uploadRecipe
+            }
+
+            // 🔍 3) recipeId 로그 출력
+            Log.e("RECIPE_UPLOAD", "🔎 response.recipeId = ${response.recipeId}")
+
+            // 🔍 4) 정상/실패 분기
+            if (response.recipeId != null) {
+
+                // 성공 로그
+                Log.e("RECIPE_UPLOAD", "🎉 레시피 업로드 성공! recipeId = ${response.recipeId}")
+
                 createdRecipeId = response.recipeId.toLong()
                 Toast.makeText(this, "레시피 업로드 성공!", Toast.LENGTH_SHORT).show()
-                onSuccess(createdRecipeId!!)  // 서버에서 받은 id 전달
+                onSuccess(createdRecipeId!!)
             } else {
-                Toast.makeText(this, "레시피 업로드 실패3", Toast.LENGTH_SHORT).show()
+
+                // 실패 원인 상세 로그
+                Log.e("RECIPE_UPLOAD", "❌ recipeId == null → 서버 json 필드명이 다르거나 Gson 매핑 실패")
+
+                Toast.makeText(this, "레시피 업로드 실패3(recipeId null)", Toast.LENGTH_SHORT).show()
                 onFailure?.invoke()
             }
         }
     }
+
     //썸네일 생성
     private fun showProgressBar() {
         findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
